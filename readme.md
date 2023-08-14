@@ -15,7 +15,7 @@ bash comdown.sh -c
 ```bash
 STM32_Programmer_CLI_PATH="/mnt/d/stm32prog/bin"
 ```
-此路径可以在stm32cubeprog安装目录下找到，我的是D盘，所以是/mnt/d/stm32prog/bin，/mnt表示挂载,/mnt/d表示的挂载的windows的D盘，可以在linux下使用df -h命令查看。
+此路径可以在stm32cubeprog安装目录下找到，我的是D盘，所以是/mnt/d/stm32prog/bin，/mnt表示挂载，/mnt/d表示的挂载的windows的D盘，可以在linux下使用df -h命令查看。
 # step 4 烧录
 ```bash
 bash comdown.sh -d
