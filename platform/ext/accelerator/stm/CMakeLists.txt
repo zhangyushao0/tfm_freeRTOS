@@ -13,11 +13,12 @@ cmake_policy(SET CMP0076 NEW)
 if(NOT DEFINED PLATFORM_DIR)
     set(PLATFORM_DIR ../../.. CACHE PATH "Path to plaform dir")
 endif()
+if(DEFINED platform_bl2)
 target_compile_definitions(platform_bl2
     PRIVATE
         CRYPTO_HW_ACCELERATOR
 )
-
+endif()
 ################################ BL2 ###########################################
 if(BL2)
 

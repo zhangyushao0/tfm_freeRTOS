@@ -32,16 +32,16 @@ target_add_scatter_file(tfm_s
     $<$<AND:$<VERSION_EQUAL:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:IAR>>:${CMAKE_BINARY_DIR}/generated/platform/ext/common/iar/tfm_isolation_l3.icf>
 )
 
-if(NS)
-    target_add_scatter_file(tfm_ns
+if(NS_APP)
+    target_add_scatter_file(ns_app
         $<$<C_COMPILER_ID:GNU>:${STM_COMMON_DIR}/hal/template/gcc/appli_ns.ld>
         $<$<C_COMPILER_ID:ARMClang>:${STM_COMMON_DIR}/hal/template/armclang/appli_ns.sct>
         $<$<C_COMPILER_ID:IAR>:${STM_COMMON_DIR}/hal/template/iar/appli_ns.icf>
     )
-    target_link_libraries(CMSIS_5_tfm_ns
-        INTERFACE
-            CMSIS_5_RTX_V8MMN
-    )
+    # target_link_libraries(CMSIS_5_tfm_ns
+    #     INTERFACE
+    #         CMSIS_5_RTX_V8MMN
+    # )
 endif()
 
 if(BL2)
@@ -115,13 +115,13 @@ target_sources(tfm_s
 
 #========================= Platform Non-Secure ================================#
 
-target_include_directories(platform_ns
+target_include_directories(ns_app
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/Device/Include
         ${CMAKE_CURRENT_SOURCE_DIR}/hal/Inc
 )
 
-target_sources(platform_ns
+target_sources(ns_app
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
         ${CMAKE_CURRENT_SOURCE_DIR}/Device/Source/Templates/system_stm32l5xx.c
