@@ -26,6 +26,7 @@ MEMORY
 {
   FLASH (rx)  : ORIGIN = NS_CODE_START, LENGTH = NS_CODE_SIZE
   RAM   (rwx) : ORIGIN = NS_DATA_START, LENGTH = NS_DATA_SIZE
+  PRIV_SRAM (rwx) : ORIGIN = NS_DATA_START+NS_DATA_SIZE, LENGTH = NS_DATA_SIZE
 }
 
 __heap_size__  = NS_HEAP_SIZE;
@@ -70,6 +71,32 @@ SECTIONS
         KEEP(*(.eh_frame*))
     } > FLASH
 
+.privileged_functions :
+  {
+    __privileged_functions_start__ = .;
+    *(.privileged_functions)
+    __privileged_functions_end__ = .; 
+  } >FLASH
+    .syscalls_flash :
+  {
+    __syscalls_flash_start__ = .;
+    *(.syscalls_flash)
+    __syscalls_flash_end__ = .;
+  } >FLASH
+
+    .unprivileged_flash :
+  {
+    __unprivileged_flash_start__ = .;
+    *(.unprivileged_flash)
+    __unprivileged_flash_end__ = .;
+  } >FLASH
+
+    .privileged_sram :
+  {
+    __privileged_sram_start__ = .;
+    *(.privileged_sram)
+    __privileged_sram_end__ = .;
+  } >PRIV_SRAM
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)

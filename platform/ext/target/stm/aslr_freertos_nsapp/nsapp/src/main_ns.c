@@ -5,20 +5,7 @@
 #include "stm32l5xx_hal_rcc.h"
 #include "task.h"
 #include <stdint.h>
-uint32_t __privileged_sram_start__ = 0x38000000;
-uint32_t __privileged_sram_end__ = 0x3801FFFF;
-uint32_t __unprivileged_sram_start__ = 0x38020000;
-uint32_t __unprivileged_sram_end__ = 0x3803FFFF;
-uint32_t __privileged_flash_start__ = 0x08000000;
-uint32_t __privileged_flash_end__ = 0x0803FFFF;
-uint32_t __unprivileged_flash_start__ = 0x08040000;
-uint32_t __unprivileged_flash_end__ = 0x0807FFFF;
-uint32_t __syscalls_flash_start__ = 0x08080000;
-uint32_t __syscalls_flash_end__ = 0x0808FFFF;
-uint32_t __privileged_functions_start__ = 0x08080000;
-uint32_t __privileged_functions_end__ = 0x0808FFFF;
-uint32_t __unprivileged_functions_start__ = 0x08090000;
-uint32_t __unprivileged_functions_end__ = 0x0809FFFF;
+
 static void MX_GPIO_Init(void) {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -35,16 +22,40 @@ static void MX_GPIO_Init(void) {
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
-void testThread() {
+void testThread(void *pvParameters)
+    __attribute__((section(".privileged_functions")));
+void testThread(void *pvParameters) {
   while (1) {
     HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
     vTaskDelay(500);
   }
 }
+StackType_t xStack[128] __attribute__((section(".privileged_sram")));
 int main() {
   HAL_Init();
   MX_GPIO_Init();
 
-  xTaskCreate(testThread, "testThread", 128, NULL, 1, NULL);
+  /* 定义一个特权级任务的参数 */
+  TaskParameters_t xPrivilegedTaskParameters = {
+      .pvTaskCode = testThread,
+      .pcName = "PrivTask",
+      .usStackDepth = 128, /* 栈大小，可能需要根据您的需求进行调整 */
+      .pvParameters = NULL,
+      .uxPriority = 1,
+      /* 设置特权级任务的内存区域和权限 */
+      .xRegions = {
+          /* 针对您的硬件架构，这些值可能会有所不同 */
+          /* 例子: */
+          /* {起始地址, 长度, 权限属性}, */
+      }};
+  xPrivilegedTaskParameters.puxStackBuffer = xStack;
+  /* 创建特权级任务 */
+  xTaskCreateRestricted(&xPrivilegedTaskParameters, NULL);
+
+  /* 启动调度器 */
   vTaskStartScheduler();
+
+  /* 如果系统正常工作，以下代码不会执行 */
+  for (;;)
+    ;
 }
