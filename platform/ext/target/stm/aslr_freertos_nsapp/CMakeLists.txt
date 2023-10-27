@@ -10,7 +10,6 @@ cmake_policy(SET CMP0076 NEW)
 
 set(STM32L563E_DK_DIR ${CMAKE_CURRENT_LIST_DIR})
 set(STM_COMMON_DIR ${STM32L563E_DK_DIR}/../common)
-set(FREERTOS_DIR ${STM32L563E_DK_DIR}/FreeRTOS)
 set(COMMON_DIR ${STM32L563E_DK_DIR}/../../../common)
 set(TOP_DIR ${STM32L563E_DK_DIR}/../../../../..)
 set(ASLR_DIR ${STM32L563E_DK_DIR}/aslr)
@@ -54,7 +53,6 @@ target_link_libraries(ns_app
     PUBLIC
         platform_common_interface
         platform_region_defs
-        freertos
 )
 target_sources(ns_app
     PRIVATE
@@ -63,34 +61,11 @@ target_sources(ns_app
 )
 
 #FreeRTOS
-add_library(freertos STATIC)
-target_include_directories(freertos
+add_subdirectory(FreeRTOS-Kernel)
+target_link_libraries(ns_app
     PUBLIC
-        ${FREERTOS_DIR}/include
-        ${FREERTOS_DIR}/port/GCC
+        freertos_kernel
 )
-target_sources(freertos
-    PRIVATE
-        ${FREERTOS_DIR}/src/croutine.c
-        ${FREERTOS_DIR}/src/event_groups.c
-        ${FREERTOS_DIR}/src/list.c
-        ${FREERTOS_DIR}/src/queue.c
-        ${FREERTOS_DIR}/src/stream_buffer.c
-        ${FREERTOS_DIR}/src/tasks.c
-        ${FREERTOS_DIR}/src/timers.c
-        ${FREERTOS_DIR}/port/MemMang/heap_4.c
-        ${FREERTOS_DIR}/port/GCC/port.c
-        ${FREERTOS_DIR}/port/GCC/portasm.c
-)
-
-
-
-
-
-
-
-
-
 
 if(BL2)
     target_sources(bl2
@@ -108,12 +83,12 @@ if(BL2)
     )
 endif()
 
+#copytext
 target_include_directories(platform_s
     PUBLIC
     ${STM32L563E_DK_DIR}/ota
     ${STM32L563E_DK_DIR}/copytext
 )
-
 target_sources(platform_s
     PRIVATE
     ${STM32L563E_DK_DIR}/ota/flash.c

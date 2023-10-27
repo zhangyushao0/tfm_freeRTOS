@@ -114,7 +114,7 @@ int main(void) {
   }
 #endif
 
-  copytext();
+  // copytext();
   /* Move to handler mode for further SPM initialization. */
   tfm_core_handler_mode();
 
