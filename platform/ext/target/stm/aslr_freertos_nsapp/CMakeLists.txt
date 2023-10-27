@@ -110,14 +110,17 @@ endif()
 
 target_include_directories(platform_s
     PUBLIC
-    ${COMMON_DIR}
-    ${TOP_DIR}/secure_fw/spm
-    ${STM_COMMON_DIR}
-    ${ASLR_DIR}/include
+    ${STM32L563E_DK_DIR}/ota
+    ${STM32L563E_DK_DIR}/copytext
 )
 
 target_sources(platform_s
     PRIVATE
+    ${STM32L563E_DK_DIR}/ota/flash.c
+    ${STM32L563E_DK_DIR}/ota/port.c
+    ${STM32L563E_DK_DIR}/ota/rand.c
+    ${STM32L563E_DK_DIR}/ota/loader.c
+    ${STM32L563E_DK_DIR}/copytext/copytext.c
 )
 
 
