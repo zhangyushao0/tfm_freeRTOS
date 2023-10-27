@@ -44,8 +44,7 @@ void testThread() {
 int main() {
   HAL_Init();
   MX_GPIO_Init();
-  TaskHandle_t *pxCreatedTask;
 
-  xTaskCreateRestricted(testThread, pxCreatedTask);
+  xTaskCreate(testThread, "testThread", 128, NULL, 1, NULL);
   vTaskStartScheduler();
 }
