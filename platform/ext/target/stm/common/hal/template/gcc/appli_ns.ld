@@ -26,7 +26,6 @@ MEMORY
 {
   FLASH (rx)  : ORIGIN = NS_CODE_START, LENGTH = NS_CODE_SIZE
   RAM   (rwx) : ORIGIN = NS_DATA_START, LENGTH = NS_DATA_SIZE
-  PRIV_SRAM (rwx) : ORIGIN = NS_DATA_START+NS_DATA_SIZE, LENGTH = NS_DATA_SIZE
 }
 
 __heap_size__  = NS_HEAP_SIZE;
@@ -46,6 +45,8 @@ SECTIONS
         __Vectors_Size = __Vectors_End - __Vectors;
         __end__ = .;
 
+        . = ALIGN(32);
+        __unprivileged_flash_start__ = .;
         *(.text*)
 
         KEEP(*(.init))
@@ -67,9 +68,32 @@ SECTIONS
          *(.dtors)
 
         *(.rodata*)
-
+        __unprivileged_flash_end__ = . - 1;
         KEEP(*(.eh_frame*))
     } > FLASH
+
+    /* Privileged functions - Section needs to be 32 byte aligned to satisfy MPU requirements. */
+    .privileged_functions : ALIGN(32)
+    {
+        . = ALIGN(32);
+        __privileged_functions_start__ = .;
+        *(privileged_functions)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __privileged_functions_end__ = . - 1;
+    } > FLASH
+
+       /* FreeRTOS System calls - Section needs to be 32 byte aligned to satisfy MPU requirements. */
+    .freertos_system_calls : ALIGN(32)
+    {
+        . = ALIGN(32);
+        __syscalls_flash_start__ = .;
+        *(freertos_system_calls)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __syscalls_flash_end__ = . - 1;
+    } > FLASH
+
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
@@ -124,6 +148,18 @@ SECTIONS
     .data (NS_DATA_START+NS_NO_INIT_DATA_SIZE) : AT (__etext)
     {
         __data_start__ = .;
+
+
+
+        /* Privileged data - It needs to be 32 byte aligned to satisfy MPU requirements. */
+        . = ALIGN(32);
+        __privileged_sram_start__ = .;
+        *(privileged_data)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __privileged_sram_end__ = . - 1;
+
+
         *(vtable)
         *(.data*)
 

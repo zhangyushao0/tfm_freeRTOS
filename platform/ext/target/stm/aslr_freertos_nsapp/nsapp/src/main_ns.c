@@ -22,20 +22,39 @@ static void MX_GPIO_Init(void) {
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
-void testThread(void *pvParameters)
-    __attribute__((section(".privileged_functions")));
+
 void testThread(void *pvParameters) {
   while (1) {
     HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-    vTaskDelay(500);
+    //     uint32_t odr;
+    // odr = GPIOD->ODR;
+
+    // /* Set selected pins that were at low level, and reset ones that were
+    // high
+    //  */
+    // GPIOD->BSRR = ((odr & (uint16_t)GPIOD) << 16U) | (~odr &
+    // (uint16_t)GPIOD);
+
+    MPU_vTaskDelayImpl(500);
   }
 }
+char cArray[128] __attribute__((aligned(128)));
 int main() {
   HAL_Init();
   MX_GPIO_Init();
 
-  /* 创建特权级任务 */
-  // xTaskCreateRestricted(testThread, "testThread", 1024, NULL, 1, NULL, NULL);
+  TaskParameters_t taskParams = {
+      .pvTaskCode = testThread,
+      .pcName = "testThread",
+      .usStackDepth = 128,
+      .pvParameters = NULL,
+      .uxPriority = 1 | portPRIVILEGE_BIT,
+      .puxStackBuffer = cArray,
+      .xRegions = {/* Base address Length Parameters */
+                   {0, 0, 0},
+                   {0, 0, 0},
+                   {0, 0, 0}}};
+  xTaskCreateRestricted(&taskParams, NULL);
 
   /* 启动调度器 */
   vTaskStartScheduler();

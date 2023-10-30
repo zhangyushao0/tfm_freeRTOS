@@ -708,7 +708,9 @@ if( FREERTOS_PORT MATCHES "GCC_ARM_CM(3|4)_MPU" OR
     FREERTOS_PORT MATCHES "IAR_ARM_CM(23|33|55|85)_NTZ_NONSECURE" OR
     FREERTOS_PORT MATCHES "IAR_ARM_CM(23|33|55|85)_NONSECURE"
 )
-    target_sources(freertos_kernel PRIVATE Common/mpu_wrappers.c)
+    target_sources(freertos_kernel PRIVATE 
+    Common/mpu_wrappers_v2.c
+    Common/mpu_wrappers.c)
 endif()
 
 target_include_directories(freertos_kernel_port PUBLIC

@@ -59,9 +59,13 @@ extern uint32_t SystemCoreClock;
 #define configRUN_FREERTOS_SECURE_ONLY 0
 #define configENABLE_FPU 0
 #define configENABLE_MPU 1
-#define configSYSTEM_CALL_STACK_SIZE 512
-#define portUSING_MPU_WRAPPERS 1
-#define configUSE_MPU_WRAPPERS_V1 1
+#define configUSE_MPU_WRAPPERS_V1 (0)
+/* See https://freertos.org/a00110.html#configPROTECTED_KERNEL_OBJECT_POOL_SIZE
+ * for details. */
+#define configPROTECTED_KERNEL_OBJECT_POOL_SIZE (512)
+/* See https://freertos.org/a00110.html#configSYSTEM_CALL_STACK_SIZE for
+ * details. */
+#define configSYSTEM_CALL_STACK_SIZE (128)
 
 #define configUSE_PREEMPTION 1
 #define configUSE_TIME_SLICING 1
