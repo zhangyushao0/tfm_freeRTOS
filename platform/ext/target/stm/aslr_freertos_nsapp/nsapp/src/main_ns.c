@@ -22,34 +22,29 @@ static void MX_GPIO_Init(void) {
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
-
+int sum(int a, int b) { return a + b; }
 void testThread(void *pvParameters) {
   while (1) {
-    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-    //     uint32_t odr;
-    // odr = GPIOD->ODR;
-
-    // /* Set selected pins that were at low level, and reset ones that were
-    // high
-    //  */
-    // GPIOD->BSRR = ((odr & (uint16_t)GPIOD) << 16U) | (~odr &
-    // (uint16_t)GPIOD);
-
-    MPU_vTaskDelayImpl(500);
+    // HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+    int a = 2;
+    int b = 3;
+    int c = sum(a, b);
+    vTaskDelay(500);
   }
 }
 char cArray[128] __attribute__((aligned(128)));
 int main() {
   HAL_Init();
   MX_GPIO_Init();
-
+  static StackType_t xRWAccessTaskStack[configMINIMAL_STACK_SIZE]
+      __attribute__((aligned(32)));
   TaskParameters_t taskParams = {
       .pvTaskCode = testThread,
       .pcName = "testThread",
-      .usStackDepth = 128,
+      .usStackDepth = configMINIMAL_STACK_SIZE,
       .pvParameters = NULL,
-      .uxPriority = 1 | portPRIVILEGE_BIT,
-      .puxStackBuffer = cArray,
+      .uxPriority = 1,
+      .puxStackBuffer = xRWAccessTaskStack,
       .xRegions = {/* Base address Length Parameters */
                    {0, 0, 0},
                    {0, 0, 0},

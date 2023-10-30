@@ -120,7 +120,8 @@ add_library(freertos_kernel_port STATIC
 
     $<$<STREQUAL:${FREERTOS_PORT},GCC_ARM_CM33_NTZ_NONSECURE>:
         GCC/ARM_CM33_NTZ/non_secure/port.c
-        GCC/ARM_CM33_NTZ/non_secure/portasm.c>
+        GCC/ARM_CM33_NTZ/non_secure/portasm.c
+        GCC/ARM_CM33_NTZ/non_secure/mpu_wrappers_v2_asm.c>
 
     $<$<STREQUAL:${FREERTOS_PORT},GCC_ARM_CM33_TFM>:
         GCC/ARM_CM33_NTZ/non_secure/port.c
@@ -709,8 +710,7 @@ if( FREERTOS_PORT MATCHES "GCC_ARM_CM(3|4)_MPU" OR
     FREERTOS_PORT MATCHES "IAR_ARM_CM(23|33|55|85)_NONSECURE"
 )
     target_sources(freertos_kernel PRIVATE 
-    Common/mpu_wrappers_v2.c
-    Common/mpu_wrappers.c)
+    Common/mpu_wrappers_v2.c)
 endif()
 
 target_include_directories(freertos_kernel_port PUBLIC

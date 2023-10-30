@@ -38,16 +38,12 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
-    .text :
+    .text : ALIGN(32)
     {
         KEEP(*(.vectors))
         __Vectors_End = .;
         __Vectors_Size = __Vectors_End - __Vectors;
         __end__ = .;
-
-        . = ALIGN(32);
-        __unprivileged_flash_start__ = .;
-        *(.text*)
 
         KEEP(*(.init))
         KEEP(*(.fini))
@@ -67,8 +63,6 @@ SECTIONS
          *(SORT(.dtors.*))
          *(.dtors)
 
-        *(.rodata*)
-        __unprivileged_flash_end__ = . - 1;
         KEEP(*(.eh_frame*))
     } > FLASH
 
@@ -94,6 +88,17 @@ SECTIONS
         __syscalls_flash_end__ = . - 1;
     } > FLASH
 
+    .text : ALIGN(32)
+    {
+        . = ALIGN(32);
+        __unprivileged_flash_start__ = .;
+        *(.text*)
+        *(.rodata .rodata.* .constdata .constdata.*)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __unprivileged_flash_end__ = . - 1;
+    } > FLASH
+    
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
