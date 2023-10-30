@@ -30,27 +30,12 @@ void testThread(void *pvParameters) {
     vTaskDelay(500);
   }
 }
-StackType_t xStack[128] __attribute__((section(".privileged_sram")));
 int main() {
   HAL_Init();
   MX_GPIO_Init();
 
-  /* 定义一个特权级任务的参数 */
-  TaskParameters_t xPrivilegedTaskParameters = {
-      .pvTaskCode = testThread,
-      .pcName = "PrivTask",
-      .usStackDepth = 128, /* 栈大小，可能需要根据您的需求进行调整 */
-      .pvParameters = NULL,
-      .uxPriority = 1,
-      /* 设置特权级任务的内存区域和权限 */
-      .xRegions = {
-          /* 针对您的硬件架构，这些值可能会有所不同 */
-          /* 例子: */
-          /* {起始地址, 长度, 权限属性}, */
-      }};
-  xPrivilegedTaskParameters.puxStackBuffer = xStack;
   /* 创建特权级任务 */
-  xTaskCreateRestricted(&xPrivilegedTaskParameters, NULL);
+  // xTaskCreateRestricted(testThread, "testThread", 1024, NULL, 1, NULL, NULL);
 
   /* 启动调度器 */
   vTaskStartScheduler();

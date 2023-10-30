@@ -61,7 +61,7 @@ target_sources(ns_app
 )
 
 #FreeRTOS
-add_subdirectory(FreeRTOS-Kernel)
+add_subdirectory(FreeRTOS)
 target_link_libraries(ns_app
     PUBLIC
         freertos_kernel

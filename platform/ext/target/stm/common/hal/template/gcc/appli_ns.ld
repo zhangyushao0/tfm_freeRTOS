@@ -70,33 +70,6 @@ SECTIONS
 
         KEEP(*(.eh_frame*))
     } > FLASH
-
-.privileged_functions :
-  {
-    __privileged_functions_start__ = .;
-    *(.privileged_functions)
-    __privileged_functions_end__ = .; 
-  } >FLASH
-    .syscalls_flash :
-  {
-    __syscalls_flash_start__ = .;
-    *(.syscalls_flash)
-    __syscalls_flash_end__ = .;
-  } >FLASH
-
-    .unprivileged_flash :
-  {
-    __unprivileged_flash_start__ = .;
-    *(.unprivileged_flash)
-    __unprivileged_flash_end__ = .;
-  } >FLASH
-
-    .privileged_sram :
-  {
-    __privileged_sram_start__ = .;
-    *(.privileged_sram)
-    __privileged_sram_end__ = .;
-  } >PRIV_SRAM
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
