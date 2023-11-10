@@ -16,6 +16,11 @@ set(ASLR_DIR ${STM32L563E_DK_DIR}/aslr)
 set(NS_APP_DIR ${STM32L563E_DK_DIR}/nsapp)
 #NSAPP
 add_executable(ns_app)
+target_compile_options(ns_app
+    PUBLIC
+        -mlong-calls
+        -fno-jump-tables
+)
 #def for stm32l5xx
 include(${STM_COMMON_DIR}/stm32l5xx/CMakeLists.txt)
 
@@ -26,11 +31,7 @@ target_sources(tfm_s
         ${STM_COMMON_DIR}/stm32l5xx/Device/Source/startup_stm32l5xx_s.c
 )
 
-target_compile_options(ns_app
-    PUBLIC
-        -mlong-calls
-        -fno-jump-tables
-)
+
 set_target_properties(ns_app PROPERTIES
     SUFFIX ".axf"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"

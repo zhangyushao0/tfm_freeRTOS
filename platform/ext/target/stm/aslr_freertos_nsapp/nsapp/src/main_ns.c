@@ -25,7 +25,7 @@ static void MX_GPIO_Init(void) {
 int sum(int a, int b) { return a + b; }
 void testThread(void *pvParameters) {
   while (1) {
-    // HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
     int a = 2;
     int b = 3;
     int c = sum(a, b);
@@ -45,10 +45,11 @@ int main() {
       .pvParameters = NULL,
       .uxPriority = 1,
       .puxStackBuffer = xRWAccessTaskStack,
-      .xRegions = {/* Base address Length Parameters */
-                   {0, 0, 0},
-                   {0, 0, 0},
-                   {0, 0, 0}}};
+      .xRegions = {
+          /* Base address Length Parameters */
+          {(void *)(AHB2PERIPH_BASE_NS), 0x2000UL, portMPU_REGION_READ_WRITE},
+          {0, 0, 0},
+          {0, 0, 0}}};
   xTaskCreateRestricted(&taskParams, NULL);
 
   /* 启动调度器 */

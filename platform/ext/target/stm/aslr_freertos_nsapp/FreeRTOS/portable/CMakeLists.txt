@@ -6,8 +6,18 @@ if (FREERTOS_PORT STREQUAL "A_CUSTOM_PORT")
 endif()
 
 # FreeRTOS internal cmake file. Do not use it in user top-level project
-
-add_library(freertos_kernel_port STATIC
+add_library(freertos_kernel_port STATIC)
+target_compile_options(freertos_kernel_port PUBLIC
+    -mlong-calls
+    -fno-jump-tables
+    -fno-optimize-sibling-calls
+    -fno-tree-vectorize
+    -O0
+    -fno-inline
+    -fno-lto
+)
+target_link_options(freertos_kernel_port PUBLIC -fno-lto)
+target_sources(freertos_kernel_port PRIVATE
     # TEMPLATE Port
     $<$<STREQUAL:${FREERTOS_PORT},TEMPLATE>:
         template/port.c>
@@ -709,8 +719,7 @@ if( FREERTOS_PORT MATCHES "GCC_ARM_CM(3|4)_MPU" OR
     FREERTOS_PORT MATCHES "IAR_ARM_CM(23|33|55|85)_NTZ_NONSECURE" OR
     FREERTOS_PORT MATCHES "IAR_ARM_CM(23|33|55|85)_NONSECURE"
 )
-    target_sources(freertos_kernel PRIVATE 
-    Common/mpu_wrappers_v2.c)
+
 endif()
 
 target_include_directories(freertos_kernel_port PUBLIC
