@@ -1,26 +1,24 @@
-#include "stdint.h"
 #include "port.h"
+#include "stdint.h"
 #include <stdlib.h>
 #ifndef LOADER_H
 #define LOADER_H
 
-#if defined ( __ICCARM__ )
-#  define CMSE_NS_CALL  __cmse_nonsecure_call
-#  define CMSE_NS_ENTRY __cmse_nonsecure_entry
+#if defined(__ICCARM__)
+#define CMSE_NS_CALL __cmse_nonsecure_call
+#define CMSE_NS_ENTRY __cmse_nonsecure_entry
 #else
-#  define CMSE_NS_CALL  __attribute((cmse_nonsecure_call))
-#  define CMSE_NS_ENTRY __attribute((cmse_nonsecure_entry))
+#define CMSE_NS_CALL __attribute((cmse_nonsecure_call))
+#define CMSE_NS_ENTRY __attribute((cmse_nonsecure_entry))
 #endif
 
-#if defined ( __ICCARM__ )
-typedef void (CMSE_NS_CALL *funcptr)(void);
+#if defined(__ICCARM__)
+typedef void(CMSE_NS_CALL *funcptr)(void);
 #else
 typedef void CMSE_NS_CALL (*funcptr)(void);
 #endif
 
 typedef funcptr funcptr_NS;
-
-
 
 #define REL_END 0x00000001
 #define SUCCESS 0
@@ -35,11 +33,15 @@ typedef funcptr funcptr_NS;
 #define NON_SECURE_DATA_ADDRESS 0x20018000
 
 uint32_t getVersion();
-void load_init(uint32_t newVersion, uint32_t vectorAddress, uint32_t vectorSize, uint32_t imageSize, uint32_t relAddress, uint32_t relSize, uint32_t dataPhysAddress);
+void load_init(uint32_t newVersion, uint32_t vectorAddress, uint32_t vectorSize,
+               uint32_t imageSize, uint32_t relAddress, uint32_t relSize,
+               uint32_t dataPhysAddress);
 void generating_rel_array();
 int loading_image();
-int image_relocating(uint32_t vector_relocate_base, uint32_t image_relocate_base);
-int relocating_words(uint32_t start, uint32_t end, uint32_t page, uint32_t page_relocate_base, uint32_t relocate_base);
+int image_relocating(uint32_t vector_relocate_base,
+                     uint32_t image_relocate_base);
+int relocating_words(uint32_t start, uint32_t end, uint32_t page,
+                     uint32_t page_relocate_base, uint32_t relocate_base);
 void NonSecure_Init(void);
 
 #endif

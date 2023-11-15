@@ -5,7 +5,7 @@
 #include "stm32l5xx_hal_rcc.h"
 #include "task.h"
 #include <stdint.h>
-
+#include <stdio.h>
 static void MX_GPIO_Init(void) {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -22,6 +22,17 @@ static void MX_GPIO_Init(void) {
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
+void *ret_addr1;
+void *ret_addr2;
+void getAddr() {
+  ret_addr2 = __builtin_return_address(1);
+  printf("0x%x\n", ret_addr2);
+}
+int foo(int a, int b) {
+  ret_addr1 = __builtin_return_address(0);
+  getAddr();
+  return a + b;
+}
 int sum(int a, int b) { return a + b; }
 void testThread(void *pvParameters) {
   while (1) {
@@ -36,6 +47,7 @@ char cArray[128] __attribute__((aligned(128)));
 int main() {
   HAL_Init();
   MX_GPIO_Init();
+  foo(1, 2);
   static StackType_t xRWAccessTaskStack[configMINIMAL_STACK_SIZE]
       __attribute__((aligned(32)));
   TaskParameters_t taskParams = {

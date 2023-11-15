@@ -7,22 +7,24 @@
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-find_program(CMAKE_C_COMPILER ${CROSS_COMPILE}-gcc)
-find_program(CMAKE_CXX_COMPILER ${CROSS_COMPILE}-g++)
+set(CMAKE_C_COMPILER "clang")
+set(CMAKE_CXX_COMPILER "clang++")
+set(TARGET_TRIPLE arm-none-eabi)
 
-if(CMAKE_C_COMPILER STREQUAL "CMAKE_C_COMPILER-NOTFOUND")
-    message(FATAL_ERROR "Could not find compiler: '${CROSS_COMPILE}-gcc'")
-endif()
-
-if(CMAKE_CXX_COMPILER STREQUAL "CMAKE_CXX_COMPILER-NOTFOUND")
-    message(FATAL_ERROR "Could not find compiler: '${CROSS_COMPILE}-g++'")
-endif()
+set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})
+set(CMAKE_CXX_COMPILER_TARGET ${TARGET_TRIPLE})
 
 set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
 
+
 set(LINKER_VENEER_OUTPUT_FLAG -Wl,--cmse-implib,--out-implib=)
 set(COMPILER_CMSE_FLAG -mcmse)
+set(CMAKE_LINKER  "/usr/bin/arm-none-eabi-ld")
 
+LINK_DIRECTORIES("/usr/lib/arm-none-eabi/lib/thumb/v8-m.main/nofp")
+LINK_DIRECTORIES("/usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main/nofp")
+
+set(CMAKE_OBJCOPY "arm-none-eabi-objcopy")
 # This variable name is a bit of a misnomer. The file it is set to is included
 # at a particular step in the compiler initialisation. It is used here to
 # configure the extensions for object files. Despite the name, it also works
@@ -68,7 +70,7 @@ macro(tfm_toolchain_reset_linker_flags)
     set_property(DIRECTORY PROPERTY LINK_OPTIONS "")
 
     add_link_options(
-        --entry=Reset_Handler
+        # --entry=Reset_Handler
         -specs=nano.specs
         LINKER:-check-sections
         LINKER:-fatal-warnings
@@ -96,7 +98,6 @@ macro(tfm_toolchain_set_processor_arch)
             # 'cortex-m7', 'cortex-m33', 'cortex-m35p' and 'cortex-m55'.
             # Build fails if other M-profile cpu, such as 'cortex-m23', is added with '+nofp'.
             # Explicitly list those cpu to align with GCC description.
-            if(GCC_VERSION VERSION_GREATER_EQUAL "8.0.0")
                 if(NOT CONFIG_TFM_ENABLE_FP AND
                    (TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m4"
                     OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m7"
@@ -105,7 +106,6 @@ macro(tfm_toolchain_set_processor_arch)
                     OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m55"))
                         string(APPEND CMAKE_SYSTEM_PROCESSOR "+nofp")
                 endif()
-            endif()
 
             if(TFM_SYSTEM_ARCHITECTURE STREQUAL "armv8.1-m.main")
                 if(NOT CONFIG_TFM_ENABLE_MVE)
@@ -135,45 +135,41 @@ macro(tfm_toolchain_set_processor_arch)
 
     if (DEFINED TFM_SYSTEM_DSP)
         # +nodsp modifier is only supported from GCC version 8.
-        if(GCC_VERSION VERSION_GREATER_EQUAL "8.0.0")
             # armv8.1-m.main arch does not have +nodsp option
             if ((NOT TFM_SYSTEM_ARCHITECTURE STREQUAL "armv8.1-m.main") AND
                 NOT TFM_SYSTEM_DSP)
                 string(APPEND CMAKE_SYSTEM_ARCH "+nodsp")
             endif()
-        endif()
     endif()
 
-    if(GCC_VERSION VERSION_GREATER_EQUAL "8.0.0")
         if(CONFIG_TFM_ENABLE_FP)
             string(APPEND CMAKE_SYSTEM_ARCH "+fp")
-        endif()
     endif()
 
 endmacro()
 
 macro(tfm_toolchain_reload_compiler)
     # CMAKE_C_COMPILER_VERSION is not guaranteed to be defined.
-    EXECUTE_PROCESS( COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION )
+    # EXECUTE_PROCESS( COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION )
 
     tfm_toolchain_set_processor_arch()
     tfm_toolchain_reset_compiler_flags()
     tfm_toolchain_reset_linker_flags()
 
-    if (GCC_VERSION VERSION_LESS 7.3.1)
-        message(FATAL_ERROR "Please use newer GNU Arm compiler version starting from 7.3.1.")
-    endif()
+    # if (GCC_VERSION VERSION_LESS 7.3.1)
+    #     message(FATAL_ERROR "Please use newer GNU Arm compiler version starting from 7.3.1.")
+    # endif()
 
-    if (GCC_VERSION VERSION_EQUAL 10.2.1)
-        message(FATAL_ERROR "GNU Arm compiler version 10-2020-q4-major has an issue in CMSE support."
-                            " Select other GNU Arm compiler versions instead."
-                            " See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99157 for the issue detail.")
-    endif()
+    # if (GCC_VERSION VERSION_EQUAL 10.2.1)
+    #     message(FATAL_ERROR "GNU Arm compiler version 10-2020-q4-major has an issue in CMSE support."
+    #                         " Select other GNU Arm compiler versions instead."
+    #                         " See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99157 for the issue detail.")
+    # endif()
 
-    if (GCC_VERSION VERSION_GREATER_EQUAL 11.3.1)
-        message(FATAL_ERROR "GNU Arm compiler version greater and equal than *11.3.Rel1* has a linker issue in syscall."
-                            " Select other GNU Arm compiler versions instead.")
-    endif()
+    # if (GCC_VERSION VERSION_GREATER_EQUAL 11.3.1)
+    #     message(FATAL_ERROR "GNU Arm compiler version greater and equal than *11.3.Rel1* has a linker issue in syscall."
+    #                         " Select other GNU Arm compiler versions instead.")
+    # endif()
 
     unset(CMAKE_C_FLAGS_INIT)
     unset(CMAKE_CXX_FLAGS_INIT)
@@ -192,11 +188,14 @@ macro(tfm_toolchain_reload_compiler)
         set(CMAKE_C_LINK_FLAGS "-march=${CMAKE_SYSTEM_ARCH}")
         set(CMAKE_ASM_LINK_FLAGS "-march=${CMAKE_SYSTEM_ARCH}")
     endif()
-
     set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS_INIT})
     set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS_INIT})
     set(CMAKE_ASM_FLAGS ${CMAKE_ASM_FLAGS_INIT})
-
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I/usr/lib/arm-none-eabi/include")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/lib/arm-none-eabi/include")
+    # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
+    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
     set(BL2_COMPILER_CP_FLAG -mfloat-abi=soft)
 
     if (CONFIG_TFM_FLOAT_ABI STREQUAL "hard")

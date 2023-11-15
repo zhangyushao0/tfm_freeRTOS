@@ -303,7 +303,7 @@ target_sources(freertos_kernel PRIVATE
     timers.c
 )
 target_sources(freertos_kernel PRIVATE 
-    portable/Common/mpu_wrappers_v2.c)
+    portable/Common/mpu_wrappers.c)
 if (DEFINED FREERTOS_HEAP )
     # User specified a heap implementation add heap implementation to freertos_kernel.
     target_sources(freertos_kernel PRIVATE

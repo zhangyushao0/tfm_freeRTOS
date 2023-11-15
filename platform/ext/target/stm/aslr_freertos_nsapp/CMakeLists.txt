@@ -16,6 +16,7 @@ set(ASLR_DIR ${STM32L563E_DK_DIR}/aslr)
 set(NS_APP_DIR ${STM32L563E_DK_DIR}/nsapp)
 #NSAPP
 add_executable(ns_app)
+
 target_compile_options(ns_app
     PUBLIC
         -mlong-calls
