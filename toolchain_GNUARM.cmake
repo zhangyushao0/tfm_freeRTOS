@@ -7,8 +7,9 @@
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER "clang")
-set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_C_COMPILER "clang-17")
+set(CMAKE_CXX_COMPILER "clang++-17")
+set(CMAKE_ASM_COMPILER "clang-17")
 set(TARGET_TRIPLE arm-none-eabi)
 
 set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})
@@ -192,6 +193,7 @@ macro(tfm_toolchain_reload_compiler)
     set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS_INIT})
     set(CMAKE_ASM_FLAGS ${CMAKE_ASM_FLAGS_INIT})
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I/usr/lib/arm-none-eabi/include")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdlib")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/lib/arm-none-eabi/include")
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")

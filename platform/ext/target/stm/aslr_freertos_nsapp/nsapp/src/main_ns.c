@@ -29,9 +29,9 @@ void getAddr() {
   printf("0x%x\n", ret_addr2);
 }
 int foo(int a, int b) {
-  ret_addr1 = __builtin_return_address(0);
+  int c = a + b;
   getAddr();
-  return a + b;
+  return c;
 }
 int sum(int a, int b) { return a + b; }
 void testThread(void *pvParameters) {

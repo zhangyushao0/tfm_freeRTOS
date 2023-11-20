@@ -1,5 +1,5 @@
 #include "flash.h"
-
+extern void *memcpy(void *dest, const void *src, size_t n);
 HAL_StatusTypeDef Flash_Write_Byte(uint32_t Address, uint8_t Data) {
   HAL_FLASH_Unlock();
 

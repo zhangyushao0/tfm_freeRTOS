@@ -123,8 +123,8 @@ __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
 #define __COMPILER_BARRIER() __ASM volatile("" ::: "memory")
 #endif
 
-  /* #########################  Startup and Lowlevel Init
-   * ######################## */
+/* #########################  Startup and Lowlevel Init
+ * ######################## */
 
 #ifndef __PROGRAM_START
 
@@ -137,7 +137,7 @@ __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
  */
 __STATIC_FORCEINLINE __NO_RETURN void __cmsis_start(void) {
   extern void _start(void) __NO_RETURN;
-
+  extern int main(void) __NO_RETURN;
   typedef struct {
     uint32_t const *src;
     uint32_t *dest;
