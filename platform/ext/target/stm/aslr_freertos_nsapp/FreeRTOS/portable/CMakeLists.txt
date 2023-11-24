@@ -130,8 +130,8 @@ target_sources(freertos_kernel_port PRIVATE
 
     $<$<STREQUAL:${FREERTOS_PORT},GCC_ARM_CM33_NTZ_NONSECURE>:
         GCC/ARM_CM33_NTZ/non_secure/port.c
-        GCC/ARM_CM33_NTZ/non_secure/portasm.c
-        GCC/ARM_CM33_NTZ/non_secure/mpu_wrappers_v2_asm.c>
+        GCC/ARM_CM33_NTZ/non_secure/portasm.c>
+        # GCC/ARM_CM33_NTZ/non_secure/mpu_wrappers_v2_asm.c>
 
     $<$<STREQUAL:${FREERTOS_PORT},GCC_ARM_CM33_TFM>:
         GCC/ARM_CM33_NTZ/non_secure/port.c

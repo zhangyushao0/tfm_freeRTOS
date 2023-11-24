@@ -31,6 +31,7 @@
 
 /* Standard includes. */
 #include <stdlib.h>
+#include "aslr_types.h"
 
 /**
  * @brief Allocates memory from heap.
@@ -40,13 +41,13 @@
  * @return Pointer to the memory region if the allocation is successful, NULL
  * otherwise.
  */
-void *pvPortMalloc_aslr(size_t xWantedSize);
+void* pvPortMalloc_aslr(size_t xWantedSize, int type);
 
 /**
  * @brief Frees the previously allocated memory.
  *
  * @param[in] pv Pointer to the memory to be freed.
  */
-void vPortFree_aslr(void *pv);
+void vPortFree_aslr(void* pv, int type);
 
 #endif /* __SECURE_HEAP_H__ */

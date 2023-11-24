@@ -90,6 +90,7 @@ target_include_directories(platform_s
     PUBLIC
     ${STM32L563E_DK_DIR}/ota
     ${STM32L563E_DK_DIR}/copytext
+    ${ASLR_DIR}/include
 )
 target_sources(platform_s
     PRIVATE
@@ -98,6 +99,14 @@ target_sources(platform_s
     ${STM32L563E_DK_DIR}/ota/rand.c
     ${STM32L563E_DK_DIR}/ota/loader.c
     ${STM32L563E_DK_DIR}/copytext/copytext.c
+    ${ASLR_DIR}/src/aslr_heap.c
+    ${ASLR_DIR}/src/aslr_queue.c
+    ${ASLR_DIR}/src/aslr_stack.c
+    ${ASLR_DIR}/src/aslr.c
+    ${ASLR_DIR}/src/aslr_funcs.c
+    ${ASLR_DIR}/src/ins_tool.c
+    ${ASLR_DIR}/src/aslr_mpu.c
+    ${ASLR_DIR}/src/rand.c
 )
 
 

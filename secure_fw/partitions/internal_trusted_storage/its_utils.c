@@ -7,10 +7,8 @@
 
 #include "its_utils.h"
 
-psa_status_t its_utils_check_contained_in(size_t superset_size,
-                                          size_t subset_offset,
-                                          size_t subset_size)
-{
+__attribute__((section(".ITS"))) psa_status_t its_utils_check_contained_in(
+    size_t superset_size, size_t subset_offset, size_t subset_size) {
     /* Check that subset_offset is valid */
     if (subset_offset > superset_size) {
         return PSA_ERROR_INVALID_ARGUMENT;
@@ -27,8 +25,8 @@ psa_status_t its_utils_check_contained_in(size_t superset_size,
     return PSA_SUCCESS;
 }
 
-psa_status_t its_utils_validate_fid(const uint8_t *fid)
-{
+__attribute__((section(".ITS"))) psa_status_t its_utils_validate_fid(
+    const uint8_t* fid) {
     uint32_t fid_size = ITS_FILE_ID_SIZE;
 
     /* A file ID is valid if it is non-zero */

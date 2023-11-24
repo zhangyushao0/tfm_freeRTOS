@@ -21,6 +21,8 @@
  * Git SHA: b5f0603d6a584d1724d952fd8b0737458b90d62b
  */
 
+#include "aslr.h"
+#include "aslr_mpu.h"
 #include "cmsis.h"
 
 /*----------------------------------------------------------------------------
@@ -42,16 +44,16 @@ void Reset_Handler(void) __NO_RETURN;
 /*----------------------------------------------------------------------------
   Exception / Interrupt Handler
  *----------------------------------------------------------------------------*/
-#define DEFAULT_IRQ_HANDLER(handler_name)                                      \
-  void __WEAK handler_name(void) __NO_RETURN;                                  \
-  void handler_name(void) {                                                    \
-    while (1)                                                                  \
-      ;                                                                        \
-  }
+#define DEFAULT_IRQ_HANDLER(handler_name)       \
+    void __WEAK handler_name(void) __NO_RETURN; \
+    void handler_name(void) {                   \
+        while (1)                               \
+            ;                                   \
+    }
 
 /* Exceptions */
 DEFAULT_IRQ_HANDLER(NMI_Handler)
-DEFAULT_IRQ_HANDLER(HardFault_Handler)
+// DEFAULT_IRQ_HANDLER(HardFault_Handler)
 DEFAULT_IRQ_HANDLER(MemManage_Handler)
 DEFAULT_IRQ_HANDLER(BusFault_Handler)
 DEFAULT_IRQ_HANDLER(UsageFault_Handler)
@@ -339,15 +341,16 @@ const VECTOR_TABLE_Type __VECTOR_TABLE[] __VECTOR_TABLE_ATTRIBUTE = {
   Reset Handler called on controller reset
  *----------------------------------------------------------------------------*/
 void Reset_Handler(void) {
-  __disable_irq();
-  __set_PSP((uint32_t)(&__INITIAL_SP));
+    __disable_irq();
+    __set_PSP((uint32_t)(&__INITIAL_SP));
 
-  __set_MSPLIM((uint32_t)(&__STACK_LIMIT));
-  __set_PSPLIM((uint32_t)(&__STACK_LIMIT));
+    __set_MSPLIM((uint32_t)(&__STACK_LIMIT));
+    __set_PSPLIM((uint32_t)(&__STACK_LIMIT));
 
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  __TZ_set_STACKSEAL_S((uint32_t *)(&__STACK_SEAL));
+    __TZ_set_STACKSEAL_S((uint32_t*)(&__STACK_SEAL));
 #endif
-  SystemInit();      /* CMSIS System Initialization */
-  __PROGRAM_START(); /* Enter PreMain (C library entry point) */
+    SystemInit(); /* CMSIS System Initialization */
+    mpu_enable_aslr();
+    __PROGRAM_START(); /* Enter PreMain (C library entry point) */
 }

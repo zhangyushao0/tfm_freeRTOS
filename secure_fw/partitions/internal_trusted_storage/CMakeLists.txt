@@ -40,6 +40,11 @@ target_sources(tfm_psa_rot_partition_its
         flash_fs/its_flash_fs_dblock.c
         flash_fs/its_flash_fs_mblock.c
 )
+target_compile_options(tfm_psa_rot_partition_its
+    PRIVATE
+        -mlong-calls
+        -fno-jump-tables
+)
 
 # The generated sources
 target_sources(tfm_psa_rot_partition_its

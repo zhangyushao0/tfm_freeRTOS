@@ -12,16 +12,16 @@
 #include "cmsis_compiler.h"
 #endif
 #include "config_tfm.h"
+#include "tfm_hal_its.h"
 #include "tfm_internal_trusted_storage.h"
 #include "tfm_its_req_mngr.h"
-#include "tfm_hal_its.h"
 #ifdef TFM_PARTITION_PROTECTED_STORAGE
 #include "tfm_hal_ps.h"
 #endif
 #include "flash_fs/its_flash_fs.h"
+#include "its_utils.h"
 #include "psa_manifest/pid.h"
 #include "tfm_its_defs.h"
-#include "its_utils.h"
 #include "tfm_sp_log.h"
 
 #ifdef TFM_PARTITION_PROTECTED_STORAGE
@@ -36,8 +36,8 @@ static struct its_file_info_t g_file_info;
  * Note: size must be aligned to the max flash program unit to meet the
  * alignment requirement of the filesystem.
  */
-static uint8_t __ALIGNED(4) asset_data[ITS_UTILS_ALIGN(ITS_BUF_SIZE,
-                                          ITS_FLASH_MAX_ALIGNMENT)];
+static uint8_t __ALIGNED(4)
+    asset_data[ITS_UTILS_ALIGN(ITS_BUF_SIZE, ITS_FLASH_MAX_ALIGNMENT)];
 #endif
 
 static its_flash_fs_ctx_t fs_ctx_its;
@@ -58,8 +58,8 @@ static struct its_flash_fs_config_t fs_cfg_ps = {
 };
 #endif
 
-static its_flash_fs_ctx_t *get_fs_ctx(int32_t client_id)
-{
+__attribute__((section(".ITS"))) static its_flash_fs_ctx_t* get_fs_ctx(
+    int32_t client_id) {
 #ifdef TFM_PARTITION_PROTECTED_STORAGE
     return (client_id == TFM_SP_PS) ? &fs_ctx_ps : &fs_ctx_its;
 #else
@@ -75,12 +75,10 @@ static its_flash_fs_ctx_t *get_fs_ctx(int32_t client_id)
  * \param[in]  uid        Identifier for the data
  * \param[out] fid        Identifier of the file
  */
-static void tfm_its_get_fid(int32_t client_id,
-                            psa_storage_uid_t uid,
-                            uint8_t *fid)
-{
-    memcpy(fid, (const void *)&client_id, sizeof(client_id));
-    memcpy(fid + sizeof(client_id), (const void *)&uid, sizeof(uid));
+__attribute__((section(".ITS"))) static void tfm_its_get_fid(
+    int32_t client_id, psa_storage_uid_t uid, uint8_t* fid) {
+    memcpy(fid, (const void*)&client_id, sizeof(client_id));
+    memcpy(fid + sizeof(client_id), (const void*)&uid, sizeof(uid));
 }
 
 /**
@@ -89,13 +87,12 @@ static void tfm_its_get_fid(int32_t client_id,
  * \return Returns PSA_ERROR_PROGRAMMER_ERROR if there is a configuration error,
  *         and PSA_SUCCESS otherwise.
  */
-static psa_status_t init_fs_cfg(void)
-{
+__attribute__((section(".ITS"))) static psa_status_t init_fs_cfg(void) {
     struct tfm_hal_its_fs_info_t its_fs_info;
 
     /* Check the compile-time program unit matches the runtime value */
-    if (TFM_HAL_ITS_FLASH_DRIVER.GetInfo()->program_unit
-        != TFM_HAL_ITS_PROGRAM_UNIT) {
+    if (TFM_HAL_ITS_FLASH_DRIVER.GetInfo()->program_unit !=
+        TFM_HAL_ITS_PROGRAM_UNIT) {
         return PSA_ERROR_PROGRAMMER_ERROR;
     }
 
@@ -110,16 +107,16 @@ static psa_status_t init_fs_cfg(void)
 
     /* Derive address, block_size and num_blocks from the HAL parameters */
     fs_cfg_its.flash_area_addr = its_fs_info.flash_area_addr;
-    fs_cfg_its.block_size = fs_cfg_its.sector_size
-                            * its_fs_info.sectors_per_block;
+    fs_cfg_its.block_size =
+        fs_cfg_its.sector_size * its_fs_info.sectors_per_block;
     fs_cfg_its.num_blocks = its_fs_info.flash_area_size / fs_cfg_its.block_size;
 
 #ifdef TFM_PARTITION_PROTECTED_STORAGE
     struct tfm_hal_ps_fs_info_t ps_fs_info;
 
     /* Check the compile-time program unit matches the runtime value */
-    if (TFM_HAL_PS_FLASH_DRIVER.GetInfo()->program_unit
-        != TFM_HAL_PS_PROGRAM_UNIT) {
+    if (TFM_HAL_PS_FLASH_DRIVER.GetInfo()->program_unit !=
+        TFM_HAL_PS_PROGRAM_UNIT) {
         return PSA_ERROR_PROGRAMMER_ERROR;
     }
 
@@ -141,8 +138,7 @@ static psa_status_t init_fs_cfg(void)
     return PSA_SUCCESS;
 }
 
-psa_status_t tfm_its_init(void)
-{
+__attribute__((section(".ITS"))) psa_status_t tfm_its_init(void) {
     psa_status_t status;
 
     status = init_fs_cfg();
@@ -170,7 +166,7 @@ psa_status_t tfm_its_init(void)
      * when it is the first time in the device life that the ITS service is
      * executed.
      */
-     if (status != PSA_SUCCESS) {
+    if (status != PSA_SUCCESS) {
         /* Remove all data in the ITS memory area and create a valid ITS flash
          * layout in that area.
          */
@@ -211,7 +207,7 @@ psa_status_t tfm_its_init(void)
      * when it is the first time in the device life that the PS service is
      * executed.
      */
-     if (status != PSA_SUCCESS) {
+    if (status != PSA_SUCCESS) {
         /* Remove all data in the PS memory area and create a valid PS flash
          * layout in that area.
          */
@@ -230,8 +226,8 @@ psa_status_t tfm_its_init(void)
     return status;
 }
 
-static psa_status_t get_file_info(psa_storage_uid_t uid, int32_t client_id)
-{
+__attribute__((section(".ITS"))) static psa_status_t get_file_info(
+    psa_storage_uid_t uid, int32_t client_id) {
     /* Check that the UID is valid */
     if (uid == TFM_ITS_INVALID_UID) {
         return PSA_ERROR_INVALID_ARGUMENT;
@@ -245,11 +241,9 @@ static psa_status_t get_file_info(psa_storage_uid_t uid, int32_t client_id)
                                       &g_file_info);
 }
 
-psa_status_t tfm_its_set(int32_t client_id,
-                         psa_storage_uid_t uid,
-                         size_t data_length,
-                         psa_storage_create_flags_t create_flags)
-{
+__attribute__((section(".ITS"))) psa_status_t tfm_its_set(
+    int32_t client_id, psa_storage_uid_t uid, size_t data_length,
+    psa_storage_create_flags_t create_flags) {
     psa_status_t status;
 #if PSA_FRAMEWORK_HAS_MM_IOVEC != 1
     size_t write_size;
@@ -263,9 +257,9 @@ psa_status_t tfm_its_set(int32_t client_id,
     }
 
     /* Check that the create_flags does not contain any unsupported flags */
-    if (create_flags & ~(PSA_STORAGE_FLAG_WRITE_ONCE |
-                         PSA_STORAGE_FLAG_NO_CONFIDENTIALITY |
-                         PSA_STORAGE_FLAG_NO_REPLAY_PROTECTION)) {
+    if (create_flags &
+        ~(PSA_STORAGE_FLAG_WRITE_ONCE | PSA_STORAGE_FLAG_NO_CONFIDENTIALITY |
+          PSA_STORAGE_FLAG_NO_REPLAY_PROTECTION)) {
         return PSA_ERROR_NOT_SUPPORTED;
     }
 
@@ -285,8 +279,8 @@ psa_status_t tfm_its_set(int32_t client_id,
         return status;
     }
 
-    flags = (uint32_t)create_flags |
-            ITS_FLASH_FS_FLAG_CREATE | ITS_FLASH_FS_FLAG_TRUNCATE;
+    flags = (uint32_t)create_flags | ITS_FLASH_FS_FLAG_CREATE |
+            ITS_FLASH_FS_FLAG_TRUNCATE;
 
 #if PSA_FRAMEWORK_HAS_MM_IOVEC == 1
     /* Write to the file in the file system */
@@ -325,12 +319,9 @@ psa_status_t tfm_its_set(int32_t client_id,
     return status;
 }
 
-psa_status_t tfm_its_get(int32_t client_id,
-                         psa_storage_uid_t uid,
-                         size_t data_offset,
-                         size_t data_size,
-                         size_t *p_data_length)
-{
+__attribute__((section(".ITS"))) psa_status_t tfm_its_get(
+    int32_t client_id, psa_storage_uid_t uid, size_t data_offset,
+    size_t data_size, size_t* p_data_length) {
     psa_status_t status;
 #if PSA_FRAMEWORK_HAS_MM_IOVEC != 1
     size_t read_size;
@@ -362,19 +353,19 @@ psa_status_t tfm_its_get(int32_t client_id,
     }
 
     /* Copy the object data only from within the file boundary */
-    data_size = ITS_UTILS_MIN(data_size,
-                              g_file_info.size_current - data_offset);
+    data_size =
+        ITS_UTILS_MIN(data_size, g_file_info.size_current - data_offset);
 
     /* Update the size of the output data */
     *p_data_length = data_size;
 #if PSA_FRAMEWORK_HAS_MM_IOVEC == 1
-        /* Read file data from the filesystem */
-        status = its_flash_fs_file_read(get_fs_ctx(client_id), g_fid, data_size,
-                                        data_offset, its_req_mngr_get_vec_base());
-        if (status != PSA_SUCCESS) {
-            *p_data_length = 0;
-            return status;
-        }
+    /* Read file data from the filesystem */
+    status = its_flash_fs_file_read(get_fs_ctx(client_id), g_fid, data_size,
+                                    data_offset, its_req_mngr_get_vec_base());
+    if (status != PSA_SUCCESS) {
+        *p_data_length = 0;
+        return status;
+    }
 #else
 
     /* Iteratively read data from the filesystem and write it to the caller, in
@@ -402,9 +393,9 @@ psa_status_t tfm_its_get(int32_t client_id,
     return PSA_SUCCESS;
 }
 
-psa_status_t tfm_its_get_info(int32_t client_id, psa_storage_uid_t uid,
-                              struct psa_storage_info_t *p_info)
-{
+__attribute__((section(".ITS"))) psa_status_t tfm_its_get_info(
+    int32_t client_id, psa_storage_uid_t uid,
+    struct psa_storage_info_t* p_info) {
     psa_status_t status;
 
     /* Validate and read file info */
@@ -421,8 +412,8 @@ psa_status_t tfm_its_get_info(int32_t client_id, psa_storage_uid_t uid,
     return PSA_SUCCESS;
 }
 
-psa_status_t tfm_its_remove(int32_t client_id, psa_storage_uid_t uid)
-{
+__attribute__((section(".ITS"))) psa_status_t tfm_its_remove(
+    int32_t client_id, psa_storage_uid_t uid) {
     psa_status_t status;
 
 #ifdef TFM_PARTITION_TEST_PS

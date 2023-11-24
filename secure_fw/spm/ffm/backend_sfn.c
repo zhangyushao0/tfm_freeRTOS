@@ -11,8 +11,6 @@
 #include <stdint.h>
 #include "compiler_ext_defs.h"
 #include "current.h"
-#include "runtime_defs.h"
-#include "tfm_hal_platform.h"
 #include "ffm/backend.h"
 #include "ffm/stack_watermark.h"
 #include "load/partition_defs.h"
@@ -20,26 +18,27 @@
 #include "load/spm_load_api.h"
 #include "psa/error.h"
 #include "psa/service.h"
+#include "runtime_defs.h"
 #include "spm.h"
+#include "tfm_hal_platform.h"
 
 /* SFN Partition state */
-#define SFN_PARTITION_STATE_NOT_INITED        0
-#define SFN_PARTITION_STATE_INITED            1
+#define SFN_PARTITION_STATE_NOT_INITED 0
+#define SFN_PARTITION_STATE_INITED 1
 
 /* Declare the global component list */
 struct partition_head_t partition_listhead;
 
 /* Current running partition. */
-struct partition_t *p_current_partition;
+struct partition_t* p_current_partition;
 
 /*
  * Send message and wake up the SP who is waiting on message queue, block the
  * current component state and activate the next component.
  */
-psa_status_t backend_messaging(struct service_t *service,
-                               struct connection_t *handle)
-{
-    struct partition_t *p_target;
+psa_status_t backend_messaging(struct service_t* service,
+                               struct connection_t* handle) {
+    struct partition_t* p_target;
     psa_status_t status;
 
     if (!handle || !service || !service->p_ldinf || !service->partition) {
@@ -69,8 +68,7 @@ psa_status_t backend_messaging(struct service_t *service,
     return status;
 }
 
-psa_status_t backend_replying(struct connection_t *handle, int32_t status)
-{
+psa_status_t backend_replying(struct connection_t* handle, int32_t status) {
     SET_CURRENT_COMPONENT(handle->p_client);
 
     /*
@@ -86,8 +84,7 @@ psa_status_t backend_replying(struct connection_t *handle, int32_t status)
     return status;
 }
 
-static uint32_t spm_thread_fn(uint32_t param)
-{
+static uint32_t spm_thread_fn(uint32_t param) {
     struct partition_t *p_part, *p_curr;
     psa_status_t status;
 
@@ -120,14 +117,13 @@ static uint32_t spm_thread_fn(uint32_t param)
 }
 
 /* Parameters are treated as assuredly */
-void backend_init_comp_assuredly(struct partition_t *p_pt,
-                                 uint32_t service_set)
-{
-    const struct partition_load_info_t *p_pldi = p_pt->p_ldinf;
+void backend_init_comp_assuredly(struct partition_t* p_pt,
+                                 uint32_t service_set) {
+    const struct partition_load_info_t* p_pldi = p_pt->p_ldinf;
     struct context_ctrl_t ns_agent_ctrl;
     p_pt->p_handles = NULL;
     p_pt->state = SFN_PARTITION_STATE_NOT_INITED;
-    void *param = NULL;
+    void* param = NULL;
 
     watermark_stack(p_pt);
 
@@ -138,25 +134,23 @@ void backend_init_comp_assuredly(struct partition_t *p_pt,
     if (IS_NS_AGENT(p_pldi)) {
         if (IS_NS_AGENT_TZ(p_pldi)) {
             /* NS agent TZ expects NSPE entry point as the parameter */
-            param = (void *)tfm_hal_get_ns_entry_point();
+            param = (void*)tfm_hal_get_ns_entry_point();
         }
-        ARCH_CTXCTRL_INIT(&ns_agent_ctrl,
-                          LOAD_ALLOCED_STACK_ADDR(p_pldi),
+        ARCH_CTXCTRL_INIT(&ns_agent_ctrl, LOAD_ALLOCED_STACK_ADDR(p_pldi),
                           p_pldi->stack_size);
-        tfm_arch_init_context(&ns_agent_ctrl, (uintptr_t)spm_thread_fn,
-                              param, p_pldi->entry);
+        tfm_arch_init_context(&ns_agent_ctrl, (uintptr_t)spm_thread_fn, param,
+                              p_pldi->entry);
         tfm_arch_refresh_hardware_context(&ns_agent_ctrl);
         SET_CURRENT_COMPONENT(p_pt);
     }
 }
 
-uint32_t backend_system_run(void)
-{
+uint32_t backend_system_run(void) {
     return EXC_RETURN_THREAD_PSP;
 }
 
-psa_signal_t backend_wait_signals(struct partition_t *p_pt, psa_signal_t signals)
-{
+psa_signal_t backend_wait_signals(struct partition_t* p_pt,
+                                  psa_signal_t signals) {
     while (!(p_pt->signals_asserted & signals)) {
         __WFI();
     }
@@ -164,8 +158,7 @@ psa_signal_t backend_wait_signals(struct partition_t *p_pt, psa_signal_t signals
     return p_pt->signals_asserted & signals;
 }
 
-uint32_t backend_assert_signal(struct partition_t *p_pt, psa_signal_t signal)
-{
+uint32_t backend_assert_signal(struct partition_t* p_pt, psa_signal_t signal) {
     p_pt->signals_asserted |= signal;
 
     return PSA_SUCCESS;

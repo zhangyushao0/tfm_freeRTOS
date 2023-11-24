@@ -31,110 +31,104 @@
 /**
  * @brief Byte alignment requirements.
  */
-#define secureportBYTE_ALIGNMENT_aslr 8
-#define secureportBYTE_ALIGNMENT_MASK_aslr (0x0007)
+#define secureportBYTE_ALIGNMENT_aslr				8
+#define secureportBYTE_ALIGNMENT_MASK_aslr				( 0x0007 )
 
 /**
  * @brief Macro to declare a function as non-secure callable.
  */
-// #if defined( __IAR_SYSTEMS_ICC__ )
+//#if defined( __IAR_SYSTEMS_ICC__ )
 //	#define secureportNON_SECURE_CALLABLE			__cmse_nonsecure_entry __root
-// #else
+//#else
 //	#define secureportNON_SECURE_CALLABLE			__attribute__((cmse_nonsecure_entry)) __attribute__((used))
-// #endif
+//#endif
 
 /**
  * @brief Set the secure PRIMASK value.
  */
-#define secureportSET_SECURE_PRIMASK_aslr(ulPrimaskValue) \
-	__asm volatile("msr primask, %0"                      \
-				   :                                      \
-				   : "r"(ulPrimaskValue)                  \
-				   : "memory")
+#define secureportSET_SECURE_PRIMASK_aslr( ulPrimaskValue ) \
+	__asm volatile ( "msr primask, %0" : : "r" ( ulPrimaskValue ) : "memory" )
 
 /**
  * @brief Set the non-secure PRIMASK value.
  */
-#define secureportSET_NON_SECURE_PRIMASK_aslr(ulPrimaskValue) \
-	__asm volatile("msr primask_ns, %0"                       \
-				   :                                          \
-				   : "r"(ulPrimaskValue)                      \
-				   : "memory")
+#define secureportSET_NON_SECURE_PRIMASK_aslr( ulPrimaskValue ) \
+	__asm volatile ( "msr primask_ns, %0" : : "r" ( ulPrimaskValue ) : "memory" )
 
 ///**
 // * @brief Read the PSP value in the given variable.
 // */
-// #define secureportREAD_PSP( pucOutCurrentStackPointer ) \
+//#define secureportREAD_PSP( pucOutCurrentStackPointer ) \
 //	__asm volatile ( "mrs %0, psp"  : "=r" ( pucOutCurrentStackPointer ) )
 //
 ///**
 // * @brief Set the PSP to the given value.
 // */
-// #define secureportSET_PSP( pucCurrentStackPointer ) \
+//#define secureportSET_PSP( pucCurrentStackPointer ) \
 //	__asm volatile ( "msr psp, %0" : : "r" ( pucCurrentStackPointer ) )
 //
 ///**
 // * @brief Set the PSPLIM to the given value.
 // */
-// #define secureportSET_PSPLIM( pucStackLimit ) \
+//#define secureportSET_PSPLIM( pucStackLimit ) \
 //	__asm volatile ( "msr psplim, %0" : : "r" ( pucStackLimit ) )
 //
 ///**
 // * @brief Set the NonSecure MSP to the given value.
 // */
-// #define secureportSET_MSP_NS( pucMainStackPointer ) \
+//#define secureportSET_MSP_NS( pucMainStackPointer ) \
 //	__asm volatile ( "msr msp_ns, %0" : : "r" ( pucMainStackPointer ) )
 //
 ///**
 // * @brief Set the CONTROL register to the given value.
 // */
-// #define secureportSET_CONTROL( ulControl ) \
+//#define secureportSET_CONTROL( ulControl ) \
 //	__asm volatile ( "msr control, %0" : : "r" ( ulControl ) : "memory" )
 //
 ///**
 // * @brief Read the Interrupt Program Status Register (IPSR) value in the given
 // * variable.
 // */
-// #define secureportREAD_IPSR( ulIPSR ) \
+//#define secureportREAD_IPSR( ulIPSR ) \
 //	__asm volatile ( "mrs %0, ipsr"  : "=r" ( ulIPSR ) )
 
 /**
  * @brief PRIMASK value to enable interrupts.
  */
-#define secureportPRIMASK_ENABLE_INTERRUPTS_VAL_aslr 0
+#define secureportPRIMASK_ENABLE_INTERRUPTS_VAL_aslr		0
 
 /**
  * @brief PRIMASK value to disable interrupts.
  */
-#define secureportPRIMASK_DISABLE_INTERRUPTS_VAL_aslr 1
+#define secureportPRIMASK_DISABLE_INTERRUPTS_VAL_aslr	1
 
 /**
  * @brief Disable secure interrupts.
  */
-#define secureportDISABLE_SECURE_INTERRUPTS_aslr() secureportSET_SECURE_PRIMASK_aslr(secureportPRIMASK_DISABLE_INTERRUPTS_VAL_aslr)
+#define secureportDISABLE_SECURE_INTERRUPTS_aslr()		secureportSET_SECURE_PRIMASK_aslr( secureportPRIMASK_DISABLE_INTERRUPTS_VAL_aslr )
 
 /**
  * @brief Disable non-secure interrupts.
  *
  * This effectively disables context switches.
  */
-#define secureportDISABLE_NON_SECURE_INTERRUPTS_aslr() secureportSET_NON_SECURE_PRIMASK_aslr(secureportPRIMASK_DISABLE_INTERRUPTS_VAL_aslr)
+#define secureportDISABLE_NON_SECURE_INTERRUPTS_aslr()	secureportSET_NON_SECURE_PRIMASK_aslr( secureportPRIMASK_DISABLE_INTERRUPTS_VAL_aslr )
 
 /**
  * @brief Enable non-secure interrupts.
  */
-#define secureportENABLE_NON_SECURE_INTERRUPTS_aslr() secureportSET_NON_SECURE_PRIMASK_aslr(secureportPRIMASK_ENABLE_INTERRUPTS_VAL_aslr)
+#define secureportENABLE_NON_SECURE_INTERRUPTS_aslr()	secureportSET_NON_SECURE_PRIMASK_aslr( secureportPRIMASK_ENABLE_INTERRUPTS_VAL_aslr )
 
 /**
  * @brief Assert definition.
  */
-#define secureportASSERT_aslr(x)                        \
-	if ((x) == 0)                                       \
-	{                                                   \
-		secureportDISABLE_SECURE_INTERRUPTS_aslr();     \
-		secureportDISABLE_NON_SECURE_INTERRUPTS_aslr(); \
-		for (;;)                                        \
-			;                                           \
+#define secureportASSERT_aslr( x )						\
+	if( ( x ) == 0 )								\
+	{												\
+		secureportDISABLE_SECURE_INTERRUPTS_aslr();		\
+		secureportDISABLE_NON_SECURE_INTERRUPTS_aslr();	\
+		for( ;; );									\
 	}
 
 #endif /* __SECURE_PORT_MACROS_H__ */
+

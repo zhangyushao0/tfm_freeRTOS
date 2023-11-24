@@ -1,0 +1,6 @@
+   814: 0805ce80     0 NOTYPE  GLOBAL DEFAULT    3 __syscalls_flash_start__
+   898: 0805dd9f     0 NOTYPE  GLOBAL DEFAULT    3 __syscalls_flash_end__
+   948: 0805dda0     0 NOTYPE  GLOBAL DEFAULT    4 __unprivileged_flash_star
+  1127: 0805ed9f     0 NOTYPE  GLOBAL DEFAULT    4 __unprivileged_flash_end_
+   948: 0805dda0     0 NOTYPE  GLOBAL DEFAULT    4 __unprivileged_flash_star
+  1127: 0805ed9f     0 NOTYPE  GLOBAL DEFAULT    4 __unprivileged_flash_end_

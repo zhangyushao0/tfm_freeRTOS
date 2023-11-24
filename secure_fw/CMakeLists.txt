@@ -11,6 +11,13 @@
 cmake_minimum_required(VERSION 3.15)
 
 add_executable(tfm_s)
+
+target_compile_options(tfm_s
+    PUBLIC
+        -mlong-calls
+        -fno-jump-tables
+)
+
 add_library(secure_fw INTERFACE)
 
 add_subdirectory(spm)

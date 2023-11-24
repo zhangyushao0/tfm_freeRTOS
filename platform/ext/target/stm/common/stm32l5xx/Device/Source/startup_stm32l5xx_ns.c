@@ -22,6 +22,7 @@
  */
 
 #include "cmsis.h"
+#include "port.c"
 
 /*----------------------------------------------------------------------------
   External References
@@ -39,12 +40,12 @@ void Reset_Handler(void) __NO_RETURN;
 /*----------------------------------------------------------------------------
   Exception / Interrupt Handler
  *----------------------------------------------------------------------------*/
-#define DEFAULT_IRQ_HANDLER(handler_name)                                      \
-  void __WEAK handler_name(void) __NO_RETURN;                                  \
-  void handler_name(void) {                                                    \
-    while (1)                                                                  \
-      ;                                                                        \
-  }
+#define DEFAULT_IRQ_HANDLER(handler_name)       \
+    void __WEAK handler_name(void) __NO_RETURN; \
+    void handler_name(void) {                   \
+        while (1)                               \
+            ;                                   \
+    }
 
 /* Exceptions */
 DEFAULT_IRQ_HANDLER(NMI_Handler)
@@ -53,10 +54,10 @@ DEFAULT_IRQ_HANDLER(MemManage_Handler)
 DEFAULT_IRQ_HANDLER(BusFault_Handler)
 DEFAULT_IRQ_HANDLER(UsageFault_Handler)
 DEFAULT_IRQ_HANDLER(SecureFault_Handler)
-DEFAULT_IRQ_HANDLER(SVC_Handler)
+// DEFAULT_IRQ_HANDLER(SVC_Handler)
 DEFAULT_IRQ_HANDLER(DebugMon_Handler)
-DEFAULT_IRQ_HANDLER(PendSV_Handler)
-DEFAULT_IRQ_HANDLER(SysTick_Handler)
+// DEFAULT_IRQ_HANDLER(PendSV_Handler)
+// DEFAULT_IRQ_HANDLER(SysTick_Handler)
 
 DEFAULT_IRQ_HANDLER(WWDG_IRQHandler)
 DEFAULT_IRQ_HANDLER(PVD_PVM_IRQHandler)
@@ -327,11 +328,11 @@ const VECTOR_TABLE_Type __VECTOR_TABLE[] __VECTOR_TABLE_ATTRIBUTE = {
   Reset Handler called on controller reset
  *----------------------------------------------------------------------------*/
 void Reset_Handler(void) {
-  __set_MSPLIM((uint32_t)(&__STACK_LIMIT));
+    __set_MSPLIM((uint32_t)(&__STACK_LIMIT));
 
-  __set_PSP((uint32_t)(&__INITIAL_SP));
-  __set_PSPLIM((uint32_t)(&__STACK_LIMIT));
+    __set_PSP((uint32_t)(&__INITIAL_SP));
+    __set_PSPLIM((uint32_t)(&__STACK_LIMIT));
 
-  SystemInit();      /* CMSIS System Initialization */
-  __PROGRAM_START(); /* Enter PreMain (C library entry point) */
+    SystemInit();      /* CMSIS System Initialization */
+    __PROGRAM_START(); /* Enter PreMain (C library entry point) */
 }
