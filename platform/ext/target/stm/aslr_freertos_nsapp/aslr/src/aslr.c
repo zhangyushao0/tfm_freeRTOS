@@ -1,5 +1,6 @@
 #include "aslr.h"
 #include "aslr_address_config.h"
+#include "sys/_stdint.h"
 
 #define secureportREAD_MSP_S_aslr(msp) __asm volatile("mrs %0, msp" : "=r"(msp))
 #define secureportREAD_PSP_S_aslr(psp) __asm volatile("mrs %0, psp" : "=r"(psp))
@@ -75,18 +76,18 @@ void HardFault_Handler(void) {
     __asm volatile("MRS %0, control_ns" : "=r"(ulControlValue));
     if (((ulLRValue >> 6) & 1) == 1) {  // secure
         if (((ulLRValue >> 3) & 1) == 0 || ((ulLRValue >> 2) & 1) == 0) {
-            initial_msp_s = __get_MSP();
+            initial_msp_s = (uint32_t*)__get_MSP();
             secureportREAD_MSP_S_aslr(msp);
         } else {
-            initial_msp_s = __get_PSP();
+            initial_msp_s = (uint32_t*)__get_PSP();
             secureportREAD_PSP_S_aslr(msp);
         }
     } else {
         if (ulControlValue & 0x02) {  // 使用 psp
-            initial_msp_s = __get_PSP();
+            initial_msp_s = (uint32_t*)__get_PSP();
             secureportREAD_PSP_NS_aslr(msp);
         } else {
-            initial_msp_s = __get_MSP();
+            initial_msp_s = (uint32_t*)__get_MSP();
             secureportREAD_MSP_NS_aslr(msp);
         }
     }
@@ -129,7 +130,7 @@ void HardFault_Handler(void) {
             uint32_t size = funcs[idx].size;
 
             func_node_t func_node = {
-                .load_address = address_malloc_aslr(size, type),
+                .load_address = (uint32_t)address_malloc_aslr(size, type),
                 .size = size,
                 .func_address = funcs[idx].start_address,
                 .call_frame_size = funcs[idx].call_frame_size,
@@ -139,7 +140,8 @@ void HardFault_Handler(void) {
                 n_evict++;
 #endif
                 func_evict_one_aslr();
-                func_node.load_address = address_malloc_aslr(size, type);
+                func_node.load_address =
+                    (uint32_t)address_malloc_aslr(size, type);
             }
             while (func_node.load_address == NULL)
                 ;
@@ -227,7 +229,8 @@ int func_evict_one_aslr() {
         } else {
             while (queue_delete_aslr(&funcs_queue) != 0)
                 ;
-            uint8_t* free_address = funcs_queue.queue_array[index].load_address;
+            uint8_t* free_address =
+                (uint8_t*)funcs_queue.queue_array[index].load_address;
             address_free_aslr(free_address);
         }
     }
@@ -287,7 +290,7 @@ int rewrite_function_aslr(uint32_t new_address, uint32_t lr) {
     new_high_imm = new_address >> 16;
     uint32_t new_movt, new_movw, pre_movt, pre_movw, rd;
     uint16_t* index_addr = (uint8_t*)((lr & 0xfffffffe) - 2);
-    rd = rd_recognize(*(uint16_t*)index_addr);
+    rd = rd_recognize_aslr(*(uint16_t*)index_addr);
 
     // recognize if the two instruction before blx is movw,movt assigning to the rd register
 
@@ -316,7 +319,7 @@ int rewrite_function_aslr(uint32_t new_address, uint32_t lr) {
             }
             rewrite_info_t* ri_new = malloc(sizeof(rewrite_info_t));
             ri_new->next = NULL;
-            ri_new->ra.address = index_addr;
+            ri_new->ra.address = (uint32_t)index_addr;
             ri_new->ra.value0 = movt_low_value;
             ri_new->ra.value1 = movt_high_value;
             ri_new->ra.value2 = movw_low_value;

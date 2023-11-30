@@ -175,7 +175,7 @@ __STATIC_FORCEINLINE __NO_RETURN void __cmsis_start(void) {
             pTable->dest[i] = 0u;
         }
     }
-
+    extern int main(void);
     // _start();
     main();
 }

@@ -1,0 +1,5 @@
+Checking whether the ASM compiler is GNU using "--version" did not match "(GNU assembler)|(GCC)|(Free Software Foundation)":
+Ubuntu clang version 16.0.6 (++20231112100455+7cbf1a259152-1~exp1~20231112100542.106)
+Target: x86_64-pc-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
