@@ -7,8 +7,8 @@
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER "clang-14")
-set(CMAKE_CXX_COMPILER "clang++-14")
+set(CMAKE_C_COMPILER "clang-16")
+set(CMAKE_CXX_COMPILER "clang++-16")
 set(TARGET_TRIPLE arm-none-eabi)
 
 set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})

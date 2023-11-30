@@ -296,8 +296,8 @@ int rewrite_function_aslr(uint32_t new_address, uint32_t lr) {
         pre_address | 0x1;  // we must ensure that the address value is odd
     pre_low_imm = pre_address & 0x0000ffff;
     pre_high_imm = pre_address >> 16;
-    pre_movt = movt_transfer(pre_high_imm, rd);
-    pre_movw = movw_transfer(pre_low_imm, rd);
+    pre_movt = movt_transfer_aslr(pre_high_imm, rd);
+    pre_movw = movw_transfer_aslr(pre_low_imm, rd);
     // i is the iterator parameter that can backtrace the movw movt instructions
     int i = REWRITE_ADJUST_ASLR;
 
@@ -322,8 +322,8 @@ int rewrite_function_aslr(uint32_t new_address, uint32_t lr) {
             ri_new->ra.value2 = movw_low_value;
             ri_new->ra.value3 = movw_high_value;
             ri_index->next = ri_new;
-            new_movt = movt_transfer(new_high_imm, rd);
-            new_movw = movw_transfer(new_low_imm, rd);
+            new_movt = movt_transfer_aslr(new_high_imm, rd);
+            new_movw = movw_transfer_aslr(new_low_imm, rd);
             index_addr -= 1;
             *index_addr = (uint16_t)(new_movt & 0xffff);
             index_addr -= 1;
