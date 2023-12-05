@@ -23,6 +23,7 @@ set(CMAKE_LINKER  "/usr/bin/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld"
 
 LINK_DIRECTORIES("/usr/bin/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main/nofp")
 LINK_DIRECTORIES("/usr/bin/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main/nofp")
+LINK_DIRECTORIES("/home/han/srtp/tfm_freertos_aslr/tfm_freeRTOS/platform/ext/target/stm/aslr_freertos_nsapp/lib")
 
 set(CMAKE_OBJCOPY "arm-none-eabi-objcopy")
 # This variable name is a bit of a misnomer. The file it is set to is included

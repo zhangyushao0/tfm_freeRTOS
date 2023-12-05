@@ -1,6 +1,6 @@
 #include "aslr_funcs.h"
-   uint32_t funcs_num=424;
-   FUNCS_INFO funcs[424]={
+   uint32_t funcs_num=465;
+   FUNCS_INFO funcs[465]={
 
   {
       .start_address=0x805e584,
@@ -63,7 +63,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805ea34,
+      .start_address=0x805ea1c,
       .size=160,
       .call_frame_size=0
   },
@@ -253,8 +253,13 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805e9cc,
+      .start_address=0x805e9b4,
       .size=104,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ef96,
+      .size=50,
       .call_frame_size=0
   },
   {
@@ -288,6 +293,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805fea6,
+      .size=52,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805a080,
       .size=104,
       .call_frame_size=0
@@ -300,6 +310,11 @@
   {
       .start_address=0x805d660,
       .size=64,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805fb6c,
+      .size=48,
       .call_frame_size=0
   },
   {
@@ -338,6 +353,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805ebe8,
+      .size=66,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e6b0,
       .size=4,
       .call_frame_size=0
@@ -363,8 +383,23 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f718,
+      .size=52,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ec7a,
+      .size=292,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x8057bc8,
       .size=300,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805f75e,
+      .size=228,
       .call_frame_size=0
   },
   {
@@ -383,6 +418,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805ec40,
+      .size=58,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805c5f4,
       .size=356,
       .call_frame_size=0
@@ -390,6 +430,11 @@
   {
       .start_address=0x805dcd0,
       .size=64,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805fd52,
+      .size=2,
       .call_frame_size=0
   },
   {
@@ -533,6 +578,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805fe70,
+      .size=54,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e398,
       .size=38,
       .call_frame_size=0
@@ -628,8 +678,8 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805eb00,
-      .size=236,
+      .start_address=0x805eade,
+      .size=126,
       .call_frame_size=0
   },
   {
@@ -640,6 +690,11 @@
   {
       .start_address=0x8057864,
       .size=408,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ec2a,
+      .size=22,
       .call_frame_size=0
   },
   {
@@ -713,6 +768,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805feec,
+      .size=16,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805a72e,
       .size=16,
       .call_frame_size=0
@@ -735,11 +795,6 @@
   {
       .start_address=0x805e644,
       .size=4,
-      .call_frame_size=0
-  },
-  {
-      .start_address=0x805e8d4,
-      .size=16,
       .call_frame_size=0
   },
   {
@@ -778,6 +833,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f666,
+      .size=52,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805d1d8,
       .size=60,
       .call_frame_size=0
@@ -790,6 +850,11 @@
   {
       .start_address=0x8056d7c,
       .size=340,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805fe40,
+      .size=48,
       .call_frame_size=0
   },
   {
@@ -838,6 +903,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805fefc,
+      .size=16,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x8059394,
       .size=40,
       .call_frame_size=0
@@ -873,6 +943,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805ff2c,
+      .size=32,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x8059ac8,
       .size=728,
       .call_frame_size=0
@@ -883,7 +958,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805e8e4,
+      .start_address=0x805e8d4,
       .size=44,
       .call_frame_size=0
   },
@@ -1108,6 +1183,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805efc8,
+      .size=50,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e750,
       .size=4,
       .call_frame_size=0
@@ -1123,6 +1203,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805fca2,
+      .size=174,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805d160,
       .size=60,
       .call_frame_size=0
@@ -1130,6 +1215,11 @@
   {
       .start_address=0x8057a6c,
       .size=204,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805fd54,
+      .size=236,
       .call_frame_size=0
   },
   {
@@ -1200,6 +1290,11 @@
   {
       .start_address=0x8057264,
       .size=36,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ff0c,
+      .size=16,
       .call_frame_size=0
   },
   {
@@ -1288,6 +1383,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f978,
+      .size=52,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e710,
       .size=4,
       .call_frame_size=0
@@ -1313,6 +1413,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f872,
+      .size=262,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x80569b8,
       .size=348,
       .call_frame_size=0
@@ -1320,6 +1425,11 @@
   {
       .start_address=0x805db60,
       .size=88,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ed9e,
+      .size=154,
       .call_frame_size=0
   },
   {
@@ -1338,6 +1448,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f69c,
+      .size=44,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805d120,
       .size=64,
       .call_frame_size=0
@@ -1348,6 +1463,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805fd50,
+      .size=2,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e654,
       .size=4,
       .call_frame_size=0
@@ -1355,6 +1475,11 @@
   {
       .start_address=0x805add4,
       .size=112,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805fb00,
+      .size=108,
       .call_frame_size=0
   },
   {
@@ -1393,8 +1518,8 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805ebec,
-      .size=164,
+      .start_address=0x805eb5c,
+      .size=140,
       .call_frame_size=0
   },
   {
@@ -1408,7 +1533,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805e940,
+      .start_address=0x805e928,
       .size=140,
       .call_frame_size=0
   },
@@ -1443,6 +1568,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f74c,
+      .size=18,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e798,
       .size=4,
       .call_frame_size=0
@@ -1455,6 +1585,11 @@
   {
       .start_address=0x805901c,
       .size=116,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ee86,
+      .size=272,
       .call_frame_size=0
   },
   {
@@ -1533,6 +1668,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805ebe8,
+      .size=66,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x8056250,
       .size=652,
       .call_frame_size=0
@@ -1545,6 +1685,11 @@
   {
       .start_address=0x8056ed0,
       .size=140,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805f842,
+      .size=48,
       .call_frame_size=0
   },
   {
@@ -1578,6 +1723,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f2b6,
+      .size=270,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e6f8,
       .size=4,
       .call_frame_size=0
@@ -1588,12 +1738,17 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f9ac,
+      .size=340,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805cb98,
       .size=12,
       .call_frame_size=0
   },
   {
-      .start_address=0x805eae0,
+      .start_address=0x805eac0,
       .size=16,
       .call_frame_size=0
   },
@@ -1678,6 +1833,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805fb9c,
+      .size=96,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e6e8,
       .size=4,
       .call_frame_size=0
@@ -1708,6 +1868,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805ff4c,
+      .size=16,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x8055388,
       .size=48,
       .call_frame_size=0
@@ -1718,8 +1883,8 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805e910,
-      .size=48,
+      .start_address=0x805e900,
+      .size=40,
       .call_frame_size=0
   },
   {
@@ -1753,13 +1918,28 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805f6c8,
+      .size=80,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e7e0,
       .size=4,
       .call_frame_size=0
   },
   {
-      .start_address=0x805eaf0,
+      .start_address=0x805effa,
+      .size=700,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ead0,
       .size=14,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ee38,
+      .size=78,
       .call_frame_size=0
   },
   {
@@ -1803,6 +1983,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805ff1c,
+      .size=16,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805bd42,
       .size=12,
       .call_frame_size=0
@@ -1828,6 +2013,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805fbfc,
+      .size=166,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e6a4,
       .size=4,
       .call_frame_size=0
@@ -1835,6 +2025,11 @@
   {
       .start_address=0x80553b8,
       .size=482,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805f3c4,
+      .size=674,
       .call_frame_size=0
   },
   {
@@ -1905,6 +2100,11 @@
   {
       .start_address=0x805c22c,
       .size=48,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805effa,
+      .size=700,
       .call_frame_size=0
   },
   {
@@ -2018,6 +2218,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805fedc,
+      .size=16,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805e7c8,
       .size=4,
       .call_frame_size=0
@@ -2028,97 +2233,97 @@
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f120,
+      .start_address=0xc00d9e0,
       .size=144,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f2d4,
+      .start_address=0xc00db94,
       .size=100,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f338,
+      .start_address=0xc00dbf8,
       .size=16,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f528,
+      .start_address=0xc00dde8,
       .size=48,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00efc4,
+      .start_address=0xc00d884,
       .size=92,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ef38,
+      .start_address=0xc00d7f8,
       .size=140,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ee80,
+      .start_address=0xc00d740,
       .size=184,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00edd0,
+      .start_address=0xc00d690,
       .size=176,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ed40,
+      .start_address=0xc00d600,
       .size=16,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f1b0,
+      .start_address=0xc00da70,
       .size=292,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f348,
+      .start_address=0xc00dc08,
       .size=300,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ed50,
+      .start_address=0xc00d610,
       .size=128,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f558,
+      .start_address=0xc00de18,
       .size=60,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f594,
+      .start_address=0xc00de54,
       .size=54,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f4c4,
+      .start_address=0xc00dd84,
       .size=100,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f070,
+      .start_address=0xc00d930,
       .size=176,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f020,
+      .start_address=0xc00d8e0,
       .size=40,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f474,
+      .start_address=0xc00dd34,
       .size=80,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f048,
+      .start_address=0xc00d908,
       .size=40,
       .call_frame_size=0
   },

@@ -5,6 +5,8 @@
 #include "stm32l562xx.h"
 #include "stm32l5xx_hal.h"
 #include "stm32l5xx_hal_rcc.h"
+#include "stdio.h"
+#include "string.h"
 #include "task.h"
 
 static void MX_GPIO_Init(void) {
@@ -35,9 +37,9 @@ void testThread1(void* pvParameters) {
 }
 void testThread2(void* pvParameters) {
     while (1) {
-        int a = 2;
-        int b = 3;
-        int c = sum(a, b);
+        printf("Hello World!\n");
+        int a = 1;
+        int c = strlen("Hello World!\n");
         MPU_vTaskDelay(500);
     }
 }

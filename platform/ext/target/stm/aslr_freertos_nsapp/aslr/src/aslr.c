@@ -49,14 +49,13 @@ uint32_t ulControlValue;
 uint8_t flag_a40c, flag_901c, flag_9b7a;
 
 void HardFault_Handler(void) {
-    funcs_num = 579;
     static uint32_t n_excp;
     uint32_t interrupt_ret;
 
 #ifdef _EVALUATION
     n_excp++;
 #endif
-    if (n_excp == 145) {
+    if (n_excp == 200) {
         n_excp++;
         n_excp--;
     }

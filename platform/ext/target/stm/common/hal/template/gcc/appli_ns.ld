@@ -98,7 +98,7 @@ SECTIONS
         /* End address must be the last address in the region, therefore, -1. */
         __unprivileged_flash_end__ = . - 1;
     } > FLASH
-    
+
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)

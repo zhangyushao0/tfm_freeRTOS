@@ -14,6 +14,7 @@ set(COMMON_DIR ${STM32L563E_DK_DIR}/../../../common)
 set(TOP_DIR ${STM32L563E_DK_DIR}/../../../../..)
 set(ASLR_DIR ${STM32L563E_DK_DIR}/aslr)
 set(NS_APP_DIR ${STM32L563E_DK_DIR}/nsapp)
+set(LIB_DIR ${STM32L563E_DK_DIR}/lib)
 #NSAPP
 add_executable(ns_app)
 
@@ -68,7 +69,10 @@ target_link_libraries(ns_app
     PUBLIC
         freertos_kernel
 )
-
+# target_link_libraries(ns_app
+#     PUBLIC
+#         ${LIB_DIR}/libc_nano.a
+# )
 if(BL2)
     target_sources(bl2
         PRIVATE

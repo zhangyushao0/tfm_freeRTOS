@@ -5,12 +5,14 @@
  *  Author: dn
  */
 #include "aslr_mpu.h"
+#include "aslr_address_config.h"
 #include "stm32l5xx.h"
 
 struct mpu_armv8m_region_cfg_t_aslr region_cfg_s_service1 = {
     0x0,
     ASLR_FLASH_SECURE_SERVICE1_REGION_START,
-    ASLR_FLASH_SECURE_SERVICE1_REGION_SIZE,
+    (ASLR_FLASH_SECURE_SERVICE1_REGION_END -
+     ASLR_FLASH_SECURE_SERVICE1_REGION_START + 1),
     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ASLR,
     MPU_ARMV8M_XN_EXEC_NEVER,
     MPU_ARMV8M_AP_RW_PRIV_UNPRIV,

@@ -1,24 +1,38 @@
-# step 1 生成make文件
+# tfm_freertos_mpu_aslr_clang-16 编译流程
+
+## step 1 生成make文件
+
 ```bash
-mkdir cmake_build
-cd cmake_build
-cmake .. -DTFM_PLATFORM=stm/aslr_freertos_nsapp -DBL2=OFF -DNS=OFF -DNS_APP=ON
+cmake -S . -B build -DTFM_PLATFORM=stm/aslr_freertos_nsapp -DBL2=OFF -DNS=OFF -DNS_APP=ON -DCMAKE_BUILD_TYPE=Debug -DFREERTOS_PORT=GCC_ARM_CM33_NTZ_NONSECURE -DFREERTOS_HEAP=4 -DTFM_PARTITION_INTERNAL_TRUSTED_STORAGE=ON
 ```
-# step 2 编译
+
+## step 2 开启编译脚本
+
 ```bash
-cd ..
-chmod +x comdown.sh
-bash comdown.sh -c
+chmod +x comedown.sh
+./comedown.sh -c
 ```
-# step 3 更改脚本烧录器路径
-打开comdown.sh，修改如下路径为你的烧录器路径
+
+## step 3 修改 platform/ext/target/stm/aslr_freertos_nsapp/aslr/include/aslr_address_config.h
+
 ```bash
-STM32_Programmer_CLI_PATH="/mnt/d/stm32prog/bin"
+./comedown.sh -p
+cd build/bin
+readelf -s ns_app.elf | grep priv
+readelf -s ns_app.elf | grep syscall
+readelf -S tfm_s.elf | grep -w .ITS
+./comedown.sh -p
 ```
-此路径可以在stm32cubeprog安装目录下找到，我的是D盘，所以是/mnt/d/stm32prog/bin，/mnt表示挂载，/mnt/d表示的挂载的windows的D盘，可以在linux下使用df -h命令查看。
-# step 4 烧录
+
+## step 4 修改 platform/ext/target/stm/aslr_freertos_nsapp/FreeRTOS/portable/GCC/ARM_CM33_NTZ/non_secure/portasm.c 中的 select_next_task
+
 ```bash
-bash comdown.sh -d
+readelf -s ns_app.elf | grep vTaskSwitchContext
 ```
-# step 5 运行
-此时应该可以看到板子的LD9灯闪烁，说明程序正常运行。
+
+修改这两个地址
+
+```c
+" movw r3, #0x6b15    \n"
+" movt r3, #0x0805      \n"
+```
