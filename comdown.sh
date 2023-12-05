@@ -1,6 +1,7 @@
 #!/bin/bash
 STM32_Programmer_CLI_PATH="/mnt/f/stm32prog/bin"
 STM32_GDB_server_PATH="/mnt/f/gdb-server/bin"
+Build_PATH="build"
 for arg in "$@"; do
     if [[ "$arg" == "-c" ]] || [[ "$arg" == "--compile" ]]; then
         cd build
@@ -12,7 +13,7 @@ for arg in "$@"; do
 done
 for arg in "$@"; do
     if [[ "$arg" == "-d" ]] || [[ "$arg" == "--download" ]]; then
-        eval $STM32_Programmer_CLI_PATH/"STM32_Programmer_CLI.exe" -c port=swd -e all -d build/bin/tfm_s.elf -d \build/bin/ns_app.hex
+        eval $STM32_Programmer_CLI_PATH/"STM32_Programmer_CLI.exe" -c port=swd -e all -d $Build_PATH/bin/tfm_s.elf -d $Build_PATH/bin/ns_app.hex
         echo "Download done"
         break
     fi
