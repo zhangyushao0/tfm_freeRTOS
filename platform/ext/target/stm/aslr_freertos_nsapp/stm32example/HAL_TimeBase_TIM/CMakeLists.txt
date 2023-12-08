@@ -1,0 +1,9 @@
+target_sources(ns_app
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/main_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/support.c
+)
+target_include_directories(ns_app
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/Inc
+)

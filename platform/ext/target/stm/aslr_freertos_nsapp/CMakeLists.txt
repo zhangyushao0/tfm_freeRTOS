@@ -75,7 +75,10 @@ set(TEST_TARGET "" CACHE STRING "Test target to build")
 # 分割字符串 _
 string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
 list(GET TEST_TARGET_LIST 0 FIRST_PART)
-add_subdirectory(${FIRST_PART})
+
+# 添加测试
+# add_subdirectory(${FIRST_PART})
+add_subdirectory(stm32example)
 
 if(BL2)
     target_sources(bl2
