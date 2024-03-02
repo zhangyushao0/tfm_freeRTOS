@@ -135,6 +135,7 @@ target_sources(ns_app
     ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_exti.c
     ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp.c
     ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash.c
 )
 
 # ========================= Platform BL2 =======================================#

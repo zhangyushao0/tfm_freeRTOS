@@ -20,8 +20,7 @@ add_executable(ns_app)
 
 target_compile_options(ns_app
     PUBLIC
-    -mlong-calls
-    -fno-jump-tables
+    -fPIE
 )
 
 # def for stm32l5xx
@@ -40,6 +39,7 @@ set_target_properties(ns_app PROPERTIES
 
 target_link_options(ns_app
     PRIVATE
+    -fPIE
     $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:ARMClang>:--map>
     $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
@@ -62,23 +62,34 @@ target_sources(ns_app
     ${NS_APP_DIR}/src/main_ns.c
 )
 
-# FreeRTOS
-add_subdirectory(FreeRTOS)
-target_link_libraries(ns_app
+# loader
+target_include_directories(platform_s
     PUBLIC
-    freertos_kernel
+    ${STM32L563E_DK_DIR}/loader
 )
 
-# test
-set(TEST_TARGET "" CACHE STRING "Test target to build")
+target_sources(platform_s
+    PRIVATE
+    ${STM32L563E_DK_DIR}/loader/loader.c
+    ${STM32L563E_DK_DIR}/loader/func_info.c
+)
 
-# 分割字符串 _
-string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
-list(GET TEST_TARGET_LIST 0 FIRST_PART)
+# # FreeRTOS
+# add_subdirectory(FreeRTOS)
+# target_link_libraries(ns_app
+# PUBLIC
+# freertos_kernel
+# )
 
-# 添加测试
-add_subdirectory(${FIRST_PART})
+# # test
+# set(TEST_TARGET "" CACHE STRING "Test target to build")
 
+# # 分割字符串 _
+# string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
+# list(GET TEST_TARGET_LIST 0 FIRST_PART)
+
+# # 添加测试
+# add_subdirectory(${FIRST_PART})
 if(BL2)
     target_sources(bl2
         PRIVATE
@@ -95,21 +106,30 @@ if(BL2)
     )
 endif()
 
-# copytext
-target_include_directories(platform_s
+# # copytext
+# target_include_directories(platform_s
+# PUBLIC
+# ${STM32L563E_DK_DIR}/ota
+# ${STM32L563E_DK_DIR}/copytext
+# )
+# target_sources(platform_s
+# PRIVATE
+# ${STM32L563E_DK_DIR}/ota/flash.c
+# ${STM32L563E_DK_DIR}/ota/port.c
+# ${STM32L563E_DK_DIR}/ota/rand.c
+# ${STM32L563E_DK_DIR}/ota/loader.c
+# ${STM32L563E_DK_DIR}/copytext/copytext.c
+# ${STM32L563E_DK_DIR}/copytext/extracted_info.c
+# )
+target_include_directories(ns_app
     PUBLIC
-    ${STM32L563E_DK_DIR}/ota
     ${STM32L563E_DK_DIR}/copytext
 )
-target_sources(platform_s
-    PRIVATE
-    ${STM32L563E_DK_DIR}/ota/flash.c
-    ${STM32L563E_DK_DIR}/ota/port.c
-    ${STM32L563E_DK_DIR}/ota/rand.c
-    ${STM32L563E_DK_DIR}/ota/loader.c
-    ${STM32L563E_DK_DIR}/copytext/copytext.c
-)
 
+target_sources(ns_app
+    PRIVATE
+    ${STM32L563E_DK_DIR}/copytext/extracted_info.c
+)
 install(FILES ${STM32L563E_DK_DIR}/include/flash_layout.h
     ${STM32L563E_DK_DIR}/include/region_defs.h
     DESTINATION ${CMAKE_BINARY_DIR})

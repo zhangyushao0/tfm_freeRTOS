@@ -6,11 +6,10 @@
  */
 
 #include "build_config_check.h"
-#include "copytext.h"
 #include "ffm/tfm_boot_data.h"
 #include "fih.h"
+#include "loader.h"
 #include "memory_symbols.h"
-#include "port.h"
 #include "spm.h"
 #include "tfm_api.h"
 #include "tfm_hal_isolation.h"
@@ -113,7 +112,9 @@ int main(void) {
     tfm_core_panic();
   }
 #endif
+  uint32_t __text_address__ = 0x8055000;
 
+  copy_text2ram(0x20003000, __text_address__, 2560);
   // copytext();
   /* Move to handler mode for further SPM initialization. */
   tfm_core_handler_mode();
