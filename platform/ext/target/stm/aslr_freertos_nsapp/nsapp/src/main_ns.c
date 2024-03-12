@@ -63,11 +63,14 @@ void toggle_light() {
 }
 
 int a = 0;
-void foo() { a += 1; }
 
-void foo2(
+void foo2() {}
+void foo() {
+  void (*ptr)() = foo2;
+  ptr();
 
-) {}
+  a += 1;
+}
 
 char cArray[128] __attribute__((aligned(128)));
 // uint32_t pArray[2560] __attribute__((aligned(128)));
