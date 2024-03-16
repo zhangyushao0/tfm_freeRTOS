@@ -115,6 +115,7 @@ int main(void) {
   uint32_t __text_address__ = 0x8055000;
 
   copy_text2ram(0x20003000, __text_address__, 2560);
+  copy_text2ram(0x20004000, __text_address__, 2560);
   // copytext();
   /* Move to handler mode for further SPM initialization. */
   tfm_core_handler_mode();

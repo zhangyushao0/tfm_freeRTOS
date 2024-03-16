@@ -40,6 +40,9 @@ set_target_properties(ns_app PROPERTIES
 target_link_options(ns_app
     PRIVATE
     -fPIE
+
+    # -r
+    # -e Reset_Handler
     $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:ARMClang>:--map>
     $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>

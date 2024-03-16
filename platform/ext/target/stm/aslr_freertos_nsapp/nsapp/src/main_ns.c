@@ -63,7 +63,7 @@ void toggle_light() {
 }
 
 int a = 0;
-
+// extern void printf(const char *fmt, ...);
 void foo2() {}
 void foo() {
   void (*ptr)() = foo2;
@@ -73,24 +73,14 @@ void foo() {
 }
 
 char cArray[128] __attribute__((aligned(128)));
-// uint32_t pArray[2560] __attribute__((aligned(128)));
 
-void (*new_main)() = foo;
 int main() {
+  // NVIC_SystemReset();
   foo();
 
   // HAL_Init();
-  static int entered = 0;
-  if (!entered) {
-    new_main();
-    entered = 1;
-  }
 
   MX_GPIO_Init();
-
-  // space 10kB
-
-  // copy_text2ram(pArray, __text_address__, 2560);
 
   while (1) {
     HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);

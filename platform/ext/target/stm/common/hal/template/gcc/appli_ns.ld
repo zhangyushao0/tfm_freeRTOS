@@ -148,9 +148,9 @@ SECTIONS
     .testprotection NS_DATA_START :
     {
          *(.bss.NoInit);
-    } > RAM
+    } > FLASH
 
-    .data (NS_DATA_START+NS_NO_INIT_DATA_SIZE) : AT (__etext)
+    .data : AT (__etext)
     {
         __data_start__ = .;
 
@@ -194,7 +194,7 @@ SECTIONS
         /* All data end */
         __data_end__ = .;
 
-    } > RAM
+    } > FLASH
 
     .bss :
     {
@@ -204,7 +204,7 @@ SECTIONS
         *(COMMON)
         . = ALIGN(4);
         __bss_end__ = .;
-    } > RAM
+    } > FLASH
 
     bss_size = __bss_end__ - __bss_start__;
 
