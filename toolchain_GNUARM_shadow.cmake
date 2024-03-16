@@ -77,7 +77,7 @@ macro(tfm_toolchain_reset_linker_flags)
         -specs=nano.specs
         LINKER:-check-sections
         LINKER:-fatal-warnings
-        LINKER:--gc-sections
+        # LINKER:--gc-sections
         LINKER:--no-wchar-size-warning
         ${MEMORY_USAGE_FLAG}
     )

@@ -11,90 +11,64 @@
 #define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
 static void MX_GPIO_Init(void) {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOD_CLK_ENABLE();
+    /* GPIO Ports Clock Enable */
+    __HAL_RCC_GPIOD_CLK_ENABLE();
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED9_GPIO_Port, LED9_Pin, GPIO_PIN_SET);
+    /*Configure GPIO pin Output Level */
+    HAL_GPIO_WritePin(LED9_GPIO_Port, LED9_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pin : LED9_Pin */
-  GPIO_InitStruct.Pin = LED9_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
+    /*Configure GPIO pin : LED9_Pin */
+    GPIO_InitStruct.Pin = LED9_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
 
 void spin_100000() {
-  for (int i = 0; i < 100000; i++) {
-    __ASM volatile("nop");
-  }
-}
-void copy_text2ram(uint32_t *dst, uint32_t src, int len) {
-  HAL_FLASH_Unlock();
-  for (int i = 0; i < len; i++) {
-    dst[i] = *(uint32_t *)(src + i * 4);
-  }
-  HAL_FLASH_Lock();
-}
-void toggle_light_2();
-void toggle_light();
-void toggle_light_2() {
-  int i = 10;
-  while (i--) {
-    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-    spin_100000();
-    spin_100000();
-    spin_100000();
-    spin_100000();
-  }
-  void (*new_toggle_light)() = (void (*)())toggle_light;
-  new_toggle_light();
-}
-void toggle_light() {
-  int i = 10;
-  while (i--) {
-    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-    spin_100000();
-  }
-  toggle_light_2();
+    for (int i = 0; i < 100000; i++) {
+        __ASM volatile("nop");
+    }
 }
 
-int a = 0;
-void foo() { a += 1; }
+int c = 0;
+int d = 0;
 
-void foo2(
+int add(int a, int b) __attribute__((section("random_functions"))) {
+    c++;
+    int sum = a;
+    while (b != 0) {
+        sum = a ^ b;
+        b = ((a & b) << 1);
+        a = sum;
+    }
+    return sum;
+}
+int minust(int a, int b) __attribute__((section("random_functions"))) {
+    d++;
+    return add(a, add(~b, 1));
+}
 
-) {}
-
-char cArray[128] __attribute__((aligned(128)));
-// uint32_t pArray[2560] __attribute__((aligned(128)));
-
-void (*new_main)() = foo;
 int main() {
-  foo();
+    // NVIC_SystemReset();
 
-  // HAL_Init();
-  static int entered = 0;
-  if (!entered) {
-    new_main();
-    entered = 1;
-  }
+    // HAL_Init();
 
-  MX_GPIO_Init();
+    int e = add(1, 2);
+    int f = minust(1, 2);
+    e += c;
+    f += d;
 
-  // space 10kB
+    MX_GPIO_Init();
 
-  // copy_text2ram(pArray, __text_address__, 2560);
+    while (1) {
+        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+        spin_100000();
+    }
 
-  while (1) {
-    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-    spin_100000();
-  }
-
-  /* 如果系统正常工作，以下代码不会执行 */
-  for (;;)
-    ;
+    /* 如果系统正常工作，以下代码不会执行 */
+    for (;;)
+        ;
 }

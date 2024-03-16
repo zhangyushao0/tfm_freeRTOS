@@ -13,8 +13,7 @@
 
 extern const struct memory_region_limits memory_regions;
 
-enum tfm_hal_status_t tfm_hal_platform_init(void)
-{
+enum tfm_hal_status_t tfm_hal_platform_init(void) {
     enum tfm_plat_err_t plat_err = TFM_PLAT_ERR_SYSTEM_ERR;
 
     __enable_irq();
@@ -28,17 +27,14 @@ enum tfm_hal_status_t tfm_hal_platform_init(void)
     return TFM_HAL_SUCCESS;
 }
 
-uint32_t tfm_hal_get_ns_VTOR(void)
-{
+uint32_t tfm_hal_get_ns_VTOR(void) {
     return memory_regions.non_secure_code_start;
 }
 
-uint32_t tfm_hal_get_ns_MSP(void)
-{
-    return *((uint32_t *)memory_regions.non_secure_code_start);
+uint32_t tfm_hal_get_ns_MSP(void) {
+    return *((uint32_t*)memory_regions.non_secure_code_start);
 }
 
-uint32_t tfm_hal_get_ns_entry_point(void)
-{
-    return *((uint32_t *)(memory_regions.non_secure_code_start + 4));
+uint32_t tfm_hal_get_ns_entry_point(void) {
+    return *((uint32_t*)(memory_regions.non_secure_code_start + 0x17fae000 + 4));
 }

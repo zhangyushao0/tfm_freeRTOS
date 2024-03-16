@@ -39,7 +39,8 @@ set_target_properties(ns_app PROPERTIES
 
 target_link_options(ns_app
     PRIVATE
-    -fPIE
+    # -r
+    # -e Reset_Handler
     $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:ARMClang>:--map>
     $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
@@ -72,6 +73,7 @@ target_sources(platform_s
     PRIVATE
     ${STM32L563E_DK_DIR}/loader/loader.c
     ${STM32L563E_DK_DIR}/loader/func_info.c
+    ${STM32L563E_DK_DIR}/loader/relocation.c
 )
 
 # # FreeRTOS
