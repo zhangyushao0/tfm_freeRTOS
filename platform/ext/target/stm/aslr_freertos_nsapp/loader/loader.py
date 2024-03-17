@@ -4,8 +4,8 @@ relocation_path = 'platform/ext/target/stm/aslr_freertos_nsapp/loader/relocation
 otutput_path = 'platform/ext/target/stm/aslr_freertos_nsapp/loader/relocation.c'
 symbol_path = 'platform/ext/target/stm/aslr_freertos_nsapp/loader/symbol_table'
 
-text_startb = 0x08055000
-text_starta = 0x08055080
+text_starta = 0x08055000
+text_startb = 0x08055960
 data_start = 0x20000100
 
 # symbol_dic = {}
@@ -54,7 +54,7 @@ def read_relocation_file():
             output_file.write("] = {\n")
             for i in range(0, numbers):
                 line = relocation_file.readline().split()
-                address = hex(int(line[0], 16) + text_startb)
+                address = hex(int(line[0], 16) + text_starta)
                 value = hex(int(line[3], 16))
                 # if symbol_dic[(int(line[1], 16) >> 8)] == "FUNC":
                 #     value = hex(int(line[3], 16) + text_start)
@@ -66,13 +66,17 @@ def read_relocation_file():
                 #     value = hex(int(line[3], 16))
                 #     output_file.write('    {' + address + ', ' + value + ', 2},\n')
                 if line[1][-2:] == '02':
-                    value = hex(int(line[3], 16) + text_startb)
+                    value = hex(int(line[3], 16) + text_starta)
                     output_file.write('    {' + address + ', ' + value + ', 0},\n')
                 elif line[1][-2:] == '03' or line[1][-2:] == '60':
                     value =  hex(int(line[3], 16) + data_start)
                     output_file.write('    {' + address + ', ' + value + ', 1},\n')
                 else:
-                    value = hex(int(line[3], 16)+ text_startb)
+                    value = int(line[3], 16)
+                    if value == 0x01 or value == 0x41:
+                        value = hex(value + text_startb)
+                    else :
+                        value = hex(value + text_starta)
                     output_file.write('    {' + address + ', ' + value + ', 2},\n')
             relocation_file.readline()
             line = relocation_file.readline()
@@ -81,16 +85,16 @@ def read_relocation_file():
             relocation_file.readline()
             for i in range(0, numbers):
                 line = relocation_file.readline().split()
-                address = hex(int(line[0], 16) + text_starta)
+                address = hex(int(line[0], 16) + text_startb)
                 value = hex(int(line[3], 16))
                 if line[1][-2:] == '02':
-                    value = hex(int(line[3], 16) + text_starta)
+                    value = hex(int(line[3], 16) + text_startb)
                     output_file.write('    {' + address + ', ' + value + ', 0},\n')
                 elif line[1][-2:] == '03' or line[1][-2:] == '60':
                     value =  hex(int(line[3], 16) + data_start)
                     output_file.write('    {' + address + ', ' + value + ', 1},\n')
                 else:
-                    value = hex(int(line[3], 16)+ text_starta)
+                    value = hex(int(line[3], 16)+ text_startb)
                     output_file.write('    {' + address + ', ' + value + ', 2},\n')
             output_file.write("};\n")
 read_relocation_file()

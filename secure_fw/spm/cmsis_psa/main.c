@@ -120,21 +120,14 @@ int main(void) {
     // copy_text2ram(relocate_address1, __text_address__, 0x1000);
     // relocate(offset1);
 
-    struct region_info region_a = {
-        0x08055080,
-        0x1000,
-    };
-    struct region_info region_b = {
-        0x08055000,
-        0x80,
-    };
-    uint32_t offset_a = 0x17fae000;
-    uint32_t offset_b = 0x17fab000;
+    uint32_t __text_address__ = 0x8055000;
+    uint32_t offset_a = 0x17fae000; // 0x20003000
+    uint32_t offset_b = 0x17fb0000; // 0x20005000
 
-    copy_text2ram(region_a.start + offset_a, region_a.start, region_a.size);
-    copy_text2ram(region_b.start + offset_b, region_b.start, region_b.size);
+    copy_text2ram(__text_address__ + offset_a, __text_address__, 0x1000);
+    copy_text2ram(__text_address__ + offset_b, __text_address__, 0x1000);
 
-    relocation(region_a, region_b, offset_a, offset_b);
+    relocation(offset_a, offset_b);
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();
 

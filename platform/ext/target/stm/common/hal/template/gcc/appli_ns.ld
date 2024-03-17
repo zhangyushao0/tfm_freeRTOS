@@ -38,16 +38,6 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
-    .random_functions : ALIGN(32)
-    {
-        . = ALIGN(32);
-        __random_functions_start__ = .;
-        *(random_functions)
-        . = ALIGN(32);
-        /* End address must be the last address in the region, therefore, -1. */
-        __random_functions_end__ = . - 1;
-    } > FLASH
-
     .text :
     {
         KEEP(*(.vectors))
@@ -78,6 +68,16 @@ SECTIONS
         *(.rodata*)
 
         KEEP(*(.eh_frame*))
+    } > FLASH
+
+    .random_functions : ALIGN(32)
+    {
+        . = ALIGN(32);
+        __random_functions_start__ = .;
+        *(random_functions)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __random_functions_end__ = . - 1;
     } > FLASH
 
     .ARM.extab :

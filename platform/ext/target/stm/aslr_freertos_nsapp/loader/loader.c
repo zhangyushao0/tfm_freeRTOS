@@ -30,8 +30,9 @@ void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
     HAL_FLASH_Lock();
 }
 
-int in_range(struct region_info region, uint32_t pos) {
-    if (pos >= region.size && pos < region.start + region.size) {
+// judge whether the address is in the range of b
+int in_range(uint32_t pos) {
+    if (pos >= 0x08055960 && pos < 0x08055960 + 0x80) {
         return 1;
     }
     return 0;
@@ -59,26 +60,26 @@ void relocate(uint32_t offset) {
     }
 }
 
-void relocation(struct region_info region_a, struct region_info region_b, uint32_t offset_a, uint32_t offset_b) {
+void relocation(uint32_t offset_a, uint32_t offset_b) {
     for (int i = 1; i < table_size; ++i) {
         // which range of the identifier
         if (relocation_info[i].type == 0) {
-            if (in_range(region_a, relocation_info[i].value)) {
+            if (in_range(relocation_info[i].addr) == 0) {
                 *((uint32_t*)(relocation_info[i].addr + offset_a)) += offset_a;
             } else {
-                *((uint32_t*)(relocation_info[i].addr + offset_b)) += offset_b;
+                *((uint32_t*)(relocation_info[i].addr + offset_a)) += offset_b;
             }
         } else if (relocation_info[i].type == 1) {
-            if (in_range(region_a, relocation_info[i].addr)) {
+            if (in_range(relocation_info[i].addr) == 0) {
                 *((uint32_t*)(relocation_info[i].addr + offset_a)) -= offset_a;
             } else {
                 *((uint32_t*)(relocation_info[i].addr + offset_b)) -= offset_b;
             }
         } else {
-            if (in_range(region_a, relocation_info[i].addr) && in_range(region_b, relocation_info[i].value)) {
+            if (in_range(relocation_info[i].addr) == 0 && in_range(relocation_info[i].value) == 1) {
                 uint32_t val = *((uint32_t*)(relocation_info[i].addr + offset_a));
                 *((uint32_t*)(relocation_info[i].addr + offset_a)) = address_calculate(val, offset_b - offset_a);
-            } else if (in_range(region_b, relocation_info[i].addr) && in_range(region_a, relocation_info[i].value)) {
+            } else if (in_range(relocation_info[i].addr) == 1 && in_range(relocation_info[i].value) == 0) {
                 uint32_t val = *((uint32_t*)(relocation_info[i].addr + offset_b));
                 *((uint32_t*)(relocation_info[i].addr + offset_b)) = address_calculate(val, offset_a - offset_b);
             }
