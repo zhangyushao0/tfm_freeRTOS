@@ -36,7 +36,7 @@ void spin_100000() {
 int c = 0;
 int d = 0;
 
-int add(int a, int b) __attribute__((section("random_functions"))) {
+int add(int a, int b) { //  __attribute__((section("random_functions")))
     c++;
     int sum = a;
     while (b != 0) {
@@ -46,15 +46,20 @@ int add(int a, int b) __attribute__((section("random_functions"))) {
     }
     return sum;
 }
-int minust(int a, int b) __attribute__((section("random_functions"))) {
+int minust(int a, int b) { // __attribute__((section("random_functions")))
     d++;
     return add(a, add(~b, 1));
 }
+
+// int (*p)(int, int) = add;
 
 int main() {
     // NVIC_SystemReset();
 
     // HAL_Init();
+    // p(1, 2);
+    // p = minust;
+    // p(1, 2);
 
     int e = add(1, 2);
     int f = minust(1, 2);

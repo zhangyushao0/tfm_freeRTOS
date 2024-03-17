@@ -9,6 +9,7 @@
 #include "ffm/tfm_boot_data.h"
 #include "fih.h"
 #include "loader.h"
+#include "divide.h"
 #include "memory_symbols.h"
 #include "spm.h"
 #include "sys/_stdint.h"
@@ -126,7 +127,7 @@ int main(void) {
 
     copy_text2ram(__text_address__ + offset_a, __text_address__, 0x1000);
     copy_text2ram(__text_address__ + offset_b, __text_address__, 0x1000);
-
+    divide();
     relocation(offset_a, offset_b);
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();

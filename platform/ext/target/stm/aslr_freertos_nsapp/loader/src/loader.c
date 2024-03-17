@@ -1,18 +1,19 @@
 #include "loader.h"
-#include "func_info.h"
+// #include "func_info.h"
+#include "func.h"
 #include "relocation.h"
 #include "stm32l562xx.h"
 #include "stm32l5xx_hal_flash.h"
 #include "sys/_stdint.h"
 
-int is_matched(uint32_t ar[], uint32_t val, int len) {
-    for (int i = 0; i < len; i++) {
-        if (ar[i] == val) {
-            return i;
-        }
-    }
-    return -1;
-}
+// int is_matched(uint32_t ar[], uint32_t val, int len) {
+//     for (int i = 0; i < len; i++) {
+//         if (ar[i] == val) {
+//             return i;
+//         }
+//     }
+//     return -1;
+// }
 
 // int index = is_matched(ldr_list, src + i * 4, sizeof(ldr_list) / 4);
 // if (index != -1) {
@@ -32,10 +33,12 @@ void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
 
 // judge whether the address is in the range of b
 int in_range(uint32_t pos) {
-    if (pos >= 0x08055960 && pos < 0x08055960 + 0x80) {
-        return 1;
+    for (uint32_t i = 0; i < func_info_size; ++i) {
+        if (pos >= func_info[i].addr && pos < func_info[i].addr + func_info[i].size) {
+            return func_info[i].region;
+        }
     }
-    return 0;
+    return -1;
 }
 
 uint32_t address_calculate(uint32_t val, int offset) {
