@@ -16,35 +16,35 @@
 
 #include "uart_stdout.h"
 
+#include "Driver_USART.h"
+#include "device_cfg.h"
+#include "target_cfg.h"
 #include <assert.h>
 #include <stdio.h>
-#include "Driver_USART.h"
-#include "target_cfg.h"
-#include "device_cfg.h"
 
-#define ASSERT_HIGH(X)  assert(X == ARM_DRIVER_OK)
+#define ASSERT_HIGH(X) assert(X == ARM_DRIVER_OK)
 
 /* Imports USART driver */
 #if DOMAIN_NS == 1U
 extern ARM_DRIVER_USART NS_DRIVER_STDIO;
-#define STDIO_DRIVER    NS_DRIVER_STDIO
+#define STDIO_DRIVER NS_DRIVER_STDIO
 #else
 extern ARM_DRIVER_USART TFM_DRIVER_STDIO;
-#define STDIO_DRIVER    TFM_DRIVER_STDIO
+#define STDIO_DRIVER TFM_DRIVER_STDIO
 #endif
 
-int stdio_output_string(const unsigned char *str, uint32_t len)
-{
-    int32_t ret;
+int stdio_output_string(const unsigned char *str, uint32_t len) {
+  int32_t ret;
 
-    ret = STDIO_DRIVER.Send(str, len);
-    if (ret != ARM_DRIVER_OK) {
-        return 0;
-    }
-    /* Add a busy wait after sending. */
-    while (STDIO_DRIVER.GetStatus().tx_busy);
+  ret = STDIO_DRIVER.Send(str, len);
+  if (ret != ARM_DRIVER_OK) {
+    return 0;
+  }
+  /* Add a busy wait after sending. */
+  while (STDIO_DRIVER.GetStatus().tx_busy)
+    ;
 
-    return STDIO_DRIVER.GetTxCount();
+  return STDIO_DRIVER.GetTxCount();
 }
 
 /* Redirects printf to STDIO_DRIVER in case of ARMCLANG*/
@@ -54,60 +54,55 @@ int stdio_output_string(const unsigned char *str, uint32_t len)
  */
 FILE __stdout;
 /* __ARMCC_VERSION is only defined starting from Arm compiler version 6 */
-int fputc(int ch, FILE *f)
-{
-    (void)f;
+int fputc(int ch, FILE *f) {
+  (void)f;
 
-    /* Send byte to USART */
-    (void)stdio_output_string((const unsigned char *)&ch, 1);
+  /* Send byte to USART */
+  (void)stdio_output_string((const unsigned char *)&ch, 1);
 
-    /* Return character written */
-    return ch;
+  /* Return character written */
+  return ch;
 }
 #elif defined(__GNUC__)
 /* Redirects printf to STDIO_DRIVER in case of GNUARM */
-int _write(int fd, char *str, int len)
-{
-    (void)fd;
+int _write(int fd, char *str, int len) {
+  (void)fd;
 
-    /* Send string and return the number of characters written */
-    return stdio_output_string((const unsigned char *)str, (uint32_t)len);
+  /* Send string and return the number of characters written */
+  return stdio_output_string((const unsigned char *)str, (uint32_t)len);
 }
 #elif defined(__ICCARM__)
-int putchar(int ch)
-{
-    /* Send byte to USART */
-    (void)stdio_output_string((const unsigned char *)&ch, 1);
+int putchar(int ch) {
+  /* Send byte to USART */
+  (void)stdio_output_string((const unsigned char *)&ch, 1);
 
-    /* Return character written */
-    return ch;
+  /* Return character written */
+  return ch;
 }
 #endif
 
-void stdio_init(void)
-{
-    int32_t ret;
-    ret = STDIO_DRIVER.Initialize(NULL);
-    ASSERT_HIGH(ret);
+void stdio_init(void) {
+  int32_t ret;
+  ret = STDIO_DRIVER.Initialize(NULL);
+  ASSERT_HIGH(ret);
 
-    ret = STDIO_DRIVER.PowerControl(ARM_POWER_FULL);
-    ASSERT_HIGH(ret);
+  ret = STDIO_DRIVER.PowerControl(ARM_POWER_FULL);
+  ASSERT_HIGH(ret);
 
-    ret = STDIO_DRIVER.Control(ARM_USART_MODE_ASYNCHRONOUS,
-                               DEFAULT_UART_BAUDRATE);
-    ASSERT_HIGH(ret);
-    (void)ret;
+  ret =
+      STDIO_DRIVER.Control(ARM_USART_MODE_ASYNCHRONOUS, DEFAULT_UART_BAUDRATE);
+  ASSERT_HIGH(ret);
+  (void)ret;
 
-    (void)STDIO_DRIVER.Control(ARM_USART_CONTROL_TX, 1);
+  (void)STDIO_DRIVER.Control(ARM_USART_CONTROL_TX, 1);
 }
 
-void stdio_uninit(void)
-{
-    int32_t ret;
+void stdio_uninit(void) {
+  int32_t ret;
 
-    (void)STDIO_DRIVER.PowerControl(ARM_POWER_OFF);
+  (void)STDIO_DRIVER.PowerControl(ARM_POWER_OFF);
 
-    ret = STDIO_DRIVER.Uninitialize();
-    ASSERT_HIGH(ret);
-    (void)ret;
+  ret = STDIO_DRIVER.Uninitialize();
+  ASSERT_HIGH(ret);
+  (void)ret;
 }

@@ -1,56 +1,16 @@
-#include "stm32l5xx_hal.h"
-#include "stm32l562xx.h"
-#include "stm32l5xx_hal_rcc.h"
 #include "main_ns.h"
-void SystemClock_Config(void)
-{
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+// #include "FreeRTOS.h"
+#include "assert.h"
 
-    /** Configure the main internal regulator output voltage
-     */
-    if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE0) != HAL_OK)
-    {
-        while (1)
-            ;
-    }
+#include "stm32l562xx.h"
+#include "stm32l5xx_hal.h"
+#include "stm32l5xx_hal_flash.h"
+#include "stm32l5xx_hal_rcc.h"
+// #include "support.h"
+// #include "task.h"
+#define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
-    /** Initializes the RCC Oscillators according to the specified parameters
-     * in the RCC_OscInitTypeDef structure.
-     */
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
-    RCC_OscInitStruct.MSIState = RCC_MSI_ON;
-    RCC_OscInitStruct.MSICalibrationValue = RCC_MSICALIBRATION_DEFAULT;
-    RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
-    RCC_OscInitStruct.PLL.PLLM = 1;
-    RCC_OscInitStruct.PLL.PLLN = 55;
-    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
-    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
-    RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
-        while (1)
-            ;
-    }
-
-    /** Initializes the CPU, AHB and APB buses clocks
-     */
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
-    {
-        while (1)
-            ;
-    }
-}
-static void MX_GPIO_Init(void)
-{
+static void MX_GPIO_Init(void) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     /* GPIO Ports Clock Enable */
@@ -66,20 +26,54 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
-void testThread()
-{
-    while (1)
-    {
-        // tfm_ns_interface_dispatch(HAL_GPIO_TogglePin, GPIOD, GPIO_PIN_3, 0, 0);
-        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-        vTaskDelay(500);
+
+void spin_100000() {
+    for (int i = 0; i < 100000; i++) {
+        __ASM volatile("nop");
     }
 }
-int main()
-{
-    HAL_Init();
-    SystemClock_Config();
+
+int c = 0;
+int d = 0;
+
+int add(int a, int b) { //  __attribute__((section("random_functions")))
+    c++;
+    int sum = a;
+    while (b != 0) {
+        sum = a ^ b;
+        b = ((a & b) << 1);
+        a = sum;
+    }
+    return sum;
+}
+int minust(int a, int b) { // __attribute__((section("random_functions")))
+    d++;
+    return add(a, add(~b, 1));
+}
+
+// int (*p)(int, int) = add;
+
+int main() {
+    // NVIC_SystemReset();
+
+    // HAL_Init();
+    // p(1, 2);
+    // p = minust;
+    // p(1, 2);
+
+    int e = add(1, 2);
+    int f = minust(1, 2);
+    e += c;
+    f += d;
+
     MX_GPIO_Init();
-    xTaskCreate(testThread, "testThread", 512, NULL, 1, NULL);
-    vTaskStartScheduler();
+
+    while (1) {
+        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+        spin_100000();
+    }
+
+    /* 如果系统正常工作，以下代码不会执行 */
+    for (;;)
+        ;
 }

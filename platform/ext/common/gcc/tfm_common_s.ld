@@ -273,7 +273,9 @@ SECTIONS
     } > RAM
     Image$$ARM_LIB_STACK$$ZI$$Base = ADDR(.msp_stack);
     Image$$ARM_LIB_STACK$$ZI$$Limit = ADDR(.msp_stack) + SIZEOF(.msp_stack);
-
+    __StackLimit = ADDR(.msp_stack);
+    __StackTop = ADDR(.msp_stack) + SIZEOF(.msp_stack);
+    
     .msp_stack_seal_res :
     {
         . += 0x8;
