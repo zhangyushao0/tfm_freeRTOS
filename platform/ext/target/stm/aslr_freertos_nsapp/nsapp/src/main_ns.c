@@ -36,7 +36,7 @@ void spin_100000() {
 int c = 0;
 int d = 0;
 
-int add(int a, int b) { //  __attribute__((section("random_functions")))
+int jzx_Sum(int a, int b) { //  __attribute__((section("random_functions")))
     c++;
     int sum = a;
     while (b != 0) {
@@ -46,9 +46,9 @@ int add(int a, int b) { //  __attribute__((section("random_functions")))
     }
     return sum;
 }
-int minust(int a, int b) { // __attribute__((section("random_functions")))
+int jzx_foo(int a, int b) { // __attribute__((section("random_functions")))
     d++;
-    return add(a, add(~b, 1));
+    return jzx_Sum(a, jzx_Sum(~b, 1));
 }
 
 // int (*p)(int, int) = add;
@@ -61,10 +61,14 @@ int main() {
     // p = minust;
     // p(1, 2);
 
-    int e = add(1, 2);
-    int f = minust(1, 2);
-    e += c;
-    f += d;
+    // int e = jzx_Sum(1, 2);
+    int f = jzx_foo(1, 2);
+    // e += c;
+    //f += d;
+
+    int (*pfun)(int, int) = &jzx_Sum;  // 定义有两个int类型参数的函数指针pfun，指向foo函数的入口地址；
+
+    int v=(*pfun)(20, 5);  // 调用该函数指针，并传递参数给foo函数；
 
     MX_GPIO_Init();
 

@@ -27,10 +27,10 @@ for arg in "$@"; do
         break
     fi
 done
-for arg in "$@"; do
-    if [[ "$arg" == "-p" ]] || [[ "$arg" == "--python" ]]; then
-        cd $ELF_TO_Funcs_PATH
-        python3 main.py
-        break
-    fi
-done
+# for arg in "$@"; do
+#     if [[ "$arg" == "-p" ]] || [[ "$arg" == "--python" ]]; then
+#         cd $ELF_TO_Funcs_PATH
+#         python3 main.py
+#         break
+#     fi
+# done

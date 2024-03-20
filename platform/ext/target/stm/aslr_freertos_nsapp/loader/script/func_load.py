@@ -1,7 +1,13 @@
+#!/usr/bin/python3
 import re
 
-func_info_path = 'platform/ext/target/stm/aslr_freertos_nsapp/loader/script/func_info.txt'
-otutput_path = 'platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c'
+# relocation_path = '/home/jiangzixian/tfm_freeRTOS_relo_func/build/bin/relocation.txt'
+# otutput_path = '/home/jiangzixian/tfm_freeRTOS_relo_func/platform/ext/target/stm/aslr_freertos_nsapp/loader/relocation.c'
+# #symbol_path = '/home/jiangzixian/tfm_freeRTOS_relo_func/platform/ext/target/stm/aslr_freertos_nsapp/loader/symbol_table.txt'
+
+
+func_info_path = '/home/jiangzixian/tfm_freeRTOS_relo_func1/platform/ext/target/stm/aslr_freertos_nsapp/loader/script/func_info.txt'
+otutput_path = '/home/jiangzixian/tfm_freeRTOS_relo_func1/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c'
 
 text_start = 0x08055000
 
