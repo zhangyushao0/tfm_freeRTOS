@@ -1,4 +1,5 @@
 import re
+import subprocess
 
 func_info_path = 'platform/ext/target/stm/aslr_freertos_nsapp/loader/script/func_info.txt'
 otutput_path = 'platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c'
@@ -22,7 +23,10 @@ def read_relocation_file(text_start = text_start):
             for line in func_info_file:
                 line = line.split()
                 address = hex(int(line[1], 16) + text_start)
-                value = hex(int(line[2], 16))
-                output_file.write('    {' + address + ', ' + value + ', 0},\n')
+                size = hex(int(line[2]))
+                output_file.write('    {' + address + ', ' + size + ', 0},\n')
         output_file.write("};\n")
+
+command = "readelf -s /home/han/srtp/tfm_freeRTOS/build/bin/ns_app.elf | grep FUNC > " + func_info_path
+subprocess.run(command, capture_output=True, text=True, shell=True, check=True)
 read_relocation_file()

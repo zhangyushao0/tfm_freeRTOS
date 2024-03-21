@@ -323,6 +323,9 @@ const VECTOR_TABLE_Type __VECTOR_TABLE[] __VECTOR_TABLE_ATTRIBUTE = {
 #pragma GCC diagnostic pop
 #endif
 
+void r9Init(void){
+  __ASM volatile("mov.w	r9, #1");
+}
 /*----------------------------------------------------------------------------
   Reset Handler called on controller reset
  *----------------------------------------------------------------------------*/
@@ -333,5 +336,6 @@ void Reset_Handler(void) {
   __set_PSPLIM((uint32_t)(&__STACK_LIMIT));
 
   SystemInit();      /* CMSIS System Initialization */
+  r9Init();
   __PROGRAM_START(); /* Enter PreMain (C library entry point) */
 }
