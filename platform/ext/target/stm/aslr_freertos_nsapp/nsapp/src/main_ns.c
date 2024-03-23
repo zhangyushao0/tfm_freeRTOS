@@ -48,7 +48,13 @@ int jzx_Sum(int a, int b) { //  __attribute__((section("random_functions")))
 }
 int jzx_foo(int a, int b) { // __attribute__((section("random_functions")))
     d++;
-    return jzx_Sum(a, jzx_Sum(~b, 1));
+
+    int (*pfun)(int, int) = &jzx_Sum;  // 定义有两个int类型参数的函数指针pfun，指向foo函数的入口地址；
+
+    int v=(*pfun)(20, 5);  // 调用该函数指针，并传递参数给foo函数；
+
+    //return jzx_Sum(a, jzx_Sum(~b, 1));
+    return v;
 }
 
 // int (*p)(int, int) = add;
@@ -64,11 +70,16 @@ int main() {
     // int e = jzx_Sum(1, 2);
     int f = jzx_foo(1, 2);
     // e += c;
-    //f += d;
+    f += d;
 
-    int (*pfun)(int, int) = &jzx_Sum;  // 定义有两个int类型参数的函数指针pfun，指向foo函数的入口地址；
+    // int (*pfun1)(int, int) = &jzx_Sum;  // 定义有两个int类型参数的函数指针pfun，指向foo函数的入口地址；
 
-    int v=(*pfun)(20, 5);  // 调用该函数指针，并传递参数给foo函数；
+    // int v1=(*pfun1)(20, 5);  // 调用该函数指针，并传递参数给foo函数；
+
+    // void (*pfun2)(void) = &spin_100000;  // 定义无参数无返回值的函数指针pfun2，指向spin_100000函数的入口地址；
+
+    // (*pfun2)();  // 调用该函数指针，不需要传递参数给spin_100000函数；
+
 
     MX_GPIO_Init();
 

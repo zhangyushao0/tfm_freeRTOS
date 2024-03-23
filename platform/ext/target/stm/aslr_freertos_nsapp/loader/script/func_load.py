@@ -28,7 +28,7 @@ def read_relocation_file(text_start = text_start):
             for line in func_info_file:
                 line = line.split()
                 address = hex(int(line[1], 16) + text_start)
-                value = hex(int(line[2], 16))
+                value = hex(int(line[2]))
                 output_file.write('    {' + address + ', ' + value + ', 0},\n')
         output_file.write("};\n")
 read_relocation_file()

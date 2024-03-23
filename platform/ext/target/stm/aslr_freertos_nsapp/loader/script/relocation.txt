@@ -1,5 +1,5 @@
 
-Relocation section '.rel.text' at offset 0x9ae0 contains 139 entries:
+Relocation section '.rel.text' at offset 0x9ae0 contains 138 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000000  00019302 R_ARM_ABS32       00001000   __StackTop
 00000004  00016102 R_ARM_ABS32       0000078d   Reset_Handler
@@ -122,7 +122,7 @@ Relocation section '.rel.text' at offset 0x9ae0 contains 139 entries:
 000001f0  00017402 R_ARM_ABS32       00000789   OTFDEC1_IRQHandler
 000007b6  00018d0a R_ARM_THM_CALL    000001f5   SystemInit
 000007ba  0001ab0a R_ARM_THM_CALL    0000086d   r9Init
-0000084e  0001820a R_ARM_THM_CALL    0000091d   main
+0000084e  0001820a R_ARM_THM_CALL    00000921   main
 00000854  0001a360 R_ARM_GOT_PREL    00000000   __StackLimit
 00000858  00019360 R_ARM_GOT_PREL    00001000   __StackTop
 0000085c  00014260 R_ARM_GOT_PREL    00000000   __copy_table_start__
@@ -130,18 +130,17 @@ Relocation section '.rel.text' at offset 0x9ae0 contains 139 entries:
 00000864  00018c60 R_ARM_GOT_PREL    00000000   __zero_table_start__
 00000868  00015360 R_ARM_GOT_PREL    00000010   __zero_table_end__
 000008d8  00017603 R_ARM_REL32       00000000   c
-00000900  00019b0a R_ARM_THM_CALL    0000089d   jzx_Sum
-00000908  00019b0a R_ARM_THM_CALL    0000089d   jzx_Sum
 00000918  00018b03 R_ARM_REL32       00000004   d
-0000092a  0001270a R_ARM_THM_CALL    000008dd   jzx_foo
+0000091c  00019b03 R_ARM_REL32       0000089d   jzx_Sum
+0000092e  0001270a R_ARM_THM_CALL    000008dd   jzx_foo
 00000940  00009c0a R_ARM_THM_CALL    00000961   MX_GPIO_Init
 00000950  00013d0a R_ARM_THM_CALL    00000593   HAL_GPIO_TogglePin
 00000954  00018f0a R_ARM_THM_CALL    00000873   spin_100000
-0000095c  00019b03 R_ARM_REL32       0000089d   jzx_Sum
+0000095c  00018b03 R_ARM_REL32       00000004   d
 000009a2  0001330a R_ARM_THM_CALL    00000567   HAL_GPIO_WritePin
 000009b8  0001430a R_ARM_THM_CALL    000001f7   HAL_GPIO_Init
 
-Relocation section '.rel.ARM.exidx' at offset 0x9f38 contains 128 entries:
+Relocation section '.rel.ARM.exidx' at offset 0x9f30 contains 128 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000000  0000012a R_ARM_PREL31      00000000   .text
 00000008  0000012a R_ARM_PREL31      00000000   .text
@@ -272,7 +271,7 @@ Relocation section '.rel.ARM.exidx' at offset 0x9f38 contains 128 entries:
 000003f0  0000012a R_ARM_PREL31      00000000   .text
 000003f8  0000012a R_ARM_PREL31      00000000   .text
 
-Relocation section '.rel.debug_info' at offset 0xa338 contains 20 entries:
+Relocation section '.rel.debug_info' at offset 0xa330 contains 20 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000008  00000902 R_ARM_ABS32       00000000   .debug_abbrev
 00000011  00000c02 R_ARM_ABS32       00000000   .debug_str_offsets
@@ -295,7 +294,7 @@ Relocation section '.rel.debug_info' at offset 0xa338 contains 20 entries:
 00000e7d  00000e02 R_ARM_ABS32       00000000   .debug_addr
 00000e81  00000b02 R_ARM_ABS32       00000000   .debug_rnglists
 
-Relocation section '.rel.debug_str_offsets' at offset 0xa3d8 contains 397 entries:
+Relocation section '.rel.debug_str_offsets' at offset 0xa3d0 contains 397 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000008  00000d02 R_ARM_ABS32       00000000   .debug_str
 0000000c  00000d02 R_ARM_ABS32       00000000   .debug_str
@@ -695,7 +694,7 @@ Relocation section '.rel.debug_str_offsets' at offset 0xa3d8 contains 397 entrie
 0000064c  00000d02 R_ARM_ABS32       00000000   .debug_str
 00000650  00000d02 R_ARM_ABS32       00000000   .debug_str
 
-Relocation section '.rel.debug_addr' at offset 0xb040 contains 140 entries:
+Relocation section '.rel.debug_addr' at offset 0xb038 contains 140 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000018  00000102 R_ARM_ABS32       00000000   .text
 00000028  00000102 R_ARM_ABS32       00000000   .text
@@ -838,7 +837,7 @@ Relocation section '.rel.debug_addr' at offset 0xb040 contains 140 entries:
 00000274  00000102 R_ARM_ABS32       00000000   .text
 00000278  00000102 R_ARM_ABS32       00000000   .text
 
-Relocation section '.rel.debug_frame' at offset 0xb4a0 contains 263 entries:
+Relocation section '.rel.debug_frame' at offset 0xb498 contains 263 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000018  00001302 R_ARM_ABS32       00000000   .debug_frame
 0000001c  00000102 R_ARM_ABS32       00000000   .text
@@ -1104,7 +1103,7 @@ Relocation section '.rel.debug_frame' at offset 0xb4a0 contains 263 entries:
 00000910  00001302 R_ARM_ABS32       00000000   .debug_frame
 00000914  00000102 R_ARM_ABS32       00000000   .text
 
-Relocation section '.rel.debug_line' at offset 0xbcd8 contains 168 entries:
+Relocation section '.rel.debug_line' at offset 0xbcd0 contains 168 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000022  00001502 R_ARM_ABS32       00000000   .debug_line_str
 00000026  00001502 R_ARM_ABS32       00000000   .debug_line_str
@@ -1272,5 +1271,5 @@ Relocation section '.rel.debug_line' at offset 0xbcd8 contains 168 entries:
 0000150c  00000102 R_ARM_ABS32       00000000   .text
 0000153c  00000102 R_ARM_ABS32       00000000   .text
 00001597  00000102 R_ARM_ABS32       00000000   .text
-000015c1  00000102 R_ARM_ABS32       00000000   .text
-00001602  00000102 R_ARM_ABS32       00000000   .text
+000015c3  00000102 R_ARM_ABS32       00000000   .text
+00001600  00000102 R_ARM_ABS32       00000000   .text

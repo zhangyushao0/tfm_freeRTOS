@@ -156,7 +156,7 @@ Symbol table '.symtab' contains 442 entries:
    152: 000008d8     0 NOTYPE  LOCAL  DEFAULT    1 $d.2
    153: 000008dc     0 NOTYPE  LOCAL  DEFAULT    1 $t.3
    154: 00000918     0 NOTYPE  LOCAL  DEFAULT    1 $d.4
-   155: 0000091c     0 NOTYPE  LOCAL  DEFAULT    1 $t.5
+   155: 00000920     0 NOTYPE  LOCAL  DEFAULT    1 $t.5
    156: 00000961    96 FUNC    LOCAL  DEFAULT    1 MX_GPIO_Init
    157: 0000095c     0 NOTYPE  LOCAL  DEFAULT    1 $d.6
    158: 00000960     0 NOTYPE  LOCAL  DEFAULT    1 $t.7
@@ -296,7 +296,7 @@ Symbol table '.symtab' contains 442 entries:
    292: 000006b9     4 FUNC    WEAK   DEFAULT    1 TIM8_CC_IRQHandler
    293: 00000000     0 NOTYPE  GLOBAL DEFAULT   10 __HeapBase
    294: 00000621     4 FUNC    WEAK   DEFAULT    1 EXTI5_IRQHandler
-   295: 000008dd    64 FUNC    GLOBAL DEFAULT    1 jzx_foo
+   295: 000008dd    68 FUNC    GLOBAL DEFAULT    1 jzx_foo
    296: 00000000   500 OBJECT  GLOBAL DEFAULT    1 __Vectors
    297: 000005d5     4 FUNC    WEAK   DEFAULT    1 DebugMon_Handler
    298: 00000000     0 NOTYPE  GLOBAL DEFAULT    7 __data_start__
@@ -387,7 +387,7 @@ Symbol table '.symtab' contains 442 entries:
    383: 000005e5     4 FUNC    WEAK   DEFAULT    1 PVD_PVM_IRQHandler
    384: 000006d1     4 FUNC    WEAK   DEFAULT    1 SPI2_IRQHandler
    385: 000005c1     4 FUNC    WEAK   DEFAULT    1 MemManage_Handler
-   386: 0000091d    68 FUNC    GLOBAL DEFAULT    1 main
+   386: 00000921    64 FUNC    GLOBAL DEFAULT    1 main
    387: 00000645     4 FUNC    WEAK   DEFAULT    1 EXTI14_IRQHandler
    388: 00000639     4 FUNC    WEAK   DEFAULT    1 EXTI11_IRQHandler
    389: 000005d1     4 FUNC    WEAK   DEFAULT    1 SVC_Handler

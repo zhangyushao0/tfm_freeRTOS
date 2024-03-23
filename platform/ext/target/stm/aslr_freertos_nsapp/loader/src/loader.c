@@ -81,7 +81,7 @@ void relocation(uint32_t offset_a, uint32_t offset_b) {
     for (int i = 1; i < table_size; ++i) {
         // which range of the identifier
         if (relocation_info[i].type == 0) {//Handler
-            if (in_range(relocation_info[i].addr) == 0) {
+            if (in_range(relocation_info[i].value) == 0) {
                 *((uint32_t*)(relocation_info[i].addr + offset_a)) += offset_a;
             } else {
                 *((uint32_t*)(relocation_info[i].addr + offset_a)) += offset_b;
@@ -100,14 +100,41 @@ void relocation(uint32_t offset_a, uint32_t offset_b) {
                 uint32_t val = *((uint32_t*)(relocation_info[i].addr + offset_b));
                 *((uint32_t*)(relocation_info[i].addr + offset_b)) = address_calculate(val, offset_a - offset_b);
             }
-        }else{//func pointer
-            if (in_range(relocation_info[i].addr) == 0 && in_range(relocation_info[i].value) == 1) {
-                uint32_t val = *((uint32_t*)(relocation_info[i].addr + offset_a));
-                *((uint32_t*)(relocation_info[i].addr + offset_a)) = address_calculate(val, offset_b - offset_a);
-            } else if (in_range(relocation_info[i].addr) == 1 && in_range(relocation_info[i].value) == 0) {
-                uint32_t val = *((uint32_t*)(relocation_info[i].addr + offset_b));
-                *((uint32_t*)(relocation_info[i].addr + offset_b)) = address_calculate(val, offset_a - offset_b);
+        }else if (relocation_info[i].type == 3){//func pointer
+            if(in_range(relocation_info[i].addr) == 0){
+                if(in_range(relocation_info[i].value) == 1){
+                    int32_t val = *((uint32_t*)(relocation_info[i].addr + offset_a));
+                    val+=(int32_t)(offset_b-offset_a);
+                    val=val^ENCODE_KEY;
+                    *((uint32_t*)(relocation_info[i].addr + offset_a))= (uint32_t)val;
+                }else{
+                    int32_t val = *((uint32_t*)(relocation_info[i].addr + offset_a));
+                    val=val^ENCODE_KEY;
+                    *((uint32_t*)(relocation_info[i].addr + offset_a))= (uint32_t)val;
+                }
+            }else{
+                if(in_range(relocation_info[i].value) == 1){
+                    int32_t val = *((uint32_t*)(relocation_info[i].addr + offset_a));
+                    val=val^ENCODE_KEY;
+                    *((uint32_t*)(relocation_info[i].addr + offset_a))= (uint32_t)val;
+                }else{
+                   int32_t val = *((uint32_t*)(relocation_info[i].addr + offset_b));
+                    val+=(int32_t)(offset_a-offset_b);
+                    val=val^ENCODE_KEY;
+                    *((uint32_t*)(relocation_info[i].addr + offset_b))= (uint32_t)val;
+                }
             }
+            // if (in_range(relocation_info[i].addr) == 0 && in_range(relocation_info[i].value) == 1) {
+            //     int32_t val = *((uint32_t*)(relocation_info[i].addr + offset_a));
+            //     val+=(int32_t)(offset_b-offset_a);
+            //     val=val^ENCODE_KEY;
+            //     *((uint32_t*)(relocation_info[i].addr + offset_a))= (uint32_t)val;
+            // } else if (in_range(relocation_info[i].addr) == 1 && in_range(relocation_info[i].value) == 0) {
+            //     int32_t val = *((uint32_t*)(relocation_info[i].addr + offset_b));
+            //     val+=(int32_t)(offset_a-offset_b);
+            //     val=val^ENCODE_KEY;
+            //     *((uint32_t*)(relocation_info[i].addr + offset_b))= (uint32_t)val;
+            // }
         }
     }
 }

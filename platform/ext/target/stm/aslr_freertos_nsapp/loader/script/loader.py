@@ -74,7 +74,7 @@ def read_relocation_file_pointer(text_start = text_start):
                     if symbol_dic[(int(line[1], 16) >> 8)] == "FUNC":#func pointers
                         value = hex(int(line[3], 16) + text_start)
                         output_file.write('    {' + address + ', ' + value + ', 3},\n')
-                    elif symbol_dic[(int(line[1], 16) >> 8)] == "OBJECT":#global data
+                    elif symbol_dic[(int(line[1], 16) >> 8)] == "OBJECT":#global
                         value =  hex(int(line[3], 16) + data_start)
                         output_file.write('    {' + address + ', ' + value + ', 1},\n')
                 elif line[1][-2:] == '60':
