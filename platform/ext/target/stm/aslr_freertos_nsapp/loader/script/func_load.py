@@ -27,6 +27,6 @@ def read_relocation_file(text_start = text_start):
                 output_file.write('    {' + address + ', ' + size + ', 0},\n')
         output_file.write("};\n")
 
-command = "readelf -s /home/han/srtp/tfm_freeRTOS/build/bin/ns_app.elf | grep FUNC > " + func_info_path
+command = "readelf -s /home/zys/repo/embedded/relo/build_re/bin/ns_app.elf | grep FUNC > " + func_info_path
 subprocess.run(command, capture_output=True, text=True, shell=True, check=True)
 read_relocation_file()

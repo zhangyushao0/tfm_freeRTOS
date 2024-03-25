@@ -37,14 +37,27 @@ set_target_properties(ns_app PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
-target_link_options(ns_app
-    PRIVATE
-    # -r
-    # -e Reset_Handler
-    $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
-    $<$<C_COMPILER_ID:ARMClang>:--map>
-    $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
-)
+if(ENABLE_RE)
+    target_link_options(ns_app
+        PRIVATE
+        -fPIE
+        -r
+        -e Reset_Handler
+        $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
+        $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
+        $<$<C_COMPILER_ID:ARMClang>:--map>
+        $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
+    )
+else()
+    target_link_options(ns_app
+        PRIVATE
+        -fPIE
+        $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
+        $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
+        $<$<C_COMPILER_ID:ARMClang>:--map>
+        $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
+    )
+endif()
 
 add_convert_to_bin_target(ns_app)
 target_include_directories(ns_app
@@ -67,10 +80,12 @@ target_sources(ns_app
 target_include_directories(platform_s
     PUBLIC
     ${STM32L563E_DK_DIR}/loader/include
+    ${STM32L563E_DK_DIR}/loader
 )
 
 target_sources(platform_s
     PRIVATE
+
     # ${STM32L563E_DK_DIR}/loader/func_info.c
     ${STM32L563E_DK_DIR}/loader/src/func.c
     ${STM32L563E_DK_DIR}/loader/src/relocation.c

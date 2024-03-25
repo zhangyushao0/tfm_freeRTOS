@@ -48,10 +48,10 @@ def read_relocation_file(text_start = text_start):
 
 
 
-command = "readelf -r /home/han/srtp/tfm_freeRTOS/build/bin/ns_app.elf > " + relocation_path
+command = "readelf -r /home/zys/repo/embedded/relo/build_re/bin/ns_app.elf > " + relocation_path
 subprocess.run(command, capture_output=True, text=True, shell=True, check=True)
 
-command = "readelf -s /home/han/srtp/tfm_freeRTOS/build/bin/ns_app.elf > " + symbol_path
+command = "readelf -s /home/zys/repo/embedded/relo/build_re/bin/ns_app.elf > " + symbol_path
 subprocess.run(command, capture_output=True, text=True, shell=True, check=True)
 
 with open(symbol_path, 'r') as symbol_file:
