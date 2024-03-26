@@ -7,9 +7,15 @@
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER "/home/zys/repo/embedded/llvm-project/build/bin/clang-16")
-set(CMAKE_CXX_COMPILER "/home/zys/repo/embedded/llvm-project/build/bin/clang-16")
-set(CMAKE_ASM_COMPILER "/home/zys/repo/embedded/llvm-project/build/bin/clang-16")
+# set(CMAKE_C_COMPILER "/home/jiangzixian/llvmShadowStack/llvm-project/build/bin/clang")
+# set(CMAKE_CXX_COMPILER "/home/jiangzixian/llvmShadowStack/llvm-project/build/bin/clang++")
+
+# set(CMAKE_C_COMPILER "/home/jiangzixian/llvmShadowStack/llvm_shadow_stack3/build/bin/clang")
+# set(CMAKE_CXX_COMPILER "/home/jiangzixian/llvmShadowStack/llvm_shadow_stack3/build/bin/clang++")
+
+set(CMAKE_C_COMPILER "/home/jiangzixian/llvmShadowStack/llvm_shadow_stack3/build/bin_clang_ssT/clang")
+set(CMAKE_CXX_COMPILER "/home/jiangzixian/llvmShadowStack/llvm_shadow_stack3/build/bin_clang_ssT/clang++")
+
 set(TARGET_TRIPLE arm-none-eabi)
 
 set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})
@@ -19,10 +25,13 @@ set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
 
 set(LINKER_VENEER_OUTPUT_FLAG -Wl,--cmse-implib,--out-implib=)
 set(COMPILER_CMSE_FLAG -mcmse)
-set(CMAKE_LINKER "/usr/bin/arm-none-eabi-ld")
+set(CMAKE_LINKER  "/usr/bin/arm-none-eabi-ld")
 
-LINK_DIRECTORIES("/usr/lib/arm-none-eabi/newlib/thumb/v8-m.main/nofp")
-LINK_DIRECTORIES("/usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main/nofp")
+# LINK_DIRECTORIES("/usr/lib/arm-none-eabi/lib/thumb/v8-m.main/nofp")
+# LINK_DIRECTORIES("/usr/lib/gcc/arm-none-eabi/9.2.1/thumb/v8-m.main/nofp")
+
+LINK_DIRECTORIES("/usr/local/arm/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main/nofp")
+LINK_DIRECTORIES("/usr/local/arm/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main/nofp")
 
 # LINK_DIRECTORIES("/home/zys/repo/embedded/llvm-project/build/lib")
 set(CMAKE_OBJCOPY "arm-none-eabi-objcopy")
@@ -43,6 +52,7 @@ macro(tfm_toolchain_reset_compiler_flags)
     endif()
 
     add_compile_options(
+        -O0
         -specs=nano.specs
         -Wall
         -Wno-format
@@ -77,7 +87,7 @@ macro(tfm_toolchain_reset_linker_flags)
         -specs=nano.specs
         LINKER:-check-sections
         LINKER:-fatal-warnings
-        # LINKER:--gc-sections
+        LINKER:--gc-sections
         LINKER:--no-wchar-size-warning
         ${MEMORY_USAGE_FLAG}
     )
@@ -196,12 +206,12 @@ macro(tfm_toolchain_reload_compiler)
     set(CMAKE_ASM_FLAGS ${CMAKE_ASM_FLAGS_INIT})
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I/usr/lib/arm-none-eabi/include")
 
-    # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdlib")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/lib/arm-none-eabi/include -v")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdlib")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/lib/arm-none-eabi/include --verbose")
 
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
-    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
+    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld --verbose")
     set(BL2_COMPILER_CP_FLAG -mfloat-abi=soft)
 
     if(CONFIG_TFM_FLOAT_ABI STREQUAL "hard")

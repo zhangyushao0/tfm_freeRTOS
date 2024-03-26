@@ -56,10 +56,11 @@ target_link_libraries(tfm_s
         tfm_sprt
 )
 
+set(CMAKE_BINARY_DIR_S "" CACHE STRING "secure bin dir")
 set_target_properties(tfm_s
     PROPERTIES
         SUFFIX ".axf"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR_S}"
 )
 
 target_compile_options(tfm_s

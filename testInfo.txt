@@ -1,0 +1,12 @@
+已通过：
+beebs:
+platform/ext/target/stm/aslr_freertos_nsapp/beebs/src/aha-compress
+platform/ext/target/stm/aslr_freertos_nsapp/beebs/src/aha-mont64
+platform/ext/target/stm/aslr_freertos_nsapp/beebs/src/bubblesort
+platform/ext/target/stm/aslr_freertos_nsapp/beebs/src/cnt
+platform/ext/target/stm/aslr_freertos_nsapp/beebs/src/cover
+
+
+CRCExample编译不过
+
+

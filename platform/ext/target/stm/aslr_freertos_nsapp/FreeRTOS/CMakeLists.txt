@@ -236,15 +236,16 @@ endif()
 add_library(freertos_kernel STATIC)
 target_compile_options(freertos_kernel
     PUBLIC
-    -mlong-calls
-    -fno-jump-tables
     -fno-optimize-sibling-calls
     -fno-tree-vectorize
     -O0
     -fno-inline
     -fno-lto
 )
-target_link_options(freertos_kernel PUBLIC -fno-lto)
+target_link_options(freertos_kernel 
+    PUBLIC 
+    -fno-lto
+)
 ########################################################################
 # Overall Compile Options
 # Note the compile option strategy is to error on everything and then
@@ -270,8 +271,8 @@ target_compile_options(freertos_kernel PRIVATE
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-fdiagnostics-color=always>
     $<$<COMPILE_LANG_AND_ID:C,Clang>:-fcolor-diagnostics>
 
-    $<$<COMPILE_LANG_AND_ID:C,GNU,Clang>:-mlong-calls>
-    $<$<COMPILE_LANG_AND_ID:C,GNU,Clang>:-fno-jump-tables>
+    # $<$<COMPILE_LANG_AND_ID:C,GNU,Clang>:-mlong-calls>
+    # $<$<COMPILE_LANG_AND_ID:C,GNU,Clang>:-fno-jump-tables>
 
     $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wall>
     $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wextra>

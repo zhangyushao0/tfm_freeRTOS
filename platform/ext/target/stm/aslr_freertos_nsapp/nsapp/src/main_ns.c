@@ -1,13 +1,13 @@
 #include "main_ns.h"
-// #include "FreeRTOS.h"
+#include "FreeRTOS.h"
 #include "assert.h"
 
 #include "stm32l562xx.h"
 #include "stm32l5xx_hal.h"
 #include "stm32l5xx_hal_flash.h"
 #include "stm32l5xx_hal_rcc.h"
-// #include "support.h"
-// #include "task.h"
+#include "support.h"
+#include "task.h"
 #define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
 static void MX_GPIO_Init(void) {
@@ -33,56 +33,41 @@ void spin_100000() {
     }
 }
 
-int c = 0;
-int d = 0;
 
-int jzx_Sum(int a, int b) { //  __attribute__((section("random_functions")))
-    c++;
-    int sum = a;
-    while (b != 0) {
-        sum = a ^ b;
-        b = ((a & b) << 1);
-        a = sum;
-    }
-    return sum;
+void testThread2(void *pvParameters) {
+    initialise_benchmark();
+    int result = benchmark();
+    assert(verify_benchmark(result));
+    while (1) {
+    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+    vTaskDelay(500);
+  }
 }
-int jzx_foo(int a, int b) { // __attribute__((section("random_functions")))
-    d++;
-
-    int (*pfun)(int, int) = &jzx_Sum;  // 定义有两个int类型参数的函数指针pfun，指向foo函数的入口地址；
-
-    int v=(*pfun)(20, 5);  // 调用该函数指针，并传递参数给foo函数；
-
-    //return jzx_Sum(a, jzx_Sum(~b, 1));
-    return v;
-}
-
-// int (*p)(int, int) = add;
 
 int main() {
-    // NVIC_SystemReset();
-
-    // HAL_Init();
-    // p(1, 2);
-    // p = minust;
-    // p(1, 2);
-
-    // int e = jzx_Sum(1, 2);
-    int f = jzx_foo(1, 2);
-    // e += c;
-    f += d;
-
-    // int (*pfun1)(int, int) = &jzx_Sum;  // 定义有两个int类型参数的函数指针pfun，指向foo函数的入口地址；
-
-    // int v1=(*pfun1)(20, 5);  // 调用该函数指针，并传递参数给foo函数；
-
-    // void (*pfun2)(void) = &spin_100000;  // 定义无参数无返回值的函数指针pfun2，指向spin_100000函数的入口地址；
-
-    // (*pfun2)();  // 调用该函数指针，不需要传递参数给spin_100000函数；
-
-
     MX_GPIO_Init();
 
+    testThread2();
+
+//       static StackType_t xRWAccessTaskStack1[configMINIMAL_STACK_SIZE]
+//       __attribute__((aligned(32)));
+//   TaskParameters_t taskParams2 = {
+//       .pvTaskCode = testThread2,
+//       .pcName = "testThread2",
+//       .usStackDepth = configMINIMAL_STACK_SIZE,
+//       .pvParameters = NULL,
+//       .uxPriority = 1 | portPRIVILEGE_BIT,
+//       .puxStackBuffer = xRWAccessTaskStack1,
+//       .xRegions = {
+//           /* Base address Length Parameters */
+//           {(void *)(AHB2PERIPH_BASE_NS), 0x2000UL, portMPU_REGION_READ_WRITE},
+//           {0, 0, 0},
+//           {0, 0, 0}}};
+//   //xTaskCreateRestricted(&taskParams, NULL);
+//   xTaskCreateRestricted(&taskParams2, NULL);
+    
+
+    
     while (1) {
         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
         spin_100000();

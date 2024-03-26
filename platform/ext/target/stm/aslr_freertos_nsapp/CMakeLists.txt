@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 # -------------------------------------------------------------------------------
+option(RELOCATION_TABLE_OPTIONS OFF)
 
 cmake_policy(SET CMP0076 NEW)
 
@@ -32,19 +33,26 @@ target_sources(tfm_s
     ${STM_COMMON_DIR}/stm32l5xx/Device/Source/startup_stm32l5xx_s.c
 )
 
+set(CMAKE_BINARY_DIR_NS "" CACHE STRING "non-secure bin dir")
 set_target_properties(ns_app PROPERTIES
     SUFFIX ".axf"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR_NS}"
 )
 
 target_link_options(ns_app
     PRIVATE
-    # -r
-    # -e Reset_Handler
     $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:ARMClang>:--map>
     $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
 )
+
+if(RELOCATION_TABLE_OPTIONS)
+target_link_options(ns_app
+        PRIVATE
+        -r
+        -e Reset_Handler
+    )
+endif()
 
 add_convert_to_bin_target(ns_app)
 target_include_directories(ns_app
@@ -78,22 +86,23 @@ target_sources(platform_s
     ${STM32L563E_DK_DIR}/loader/src/loader.c
 )
 
-# # FreeRTOS
-# add_subdirectory(FreeRTOS)
-# target_link_libraries(ns_app
-# PUBLIC
-# freertos_kernel
-# )
+# FreeRTOS
+add_subdirectory(FreeRTOS)
+target_link_libraries(ns_app
+    PUBLIC
+    freertos_kernel
+)
 
-# # test
-# set(TEST_TARGET "" CACHE STRING "Test target to build")
+# test
+set(TEST_TARGET "" CACHE STRING "Test target to build")
 
-# # 分割字符串 _
-# string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
-# list(GET TEST_TARGET_LIST 0 FIRST_PART)
+# 分割字符串 _
+string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
+list(GET TEST_TARGET_LIST 0 FIRST_PART)
 
-# # 添加测试
-# add_subdirectory(${FIRST_PART})
+# 添加测试
+add_subdirectory(${FIRST_PART})
+
 if(BL2)
     target_sources(bl2
         PRIVATE
