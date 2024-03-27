@@ -34,24 +34,24 @@ def read_relocation_file(text_start = text_start):
                 elif line[1][-2:] == '03':
                     if symbol_dic[(int(line[1], 16) >> 8)] == "FUNC":#func pointers
                         value = hex(int(line[3], 16) + text_start)
-                        output_file.write('    {' + address + ', ' + value + ', 3},\n')
+                        output_file.write('    {' + address + ', ' + value + ', 1},\n')
                     elif symbol_dic[(int(line[1], 16) >> 8)] == "OBJECT":#global
                         value =  hex(int(line[3], 16) + data_start)
-                        output_file.write('    {' + address + ', ' + value + ', 1},\n')
+                        output_file.write('    {' + address + ', ' + value + ', 2},\n')
                 elif line[1][-2:] == '60':
                     value =  hex(int(line[3], 16) + data_start)
-                    output_file.write('    {' + address + ', ' + value + ', 1},\n')
+                    output_file.write('    {' + address + ', ' + value + ', 3},\n')
                 else:
                     value = hex(int(line[3], 16)+ text_start)
-                    output_file.write('    {' + address + ', ' + value + ', 2},\n')
+                    output_file.write('    {' + address + ', ' + value + ', 4},\n')
             output_file.write("};\n")
 
 
 
-command = "readelf -r /home/zys/repo/embedded/relo/build_re/bin/ns_app.elf > " + relocation_path
+command = "readelf -r /home/han/srtp/tfm_freeRTOS/build_re/bin/ns_app.elf > " + relocation_path
 subprocess.run(command, capture_output=True, text=True, shell=True, check=True)
 
-command = "readelf -s /home/zys/repo/embedded/relo/build_re/bin/ns_app.elf > " + symbol_path
+command = "readelf -s /home/han/srtp/tfm_freeRTOS/build_re/bin/ns_app.elf > " + symbol_path
 subprocess.run(command, capture_output=True, text=True, shell=True, check=True)
 
 with open(symbol_path, 'r') as symbol_file:
