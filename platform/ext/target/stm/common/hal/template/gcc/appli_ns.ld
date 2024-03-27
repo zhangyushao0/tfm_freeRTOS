@@ -20,6 +20,8 @@
 /* Linker script to configure memory regions. */
 /* This file will be run trough the pre-processor. */
 
+GROUP(-lgcc -lc -lnosys)
+
 #include "region_defs.h"
 
 MEMORY
@@ -32,7 +34,7 @@ __heap_size__  = NS_HEAP_SIZE;
 __stack_size__ = NS_STACK_SIZE;
 
 /* Library configurations */
-GROUP(libc.a libm.a libnosys.a)
+GROUP(libc.a libnosys.a libm.a)
 
 ENTRY(Reset_Handler)
 

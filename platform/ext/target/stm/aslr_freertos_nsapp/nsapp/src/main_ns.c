@@ -7,7 +7,7 @@
 #include "stm32l5xx_hal_flash.h"
 #include "stm32l5xx_hal_rcc.h"
 #include "support.h"
-#include "task.h"
+//#include "task.h"
 #define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
 static void MX_GPIO_Init(void) {
@@ -34,14 +34,14 @@ void spin_100000() {
 }
 
 
-void testThread2(void *pvParameters) {
+void testThread2(void) {
     initialise_benchmark();
     int result = benchmark();
     assert(verify_benchmark(result));
-    while (1) {
-    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-    vTaskDelay(500);
-  }
+//     while (1) {
+//     HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+//     vTaskDelay(500);
+//   }
 }
 
 int main() {

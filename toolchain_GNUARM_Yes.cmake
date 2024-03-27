@@ -55,6 +55,7 @@ macro(tfm_toolchain_reset_compiler_flags)
         -O0
         -specs=nano.specs
         -Wall
+        -Wl
         -Wno-format
         -Wno-return-type
         -Wno-unused-but-set-variable

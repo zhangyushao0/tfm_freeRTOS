@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 import re
 
-relocation_path = '/home/jiangzixian/tfm_freeRTOS_relo_func1/platform/ext/target/stm/aslr_freertos_nsapp/loader/script/relocation.txt'
-otutput_path = '/home/jiangzixian/tfm_freeRTOS_relo_func1/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/relocation.c'
-symbol_path = '/home/jiangzixian/tfm_freeRTOS_relo_func1/platform/ext/target/stm/aslr_freertos_nsapp/loader/script/symbol_table.txt'
+relocation_path = '/home/jiangzixian/relo_func2/platform/ext/target/stm/aslr_freertos_nsapp/loader/script/relocation.txt'
+otutput_path = '/home/jiangzixian/relo_func2/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/relocation.c'
+symbol_path = '/home/jiangzixian/relo_func2/platform/ext/target/stm/aslr_freertos_nsapp/loader/script/symbol_table.txt'
 
 text_start = 0x08055000
 data_start = 0x20000100

@@ -6,8 +6,8 @@ import re
 # #symbol_path = '/home/jiangzixian/tfm_freeRTOS_relo_func/platform/ext/target/stm/aslr_freertos_nsapp/loader/symbol_table.txt'
 
 
-func_info_path = '/home/jiangzixian/tfm_freeRTOS_relo_func1/platform/ext/target/stm/aslr_freertos_nsapp/loader/script/func_info.txt'
-otutput_path = '/home/jiangzixian/tfm_freeRTOS_relo_func1/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c'
+func_info_path = '/home/jiangzixian/relo_func2/platform/ext/target/stm/aslr_freertos_nsapp/loader/script/func_info.txt'
+otutput_path = '/home/jiangzixian/relo_func2/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c'
 
 text_start = 0x08055000
 
