@@ -1,6 +1,6 @@
 from elftools.elf.elffile import ELFFile
 
-elf_path = "./build_re/bin/ns_app.elf"
+elf_path = "./build/bin/ns_app.elf"
 output_relocation_info_path = "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/relocation.c"
 output_functions_info_path = "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c"
 need_relocation_secions = ['text']
