@@ -20,6 +20,7 @@ add_executable(ns_app)
 
 target_compile_options(ns_app
     PUBLIC
+
     # -fPIE
 )
 
@@ -40,6 +41,7 @@ set_target_properties(ns_app PROPERTIES
 if(ENABLE_RE)
     target_link_options(ns_app
         PRIVATE
+
         # -fPIE
         -r
         -e Reset_Handler
@@ -51,6 +53,7 @@ if(ENABLE_RE)
 else()
     target_link_options(ns_app
         PRIVATE
+
         # -fPIE
         $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
         $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
@@ -90,16 +93,17 @@ target_sources(platform_s
     ${STM32L563E_DK_DIR}/loader/src/func.c
     ${STM32L563E_DK_DIR}/loader/src/relocation.c
     ${STM32L563E_DK_DIR}/loader/src/divide.c
+
     # ${STM32L563E_DK_DIR}/loader/src/loader.c
     ${STM32L563E_DK_DIR}/loader/src/new_loader.c
 )
 
-# # FreeRTOS
-# add_subdirectory(FreeRTOS)
-# target_link_libraries(ns_app
-# PUBLIC
-# freertos_kernel
-# )
+# FreeRTOS
+add_subdirectory(FreeRTOS)
+target_link_libraries(ns_app
+    PUBLIC
+    freertos_kernel
+)
 
 # test
 set(TEST_TARGET "" CACHE STRING "Test target to build")
@@ -110,6 +114,7 @@ list(GET TEST_TARGET_LIST 0 FIRST_PART)
 
 # 添加测试
 add_subdirectory(${FIRST_PART})
+
 if(BL2)
     target_sources(bl2
         PRIVATE

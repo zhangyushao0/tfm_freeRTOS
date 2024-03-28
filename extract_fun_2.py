@@ -2,7 +2,7 @@ from elftools.elf.elffile import ELFFile
 from elftools.elf.relocation import RelocationSection
 from elftools.elf.sections import SymbolTableSection
 
-ns_start = 0x8055000
+ns_start = 0x8055200
 
 
 def process_relocation_table(elf_file):
@@ -54,10 +54,7 @@ def process_relocation_table(elf_file):
                         reloc_entries.append((0, ns_start + reloc_addr, symbol_addr))
 
     # 生成C代码
-    with open(
-        "platform/ext/target/stm/aslr_freertos_nsapp/loader/func_info.h", "w"
-    ) as f:
-        f.write("#pragma once\n")
+    with open("reloc_info.c", "w") as f:
         f.write("#include <stdint.h>\n\n")
 
         # 写入函数地址数组
