@@ -21,6 +21,10 @@ add_executable(ns_app)
 target_compile_options(ns_app
     PUBLIC
 
+    # -mcmodel=small
+    # -fno-pic
+    -fno-jump-tables
+
     # -fPIE
 )
 

@@ -20,14 +20,14 @@
 
    You should have received a copy of the GNU General Public License
    along with this program. If not, see <http://www.gnu.org/licenses/>. */
-#include <stdio.h>
-#include <stdlib.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 
 #include "support.h"
 
 /* This scale factor will be changed to equalise the runtime of the
    benchmarks. */
-#define SCALE_FACTOR    (REPEAT_FACTOR >> 0)
+#define SCALE_FACTOR (REPEAT_FACTOR >> 0)
 
 /* Code from GLS.  Nine insns in the loop, giving 9*32 + 3 = 291 insns
 worst case (mask = all 1's, not counting subroutine linkage). */
@@ -36,7 +36,8 @@ unsigned compress1(unsigned x, unsigned mask) {
   unsigned result = 0, bit = 1;
   while (mask != 0) {
     if ((mask & 1) != 0) {
-      if (x & 1) result |= bit;
+      if (x & 1)
+        result |= bit;
       bit <<= 1;
     }
     mask >>= 1;
@@ -51,18 +52,18 @@ be faster if the mask is sparse). */
 
 // ------------------------------ cut ----------------------------------
 unsigned compress2(unsigned x, unsigned m) {
-   unsigned r, s, b;    // Result, shift, mask bit.
+  unsigned r, s, b; // Result, shift, mask bit.
 
-   r = 0;
-   s = 0;
-   do {
-      b = m & 1;
-      r = r | ((x & b) << s);
-      s = s + b;
-      x = x >> 1;
-      m = m >> 1;
-   } while (m != 0);
-   return r;
+  r = 0;
+  s = 0;
+  do {
+    b = m & 1;
+    r = r | ((x & b) << s);
+    s = s + b;
+    x = x >> 1;
+    m = m >> 1;
+  } while (m != 0);
+  return r;
 }
 // ---------------------------- end cut --------------------------------
 
@@ -79,22 +80,28 @@ unsigned compress3(unsigned x, unsigned mask) {
   m = ~mask;
   zm = mask;
   for (i = 0; i < 5; i++) {
-      q = m;
-      m ^= m << 1;
-      m ^= m << 2;
-      m ^= m << 4;
-      m ^= m << 8;
-      m ^= m << 16;
-      masks[i] = (m << 1) & zm;
-      m = q & ~m;
-      q = zm & masks[i]; zm = zm ^ q ^ (q >> (1 << i));
+    q = m;
+    m ^= m << 1;
+    m ^= m << 2;
+    m ^= m << 4;
+    m ^= m << 8;
+    m ^= m << 16;
+    masks[i] = (m << 1) & zm;
+    m = q & ~m;
+    q = zm & masks[i];
+    zm = zm ^ q ^ (q >> (1 << i));
   }
   x = x & mask;
-  q = x & masks[0];  x = x ^ q ^ (q >> 1);
-  q = x & masks[1];  x = x ^ q ^ (q >> 2);
-  q = x & masks[2];  x = x ^ q ^ (q >> 4);
-  q = x & masks[3];  x = x ^ q ^ (q >> 8);
-  q = x & masks[4];  x = x ^ q ^ (q >> 16);
+  q = x & masks[0];
+  x = x ^ q ^ (q >> 1);
+  q = x & masks[1];
+  x = x ^ q ^ (q >> 2);
+  q = x & masks[2];
+  x = x ^ q ^ (q >> 4);
+  q = x & masks[3];
+  x = x ^ q ^ (q >> 8);
+  q = x & masks[4];
+  x = x ^ q ^ (q >> 16);
   return x;
 }
 
@@ -107,95 +114,78 @@ can be omitted. */
 
 // ------------------------------ cut ----------------------------------
 unsigned compress4(unsigned x, unsigned m) {
-   unsigned long mk, mp, mv, t;
-   int i;
+  unsigned long mk, mp, mv, t;
+  int i;
 
-   x = x & m;           // Clear irrelevant bits.
-   mk = ~m << 1;        // We will count 0's to right.
+  x = x & m;    // Clear irrelevant bits.
+  mk = ~m << 1; // We will count 0's to right.
 
-   for (i = 0; i < 5; i++) {
-      mp = mk ^ (mk << 1);              // Parallel suffix.
-      mp = mp ^ (mp << 2);
-      mp = mp ^ (mp << 4);
-      mp = mp ^ (mp << 8);
-      mp = mp ^ (mp << 16);
-      mv = mp & m;                      // Bits to move.
-      m = (m ^ mv) | (mv >> (1 << i));    // Compress m.
-      t = x & mv;
-      x = (x ^ t) | (t >> (1 << i));      // Compress x.
-      mk = mk & ~mp;
-   }
-   return x;
+  for (i = 0; i < 5; i++) {
+    mp = mk ^ (mk << 1); // Parallel suffix.
+    mp = mp ^ (mp << 2);
+    mp = mp ^ (mp << 4);
+    mp = mp ^ (mp << 8);
+    mp = mp ^ (mp << 16);
+    mv = mp & m;                     // Bits to move.
+    m = (m ^ mv) | (mv >> (1 << i)); // Compress m.
+    t = x & mv;
+    x = (x ^ t) | (t >> (1 << i)); // Compress x.
+    mk = mk & ~mp;
+  }
+  return x;
 }
 
 const unsigned long test[] = {
-//       Data        Mask       Result
-    0xFFFFFFFF, 0x80000000, 0x00000001,
-    0xFFFFFFFF, 0x0010084A, 0x0000001F,
-    0xFFFFFFFF, 0x55555555, 0x0000FFFF,
-    0xFFFFFFFF, 0x88E00F55, 0x00001FFF,
-    0x01234567, 0x0000FFFF, 0x00004567,
-    0x01234567, 0xFFFF0000, 0x00000123,
-    0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-    0,          0,          0,
-    0,          0xFFFFFFFF, 0,
-    0xFFFFFFFF, 0,          0,
-    0x80000000, 0x80000000, 1,
-    0x55555555, 0x55555555, 0x0000FFFF,
-    0x55555555, 0xAAAAAAAA, 0,
-    0x789ABCDE, 0x0F0F0F0F, 0x00008ACE,
-    0x789ABCDE, 0xF0F0F0F0, 0x000079BD,
-    0x92345678, 0x80000000, 0x00000001,
-    0x12345678, 0xF0035555, 0x000004ec,
-    0x80000000, 0xF0035555, 0x00002000,
+    //       Data        Mask       Result
+    0xFFFFFFFF, 0x80000000, 0x00000001, 0xFFFFFFFF, 0x0010084A, 0x0000001F,
+    0xFFFFFFFF, 0x55555555, 0x0000FFFF, 0xFFFFFFFF, 0x88E00F55, 0x00001FFF,
+    0x01234567, 0x0000FFFF, 0x00004567, 0x01234567, 0xFFFF0000, 0x00000123,
+    0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0,          0,          0,
+    0,          0xFFFFFFFF, 0,          0xFFFFFFFF, 0,          0,
+    0x80000000, 0x80000000, 1,          0x55555555, 0x55555555, 0x0000FFFF,
+    0x55555555, 0xAAAAAAAA, 0,          0x789ABCDE, 0x0F0F0F0F, 0x00008ACE,
+    0x789ABCDE, 0xF0F0F0F0, 0x000079BD, 0x92345678, 0x80000000, 0x00000001,
+    0x12345678, 0xF0035555, 0x000004ec, 0x80000000, 0xF0035555, 0x00002000,
 };
 
+void initialise_benchmark(void) {}
 
-void
-initialise_benchmark (void)
-{
-}
+int benchmark(void) {
+  int errors = 0, n, i;
+  unsigned int r;
 
+  n = sizeof(test) / sizeof(test[0]);
 
-int
-benchmark (void)
-{
-   int errors = 0,  n, i;
-   unsigned int r;
+  for (i = 0; i < n; i += 3) {
+    r = compress1(test[i], test[i + 1]);
+    if (r != test[i + 2])
+      errors = 1;
+  }
 
-   n = sizeof(test)/sizeof(test[0]);
+  for (i = 0; i < n; i += 3) {
+    r = compress2(test[i], test[i + 1]);
+    if (r != test[i + 2])
+      errors = 1;
+  }
 
-   for (i = 0; i < n; i += 3) {
-      r = compress1(test[i], test[i+1]);
-      if (r != test[i+2])
-         errors = 1;
-   }
+  for (i = 0; i < n; i += 3) {
+    r = compress3(test[i], test[i + 1]);
+    if (r != test[i + 2])
+      errors = 1;
+  }
 
-   for (i = 0; i < n; i += 3) {
-      r = compress2(test[i], test[i+1]);
-      if (r != test[i+2])
-         errors = 1;
-   }
+  for (i = 0; i < n; i += 3) {
+    r = compress4(test[i], test[i + 1]);
+    if (r != test[i + 2])
+      errors = 1;
+  }
 
-   for (i = 0; i < n; i += 3) {
-      r = compress3(test[i], test[i+1]);
-      if (r != test[i+2])
-         errors = 1;
-   }
-
-   for (i = 0; i < n; i += 3) {
-      r = compress4(test[i], test[i+1]);
-      if (r != test[i+2])
-         errors = 1;
-   }
-
-   return errors;
+  return errors;
 }
 
 // r is the number of errors therefore if r = 0 then output a 1 for correct
-int verify_benchmark(int r)
-{
-   if (r != 0)
-      return 0;
-   return 1;
+int verify_benchmark(int r) {
+  if (r != 0)
+    return 0;
+  return 1;
 }
