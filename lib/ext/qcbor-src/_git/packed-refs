@@ -1,0 +1,20 @@
+# pack-refs with: peeled fully-peeled sorted 
+991691490798d5cb91f0612129cc7b841bd068d4 refs/remotes/origin/BeforeSpiffyDecode
+f318d1745d225207ca8e2ed4f3a2c99f6e5ada94 refs/remotes/origin/arrays
+7703d2b95db894b4e9df2b298ec103c0cb2daae7 refs/remotes/origin/common_clean
+8f310ddb30bb69c3dc13d9d455a65fce2bdb2494 refs/remotes/origin/const
+a6ee74e97d70333d13572f49fe307d036a214912 refs/remotes/origin/dev
+53718f0bd32dc5ab0e5405948490b7411a92be6e refs/remotes/origin/disable
+e250560de34893c70145f02736136a36b7222548 refs/remotes/origin/enter-array
+912992cca47072ec8238a28f1fbd55924db5f500 refs/remotes/origin/makewarn
+dec9eecd1a84c14a99dde6ac712fa210046d65c1 refs/remotes/origin/mappie
+9b969b583d2ab3a53d8067a6b726a45d1c124f07 refs/remotes/origin/master
+6922e5aff9e10d1a513352457309cd2a64d4102e refs/remotes/origin/newtag
+c1a0dd5b3ffc18da28ee6d0e0e4dbdbc5de4406f refs/remotes/origin/return_arrays
+851c98650b84287b89a2fceec652028240e5fef8 refs/remotes/origin/ub-example
+a0a04cd9ace21b3a9ca0e014defeb8c5294680cf refs/remotes/origin/versioning
+f64f1b15f757363869135bcb57e57da578ede18e refs/remotes/origin/warn_in_tests
+d7efdbf4bb3ab50a65ceb01d38c8a2b4fdcb5ac7 refs/tags/v1.0
+^56b17bf9f74096774944bcac0829adcd887d391e
+07653df2bbdb2d090d98d0df514fa019ac23dff3 refs/tags/v1.1
+92d3f89030baff4af7be8396c563e6c8ef263622 refs/tags/v1.2
