@@ -31,27 +31,28 @@ extern "C" {
 #include "stm32l5xx_hal.h"
 
 /* Usage of COM feature */
-#define USE_BSP_COM_FEATURE 0U
-#define USE_COM_LOG         0U
+#define USE_BSP_COM_FEATURE 1U
+#define USE_COM_LOG 1U
 
 /* Button interrupt priority */
-#define BSP_BUTTON_USER_IT_PRIORITY 0x07UL  /* Default is lowest priority level */
+#define BSP_BUTTON_USER_IT_PRIORITY \
+    0x07UL /* Default is lowest priority level */
 
 /* IDD interrupt priority */
-#define BSP_IDD_IT_PRIORITY         0x07UL  /* Default is lowest priority level */
+#define BSP_IDD_IT_PRIORITY 0x07UL /* Default is lowest priority level */
 
 /* TS interrupt priority */
-#define BSP_TS_IT_PRIORITY          0x07UL  /* Default is lowest priority level */
+#define BSP_TS_IT_PRIORITY 0x07UL /* Default is lowest priority level */
 
 /* Audio interrupt priorities */
-#define BSP_AUDIO_OUT_IT_PRIORITY   0x07UL  /* Default is lowest priority level */
-#define BSP_AUDIO_IN_IT_PRIORITY    0x07UL  /* Default is lowest priority level */
+#define BSP_AUDIO_OUT_IT_PRIORITY 0x07UL /* Default is lowest priority level */
+#define BSP_AUDIO_IN_IT_PRIORITY 0x07UL  /* Default is lowest priority level */
 
 /* SD card interrupt priority */
-#define BSP_SD_IT_PRIORITY          0x07UL  /* Default is lowest priority level */
+#define BSP_SD_IT_PRIORITY 0x07UL /* Default is lowest priority level */
 
 /* Bus frequencies */
-#define BUS_I2C1_FREQUENCY          100000UL /* Frequency of I2C1 = 100 KHz */
+#define BUS_I2C1_FREQUENCY 100000UL /* Frequency of I2C1 = 100 KHz */
 
 /* Default AUDIO IN internal buffer size in 32-bit words per micro */
 #define BSP_AUDIO_IN_DEFAULT_BUFFER_SIZE 2048UL /* 2048*4 = 8Kbytes */

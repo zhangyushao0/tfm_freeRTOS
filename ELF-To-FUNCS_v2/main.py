@@ -16,6 +16,7 @@ try:
     funcs_filepath = config.get(section, 'funcs_filepath')
     funcs_size_filepath = config.get(section, 'funcs_size_filepath')
     flash_config_filepath = config.get(section, 'flash_config_filepath')
+    ram_config_filepath = config.get(section, 'ram_config_filepath')
 except Exception as e:
     print('[INFO]Configuration Error:{}'.format(e))
     sys.exit(0)
@@ -23,6 +24,7 @@ try:
 
     [start_address, end_address] = section_read.get_section_size('.ITS', ELFpath_s)
     section_read.generate_flash_config(ELFpath_ns, flash_config_filepath, start_address, end_address)
+    section_read.generate_ram_config(ram_config_filepath)
 
     os.system('readelf -s ' + ELFpath_ns + '| grep FUNC > ./funcs.txt')
     os.system('readelf -s ' + ELFpath_s + '| grep FUNC > ./funcs_s.txt')

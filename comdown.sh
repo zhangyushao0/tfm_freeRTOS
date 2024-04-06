@@ -1,13 +1,10 @@
 #!/bin/bash
 STM32_Programmer_CLI_PATH="/mnt/d/programs/STM32CubeProgrammer/bin"
 STM32_GDB_server_PATH="/mnt/d/programs/stm32gdbserver"
-ELF_TO_Funcs_PATH="/home/han/srtp/tfm_freertos_aslr/tfm_freeRTOS/ELF-To-FUNCS_v2"
-
+ELF_TO_Funcs_PATH="ELF-To-FUNCS_v2"
 for arg in "$@"; do
     if [[ "$arg" == "-c" ]] || [[ "$arg" == "--compile" ]]; then
-        cd build
-        make install
-        cd ..
+        cmake --build build
         echo "Compile done"
         break
     fi

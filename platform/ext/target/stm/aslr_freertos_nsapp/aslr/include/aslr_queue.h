@@ -5,7 +5,7 @@
 
 typedef func_node_t ElementType;
 
-#define MAX_SIZE_QUEUE_ASLR 0x80
+#define MAX_SIZE_QUEUE_ASLR 0x100
 
 typedef struct Queue {
     int front;

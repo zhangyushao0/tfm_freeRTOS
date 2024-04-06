@@ -21,8 +21,8 @@
  * Git SHA: b5f0603d6a584d1724d952fd8b0737458b90d62b
  */
 
-#include "aslr.h"
-#include "aslr_mpu.h"
+// #include "aslr.h"
+// #include "aslr_mpu.h"
 #include "cmsis.h"
 
 /*----------------------------------------------------------------------------
@@ -53,7 +53,9 @@ void Reset_Handler(void) __NO_RETURN;
 
 /* Exceptions */
 DEFAULT_IRQ_HANDLER(NMI_Handler)
-// DEFAULT_IRQ_HANDLER(HardFault_Handler)
+#if (ENABLE_ASLR == 0)
+DEFAULT_IRQ_HANDLER(HardFault_Handler)
+#endif
 DEFAULT_IRQ_HANDLER(MemManage_Handler)
 DEFAULT_IRQ_HANDLER(BusFault_Handler)
 DEFAULT_IRQ_HANDLER(UsageFault_Handler)
@@ -182,6 +184,10 @@ DEFAULT_IRQ_HANDLER(OTFDEC1_IRQHandler)
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
+#endif
+
+#if (ENABLE_ASLR == 1)
+extern void HardFault_Handler();
 #endif
 
 extern const VECTOR_TABLE_Type __VECTOR_TABLE[];
@@ -351,6 +357,9 @@ void Reset_Handler(void) {
     __TZ_set_STACKSEAL_S((uint32_t*)(&__STACK_SEAL));
 #endif
     SystemInit(); /* CMSIS System Initialization */
+#if (ENABLE_ASLR == 1)
+    extern void mpu_enable_aslr();
     mpu_enable_aslr();
+#endif
     __PROGRAM_START(); /* Enter PreMain (C library entry point) */
 }

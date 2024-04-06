@@ -289,7 +289,7 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
         "    msr basepri, r0                              \n" /* Disable interrupts upto configMAX_SYSCALL_INTERRUPT_PRIORITY. */
         "    dsb                                          \n"
         "    isb                                          \n"
-        "	 movw r3, #0x6b15			             	  \n"
+        "	 movw r3, #0x6eed			             	  \n"
         "	 movt r3, #0x0805    						  \n"
         "    blx r3                                       \n"
         // "    bl vTaskSwitchContext                        \n"

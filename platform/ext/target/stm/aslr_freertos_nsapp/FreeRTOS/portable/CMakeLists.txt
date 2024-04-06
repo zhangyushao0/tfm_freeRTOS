@@ -8,14 +8,18 @@ endif()
 # FreeRTOS internal cmake file. Do not use it in user top-level project
 add_library(freertos_kernel_port STATIC)
 target_compile_options(freertos_kernel_port PUBLIC
-    -mlong-calls
-    -fno-jump-tables
     -fno-optimize-sibling-calls
     -fno-tree-vectorize
     -O0
     -fno-inline
     -fno-lto
 )
+if(ENABLE_ASLR)
+target_compile_options(freertos_kernel_port PUBLIC
+    -mlong-calls
+    -fno-jump-tables
+)
+endif()
 target_link_options(freertos_kernel_port PUBLIC -fno-lto)
 target_sources(freertos_kernel_port PRIVATE
     # TEMPLATE Port

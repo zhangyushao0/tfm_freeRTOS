@@ -12,11 +12,16 @@ cmake_minimum_required(VERSION 3.15)
 
 add_executable(tfm_s)
 
+if(ENABLE_ASLR)
 target_compile_options(tfm_s
     PUBLIC
         -mlong-calls
         -fno-jump-tables
 )
+endif()
+
+option (ENABLE_ASLR "Enable ASLR" ON)
+target_compile_definitions(tfm_s PRIVATE ENABLE_ASLR=$<BOOL:${ENABLE_ASLR}>)
 
 add_library(secure_fw INTERFACE)
 

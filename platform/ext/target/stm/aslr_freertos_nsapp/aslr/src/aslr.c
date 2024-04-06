@@ -51,24 +51,7 @@ uint8_t flag_a40c, flag_901c, flag_9b7a;
 void HardFault_Handler(void) {
     static uint32_t n_excp;
     uint32_t interrupt_ret;
-
-#ifdef _EVALUATION
     n_excp++;
-#endif
-    if (n_excp == 200) {
-        n_excp++;
-        n_excp--;
-    }
-
-    // __asm volatile("MRS %0, control" : "=r"(ulControlValue));
-    // if (ulControlValue & 0x02) {  // 使用 psp
-    //     initial_msp_s = __get_PSP();
-    //     secureportREAD_PSP_aslr(msp);
-    // } else {
-    //     initial_msp_s = __get_MSP();
-    //     secureportREAD_MSP_aslr(msp);
-    // }
-
     uint32_t ulLRValue;
     uint32_t ulControlValue;
     __asm volatile("mov %0, lr" : "=r"(ulLRValue));
@@ -93,23 +76,30 @@ void HardFault_Handler(void) {
 
     interrupt_ret = (uint32_t) * (msp + 6);  // return address value
     lr = (uint32_t) * (msp + 5);
+    if (interrupt_ret != 0x08057068 && interrupt_ret != 0x0805ce0a &&
+        interrupt_ret != 0x0805cdf4) {
+        n_excp += 1;
+        n_excp -= 1;
+    }
+    if (n_excp == 4914) {
+        n_excp += 1;
+        n_excp -= 1;
+    }
+    if (interrupt_ret == 0x0805e8b4) {  // readelf - 1
+        n_excp += 1;
+        n_excp -= 1;
+    }
 
     aslr_region_type_t type = get_type(interrupt_ret);
 
     if (initial_msp_ns == 0)
         initial_msp_ns = (uint32_t)msp + 0x20;
 
+    // 查看这个 function 是否在已经加载的函数中
     func_node_t* new_address = function_exist_aslr(interrupt_ret);
     if (new_address) {
-#ifdef _EVALUATION
-        n_redirect++;
-#endif
         if ((lr & 0xff000000) != 0xff000000) {
-            if (interrupt_ret == 0x8a94) {
-                rewrite_function_v2_aslr(new_address->load_address, lr);
-            } else {
-                rewrite_function_v2_aslr(new_address->load_address, lr);
-            }
+            rewrite_function_v2_aslr(new_address->load_address, lr);
         }
         exception_reconstruct_aslr(msp, new_address->load_address);
         return;
@@ -127,7 +117,6 @@ void HardFault_Handler(void) {
         }
         if (idx != -1) {
             uint32_t size = funcs[idx].size;
-
             func_node_t func_node = {
                 .load_address = (uint32_t)address_malloc_aslr(size, type),
                 .size = size,
@@ -135,18 +124,12 @@ void HardFault_Handler(void) {
                 .call_frame_size = funcs[idx].call_frame_size,
                 .ref = 0};
             if (func_node.load_address == NULL) {
-#ifdef _EVALUATION
-                n_evict++;
-#endif
                 func_evict_one_aslr();
                 func_node.load_address =
                     (uint32_t)address_malloc_aslr(size, type);
             }
             while (func_node.load_address == NULL)
                 ;
-#ifdef _EVALUATION
-            n_load++;
-#endif
             while (queue_insert_aslr(&funcs_queue, func_node))
                 ;
             load_func_aslr((uint8_t*)func_node.load_address,
@@ -266,6 +249,7 @@ void exception_reconstruct_aslr(uint32_t* msp, uint32_t new_address) {
 }
 
 int rewrite_function_v2_aslr(uint32_t new_address, uint32_t lr) {
+    // 获取 ldr 指令的地址
     uint16_t* index_addr = (uint8_t*)((lr & 0xfffffffe) - 2);
     uint32_t rd = rd_recognize_aslr(*(uint16_t*)index_addr);
     index_addr -= 1;

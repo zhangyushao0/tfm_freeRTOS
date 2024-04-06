@@ -112,11 +112,14 @@ target_sources(tfm_s
     PRIVATE
         ${STM_COMMON_DIR}/hal/Native_Driver/tick.c
 )
+
+if(ENABLE_ASLR)
 target_compile_options(tfm_s
     PRIVATE
         -mlong-calls
         -fno-jump-tables
 )
+endif()
 
 #========================= Platform Non-Secure ================================#
 

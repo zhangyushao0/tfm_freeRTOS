@@ -17,15 +17,15 @@ void C_HardFault_Handler(void) {
     tfm_core_panic();
 }
 
-// __attribute__((naked)) void HardFault_Handler(void)
-// {
-//     EXCEPTION_INFO(EXCEPTION_TYPE_HARDFAULT);
+#if (ENABLE_ASLR == 0)
+__attribute__((naked)) void HardFault_Handler(void) {
+    EXCEPTION_INFO(EXCEPTION_TYPE_HARDFAULT);
 
-//     __ASM volatile(
-//         "bl        C_HardFault_Handler     \n"
-//         "b         .                       \n"
-//     );
-// }
+    __ASM volatile(
+        "bl        C_HardFault_Handler     \n"
+        "b         .                       \n");
+}
+#endif
 
 void C_MemManage_Handler(void) {
     /* A MemManage fault may indicate corruption of secure state, so it is

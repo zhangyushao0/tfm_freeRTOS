@@ -11,36 +11,29 @@
 struct mpu_armv8m_region_cfg_t_aslr region_cfg_s_service1 = {
     0x0,
     ASLR_FLASH_SECURE_SERVICE1_REGION_START,
-    (ASLR_FLASH_SECURE_SERVICE1_REGION_END -
-     ASLR_FLASH_SECURE_SERVICE1_REGION_START + 1),
+    ASLR_FLASH_SECURE_SERVICE1_REGION_END,
     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ASLR,
     MPU_ARMV8M_XN_EXEC_NEVER,
-    MPU_ARMV8M_AP_RW_PRIV_UNPRIV,
     MPU_ARMV8M_SH_NONE};
-// struct mpu_armv8m_region_cfg_t_aslr region_cfg2 = {
-//     0x2,
-//     0x20011000UL,
-//     0x20011FFFUL,
-//     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ASLR,
-//     MPU_ARMV8M_XN_EXEC_OK,
-//     MPU_ARMV8M_AP_RW_PRIV_UNPRIV,
-//     MPU_ARMV8M_SH_NONE};
-// struct mpu_armv8m_region_cfg_t_aslr region_cfg3 = {
-//     0x3,
-//     0x20012000UL,
-//     0x20012FFFUL,
-//     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ASLR,
-//     MPU_ARMV8M_XN_EXEC_OK,
-//     MPU_ARMV8M_AP_RW_PRIV_UNPRIV,
-//     MPU_ARMV8M_SH_NONE};
-struct mpu_armv8m_region_cfg_t_aslr region_cfg_ns_flash = {
+
+struct mpu_armv8m_region_cfg_t_aslr region_cfg_ns_handler_flash = {
     0x0,
+    ASLR_FLASH_HANDLER_REGION_START,
+    ASLR_FLASH_HANDLER_REGION_END,
+    MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ASLR,
+    MPU_ARMV8M_XN_EXEC_OK,
+    MPU_ARMV8M_AP_RO_PRIV_UNPRIV,
+    MPU_ARMV8M_SH_NONE};
+
+struct mpu_armv8m_region_cfg_t_aslr region_cfg_ns_flash = {
+    0x1,
     ALSR_FLASH_UNEXECUTABLE_REGION_START,
     ALSR_FLASH_UNEXECUTABLE_REGION_END,
     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ASLR,
     MPU_ARMV8M_XN_EXEC_NEVER,
-    MPU_ARMV8M_AP_RW_PRIV_UNPRIV,
+    MPU_ARMV8M_AP_RO_PRIV_UNPRIV,
     MPU_ARMV8M_SH_NONE};
+
 enum mpu_armv8m_error_t_aslr mpu_armv8m_region_enable_aslr(
     struct mpu_armv8m_dev_t_aslr* dev,
     struct mpu_armv8m_region_cfg_t_aslr* region_cfg) {
@@ -127,14 +120,16 @@ void mpu_enable_aslr() {
     region_cfg_ns_flash.region_limit = ALSR_FLASH_UNEXECUTABLE_REGION_END;
     region_cfg_s_service1.region_base = ASLR_FLASH_SECURE_SERVICE1_REGION_START;
     region_cfg_s_service1.region_limit = ASLR_FLASH_SECURE_SERVICE1_REGION_END;
+    region_cfg_ns_handler_flash.region_base = ASLR_FLASH_HANDLER_REGION_START;
+    region_cfg_ns_handler_flash.region_limit = ASLR_FLASH_HANDLER_REGION_END;
 
     struct mpu_armv8m_dev_t_aslr dev_mpu_s = {MPU_BASE};
     struct mpu_armv8m_dev_t_aslr dev_mpu_ns = {MPU_BASE_NS};
 
-    mpu_armv8m_region_enable_aslr(&dev_mpu_ns, &region_cfg_ns_flash);
     mpu_armv8m_region_enable_aslr(&dev_mpu_s, &region_cfg_s_service1);
-    // mpu_armv8m_region_enable_aslr(&dev_mpu_ns, &region_cfg2);
-    // mpu_armv8m_region_enable_aslr(&dev_mpu_ns, &region_cfg3);
+    mpu_armv8m_region_enable_aslr(&dev_mpu_ns, &region_cfg_ns_flash);
+    mpu_armv8m_region_enable_aslr(&dev_mpu_ns, &region_cfg_ns_handler_flash);
+
     mpu_armv8m_enable_aslr(&dev_mpu_s, PRIVILEGED_DEFAULT_ENABLE_ASLR, 0);
     mpu_armv8m_enable_aslr(&dev_mpu_ns, PRIVILEGED_DEFAULT_ENABLE_ASLR, 0);
 }

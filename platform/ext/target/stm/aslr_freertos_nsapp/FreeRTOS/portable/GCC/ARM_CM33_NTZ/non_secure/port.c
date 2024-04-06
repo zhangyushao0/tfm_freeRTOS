@@ -429,13 +429,13 @@ void vPortExitCritical(void) PRIVILEGED_FUNCTION;
 /**
  * @brief SysTick handler.
  */
-void SysTick_Handler(void) PRIVILEGED_FUNCTION;
+void SysTick_Handler(void) HANDLER_FUNCTION;
 
 /**
  * @brief C part of SVC handler.
  */
 portDONT_DISCARD void vPortSVCHandler_C(uint32_t* pulCallerStackAddress)
-    PRIVILEGED_FUNCTION;
+    HANDLER_FUNCTION;
 
 #if ((configENABLE_MPU == 1) && (configUSE_MPU_WRAPPERS_V1 == 0))
 
@@ -865,6 +865,8 @@ static void prvSetupMPU(void) /* PRIVILEGED_FUNCTION */
     extern uint32_t* __privileged_sram_end__;
 #else  /* if defined( __ARMCC_VERSION ) */
     /* Declaration when these variable are exported from linker scripts. */
+    extern uint32_t __handler_functions_start__[];
+    extern uint32_t __handler_functions_end__[];
     extern uint32_t __privileged_functions_start__[];
     extern uint32_t __privileged_functions_end__[];
     extern uint32_t __syscalls_flash_start__[];
@@ -893,61 +895,16 @@ static void prvSetupMPU(void) /* PRIVILEGED_FUNCTION */
             ((portMPU_DEVICE_MEMORY_nGnRE << portMPU_MAIR_ATTR1_POS) &
              portMPU_MAIR_ATTR1_MASK);
 
-        // /* Setup privileged flash as Read Only so that privileged tasks can
-        //  * read it but not modify. */
-        // portMPU_RNR_REG = portASLRUNEXECUTE_FLASH_REGION;
-        // portMPU_RBAR_REG = (((uint32_t)__privileged_functions_start__) &
-        //                     portMPU_RBAR_ADDRESS_MASK) |
-        //                    (portMPU_REGION_NON_SHAREABLE) |
-        //                    (portMPU_REGION_PRIVILEGED_READ_ONLY);
-        // portMPU_RLAR_REG = (((uint32_t)__privileged_functions_end__) &
-        //                     portMPU_RLAR_ADDRESS_MASK) |
-        //                    (portMPU_RLAR_ATTR_INDEX0) |
-        //                    (portMPU_RLAR_REGION_ENABLE);
+        /* Setup privileged flash as Read Only so that privileged tasks can
+  * read it but not modify. */
 
-        // /* Setup unprivileged flash as Read Only by both privileged and
-        //  * unprivileged tasks. All tasks can read it but no-one can modify. */
-        // portMPU_RNR_REG = portASLRUNPRIVILEGED_RAM_REGION;
-        // portMPU_RBAR_REG = (((uint32_t)__unprivileged_flash_start__) &
-        //                     portMPU_RBAR_ADDRESS_MASK) |
-        //                    (portMPU_REGION_NON_SHAREABLE) |
-        //                    (portMPU_REGION_READ_ONLY);
-        // portMPU_RLAR_REG = (((uint32_t)__unprivileged_flash_end__) &
-        //                     portMPU_RLAR_ADDRESS_MASK) |
-        //                    (portMPU_RLAR_ATTR_INDEX0) |
-        //                    (portMPU_RLAR_REGION_ENABLE);
-
-        // /* Setup unprivileged syscalls flash as Read Only by both privileged
-        //  * and unprivileged tasks. All tasks can read it but no-one can modify. */
-        // portMPU_RNR_REG = portASLRPRIVILEGED_RAM_REGION;
-        // portMPU_RBAR_REG =
-        //     (((uint32_t)__syscalls_flash_start__) & portMPU_RBAR_ADDRESS_MASK) |
-        //     (portMPU_REGION_NON_SHAREABLE) | (portMPU_REGION_READ_ONLY);
-        // portMPU_RLAR_REG =
-        //     (((uint32_t)__syscalls_flash_end__) & portMPU_RLAR_ADDRESS_MASK) |
-        //     (portMPU_RLAR_ATTR_INDEX0) | (portMPU_RLAR_REGION_ENABLE);
-
-        // uint32_t __aslr_falsh_start__ = 0x08050000;
-        // uint32_t __aslr_falsh_end__ = 0x0805efff;
+#if (configENABLE_ASLR == 1)
         uint32_t __aslr_privilege_sram_start__ = ASLR_RAM_PRIV_REGION_START;
         uint32_t __aslr_privilege_sram_end__ = ASLR_RAM_PRIV_REGION_END;
-
         uint32_t __aslr_syscall_sram_start__ = ASLR_RAM_SYSCALL_REGION_START;
         uint32_t __aslr_syscall_sram_end__ = ASLR_RAM_SYSCALL_REGION_END;
-
         uint32_t __aslr_unprivilege_sram_start__ = ASLR_RAM_UNPRIV_REGION_START;
         uint32_t __aslr_unprivilege_sram_end__ = ASLR_RAM_UNPRIV_REGION_END;
-
-        // /* Setup privileged flash as Read Only so that privileged tasks can
-        //  * read it but not modify. */
-        // portMPU_RNR_REG = portASLRUNEXECUTE_FLASH_REGION;
-        // portMPU_RBAR_REG =
-        //     (((uint32_t)__aslr_falsh_start__) & portMPU_RBAR_ADDRESS_MASK) |
-        //     (portMPU_REGION_NON_SHAREABLE) | (portMPU_REGION_READ_ONLY) |
-        //     (portMPU_REGION_EXECUTE_NEVER);
-        // portMPU_RLAR_REG =
-        //     (((uint32_t)__aslr_falsh_end__) & portMPU_RLAR_ADDRESS_MASK) |
-        //     (portMPU_RLAR_ATTR_INDEX0) | (portMPU_RLAR_REGION_ENABLE);
 
         portMPU_RNR_REG = portASLRPRIVILEGED_RAM_REGION;
         portMPU_RBAR_REG = (((uint32_t)__aslr_privilege_sram_start__) &
@@ -959,27 +916,62 @@ static void prvSetupMPU(void) /* PRIVILEGED_FUNCTION */
                            (portMPU_RLAR_ATTR_INDEX0) |
                            (portMPU_RLAR_REGION_ENABLE);
 
-        // portMPU_RNR_REG = 8;
-        // portMPU_RBAR_REG = (((uint32_t)__aslr_syscall_sram_start__) &
-        //                     portMPU_RBAR_ADDRESS_MASK) |
-        //                    (portMPU_REGION_NON_SHAREABLE) |
-        //                    (portMPU_REGION_READ_ONLY);
-        // portMPU_RLAR_REG = (((uint32_t)__aslr_syscall_sram_end__) &
-        //                     portMPU_RLAR_ADDRESS_MASK) |
-        //                    (portMPU_RLAR_ATTR_INDEX0) |
-        //                    (portMPU_RLAR_REGION_ENABLE);
-
         portMPU_RNR_REG = portASLRUNPRIVILEGED_RAM_REGION;
         portMPU_RBAR_REG = (((uint32_t)__aslr_syscall_sram_start__) &
                             portMPU_RBAR_ADDRESS_MASK) |
                            (portMPU_REGION_NON_SHAREABLE) |
                            (portMPU_REGION_READ_ONLY);
-
         portMPU_RLAR_REG = (((uint32_t)__aslr_unprivilege_sram_end__) &
                             portMPU_RLAR_ADDRESS_MASK) |
                            (portMPU_RLAR_ATTR_INDEX0) |
                            (portMPU_RLAR_REGION_ENABLE);
+#else
+        /* Setup headler flash as Read Only so that privileged tasks can
+             * read it but not modify. */
+        portMPU_RNR_REG = (0UL);
+        portMPU_RBAR_REG = (((uint32_t)__handler_functions_start__) &
+                            portMPU_RBAR_ADDRESS_MASK) |
+                           (portMPU_REGION_NON_SHAREABLE) |
+                           (portMPU_REGION_PRIVILEGED_READ_ONLY);
+        portMPU_RLAR_REG = (((uint32_t)__handler_functions_end__) &
+                            portMPU_RLAR_ADDRESS_MASK) |
+                           (portMPU_RLAR_ATTR_INDEX0) |
+                           (portMPU_RLAR_REGION_ENABLE);
 
+        /* Setup privileged flash as Read Only so that privileged tasks can
+             * read it but not modify. */
+        portMPU_RNR_REG = (1UL);
+        portMPU_RBAR_REG = (((uint32_t)__privileged_functions_start__) &
+                            portMPU_RBAR_ADDRESS_MASK) |
+                           (portMPU_REGION_NON_SHAREABLE) |
+                           (portMPU_REGION_PRIVILEGED_READ_ONLY);
+        portMPU_RLAR_REG = (((uint32_t)__privileged_functions_end__) &
+                            portMPU_RLAR_ADDRESS_MASK) |
+                           (portMPU_RLAR_ATTR_INDEX0) |
+                           (portMPU_RLAR_REGION_ENABLE);
+
+        /* Setup privileged flash as Read Only so that privileged tasks can
+             * read it but not modify. */
+        portMPU_RNR_REG = (2UL);
+        portMPU_RBAR_REG =
+            (((uint32_t)__syscalls_flash_start__) & portMPU_RBAR_ADDRESS_MASK) |
+            (portMPU_REGION_NON_SHAREABLE) | (portMPU_REGION_READ_ONLY);
+        portMPU_RLAR_REG =
+            (((uint32_t)__syscalls_flash_end__) & portMPU_RLAR_ADDRESS_MASK) |
+            (portMPU_RLAR_ATTR_INDEX0) | (portMPU_RLAR_REGION_ENABLE);
+
+        /* Setup unprivileged flash as Read Only so that unprivileged tasks
+             * can read it but not modify. */
+        portMPU_RNR_REG = (3UL);
+        portMPU_RBAR_REG = (((uint32_t)__unprivileged_flash_start__) &
+                            portMPU_RBAR_ADDRESS_MASK) |
+                           (portMPU_REGION_NON_SHAREABLE) |
+                           (portMPU_REGION_READ_ONLY);
+        portMPU_RLAR_REG = (((uint32_t)__unprivileged_flash_end__) &
+                            portMPU_RLAR_ADDRESS_MASK) |
+                           (portMPU_RLAR_ATTR_INDEX0) |
+                           (portMPU_RLAR_REGION_ENABLE);
+#endif
         /* Setup RAM containing kernel data for privileged access only. */
         portMPU_RNR_REG = portPRIVILEGED_RAM_REGION;
         portMPU_RBAR_REG = (((uint32_t)__privileged_sram_start__) &
@@ -991,9 +983,10 @@ static void prvSetupMPU(void) /* PRIVILEGED_FUNCTION */
             (((uint32_t)__privileged_sram_end__) & portMPU_RLAR_ADDRESS_MASK) |
             (portMPU_RLAR_ATTR_INDEX0) | (portMPU_RLAR_REGION_ENABLE);
 
-        // /* Enable mem fault. */
-        // portSCB_SYS_HANDLER_CTRL_STATE_REG |= portSCB_MEM_FAULT_ENABLE_BIT;
-
+#if (configENABLE_ASLR == 0)
+        /* Enable mem fault. */
+        portSCB_SYS_HANDLER_CTRL_STATE_REG |= portSCB_MEM_FAULT_ENABLE_BIT;
+#endif
         /* Enable MPU with privileged background access i.e. unmapped
              * regions have privileged access. */
         portMPU_CTRL_REG |=
@@ -1188,15 +1181,17 @@ void vPortSVCHandler_C(
 #if ((configENABLE_MPU == 1) && (configUSE_MPU_WRAPPERS_V1 == 1))
         case portSVC_RAISE_PRIVILEGE:
 
-            /* Only raise the privilege, if the svc was raised from any of
+/* Only raise the privilege, if the svc was raised from any of
                          * the system calls. */
-            // if ((ulPC >= (uint32_t)__syscalls_flash_start__) &&
-            //     (ulPC <= (uint32_t)__syscalls_flash_end__)) {
+#if (configENABLE_ASLR == 1)
             if ((ulPC >= (uint32_t)ASLR_RAM_SYSCALL_REGION_START) &&
                 (ulPC <= (uint32_t)ASLR_RAM_SYSCALL_REGION_END)) {
+#else
+            if ((ulPC >= (uint32_t)__syscalls_flash_start__) &&
+                (ulPC <= (uint32_t)__syscalls_flash_end__)) {
+#endif
                 vRaisePrivilege();
             }
-            // }
             break;
 #endif /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 1 ) */
 
@@ -1423,7 +1418,7 @@ void vSystemCallEnter(uint32_t* pulTaskStack,
 }
 
 #endif /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if ((configENABLE_MPU == 1) && (configUSE_MPU_WRAPPERS_V1 == 0))
 
@@ -1554,7 +1549,7 @@ void vSystemCallEnter_1(uint32_t* pulTaskStack,
 }
 
 #endif /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if ((configENABLE_MPU == 1) && (configUSE_MPU_WRAPPERS_V1 == 0))
 
@@ -1656,7 +1651,7 @@ void vSystemCallExit(uint32_t* pulSystemCallStack,
 }
 
 #endif /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if (configENABLE_MPU == 1)
 
@@ -1675,7 +1670,7 @@ BaseType_t xPortIsTaskPrivileged(void) /* PRIVILEGED_FUNCTION */
 }
 
 #endif /* configENABLE_MPU == 1 */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if (configENABLE_MPU == 1)
 
@@ -2115,7 +2110,7 @@ void vPortStoreTaskMPUSettings(xMPU_SETTINGS* xMPUSettings,
     }
 }
 #endif /* configENABLE_MPU */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if (configENABLE_MPU == 1)
 BaseType_t xPortIsAuthorizedToAccessBuffer(
@@ -2251,7 +2246,7 @@ void vPortValidateInterruptPriority(void) {
 }
 
 #endif /* #if ( ( configASSERT_DEFINED == 1 ) && ( portHAS_ARMV8M_MAIN_EXTENSION == 1 ) ) */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if ((configUSE_MPU_WRAPPERS_V1 == 0) && \
      (configENABLE_ACCESS_CONTROL_LIST == 1))
@@ -2275,7 +2270,7 @@ void vPortGrantAccessToKernelObject(
 }
 
 #endif /* #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if ((configUSE_MPU_WRAPPERS_V1 == 0) && \
      (configENABLE_ACCESS_CONTROL_LIST == 1))
@@ -2299,7 +2294,7 @@ void vPortRevokeAccessToKernelObject(
 }
 
 #endif /* #if ( ( configUSE_MPU_WRAPPERS_V1 == 0 ) && ( configENABLE_ACCESS_CONTROL_LIST == 1 ) ) */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if (configUSE_MPU_WRAPPERS_V1 == 0)
 

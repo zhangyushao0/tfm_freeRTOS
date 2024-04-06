@@ -18,14 +18,16 @@ set(LIB_DIR ${STM32L563E_DK_DIR}/lib)
 #NSAPP
 add_executable(ns_app)
 
+if(ENABLE_ASLR)
 target_compile_options(ns_app
     PUBLIC
         -mlong-calls
         -fno-jump-tables
 )
+endif()
+
 #def for stm32l5xx
 include(${STM_COMMON_DIR}/stm32l5xx/CMakeLists.txt)
-
 
 #NSAPP
 target_sources(tfm_s
@@ -73,6 +75,13 @@ target_link_libraries(ns_app
 #     PUBLIC
 #         ${LIB_DIR}/libc_nano.a
 # )
+
+set(TEST_TARGET "" CACHE STRING "Test target to build")
+
+string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
+list(GET TEST_TARGET_LIST 0 FIRST_PART)
+add_subdirectory(${FIRST_PART})
+
 if(BL2)
     target_sources(bl2
         PRIVATE
@@ -94,8 +103,15 @@ target_include_directories(platform_s
     PUBLIC
     ${STM32L563E_DK_DIR}/ota
     ${STM32L563E_DK_DIR}/copytext
+)
+
+if(ENABLE_ASLR)
+target_include_directories(platform_s
+    PUBLIC
     ${ASLR_DIR}/include
 )
+endif(ENABLE_ASLR)
+
 target_sources(platform_s
     PRIVATE
     ${STM32L563E_DK_DIR}/ota/flash.c
@@ -103,6 +119,11 @@ target_sources(platform_s
     ${STM32L563E_DK_DIR}/ota/rand.c
     ${STM32L563E_DK_DIR}/ota/loader.c
     ${STM32L563E_DK_DIR}/copytext/copytext.c
+)
+
+if(ENABLE_ASLR)
+target_sources(platform_s
+    PRIVATE
     ${ASLR_DIR}/src/aslr_heap.c
     ${ASLR_DIR}/src/aslr_queue.c
     ${ASLR_DIR}/src/aslr_stack.c
@@ -112,8 +133,7 @@ target_sources(platform_s
     ${ASLR_DIR}/src/aslr_mpu.c
     ${ASLR_DIR}/src/rand.c
 )
-
-
+endif(ENABLE_ASLR)
 
 install(FILES ${STM32L563E_DK_DIR}/include/flash_layout.h
               ${STM32L563E_DK_DIR}/include/region_defs.h

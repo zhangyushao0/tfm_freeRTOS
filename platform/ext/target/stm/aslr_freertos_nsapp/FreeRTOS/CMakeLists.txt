@@ -236,14 +236,21 @@ endif()
 add_library(freertos_kernel STATIC)
 target_compile_options(freertos_kernel
     PUBLIC
-    -mlong-calls
-    -fno-jump-tables
     -fno-optimize-sibling-calls
     -fno-tree-vectorize
     -O0
     -fno-inline
     -fno-lto
 )
+
+if(ENABLE_ASLR)
+target_compile_options(freertos_kernel
+    PUBLIC
+        -mlong-calls
+        -fno-jump-tables
+)
+endif()
+
 target_link_options(freertos_kernel PUBLIC -fno-lto)
 ########################################################################
 # Overall Compile Options
@@ -270,9 +277,6 @@ target_compile_options(freertos_kernel PRIVATE
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-fdiagnostics-color=always>
     $<$<COMPILE_LANG_AND_ID:C,Clang>:-fcolor-diagnostics>
 
-    $<$<COMPILE_LANG_AND_ID:C,GNU,Clang>:-mlong-calls>
-    $<$<COMPILE_LANG_AND_ID:C,GNU,Clang>:-fno-jump-tables>
-
     $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wall>
     $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wextra>
     $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wpedantic>
@@ -288,6 +292,12 @@ target_compile_options(freertos_kernel PRIVATE
     $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-cast-align>
 )
 
+if(ENABLE_ASLR)
+target_compile_options(freertos_kernel PRIVATE
+    $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-fno-jump-tables>
+    $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-mlong-calls>
+)
+endif()
 
 ########################################################################
 add_subdirectory(include)

@@ -21,11 +21,13 @@ target_sources(tfm_s
         ${STM_COMMON_DIR}/stm32l5xx/Device/Source/startup_stm32l5xx_s.c
 )
 
+if(ENABLE_ASLR)
 target_compile_options(tfm_s
     PRIVATE
         -mlong-calls
         -fno-jump-tables
 )
+endif()
 
 if(NS)
     target_sources(tfm_ns

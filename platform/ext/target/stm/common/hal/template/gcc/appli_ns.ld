@@ -66,6 +66,15 @@ SECTIONS
         KEEP(*(.eh_frame*))
     } > FLASH
 
+    .handler_functions : ALIGN(32)
+    {
+        . = ALIGN(32);
+        __handler_functions_start__ = .;
+        *(handler_functions)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __handler_functions_end__ = . - 1;
+    } > FLASH
     /* Privileged functions - Section needs to be 32 byte aligned to satisfy MPU requirements. */
     .privileged_functions : ALIGN(32)
     {
