@@ -1,11 +1,8 @@
 #include "loader.h"
-// #include "func_info.h"
 #include "func.h"
-#include "func_info.h"
 #include "relocation.h"
 #include "stm32l562xx.h"
 #include "stm32l5xx_hal_flash.h"
-#include "target/stm/aslr_freertos_nsapp/loader/func_info.h"
 #define ENCODE_KEY 0x00000001
 
 // int is_matched(uint32_t ar[], uint32_t val, int len) {

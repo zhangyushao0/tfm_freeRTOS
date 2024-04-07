@@ -67,6 +67,7 @@ target_include_directories(ns_app
     PUBLIC
     ${STM32L563E_DK_DIR}/include
     ${NS_APP_DIR}/include
+    ${STM32L563E_DK_DIR}/loader/ns/include
 )
 target_link_libraries(ns_app
     PUBLIC
@@ -77,13 +78,14 @@ target_sources(ns_app
     PRIVATE
     ${STM_COMMON_DIR}/stm32l5xx/Device/Source/startup_stm32l5xx_ns.c
     ${NS_APP_DIR}/src/main_ns.c
+    ${STM32L563E_DK_DIR}/loader/ns/src/mpu_st.c
 )
 
 # loader
 target_include_directories(platform_s
     PUBLIC
     ${STM32L563E_DK_DIR}/loader/include
-    ${STM32L563E_DK_DIR}/loader
+    # ${STM32L563E_DK_DIR}/loader/ns/include
 )
 
 target_sources(platform_s
@@ -93,6 +95,7 @@ target_sources(platform_s
     ${STM32L563E_DK_DIR}/loader/src/func.c
     ${STM32L563E_DK_DIR}/loader/src/relocation.c
     ${STM32L563E_DK_DIR}/loader/src/divide.c
+    # ${STM32L563E_DK_DIR}/loader/ns/src/mpu_st.c
 
     # ${STM32L563E_DK_DIR}/loader/src/loader.c
     ${STM32L563E_DK_DIR}/loader/src/new_loader.c
