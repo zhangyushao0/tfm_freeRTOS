@@ -58,6 +58,12 @@ void testThread1(void* pvParameters) {
     }
 }
 
+int func(int a, int b, int c, int d, int e, int f, int g, int h, int i) {
+    int (*func_ptr)(int, int, int, int, int, int, int, int, int) = func;
+    func_ptr(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    return 1;
+}
+
 int main() {
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
@@ -71,6 +77,8 @@ int main() {
     // testThread1();
 
     BaseType_t xReturned;
+
+    int c = func(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     xReturned = xTaskCreate(
         testThread1,           /* Function that implements the task. */

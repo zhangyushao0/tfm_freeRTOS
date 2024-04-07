@@ -5,6 +5,8 @@ typedef struct {
     uint32_t addr;
     uint32_t value;
     uint32_t type;
+    uint32_t func_id1;
+    uint32_t func_id2;
 } relocation_info_t;
 
 extern uint32_t          table_size;

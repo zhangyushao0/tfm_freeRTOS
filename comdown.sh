@@ -11,6 +11,15 @@ for arg in "$@"; do
         break
     fi
 done
+
+for arg in "$@"; do
+    if [[ "$arg" == "-cn" ]] || [[ "$arg" == "--compile-normol" ]]; then
+        cmake --build build
+        echo "Compile done"
+        break
+    fi
+done
+
 for arg in "$@"; do
     if [[ "$arg" == "-d" ]] || [[ "$arg" == "--download" ]]; then
         eval $STM32_Programmer_CLI_PATH/"STM32_Programmer_CLI.exe" -c port=swd -e all -d build/bin/tfm_s.elf -d build/bin/ns_app.hex

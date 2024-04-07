@@ -83,31 +83,31 @@ static fih_int tfm_core_init(void) {
 
     FIH_RET(fih_int_encode(TFM_SUCCESS));
 }
+uint32_t vector_offset = 0;
+int      main(void) {
+         fih_int fih_rc = FIH_FAILURE;
 
-int main(void) {
-    fih_int fih_rc = FIH_FAILURE;
+         /* set Main Stack Pointer limit */
+         tfm_arch_set_msplim(SPM_BOOT_STACK_TOP);
 
-    /* set Main Stack Pointer limit */
-    tfm_arch_set_msplim(SPM_BOOT_STACK_TOP);
+         fih_delay_init();
 
-    fih_delay_init();
-
-    FIH_CALL(tfm_core_init, fih_rc);
-    if (fih_not_eq(fih_rc, fih_int_encode(TFM_SUCCESS))) {
-        tfm_core_panic();
+         FIH_CALL(tfm_core_init, fih_rc);
+         if (fih_not_eq(fih_rc, fih_int_encode(TFM_SUCCESS))) {
+             tfm_core_panic();
     }
 
-    /* All isolation should have been set up at this point */
-    FIH_LABEL_CRITICAL_POINT();
+         /* All isolation should have been set up at this point */
+         FIH_LABEL_CRITICAL_POINT();
 
-    /* Print the TF-M version */
-    SPMLOG_INFMSG("\033[1;34mBooting TF-M " VERSION_FULLSTR "\033[0m\r\n");
+         /* Print the TF-M version */
+         SPMLOG_INFMSG("\033[1;34mBooting TF-M " VERSION_FULLSTR "\033[0m\r\n");
 
-    /*
-     * Prioritise secure exceptions to avoid NS being able to pre-empt
-     * secure SVC or SecureFault. Do it before PSA API initialization.
-     */
-    tfm_arch_set_secure_exception_priorities();
+         /*
+          * Prioritise secure exceptions to avoid NS being able to pre-empt
+          * secure SVC or SecureFault. Do it before PSA API initialization.
+          */
+         tfm_arch_set_secure_exception_priorities();
 
 #ifdef TFM_FIH_PROFILE_ON
     /* Check secure exception priority */
@@ -117,17 +117,15 @@ int main(void) {
     }
 #endif
 
-    int32_t  __text_address__ = 0x8055000;
-    uint32_t address_a = 0x20005000;
-    uint32_t address_b = 0x20015000;
-    uint32_t offset_a = address_a - __text_address__;
-    uint32_t offset_b = address_b - __text_address__;
+    uint32_t __text_address__ = 0x8055000;
+    region_t vector_table = {0x20001000, 0};
+    region_t a = {0x20005000, 0};
+    region_t b = {0x20015000, 0};
 
-    copy_text2ram(address_a, __text_address__, 0x5000);
-    copy_text2ram(address_b, __text_address__, 0x5000);
-    divide();
-    relocation(offset_a, offset_b);
-    DWT_enable(address_a + 0x200, address_a + 0x2e00, address_b + 0x200, address_b + 0x2e00);
+    vector_offset = vector_table.region_start - __text_address__;
+    loader(&a, &b, &vector_table, __text_address__);
+
+    // DWT_enable(a, b);
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();
 

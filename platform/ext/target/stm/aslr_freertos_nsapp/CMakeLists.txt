@@ -95,10 +95,8 @@ target_sources(platform_s
     ${STM32L563E_DK_DIR}/loader/src/func.c
     ${STM32L563E_DK_DIR}/loader/src/relocation.c
     ${STM32L563E_DK_DIR}/loader/src/divide.c
-    # ${STM32L563E_DK_DIR}/loader/ns/src/mpu_st.c
 
-    # ${STM32L563E_DK_DIR}/loader/src/loader.c
-    ${STM32L563E_DK_DIR}/loader/src/new_loader.c
+    ${STM32L563E_DK_DIR}/loader/src/loader_v3.c
     ${STM32L563E_DK_DIR}/loader/src/dwt.c
 
 )
