@@ -118,9 +118,9 @@ int      main(void) {
 #endif
 
     uint32_t __text_address__ = 0x8055000;
-    region_t vector_table = {0x20001000, 0};
+    region_t vector_table = {0x20015000, 0};
     region_t a = {0x20005000, 0};
-    region_t b = {0x20015000, 0};
+    region_t b = {0x20010000, 0};
 
     vector_offset = vector_table.region_start - __text_address__;
     loader(&a, &b, &vector_table, __text_address__);

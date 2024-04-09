@@ -5,7 +5,7 @@ STM32_GDB_server_PATH="/mnt/d/programs/stm32gdbserver"
 for arg in "$@"; do
     if [[ "$arg" == "-c" ]] || [[ "$arg" == "--compile" ]]; then
         cmake --build build_re
-        python3 loader_script/loader_v2.py
+        python3 loader_script/loader.py
         cmake --build build
         echo "Compile done"
         break
