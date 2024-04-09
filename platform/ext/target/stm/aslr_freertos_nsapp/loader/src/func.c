@@ -1,56 +1,56 @@
 #include "func.h"
 
-uint32_t func_info_size = 202;
+uint32_t func_info_size = 205;
 
-func_info_t func_info[202] = {
-    {0x8055953, 112, 0, 0},  //MX_GPIO_Init
-    {0x8055c17, 194, 0, 0},  //prvCreateTask
-    {0x8055cd9, 384, 0, 0},  //prvAddNewTaskToReadyList
-    {0x8056ac7, 318, 0, 0},  //prvInitialiseNewTask
-    {0x8056c05, 192, 0, 0},  //prvInitialiseTaskLists
-    {0x8055e59, 60, 0, 0},  //prvResetNextTaskUnblockTime
-    {0x8055e95, 42, 0, 0},  //prvDeleteTCB
-    {0x8055ecf, 280, 0, 0},  //prvAddCurrentTaskToDelayedList
-    {0x80563c3, 158, 0, 0},  //prvCreateIdleTasks
-    {0x8056cc5, 56, 0, 0},  //prvIdleTask
-    {0x8056cfd, 124, 0, 0},  //prvCheckTasksWaitingTermination
-    {0x8056df1, 190, 0, 0},  //prvCheckForValidListAndQueue
-    {0x8056eaf, 56, 0, 0},  //prvTimerTask
-    {0x8056ee7, 64, 0, 0},  //prvGetNextExpireTime
-    {0x8056f27, 202, 0, 0},  //prvProcessTimerOrBlockTask
-    {0x8056ff1, 478, 0, 0},  //prvProcessReceivedCommands
-    {0x80571cf, 86, 0, 0},  //prvSampleTimeNow
-    {0x8057225, 110, 0, 0},  //prvProcessExpiredTimer
-    {0x8057335, 152, 0, 0},  //prvInsertTimerInActiveList
-    {0x80572ef, 70, 0, 0},  //prvReloadTimer
-    {0x8057293, 92, 0, 0},  //prvSwitchTimerLists
-    {0x80576c7, 170, 0, 0},  //prvHeapInit
-    {0x8057881, 292, 0, 0},  //prvInsertBlockIntoFreeList
-    {0x8057c55, 82, 0, 0},  //prvInitialiseNewQueue
-    {0x8057ca7, 240, 0, 0},  //prvUnlockQueue
-    {0x8058043, 58, 0, 0},  //prvIsQueueEmpty
-    {0x8057ff7, 76, 0, 0},  //prvCopyDataFromQueue
-    {0x8058417, 68, 0, 0},  //prvTaskExitError
+func_info_t func_info[205] = {
+    {0x8055981, 112, 0, 0},  //MX_GPIO_Init
+    {0x8055e01, 194, 0, 0},  //prvCreateTask
+    {0x8055ec3, 384, 0, 0},  //prvAddNewTaskToReadyList
+    {0x8056cb1, 318, 0, 0},  //prvInitialiseNewTask
+    {0x8056def, 192, 0, 0},  //prvInitialiseTaskLists
+    {0x8056043, 60, 0, 0},  //prvResetNextTaskUnblockTime
+    {0x805607f, 42, 0, 0},  //prvDeleteTCB
+    {0x80560b9, 280, 0, 0},  //prvAddCurrentTaskToDelayedList
+    {0x80565ad, 158, 0, 0},  //prvCreateIdleTasks
+    {0x8056eaf, 56, 0, 0},  //prvIdleTask
+    {0x8056ee7, 124, 0, 0},  //prvCheckTasksWaitingTermination
+    {0x8056fdb, 190, 0, 0},  //prvCheckForValidListAndQueue
+    {0x8057099, 56, 0, 0},  //prvTimerTask
+    {0x80570d1, 64, 0, 0},  //prvGetNextExpireTime
+    {0x8057111, 202, 0, 0},  //prvProcessTimerOrBlockTask
+    {0x80571db, 478, 0, 0},  //prvProcessReceivedCommands
+    {0x80573b9, 86, 0, 0},  //prvSampleTimeNow
+    {0x805740f, 110, 0, 0},  //prvProcessExpiredTimer
+    {0x805751f, 152, 0, 0},  //prvInsertTimerInActiveList
+    {0x80574d9, 70, 0, 0},  //prvReloadTimer
+    {0x805747d, 92, 0, 0},  //prvSwitchTimerLists
+    {0x80578b1, 170, 0, 0},  //prvHeapInit
+    {0x8057a6b, 292, 0, 0},  //prvInsertBlockIntoFreeList
+    {0x8057e3f, 82, 0, 0},  //prvInitialiseNewQueue
+    {0x8057e91, 240, 0, 0},  //prvUnlockQueue
+    {0x805822d, 58, 0, 0},  //prvIsQueueEmpty
+    {0x80581e1, 76, 0, 0},  //prvCopyDataFromQueue
+    {0x8058601, 68, 0, 0},  //prvTaskExitError
     {0x8055609, 4, 0, 0},  //EXTI2_IRQHandler
     {0x80556a9, 4, 0, 0},  //TIM8_TRG_COM_IRQHandler
     {0x80556ad, 4, 0, 0},  //TIM8_CC_IRQHandler
     {0x8055615, 4, 0, 0},  //EXTI5_IRQHandler
     {0x80555d1, 4, 0, 0},  //DebugMon_Handler
-    {0x805823d, 72, 0, 0},  //vPortExitCritical
+    {0x8058427, 72, 0, 0},  //vPortExitCritical
     {0x8055635, 4, 0, 0},  //EXTI13_IRQHandler
-    {0x805858b, 44, 0, 0},  //vRestoreContextOfFirstTask
+    {0x8058775, 44, 0, 0},  //vRestoreContextOfFirstTask
     {0x8055685, 4, 0, 0},  //TIM1_CC_IRQHandler
     {0x805573d, 4, 0, 0},  //TSC_IRQHandler
     {0x80555bd, 4, 0, 0},  //HardFault_Handler
-    {0x8058131, 134, 0, 0},  //vQueueWaitForMessageRestricted
+    {0x805831b, 134, 0, 0},  //vQueueWaitForMessageRestricted
     {0x80555e5, 4, 0, 0},  //TAMP_IRQHandler
     {0x8055699, 4, 0, 0},  //TIM6_IRQHandler
     {0x8055631, 4, 0, 0},  //EXTI12_IRQHandler
-    {0x8058285, 72, 0, 0},  //SysTick_Handler
+    {0x805846f, 72, 0, 0},  //SysTick_Handler
     {0x8055567, 44, 0, 0},  //HAL_GPIO_WritePin
-    {0x8055b1f, 50, 0, 0},  //RandomInteger
-    {0x8058823, 18, 0, 0},  //trampoline_A_B
-    {0x8058601, 80, 0, 0},  //PendSV_Handler
+    {0x8055d09, 50, 0, 0},  //RandomInteger
+    {0x8058a13, 18, 0, 0},  //trampoline_A_B
+    {0x80587f1, 80, 0, 0},  //PendSV_Handler
     {0x8055729, 4, 0, 0},  //DMA2_Channel8_IRQHandler
     {0x80555b9, 4, 0, 0},  //NMI_Handler
     {0x805560d, 4, 0, 0},  //EXTI3_IRQHandler
@@ -59,23 +59,24 @@ func_info_t func_info[202] = {
     {0x8055769, 4, 0, 0},  //DFSDM1_FLT1_IRQHandler
     {0x8055593, 38, 0, 0},  //HAL_GPIO_TogglePin
     {0x80556f9, 4, 0, 0},  //USB_FS_IRQHandler
-    {0x80585d7, 22, 0, 0},  //ulSetInterruptMask
+    {0x80587c1, 22, 0, 0},  //ulSetInterruptMask
     {0x8055731, 4, 0, 0},  //I2C3_ER_IRQHandler
     {0x805576d, 4, 0, 0},  //DFSDM1_FLT2_IRQHandler
-    {0x805697d, 36, 0, 0},  //vTaskInternalSetTimeOutState
-    {0x80559dd, 26, 0, 0},  //Test
+    {0x8056b67, 36, 0, 0},  //vTaskInternalSetTimeOutState
+    {0x8055bc7, 26, 0, 0},  //Test
+    {0x80559f1, 192, 0, 0},  //mpu_armv8m_region_enable_st
     {0x80551f7, 880, 0, 0},  //HAL_GPIO_Init
     {0x8055641, 4, 0, 0},  //DMAMUX1_IRQHandler
     {0x8055755, 4, 0, 0},  //LPTIM3_IRQHandler
     {0x80555f5, 4, 0, 0},  //SERR_IRQHandler
-    {0x80585b7, 32, 0, 0},  //vStartFirstTask
-    {0x805845b, 304, 0, 0},  //xPortStartScheduler
-    {0x8058671, 236, 0, 0},  //memcpy
-    {0x80566fd, 78, 0, 0},  //vTaskPlaceOnEventList
-    {0x80581b7, 70, 0, 0},  //vPortSetupTimerInterrupt
+    {0x80587a1, 32, 0, 0},  //vStartFirstTask
+    {0x8058645, 304, 0, 0},  //xPortStartScheduler
+    {0x8058861, 236, 0, 0},  //memcpy
+    {0x80568e7, 78, 0, 0},  //vTaskPlaceOnEventList
+    {0x80583a1, 70, 0, 0},  //vPortSetupTimerInterrupt
     {0x8055601, 4, 0, 0},  //EXTI0_IRQHandler
     {0x80556b9, 4, 0, 0},  //I2C2_EV_IRQHandler
-    {0x8057771, 272, 0, 0},  //vPortFree
+    {0x805795b, 272, 0, 0},  //vPortFree
     {0x8055749, 4, 0, 0},  //FPU_IRQHandler
     {0x8055675, 4, 0, 0},  //FDCAN1_IT1_IRQHandler
     {0x80555fd, 4, 0, 0},  //RCC_IRQHandler_S
@@ -84,28 +85,28 @@ func_info_t func_info[202] = {
     {0x8055669, 4, 0, 0},  //ADC1_2_IRQHandler
     {0x80556c1, 4, 0, 0},  //SPI1_IRQHandler
     {0x8055705, 4, 0, 0},  //OCTOSPI1_IRQHandler
-    {0x80579d3, 14, 0, 0},  //vListInitialiseItem
-    {0x8057d97, 608, 0, 0},  //xQueueReceive
+    {0x8057bbd, 14, 0, 0},  //vListInitialiseItem
+    {0x8057f81, 608, 0, 0},  //xQueueReceive
     {0x80556a5, 4, 0, 0},  //TIM8_UP_IRQHandler
-    {0x8055b51, 14, 0, 0},  //InitSeed
+    {0x8055d3b, 14, 0, 0},  //InitSeed
     {0x8055711, 4, 0, 0},  //DMA2_Channel2_IRQHandler
     {0x8055655, 4, 0, 0},  //DMA1_Channel4_IRQHandler
     {0x8055739, 4, 0, 0},  //SAI2_IRQHandler
-    {0x80573cd, 762, 0, 0},  //pvPortMalloc
+    {0x80575b7, 762, 0, 0},  //pvPortMalloc
     {0x8055771, 4, 0, 0},  //DFSDM1_FLT3_IRQHandler
     {0x8055751, 4, 0, 0},  //PKA_IRQHandler
-    {0x80579a5, 46, 0, 0},  //vListInitialise
+    {0x8057b8f, 46, 0, 0},  //vListInitialise
     {0x805563d, 4, 0, 0},  //EXTI15_IRQHandler
     {0x80556f1, 4, 0, 0},  //TIM17_IRQHandler
     {0x80556d1, 4, 0, 0},  //USART3_IRQHandler
-    {0x80566e9, 20, 0, 0},  //xTaskGetTickCount
+    {0x80568d3, 20, 0, 0},  //xTaskGetTickCount
     {0x80555dd, 4, 0, 0},  //RTC_IRQHandler
     {0x8055625, 4, 0, 0},  //EXTI9_IRQHandler
     {0x8055661, 4, 0, 0},  //DMA1_Channel7_IRQHandler
     {0x8055781, 222, 0, 0},  //Reset_Handler
     {0x80556d9, 4, 0, 0},  //UART5_IRQHandler
-    {0x80582cd, 64, 0, 0},  //vPortSVCHandler_C
-    {0x80567cf, 430, 0, 0},  //xTaskRemoveFromEventList
+    {0x80584b7, 64, 0, 0},  //vPortSVCHandler_C
+    {0x80569b9, 430, 0, 0},  //xTaskRemoveFromEventList
     {0x8055691, 4, 0, 0},  //TIM4_IRQHandler
     {0x805570d, 4, 0, 0},  //DMA2_Channel1_IRQHandler
     {0x80556b1, 4, 0, 0},  //I2C1_EV_IRQHandler
@@ -114,19 +115,20 @@ func_info_t func_info[202] = {
     {0x80556d5, 4, 0, 0},  //UART4_IRQHandler
     {0x8055719, 4, 0, 0},  //DMA2_Channel4_IRQHandler
     {0x80555cd, 4, 0, 0},  //SecureFault_Handler
-    {0x80569a1, 224, 0, 0},  //xTaskCheckForTimeOut
+    {0x8056b8b, 224, 0, 0},  //xTaskCheckForTimeOut
     {0x805568d, 4, 0, 0},  //TIM3_IRQHandler
     {0x80555f9, 4, 0, 0},  //RCC_IRQHandler
     {0x8055681, 4, 0, 0},  //TIM1_TRG_COM_IRQHandler
     {0x8055649, 4, 0, 0},  //DMA1_Channel1_IRQHandler
     {0x8055725, 4, 0, 0},  //DMA2_Channel7_IRQHandler
-    {0x8055ebf, 16, 0, 0},  //vTaskSuspendAll
-    {0x8057a4b, 72, 0, 0},  //uxListRemove
-    {0x8055b85, 42, 0, 0},  //verify_benchmark
+    {0x80560a9, 16, 0, 0},  //vTaskSuspendAll
+    {0x8057c35, 72, 0, 0},  //uxListRemove
+    {0x8055d6f, 42, 0, 0},  //verify_benchmark
     {0x805577d, 4, 0, 0},  //OTFDEC1_IRQHandler
     {0x8055665, 4, 0, 0},  //DMA1_Channel8_IRQHandler
-    {0x805625b, 202, 0, 0},  //vTaskSwitchContext
-    {0x805674b, 132, 0, 0},  //vTaskPlaceOnEventListRestricted
+    {0x8056445, 202, 0, 0},  //vTaskSwitchContext
+    {0x8055aeb, 194, 0, 0},  //mpu_switch_to_st
+    {0x8056935, 132, 0, 0},  //vTaskPlaceOnEventListRestricted
     {0x80555f1, 4, 0, 0},  //FLASH_IRQHandler_S
     {0x805569d, 4, 0, 0},  //TIM7_IRQHandler
     {0x8055709, 4, 0, 0},  //SDMMC1_IRQHandler
@@ -134,69 +136,70 @@ func_info_t func_info[202] = {
     {0x8055775, 4, 0, 0},  //UCPD1_IRQHandler
     {0x80556e9, 4, 0, 0},  //TIM15_IRQHandler
     {0x805572d, 4, 0, 0},  //I2C3_EV_IRQHandler
-    {0x80581fd, 24, 0, 0},  //vPortYield
-    {0x80559c3, 26, 0, 0},  //benchmark
+    {0x80583e7, 24, 0, 0},  //vPortYield
+    {0x8055bad, 26, 0, 0},  //benchmark
     {0x80555d9, 4, 0, 0},  //PVD_PVM_IRQHandler
     {0x80556c5, 4, 0, 0},  //SPI2_IRQHandler
-    {0x805875d, 164, 0, 0},  //memset
+    {0x805894d, 164, 0, 0},  //memset
     {0x80555c1, 4, 0, 0},  //MemManage_Handler
-    {0x80558e7, 108, 0, 0},  //main
+    {0x80558e7, 154, 0, 0},  //main
     {0x8055639, 4, 0, 0},  //EXTI14_IRQHandler
     {0x805562d, 4, 0, 0},  //EXTI11_IRQHandler
-    {0x80579e1, 106, 0, 0},  //vListInsert
-    {0x8058651, 32, 0, 0},  //SVC_Handler
+    {0x8057bcb, 106, 0, 0},  //vListInsert
+    {0x8058841, 32, 0, 0},  //SVC_Handler
     {0x805571d, 4, 0, 0},  //DMA2_Channel5_IRQHandler
     {0x80556fd, 4, 0, 0},  //CRS_IRQHandler
-    {0x8056d79, 120, 0, 0},  //xTimerCreateTimerTask
+    {0x8056f63, 120, 0, 0},  //xTimerCreateTimerTask
     {0x8055659, 4, 0, 0},  //DMA1_Channel5_IRQHandler
     {0x8055611, 4, 0, 0},  //EXTI4_IRQHandler
-    {0x8057baf, 166, 0, 0},  //xQueueGenericCreate
+    {0x8057d99, 166, 0, 0},  //xQueueGenericCreate
     {0x80551f5, 2, 0, 0},  //SystemInit
+    {0x8055ab1, 58, 0, 0},  //mpu_armv8m_region_disable_st
     {0x8055745, 4, 0, 0},  //RNG_IRQHandler
     {0x805585f, 40, 0, 0},  //spin_100000
-    {0x8055b5f, 38, 0, 0},  //initialise_benchmark
-    {0x8055fe7, 628, 0, 0},  //xTaskResumeAll
-    {0x8056325, 158, 0, 0},  //vTaskStartScheduler
+    {0x8055d49, 38, 0, 0},  //initialise_benchmark
+    {0x80561d1, 628, 0, 0},  //xTaskResumeAll
+    {0x805650f, 158, 0, 0},  //vTaskStartScheduler
     {0x8055651, 4, 0, 0},  //DMA1_Channel3_IRQHandler
     {0x80556f5, 4, 0, 0},  //COMP_IRQHandler
     {0x805567d, 4, 0, 0},  //TIM1_UP_IRQHandler
     {0x80555d5, 4, 0, 0},  //WWDG_IRQHandler
     {0x8055761, 4, 0, 0},  //I2C4_EV_IRQHandler
-    {0x8056a81, 14, 0, 0},  //vTaskMissedYield
+    {0x8056c6b, 14, 0, 0},  //vTaskMissedYield
     {0x80556dd, 4, 0, 0},  //LPUART1_IRQHandler
     {0x8055721, 4, 0, 0},  //DMA2_Channel6_IRQHandler
     {0x8055671, 4, 0, 0},  //FDCAN1_IT0_IRQHandler
     {0x8055689, 4, 0, 0},  //TIM2_IRQHandler
-    {0x80559f7, 204, 0, 0},  //Sum
-    {0x805807d, 180, 0, 0},  //vQueueAddToRegistry
-    {0x8056461, 648, 0, 0},  //xTaskIncrementTick
-    {0x80585ed, 14, 0, 0},  //vClearInterruptMask
+    {0x8055be1, 204, 0, 0},  //Sum
+    {0x8058267, 180, 0, 0},  //vQueueAddToRegistry
+    {0x805664b, 648, 0, 0},  //xTaskIncrementTick
+    {0x80587d7, 14, 0, 0},  //vClearInterruptMask
     {0x805561d, 4, 0, 0},  //EXTI7_IRQHandler
     {0x8055679, 4, 0, 0},  //TIM1_BRK_IRQHandler
     {0x805566d, 4, 0, 0},  //DAC_IRQHandler
     {0x8055605, 4, 0, 0},  //EXTI1_IRQHandler
     {0x80555e1, 4, 0, 0},  //RTC_IRQHandler_S
-    {0x8057a93, 284, 0, 0},  //xQueueGenericReset
+    {0x8057c7d, 284, 0, 0},  //xQueueGenericReset
     {0x8055741, 4, 0, 0},  //AES_IRQHandler
     {0x8055887, 96, 0, 0},  //testThread2
-    {0x8055baf, 104, 0, 0},  //xTaskCreate
+    {0x8055d99, 104, 0, 0},  //xTaskCreate
     {0x80556cd, 4, 0, 0},  //USART2_IRQHandler
     {0x8055765, 4, 0, 0},  //DFSDM1_FLT0_IRQHandler
     {0x80556bd, 4, 0, 0},  //I2C2_ER_IRQHandler
     {0x805564d, 4, 0, 0},  //DMA1_Channel2_IRQHandler
     {0x80556a1, 4, 0, 0},  //TIM8_BRK_IRQHandler
-    {0x8056a8f, 56, 0, 0},  //xTaskGetSchedulerState
+    {0x8056c79, 56, 0, 0},  //xTaskGetSchedulerState
     {0x80555ed, 4, 0, 0},  //FLASH_IRQHandler
-    {0x8055ac3, 92, 0, 0},  //Initialize
+    {0x8055cad, 92, 0, 0},  //Initialize
     {0x80555c5, 4, 0, 0},  //BusFault_Handler
     {0x80556c9, 4, 0, 0},  //USART1_IRQHandler
     {0x8055629, 4, 0, 0},  //EXTI10_IRQHandler
-    {0x805830d, 266, 0, 0},  //pxPortInitialiseStack
+    {0x80584f7, 266, 0, 0},  //pxPortInitialiseStack
     {0x8055759, 4, 0, 0},  //SPI3_IRQHandler
-    {0x8058835, 18, 0, 0},  //trampoline_B_A
+    {0x8058a25, 18, 0, 0},  //trampoline_B_A
     {0x80556b5, 4, 0, 0},  //I2C1_ER_IRQHandler
     {0x8055701, 4, 0, 0},  //FMC_IRQHandler
-    {0x8058215, 40, 0, 0},  //vPortEnterCritical
+    {0x80583ff, 40, 0, 0},  //vPortEnterCritical
     {0x8055619, 4, 0, 0},  //EXTI6_IRQHandler
     {0x80556e1, 4, 0, 0},  //LPTIM1_IRQHandler
     {0x805575d, 4, 0, 0},  //I2C4_ER_IRQHandler

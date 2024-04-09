@@ -3,6 +3,7 @@
 #include "relocation.h"
 #include "stm32l5xx_hal_flash.h"
 #include "divide.h"
+#include "trampoline.h"
 
 void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
     HAL_FLASH_Unlock();
@@ -38,6 +39,31 @@ int in_range(uint32_t pos) {
         }
     }
     return -1;
+}
+
+void movw_r8(uint32_t pos, uint32_t val) {
+    uint32_t imm4 = val >> 12;
+    uint32_t i = (val >> 11) & 1;
+    uint32_t imm3 = (val >> 8) & 7;
+    uint32_t imm8 = val & 0xff;
+    uint32_t top_16 = (0 << 15) | (imm3 << 12) | (0b1000 << 8) | imm8;
+    uint32_t low_16 = ((0b11110 << 27) | (i << 26) | (0b100100 << 20) | (imm4 << 16)) >> 16;
+    *((uint32_t*)pos) = top_16 << 16 | low_16;
+}
+
+void movt_r8(uint32_t pos, uint32_t val) {
+    uint32_t imm4 = val >> 12;
+    uint32_t i = (val >> 11) & 1;
+    uint32_t imm3 = (val >> 8) & 7;
+    uint32_t imm8 = val & 0xff;
+    uint32_t top_16 = (0 << 15) | (imm3 << 12) | (0b1000 << 8) | imm8;
+    uint32_t low_16 = ((0b11110 << 27) | (i << 26) | (0b101100 << 20) | (imm4 << 16)) >> 16;
+    *((uint32_t*)pos) = top_16 << 16 | low_16;
+}
+
+void set_r8(uint32_t pos, uint32_t val) {
+    movw_r8(pos - 8, val & 0xffff);
+    movt_r8(pos - 4, val >> 16);
 }
 
 uint32_t bl_address_calculate(uint32_t pos, uint32_t val) {
@@ -84,12 +110,18 @@ void vector_table_calculate(relocation_info_t* entry, region_t* vector_addr) {
     vector_addr->region_size += 4;
 }
 
-void bl_calculate(relocation_info_t* entry) {
+void bl_calculate(relocation_info_t* entry, uint32_t tram_addr) {
     int      func_id1 = entry->func_id1;
     int      func_id2 = entry->func_id2;
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = func_info[func_id2].reloc_addr;
-    *((uint32_t*)pos) = bl_address_calculate(pos, val);
+    if (func_info[func_id2].region != func_info[func_id1].region) {
+        uint32_t offset = tram_addr - tramp_section.region_start;
+        *((uint32_t*)pos) = bl_address_calculate(pos, func_info[func_id2].region == 0 ? offset + tramp_a2b.region_start : offset + tramp_b2a.region_start);
+        set_r8(pos, val);
+    } else {
+        *((uint32_t*)pos) = bl_address_calculate(pos, val);
+    }
 }
 
 void movw_calculate(relocation_info_t* entry) {
@@ -112,7 +144,7 @@ void movt_calculate(relocation_info_t* entry) {
     }
 }
 
-void relocation(region_t* vector_addr) {
+void relocation(region_t* vector_addr, uint32_t tram_addr) {
     *((uint32_t*)(relocation_info[0].addr + vector_addr->region_start)) =
         relocation_info[0].value;
     vector_addr->region_size += 4;
@@ -121,7 +153,7 @@ void relocation(region_t* vector_addr) {
         if (relocation_info[i].type == 0) { // exception entry
             vector_table_calculate(relocation_info + i, vector_addr);
         } else if (relocation_info[i].type == 4) { // func call
-            bl_calculate(relocation_info + i);
+            bl_calculate(relocation_info + i, tram_addr);
         } else if (relocation_info[i].type == 5) { // absoultably address: movw
             movw_calculate(relocation_info + i);
         } else if (relocation_info[i].type == 6) { // absoulately address: mowt
@@ -131,8 +163,9 @@ void relocation(region_t* vector_addr) {
     }
 }
 
-void loader(region_t* a, region_t* b, region_t* vector_addr, uint32_t src_address) {
+void loader(region_t* a, region_t* b, region_t* vector_addr, uint32_t tram_addr, uint32_t src_address) {
     divide();
     copy_text(a, b, src_address);
-    relocation(vector_addr);
+    copy_text2ram(tram_addr, tramp_section.region_start, tramp_section.region_size);
+    relocation(vector_addr, tram_addr);
 }

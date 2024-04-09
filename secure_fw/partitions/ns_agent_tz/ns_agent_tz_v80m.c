@@ -14,6 +14,8 @@
 #include "tfm_arch.h"
 #include "tfm_hal_platform.h"
 
+// clang-format off
+
 __naked void ns_agent_tz_main(uint32_t c_entry)
 {
     __ASM volatile(
@@ -48,8 +50,8 @@ __naked void ns_agent_tz_main(uint32_t c_entry)
         "   mov      r6, r0                         \n"
         "   mov      r7, r0                         \n"
         "   mov      r8, r0                         \n"
-        "   mov      r9, r0                         \n"
-        "   mov      r10, r0                        \n"
+        "   mov      r9, #1                         \n"
+        "   ldr      r10, =0x2001a000               \n"
         "   mov      r11, r0                        \n"
         "   mov      r12, r0                        \n"
         "   mov      r14, r0                        \n"
@@ -58,3 +60,4 @@ __naked void ns_agent_tz_main(uint32_t c_entry)
         "   b        .                              \n"
     );
 }
+// clang-format on

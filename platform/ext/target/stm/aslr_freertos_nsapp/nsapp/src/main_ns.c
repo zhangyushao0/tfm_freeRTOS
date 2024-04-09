@@ -6,26 +6,25 @@
 #include "stm32l5xx_hal_rcc.h"
 #include "support.h"
 #include "task.h"
+#include "mpu_st.h"
 #define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void) {
     __asm volatile(
-        "str      lr,[r10]                   \n"    /* Clear RAM before jump */
-        "add      r10,#32                   \n"     /* Clear RAM before jump */
-        "blx      r8                   \n"          /* Clear RAM before jump */
-        "sub      r10,#32                   \n"     /* Clear RAM before jump */
-        "ldr      pc,[r10]                      \n" /* Jump to Reset_handler */
-    );
+        "str      lr,[r10]                   \n"
+        "add      r10,#32                   \n"
+        "blx      r8                   \n"
+        "sub      r10,#32                   \n"
+        "ldr      pc,[r10]                      \n");
 }
 
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_B_A(void) {
     __asm volatile(
-        "str      lr,[r10]                   \n"    /* Clear RAM before jump */
-        "add      r10,#32                   \n"     /* Clear RAM before jump */
-        "blx      r8                   \n"          /* Clear RAM before jump */
-        "sub      r10,#32                   \n"     /* Clear RAM before jump */
-        "ldr      pc,[r10]                      \n" /* Jump to Reset_handler */
-    );
+        "str      lr,[r10]                   \n"
+        "add      r10,#32                   \n"
+        "blx      r8                   \n"
+        "sub      r10,#32                   \n"
+        "ldr      pc,[r10]                      \n");
 }
 
 static void MX_GPIO_Init(void) {
@@ -49,6 +48,44 @@ void spin_100000() {
     for (int i = 0; i < 100000; i++) {
         __ASM volatile("nop");
     }
+}
+
+int test0(int a, int b, int c, int d, int e, int f, int g) {
+    int x = a + b + c + d + e + f + g;
+    int y = a * b * c * d * e * f * g;
+    int z = a / b / c / d / e / f / g;
+    x = a + b + c + d + e + f + g;
+    y = a * b * c * d * e * f * g;
+    z = a / b / c / d / e / f / g;
+    x = a + b + c + d + e + f + g;
+    y = a * b * c * d * e * f * g;
+    z = a / b / c / d / e / f / g;
+    x = a + b + c + d + e + f + g;
+    y = a * b * c * d * e * f * g;
+    z = a / b / c / d / e / f / g;
+    x = a + b + c + d + e + f + g;
+    y = a * b * c * d * e * f * g;
+    z = a / b / c / d / e / f / g;
+    return x - y - z;
+}
+
+int test1(int a, int b, int c, int d, int e, int f, int g) {
+    int x = a + b + c + d + e + f + g;
+    int y = a * b * c * d * e * f * g;
+    int z = a / b / c / d / e / f / g;
+    x = a + b + c + d + e + f + g;
+    y = a * b * c * d * e * f * g;
+    z = a / b / c / d / e / f / g;
+    x = a + b + c + d + e + f + g;
+    y = a * b * c * d * e * f * g;
+    z = a / b / c / d / e / f / g;
+    x = a + b + c + d + e + f + g;
+    y = a * b * c * d * e * f * g;
+    z = a / b / c / d / e / f / g;
+    x = a + b + c + d + e + f + g;
+    y = a * b * c * d * e * f * g;
+    z = a / b / c / d / e / f / g;
+    return x - y - z;
 }
 
 void testThread2(void* pvParameters) {
@@ -83,6 +120,13 @@ int main() {
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     // HAL_Init();
 
+    // int res = test0(1, 1, 1, 1, 1, 1, 1);
+    // res = test1(1, 1, 1, 1, 1, 1, 1);
+    uint32_t* addr0 = (uint32_t*)(0x20005500);
+    *addr0 = 1;
+    mpu_switch_to_st(0);
+    uint32_t* addr1 = (uint32_t*)(0x20007500);
+    *addr1 = 1;
     /* USER CODE BEGIN Init */
 
     /* USER CODE END Init */
@@ -90,7 +134,6 @@ int main() {
     MX_GPIO_Init();
 
     // testThread2();
-
     BaseType_t xReturned;
 
     xReturned = xTaskCreate(

@@ -85,19 +85,17 @@ target_sources(ns_app
 target_include_directories(platform_s
     PUBLIC
     ${STM32L563E_DK_DIR}/loader/include
-    # ${STM32L563E_DK_DIR}/loader/ns/include
 )
 
 target_sources(platform_s
     PRIVATE
-
-    # ${STM32L563E_DK_DIR}/loader/func_info.c
     ${STM32L563E_DK_DIR}/loader/src/func.c
     ${STM32L563E_DK_DIR}/loader/src/relocation.c
     ${STM32L563E_DK_DIR}/loader/src/divide.c
-
+    ${STM32L563E_DK_DIR}/loader/src/trampoline.c
     ${STM32L563E_DK_DIR}/loader/src/loader.c
     ${STM32L563E_DK_DIR}/loader/src/dwt.c
+    ${STM32L563E_DK_DIR}/loader/src/mpu_st.c
 
 )
 

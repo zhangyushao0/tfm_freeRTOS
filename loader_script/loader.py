@@ -14,9 +14,13 @@ need_relocation_secions = ["text"]
 
 code_start = 0x08005000
 
-tra_A_B_addr = 0
-tra_B_A_addr = 0
 tra_section_addr = 0
+tra_section_size = 0
+tra_A_B_addr = 0
+tra_A_B_size = 0
+tra_B_A_addr = 0
+tra_B_A_size = 0
+
 
 def section_index(section, sections):
     for i in range(len(sections)):
@@ -122,6 +126,8 @@ def parse_section_table(elf_file):
         if section.name == ".tram_section":
             global tra_section_addr
             tra_section_addr = section["sh_addr"]
+            global tra_section_size
+            tra_section_size = section["sh_size"]
         # name = section.name
         # type_str = section['sh_type']
         # addr = section['sh_addr']
@@ -200,9 +206,13 @@ def generate_functions_info(symbol_tables, sections_info):
         if symbol[4]=="trampoline_A_B":
             global tra_A_B_addr
             tra_A_B_addr = symbol[0] + sections_info[symbol[3]][0]
+            global tra_A_B_size
+            tra_A_B_size = symbol[1]
         if symbol[4]=="trampoline_B_A":
             global tra_B_A_addr
             tra_B_A_addr = symbol[0] + sections_info[symbol[3]][0]
+            global tra_B_A_size
+            tra_B_A_size = symbol[1]
 
     return functions_info
 
@@ -210,10 +220,9 @@ def output_trampoline():
     with open(output_trampline_info_path, "w") as f:
         f.write('#include "trampoline.h"\n')
         f.write("\n")
-        f.write('uint32_t tra_section_addr = ' + hex(tra_section_addr) + ';\n')
-        f.write('uint32_t tra_A_B_addr = ' + hex(tra_A_B_addr) + ';\n')
-        f.write('uint32_t tra_B_A_addr = ' + hex(tra_B_A_addr) + ';\n')
-
+        f.write('region_t tramp_section = {' + hex(tra_section_addr) + ', ' + hex(tra_section_size)+ '};\n')
+        f.write('region_t tramp_a2b = {' + hex(tra_A_B_addr) + ', ' + hex(tra_A_B_size)+ '};\n')
+        f.write('region_t tramp_b2a = {' + hex(tra_B_A_addr) + ', ' + hex(tra_B_A_size)+ '};\n')
 def generate(elf_filename):
     with open(elf_filename, "rb") as f:
         elf_file = ELFFile(f)

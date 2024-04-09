@@ -8,9 +8,6 @@
 #include "build_config_check.h"
 #include "ffm/tfm_boot_data.h"
 #include "fih.h"
-#include "loader.h"
-#include "divide.h"
-#include "dwt.h"
 #include "memory_symbols.h"
 #include "spm.h"
 #include "tfm_api.h"
@@ -22,6 +19,9 @@
 #include "tfm_version.h"
 #include "target_cfg.h"
 
+#include "loader.h"
+#include "dwt.h"
+#include "mpu_st.h"
 uintptr_t spm_boundary = (uintptr_t)NULL;
 
 static fih_int tfm_core_init(void) {
@@ -84,30 +84,31 @@ static fih_int tfm_core_init(void) {
     FIH_RET(fih_int_encode(TFM_SUCCESS));
 }
 uint32_t vector_offset = 0;
-int      main(void) {
-         fih_int fih_rc = FIH_FAILURE;
 
-         /* set Main Stack Pointer limit */
-         tfm_arch_set_msplim(SPM_BOOT_STACK_TOP);
+int main(void) {
+    fih_int fih_rc = FIH_FAILURE;
 
-         fih_delay_init();
+    /* set Main Stack Pointer limit */
+    tfm_arch_set_msplim(SPM_BOOT_STACK_TOP);
 
-         FIH_CALL(tfm_core_init, fih_rc);
-         if (fih_not_eq(fih_rc, fih_int_encode(TFM_SUCCESS))) {
-             tfm_core_panic();
+    fih_delay_init();
+
+    FIH_CALL(tfm_core_init, fih_rc);
+    if (fih_not_eq(fih_rc, fih_int_encode(TFM_SUCCESS))) {
+        tfm_core_panic();
     }
 
-         /* All isolation should have been set up at this point */
-         FIH_LABEL_CRITICAL_POINT();
+    /* All isolation should have been set up at this point */
+    FIH_LABEL_CRITICAL_POINT();
 
-         /* Print the TF-M version */
-         SPMLOG_INFMSG("\033[1;34mBooting TF-M " VERSION_FULLSTR "\033[0m\r\n");
+    /* Print the TF-M version */
+    SPMLOG_INFMSG("\033[1;34mBooting TF-M " VERSION_FULLSTR "\033[0m\r\n");
 
-         /*
-          * Prioritise secure exceptions to avoid NS being able to pre-empt
-          * secure SVC or SecureFault. Do it before PSA API initialization.
-          */
-         tfm_arch_set_secure_exception_priorities();
+    /*
+     * Prioritise secure exceptions to avoid NS being able to pre-empt
+     * secure SVC or SecureFault. Do it before PSA API initialization.
+     */
+    tfm_arch_set_secure_exception_priorities();
 
 #ifdef TFM_FIH_PROFILE_ON
     /* Check secure exception priority */
@@ -117,14 +118,16 @@ int      main(void) {
     }
 #endif
 
-    uint32_t __text_address__ = 0x8055000;
-    region_t vector_table = {0x20015000, 0};
-    region_t a = {0x20005000, 0};
-    region_t b = {0x20010000, 0};
+    // uint32_t __text_address__ = 0x8055000;
+    // region_t a = {0x20005000, 0};
+    // region_t b = {0x20010000, 0};
+    // region_t vector_table = {0x20015000, 0};
+    // uint32_t trap_addr = 0x20019000;
+    // vector_offset = vector_table.region_start - __text_address__;
+    // loader(&a, &b, &vector_table, trap_addr, __text_address__);
 
-    vector_offset = vector_table.region_start - __text_address__;
-    loader(&a, &b, &vector_table, __text_address__);
-
+    mpu_init_st(0x20005000, 0x20006000, 0x20007000, 0x20008000);
+    mpu_switch_to_st(1);
     // DWT_enable(a, b);
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();

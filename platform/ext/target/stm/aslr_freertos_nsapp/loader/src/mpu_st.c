@@ -3,8 +3,8 @@
 
 static struct mpu_armv8m_region_cfg_st_t region_a = {
     0x0,
-    0x20005000,
-    0x20006000,
+    0,
+    0,
     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ST,
     MPU_ARMV8M_XN_EXEC_NEVER,
     MPU_ARMV8M_AP_RO_PRIV_ONLY,
@@ -12,14 +12,14 @@ static struct mpu_armv8m_region_cfg_st_t region_a = {
 
 static struct mpu_armv8m_region_cfg_st_t region_b = {
     0x1,
-    0x20007000,
-    0x20008000,
+    0,
+    0,
     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ST,
     MPU_ARMV8M_XN_EXEC_NEVER,
     MPU_ARMV8M_AP_RO_PRIV_ONLY,
     MPU_ARMV8M_SH_NONE};
 
-static struct mpu_armv8m_dev_st_t dev_mpu_ns = {MPU_BASE};
+static struct mpu_armv8m_dev_st_t dev_mpu_ns = {MPU_BASE_NS};
 
 enum mpu_armv8m_error_st_t mpu_armv8m_region_enable_st(
     struct mpu_armv8m_dev_st_t*        dev,
@@ -96,14 +96,52 @@ enum mpu_armv8m_error_st_t mpu_armv8m_region_disable_st(
     return ret_val;
 }
 
+enum mpu_armv8m_error_st_t mpu_armv8m_enable_st(
+    struct mpu_armv8m_dev_st_t* dev, uint32_t privdef_en, uint32_t hfnmi_en) {
+    /*No error checking*/
+
+    MPU_Type* mpu = (MPU_Type*)dev->base;
+
+    /*
+     * FixMe: Set 3 pre-defined MAIR_ATTR for memory. The attributes come
+     * from default memory map, need to check if fine-tune is necessary.
+     *
+     * MAIR0_0: Peripheral, Device-nGnRE.
+     * MAIR0_1: Code, WT RA. Same attr for Outer and Inner.
+     * MAIR0_2: SRAM, WBWA RA. Same attr for Outer and Inner.
+     */
+    mpu->MAIR0 = (MPU_ARMV8M_MAIR_ATTR_DEVICE_VAL_ST << MPU_MAIR0_Attr0_Pos) | (MPU_ARMV8M_MAIR_ATTR_CODE_VAL_ST << MPU_MAIR0_Attr1_Pos) | (MPU_ARMV8M_MAIR_ATTR_DATA_VAL_ST << MPU_MAIR0_Attr2_Pos);
+
+    mpu->CTRL = (privdef_en ? MPU_CTRL_PRIVDEFENA_Msk : 0) | (hfnmi_en ? MPU_CTRL_HFNMIENA_Msk : 0);
+
+    /*Ensure all configuration is written before enable*/
+
+    mpu->CTRL |= MPU_CTRL_ENABLE_Msk;
+
+    /* Enable MPU before next instruction */
+    __DSB();
+    __ISB();
+    return MPU_ARMV8M_OK;
+}
+
+void mpu_init_st(uint32_t region_a_base,
+                 uint32_t region_a_limit, uint32_t region_b_base, uint32_t region_b_limit) {
+    region_a.region_base = region_a_base;
+    region_a.region_limit = region_a_limit;
+    region_b.region_base = region_b_base;
+    region_b.region_limit = region_b_limit;
+
+    // mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_a);
+    // mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_b);
+
+    mpu_armv8m_enable_st(&dev_mpu_ns, PRIVILEGED_DEFAULT_ENABLE_ST, 0);
+}
+
 void mpu_switch_to_st(int region_num) {
-    if (region_num != 0 && region_num != 1) {
-        region_num = (region_num >= region_a.region_base && region_num < region_a.region_limit) ? 0 : 1;
-    }
     if (region_num == 0) {
         mpu_armv8m_region_disable_st(&dev_mpu_ns, 1);
         mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_a);
-    } else if (region_num == 1) {
+    } else {
         mpu_armv8m_region_disable_st(&dev_mpu_ns, 0);
         mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_b);
     }

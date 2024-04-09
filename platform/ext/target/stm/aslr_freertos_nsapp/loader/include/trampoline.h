@@ -1,8 +1,9 @@
 #ifndef TRAMPOLINE_H
 #define TRAMPOLINE_H
-#include "stm32l562xx.h"
+#include "loader.h"
 
-extern uint32_t tra_section_addr;
-extern uint32_t tra_A_B_addr;
-extern uint32_t tra_B_A_addr;
+extern region_t tramp_section;
+extern region_t tramp_a2b;
+extern region_t tramp_b2a;
+
 #endif

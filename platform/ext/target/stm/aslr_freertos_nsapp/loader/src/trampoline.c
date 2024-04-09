@@ -1,5 +1,5 @@
 #include "trampoline.h"
 
-uint32_t tra_section_addr = 0x8058822;
-uint32_t tra_A_B_addr = 0x8058823;
-uint32_t tra_B_A_addr = 0x8058835;
+region_t tramp_section = {0x8058a12, 0x24};
+region_t tramp_a2b = {0x8058a13, 0x12};
+region_t tramp_b2a = {0x8058a25, 0x12};

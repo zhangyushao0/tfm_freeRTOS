@@ -1,7 +1,7 @@
 #ifndef __MPU_H__
 #define __MPU_H__
 
-#include "stm32l5xx.h"
+#include "stm32l562xx.h"
 
 #define PRIVILEGED_DEFAULT_ENABLE_ST 1
 #define HARDFAULT_NMI_ENABLE_ST 1
