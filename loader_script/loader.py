@@ -7,10 +7,16 @@ output_relocation_info_path = (
 output_functions_info_path = (
     "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c"
 )
+output_trampline_info_path = (
+    "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/trampoline.c"
+)
 need_relocation_secions = ["text"]
 
 code_start = 0x08005000
 
+tra_A_B_addr = 0
+tra_B_A_addr = 0
+tra_section_addr = 0
 
 def section_index(section, sections):
     for i in range(len(sections)):
@@ -113,6 +119,9 @@ def parse_section_table(elf_file):
     sections_info = []
     for section in elf_file.iter_sections():
         sections_info.append([section["sh_addr"], section.name])
+        if section.name == ".tram_section":
+            global tra_section_addr
+            tra_section_addr = section["sh_addr"]
         # name = section.name
         # type_str = section['sh_type']
         # addr = section['sh_addr']
@@ -188,8 +197,22 @@ def generate_functions_info(symbol_tables, sections_info):
             functions_info.append(
                 [symbol[0] + sections_info[symbol[3]][0], symbol[1], symbol[4]]
             )
+        if symbol[4]=="trampoline_A_B":
+            global tra_A_B_addr
+            tra_A_B_addr = symbol[0] + sections_info[symbol[3]][0]
+        if symbol[4]=="trampoline_B_A":
+            global tra_B_A_addr
+            tra_B_A_addr = symbol[0] + sections_info[symbol[3]][0]
+
     return functions_info
 
+def output_trampoline():
+    with open(output_trampline_info_path, "w") as f:
+        f.write('#include "trampoline.h"\n')
+        f.write("\n")
+        f.write('uint32_t tra_section_addr = ' + hex(tra_section_addr) + ';\n')
+        f.write('uint32_t tra_A_B_addr = ' + hex(tra_A_B_addr) + ';\n')
+        f.write('uint32_t tra_B_A_addr = ' + hex(tra_B_A_addr) + ';\n')
 
 def generate(elf_filename):
     with open(elf_filename, "rb") as f:
@@ -201,6 +224,6 @@ def generate(elf_filename):
         output_functions_info(functions_info)
         info = generate_relocation_info(elf_file, symbol_tables, sections_info, functions_info)
         output_relocation_info(info)
-
+        output_trampoline()
 
 generate(elf_path)

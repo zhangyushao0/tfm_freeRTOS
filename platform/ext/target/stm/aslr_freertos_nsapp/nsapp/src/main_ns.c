@@ -1,6 +1,5 @@
 #include "main_ns.h"
 #include "FreeRTOS.h"
-#include "assert.h"
 #include "stm32l562xx.h"
 #include "stm32l5xx_hal.h"
 #include "stm32l5xx_hal_flash.h"
@@ -9,24 +8,22 @@
 #include "task.h"
 #define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
-__attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void)
-{
+__attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void) {
     __asm volatile(
-        "str      lr,[r10]                   \n" /* Clear RAM before jump */
-        "add      r10,#32                   \n" /* Clear RAM before jump */
-        "blx      r8                   \n" /* Clear RAM before jump */
-        "sub      r10,#32                   \n" /* Clear RAM before jump */
+        "str      lr,[r10]                   \n"    /* Clear RAM before jump */
+        "add      r10,#32                   \n"     /* Clear RAM before jump */
+        "blx      r8                   \n"          /* Clear RAM before jump */
+        "sub      r10,#32                   \n"     /* Clear RAM before jump */
         "ldr      pc,[r10]                      \n" /* Jump to Reset_handler */
     );
 }
 
-__attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_B_A(void)
-{
+__attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_B_A(void) {
     __asm volatile(
-        "str      lr,[r10]                   \n" /* Clear RAM before jump */
-        "add      r10,#32                   \n" /* Clear RAM before jump */
-        "blx      r8                   \n" /* Clear RAM before jump */
-        "sub      r10,#32                   \n" /* Clear RAM before jump */
+        "str      lr,[r10]                   \n"    /* Clear RAM before jump */
+        "add      r10,#32                   \n"     /* Clear RAM before jump */
+        "blx      r8                   \n"          /* Clear RAM before jump */
+        "sub      r10,#32                   \n"     /* Clear RAM before jump */
         "ldr      pc,[r10]                      \n" /* Jump to Reset_handler */
     );
 }
@@ -77,14 +74,14 @@ void testThread1(void* pvParameters) {
     while (1) {
         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
         for (int i = 0; i < 100000; i++) {
-        __ASM volatile("nop");
-    }
+            __ASM volatile("nop");
+        }
     }
 }
 
 int main() {
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-    //HAL_Init();
+    // HAL_Init();
 
     /* USER CODE BEGIN Init */
 
@@ -92,7 +89,7 @@ int main() {
 
     MX_GPIO_Init();
 
-     //testThread2();
+    // testThread2();
 
     BaseType_t xReturned;
 
@@ -108,7 +105,7 @@ int main() {
     vTaskStartScheduler();
 
     /* 如果系统正常工作，以下代码不会执行 */
-    for (;;){
+    for (;;) {
         trampoline_A_B();
         trampoline_B_A();
     }
