@@ -144,11 +144,17 @@ void movt_calculate(relocation_info_t* entry) {
     }
 }
 
-void relocation(region_t* vector_addr, uint32_t tram_addr) {
+int relocation(region_t* vector_addr, uint32_t tram_addr) {
+    int reset_region = -1;
     *((uint32_t*)(relocation_info[0].addr + vector_addr->region_start)) =
         relocation_info[0].value;
     vector_addr->region_size += 4;
-    for (int i = 1; i < table_size; ++i) {
+    int func_id = relocation_info[1].func_id2;
+    *((uint32_t*)(relocation_info[1].addr + vector_addr->region_start)) =
+        func_info[func_id].reloc_addr;
+    vector_addr->region_size += 4;
+    reset_region = relocation_info[1].type;
+    for (int i = 2; i < table_size; ++i) {
         // which range of the identifier
         if (relocation_info[i].type == 0) { // exception entry
             vector_table_calculate(relocation_info + i, vector_addr);
@@ -161,11 +167,14 @@ void relocation(region_t* vector_addr, uint32_t tram_addr) {
         } else {
         }
     }
+    return reset_region;
 }
 
-void loader(region_t* a, region_t* b, region_t* vector_addr, uint32_t tram_addr, uint32_t src_address) {
+int loader(region_t* a, region_t* b, region_t* vector_addr, uint32_t tram_addr, uint32_t src_address) {
+    int reset_region = -1;
     divide();
     copy_text(a, b, src_address);
     copy_text2ram(tram_addr, tramp_section.region_start, tramp_section.region_size);
-    relocation(vector_addr, tram_addr);
+    reset_region = relocation(vector_addr, tram_addr);
+    return reset_region;
 }

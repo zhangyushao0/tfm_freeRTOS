@@ -73,9 +73,8 @@ enum mpu_armv8m_error_st_t mpu_armv8m_region_enable_st(
 }
 
 enum mpu_armv8m_error_st_t mpu_armv8m_region_disable_st(
-    struct mpu_armv8m_dev_st_t* dev,
-    uint32_t                    region_nr) {
-    MPU_Type* mpu = (MPU_Type*)dev->base;
+    uint32_t region_nr) {
+    MPU_Type* mpu = (MPU_Type*)(dev_mpu_ns.base);
 
     enum mpu_armv8m_error_st_t ret_val = MPU_ARMV8M_OK;
     uint32_t                   ctrl_before;
@@ -84,15 +83,10 @@ enum mpu_armv8m_error_st_t mpu_armv8m_region_disable_st(
 
     ctrl_before = mpu->CTRL;
     mpu->CTRL = 0;
-
     mpu->RNR = region_nr & MPU_RNR_REGION_Msk;
-
-    mpu->RBAR = 0;
-    mpu->RLAR = 0;
-
+    mpu->RLAR &= 0xFFFFFFFE;
     /*Restore main MPU control*/
     mpu->CTRL = ctrl_before;
-
     return ret_val;
 }
 
@@ -125,24 +119,15 @@ enum mpu_armv8m_error_st_t mpu_armv8m_enable_st(
 }
 
 void mpu_init_st(uint32_t region_a_base,
-                 uint32_t region_a_limit, uint32_t region_b_base, uint32_t region_b_limit) {
+                 uint32_t region_a_limit, uint32_t region_b_base, uint32_t region_b_limit, int reset_region) {
     region_a.region_base = region_a_base;
     region_a.region_limit = region_a_limit;
     region_b.region_base = region_b_base;
     region_b.region_limit = region_b_limit;
 
-    // mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_a);
-    // mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_b);
+    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_a);
+    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_b);
 
     mpu_armv8m_enable_st(&dev_mpu_ns, PRIVILEGED_DEFAULT_ENABLE_ST, 0);
-}
-
-void mpu_switch_to_st(int region_num) {
-    if (region_num == 0) {
-        mpu_armv8m_region_disable_st(&dev_mpu_ns, 1);
-        mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_a);
-    } else {
-        mpu_armv8m_region_disable_st(&dev_mpu_ns, 0);
-        mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_b);
-    }
+    mpu_armv8m_region_disable_st(reset_region);
 }

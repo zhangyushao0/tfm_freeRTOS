@@ -57,9 +57,10 @@ struct mpu_armv8m_region_cfg_raw_st_t {
     uint32_t region_limit;
 };
 
-void mpu_switch_to_st(int region_num);
+// enum mpu_armv8m_error_st_t mpu_armv8m_region_disable_st(
+//     uint32_t region_nr);
 
 void mpu_init_st(uint32_t region_a_base,
-                 uint32_t region_a_limit, uint32_t region_b_base, uint32_t region_b_limit);
+                 uint32_t region_a_limit, uint32_t region_b_base, uint32_t region_b_limit, int reset_region);
 
 #endif /* __MPU_ARMV8M_DRV_H__ */

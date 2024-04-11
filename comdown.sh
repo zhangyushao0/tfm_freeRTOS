@@ -1,6 +1,7 @@
 #!/bin/bash
 STM32_Programmer_CLI_PATH="/mnt/d/programs/STM32CubeProgrammer/bin"
 STM32_GDB_server_PATH="/mnt/d/programs/stm32gdbserver"
+# STM32_GDB_server_PATH="/mnt/d/programs/STM32CubeProgrammer/bin"
 
 for arg in "$@"; do
     if [[ "$arg" == "-c" ]] || [[ "$arg" == "--compile" ]]; then

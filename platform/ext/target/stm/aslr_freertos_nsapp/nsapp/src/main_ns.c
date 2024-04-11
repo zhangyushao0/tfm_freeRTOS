@@ -6,23 +6,130 @@
 #include "stm32l5xx_hal_rcc.h"
 #include "support.h"
 #include "task.h"
-#include "mpu_st.h"
 #define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
+#define mpu_disable_0_enable_1()                                \
+    __asm__ volatile("movw r0, %0"                              \
+                     :                                          \
+                     : "i"(MPU_BASE & 0xFFFF));                 \
+    __asm__ volatile("movt r0, %0"                              \
+                     :                                          \
+                     : "i"((MPU_BASE >> 16) & 0xFFFF));         \
+    __asm__ volatile("   ldr      r1, [r0, #0x4]          \n"   \
+                     "   mov      r2, #0x0                \n"   \
+                     "   str      r2, [r0, #0x4]          \n"   \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   bic      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   mov      r2, #1                   \n"  \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   orr      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   str      r1, [r0, #0x4]          \n"); \
+    __asm__ volatile("dsb 0xF" ::                               \
+                         : "memory");                           \
+    __asm__ volatile("isb 0xF" ::                               \
+                         : "memory");
+
+#define mpu_disable_1_enable_0()                                \
+    __asm__ volatile("movw r0, %0"                              \
+                     :                                          \
+                     : "i"(MPU_BASE & 0xFFFF));                 \
+    __asm__ volatile("movt r0, %0"                              \
+                     :                                          \
+                     : "i"((MPU_BASE >> 16) & 0xFFFF));         \
+    __asm__ volatile("   ldr      r1, [r0, #0x4]          \n"   \
+                     "   mov      r2, #0x0                \n"   \
+                     "   str      r2, [r0, #0x4]          \n"   \
+                     "   mov      r2, #0x1                \n"   \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   bic      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   mov      r2, #0                   \n"  \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   orr      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   str      r1, [r0, #0x4]          \n"); \
+    __asm__ volatile("dsb 0xF" ::                               \
+                         : "memory");                           \
+    __asm__ volatile("isb 0xF" ::                               \
+                         : "memory");
+
+#define push()                                             \
+    __asm__ volatile("   add      r10, #0x10          \n"  \
+                     "   str      r3, [r10, #0xc]      \n" \
+                     "   str      r2, [r10, #0x8]      \n" \
+                     "   str      r1, [r10, #0x4]      \n" \
+                     "   str      r0, [r10]            \n");
+
+#define pop()                                              \
+    __asm__ volatile("   ldr      r0, [r10]            \n" \
+                     "   ldr      r1, [r10, #0x4]      \n" \
+                     "   ldr      r2, [r10, #0x8]      \n" \
+                     "   ldr      r3, [r10, #0xc]      \n" \
+                     "   sub      r10, #0x10          \n");
+
+#define mpu_region_switch_from_to(region_id1, region_id2) \
+    MPU_Type* mpu = (MPU_Type*)MPU_BASE;                  \
+    uint32_t  ctrl_before = mpu->CTRL;                    \
+    mpu->CTRL = 0;                                        \
+    mpu->RNR = region_id1;                                \
+    uint32_t limit_cfg = mpu->RLAR;                       \
+    limit_cfg &= 0xFFFFFFFE;                              \
+    mpu->RLAR = limit_cfg;                                \
+    mpu->RNR = region_id2;                                \
+    limit_cfg = mpu->RLAR;                                \
+    limit_cfg |= MPU_RLAR_EN_Msk;                         \
+    mpu->RLAR = limit_cfg;                                \
+    mpu->CTRL = ctrl_before;                              \
+    __DSB();                                              \
+    __ISB();
+
+void func01() {
+    push();
+    mpu_disable_0_enable_1();
+    pop();
+}
+
+void func10() {
+    push();
+    mpu_disable_1_enable_0();
+    pop();
+}
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void) {
-    __asm volatile(
+    __asm__ volatile(
         "str      lr,[r10]                   \n"
-        "add      r10,#32                   \n"
-        "blx      r8                   \n"
-        "sub      r10,#32                   \n"
+        "add      r10,#4                   \n");
+    push();
+    mpu_disable_1_enable_0();
+    pop();
+    __asm__ volatile(
+        "blx      r8                   \n");
+    push();
+    mpu_disable_0_enable_1();
+    pop();
+    __asm__ volatile(
+        "sub      r10,#4                   \n"
         "ldr      pc,[r10]                      \n");
 }
 
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_B_A(void) {
-    __asm volatile(
+    __asm__ volatile(
         "str      lr,[r10]                   \n"
-        "add      r10,#32                   \n"
-        "blx      r8                   \n"
+        "add      r10,#32                   \n");
+    push();
+    mpu_disable_1_enable_0();
+    pop();
+    __asm__ volatile(
+        "blx      r8                   \n");
+    push();
+    mpu_disable_0_enable_1();
+    pop();
+    __asm__ volatile(
         "sub      r10,#32                   \n"
         "ldr      pc,[r10]                      \n");
 }
@@ -48,44 +155,6 @@ void spin_100000() {
     for (int i = 0; i < 100000; i++) {
         __ASM volatile("nop");
     }
-}
-
-int test0(int a, int b, int c, int d, int e, int f, int g) {
-    int x = a + b + c + d + e + f + g;
-    int y = a * b * c * d * e * f * g;
-    int z = a / b / c / d / e / f / g;
-    x = a + b + c + d + e + f + g;
-    y = a * b * c * d * e * f * g;
-    z = a / b / c / d / e / f / g;
-    x = a + b + c + d + e + f + g;
-    y = a * b * c * d * e * f * g;
-    z = a / b / c / d / e / f / g;
-    x = a + b + c + d + e + f + g;
-    y = a * b * c * d * e * f * g;
-    z = a / b / c / d / e / f / g;
-    x = a + b + c + d + e + f + g;
-    y = a * b * c * d * e * f * g;
-    z = a / b / c / d / e / f / g;
-    return x - y - z;
-}
-
-int test1(int a, int b, int c, int d, int e, int f, int g) {
-    int x = a + b + c + d + e + f + g;
-    int y = a * b * c * d * e * f * g;
-    int z = a / b / c / d / e / f / g;
-    x = a + b + c + d + e + f + g;
-    y = a * b * c * d * e * f * g;
-    z = a / b / c / d / e / f / g;
-    x = a + b + c + d + e + f + g;
-    y = a * b * c * d * e * f * g;
-    z = a / b / c / d / e / f / g;
-    x = a + b + c + d + e + f + g;
-    y = a * b * c * d * e * f * g;
-    z = a / b / c / d / e / f / g;
-    x = a + b + c + d + e + f + g;
-    y = a * b * c * d * e * f * g;
-    z = a / b / c / d / e / f / g;
-    return x - y - z;
 }
 
 void testThread2(void* pvParameters) {
@@ -119,19 +188,16 @@ void testThread1(void* pvParameters) {
 int main() {
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     // HAL_Init();
-
-    // int res = test0(1, 1, 1, 1, 1, 1, 1);
-    // res = test1(1, 1, 1, 1, 1, 1, 1);
+    MX_GPIO_Init();
+    func01();
     uint32_t* addr0 = (uint32_t*)(0x20005500);
     *addr0 = 1;
-    mpu_switch_to_st(0);
+    func10();
     uint32_t* addr1 = (uint32_t*)(0x20007500);
     *addr1 = 1;
     /* USER CODE BEGIN Init */
 
     /* USER CODE END Init */
-
-    MX_GPIO_Init();
 
     // testThread2();
     BaseType_t xReturned;

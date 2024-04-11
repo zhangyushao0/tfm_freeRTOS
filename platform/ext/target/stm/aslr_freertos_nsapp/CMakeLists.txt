@@ -78,7 +78,7 @@ target_sources(ns_app
     PRIVATE
     ${STM_COMMON_DIR}/stm32l5xx/Device/Source/startup_stm32l5xx_ns.c
     ${NS_APP_DIR}/src/main_ns.c
-    ${STM32L563E_DK_DIR}/loader/ns/src/mpu_st.c
+    # ${STM32L563E_DK_DIR}/loader/ns/src/mpu_st.c
 )
 
 # loader
