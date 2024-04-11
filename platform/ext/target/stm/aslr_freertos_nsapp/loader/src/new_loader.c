@@ -25,6 +25,7 @@
 // }
 
 void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
+  len = len / 4;
   HAL_FLASH_Unlock();
   uint32_t i = 0;
   while (i < len) {

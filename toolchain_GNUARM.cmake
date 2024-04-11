@@ -7,9 +7,9 @@
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER "clang-19")
-set(CMAKE_CXX_COMPILER "clang-19")
-set(CMAKE_ASM_COMPILER "clang-19")
+set(CMAKE_C_COMPILER "/lib/llvm-17/bin/clang")
+set(CMAKE_CXX_COMPILER "/lib/llvm-17/bin/clang")
+set(CMAKE_ASM_COMPILER "/lib/llvm-17/bin/clang")
 set(TARGET_TRIPLE arm-none-eabi)
 
 set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})
@@ -45,7 +45,8 @@ macro(tfm_toolchain_reset_compiler_flags)
     endif()
 
     add_compile_options(
-        -specs=nano.specs
+
+        # -specs=nano.specs
         -Wall
         -Wno-format
         -Wno-return-type
@@ -76,7 +77,7 @@ macro(tfm_toolchain_reset_linker_flags)
     add_link_options(
 
         # --entry=Reset_Handler
-        -specs=nano.specs
+        # -specs=nano.specs
         LINKER:-check-sections
         LINKER:-fatal-warnings
         LINKER:--gc-sections
@@ -204,8 +205,9 @@ macro(tfm_toolchain_reload_compiler)
 
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
-    # set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/ld.lld-19")
-    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
+    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/ld.lld-19")
+
+    # set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
     set(BL2_COMPILER_CP_FLAG -mfloat-abi=soft)
 
     if(CONFIG_TFM_FLOAT_ABI STREQUAL "hard")

@@ -1,6 +1,5 @@
 #include "main_ns.h"
 #include "FreeRTOS.h"
-// #include "assert.h"
 #include "stm32l562xx.h"
 #include "stm32l5xx_hal.h"
 #include "stm32l5xx_hal_rcc.h"
@@ -55,8 +54,7 @@ char cArray[128] __attribute__((aligned(128)));
 int main() {
   HAL_Init();
   MX_GPIO_Init();
-  // for (;;)
-  //   ;
+
   xTaskCreate(testThread, "testThread", 256, NULL, 1, NULL);
 
   /* 启动调度器 */

@@ -28,7 +28,7 @@ enum tfm_hal_status_t tfm_hal_platform_init(void) {
 }
 
 uint32_t tfm_hal_get_ns_VTOR(void) {
-  return memory_regions.non_secure_code_start;
+  return memory_regions.non_secure_code_start + 0x17fb0000;
 }
 
 uint32_t tfm_hal_get_ns_MSP(void) {
@@ -36,5 +36,5 @@ uint32_t tfm_hal_get_ns_MSP(void) {
 }
 
 uint32_t tfm_hal_get_ns_entry_point(void) {
-  return *((uint32_t *)(memory_regions.non_secure_code_start + 0x17faf000 + 4));
+  return *((uint32_t *)(memory_regions.non_secure_code_start + 0x17fb0000 + 4));
 }

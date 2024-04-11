@@ -23,7 +23,9 @@ target_compile_options(ns_app
 
     # -mcmodel=small
     # -fno-pic
+    -flto
     -fno-jump-tables
+    -Xclang -fpass-plugin=/home/zys/repo/llvm-tutor/build/lib/libInlineHandler.so
 
     # -fPIE
 )
@@ -100,6 +102,7 @@ target_sources(platform_s
 
     # ${STM32L563E_DK_DIR}/loader/src/loader.c
     ${STM32L563E_DK_DIR}/loader/src/new_loader.c
+    ${STM32L563E_DK_DIR}/loader/src/dwt.c
 )
 
 # FreeRTOS

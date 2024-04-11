@@ -7,6 +7,7 @@
 
 #include "build_config_check.h"
 #include "divide.h"
+#include "dwt.h"
 #include "ffm/tfm_boot_data.h"
 #include "fih.h"
 #include "loader.h"
@@ -121,14 +122,19 @@ int main(void) {
   // copy_text2ram(relocate_address1, __text_address__, 0x1000);
   // relocate(offset1);
 
-  uint32_t __text_address__ = 0x8055000;
-  uint32_t offset_a = 0x17faf000; // 0x20004000
-  uint32_t offset_b = 0x17fb1000; // 0x20006000
+  int32_t __text_address__ = 0x8055000;
+  uint32_t address_a = 0x20005000;
+  uint32_t address_b = 0x20015000;
+  uint32_t offset_a = address_a - __text_address__;
+  uint32_t offset_b = address_b - __text_address__;
 
-  copy_text2ram(__text_address__ + offset_a, __text_address__, 0x1000);
-  copy_text2ram(__text_address__ + offset_b, __text_address__, 0x1000);
+  copy_text2ram(address_a, __text_address__, 0x5000);
+  copy_text2ram(address_b, __text_address__, 0x5000);
   divide();
   relocation(offset_a, offset_b);
+  DWT_enable(address_a + 0x22a, address_a + 0x5000, address_b + 0x22a,
+             address_b + 0x5000);
+
   /* Move to handler mode for further SPM initialization. */
   tfm_core_handler_mode();
 
