@@ -16,7 +16,7 @@ set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})
 set(CMAKE_CXX_COMPILER_TARGET ${TARGET_TRIPLE})
 
 set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
-set(CMAKE_LINKER "ld.lld-19")
+
 set(LINKER_VENEER_OUTPUT_FLAG -Wl,--cmse-implib,--out-implib=)
 
 # set(LINKER_VENEER_OUTPUT_FLAG -Wl,-fembed-bitcode,-mllvm,-arm-cmse-guard-implib,-o)
@@ -47,6 +47,8 @@ macro(tfm_toolchain_reset_compiler_flags)
     add_compile_options(
 
         # -specs=nano.specs
+        # -flto
+        # -Xclang -fpass-plugin=/home/zys/repo/llvm-tutor/build/lib/libInlineHandler.so
         -Wall
         -Wno-format
         -Wno-return-type
@@ -76,11 +78,16 @@ macro(tfm_toolchain_reset_linker_flags)
 
     add_link_options(
 
-        # --entry=Reset_Handler
+        LINKER:--entry=Reset_Handler
+
         # -specs=nano.specs
         LINKER:-check-sections
         LINKER:-fatal-warnings
+
         LINKER:--gc-sections
+
+        # LINKER:--no-gc-sections
+        LINKER:--emit-relocs
 
         # LINKER:--no-wchar-size-warning
         ${MEMORY_USAGE_FLAG}
@@ -205,7 +212,7 @@ macro(tfm_toolchain_reload_compiler)
 
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
-    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/ld.lld-19")
+    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/lib/llvm-17/bin/ld.lld")
 
     # set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
     set(BL2_COMPILER_CP_FLAG -mfloat-abi=soft)

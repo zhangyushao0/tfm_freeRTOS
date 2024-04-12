@@ -369,45 +369,34 @@ void vStartFirstTask(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 
 /*-----------------------------------------------------------*/
 
-uint32_t
-ulSetInterruptMask(void) /* __attribute__(( naked )) PRIVILEGED_FUNCTION */
-{
-  __asm volatile(
-      "   .syntax unified                                 \n"
-      "                                                   \n"
-      "   mrs r0, basepri                                 \n" /* r0 = basepri.
-                                                                 Return original
-                                                                 basepri value.
-                                                               */
-      "   mov r1, %0                                      \n" /* r1 =
-                                                                 configMAX_SYSCALL_INTERRUPT_PRIORITY.
-                                                               */
-      "   msr basepri, r1                                 \n" /* Disable
-                                                                 interrupts upto
-                                                                 configMAX_SYSCALL_INTERRUPT_PRIORITY.
-                                                               */
-      "   dsb                                             \n"
-      "   isb                                             \n"
-      "   bx lr                                           \n" /* Return. */
-      ::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY)
-      : "memory");
+// 用于读取 BASEPRI 寄存器的值
+static inline uint32_t readBasepri() {
+  uint32_t value;
+  __asm volatile("mrs %0, basepri" : "=r"(value));
+  return value;
 }
+
+// 用于设置 BASEPRI 寄存器的值
+static inline void writeBasepri(uint32_t value) {
+  __asm volatile("msr basepri, %0" ::"r"(value) : "memory");
+  __asm volatile("dsb");
+  __asm volatile("isb");
+}
+
+// 更高层次的函数，用于设置中断屏蔽，并返回旧的 BASEPRI 值
+uint32_t ulSetInterruptMask(void) {
+  uint32_t originalBasepri = readBasepri(); // 读取当前的 BASEPRI 值
+  writeBasepri(configMAX_SYSCALL_INTERRUPT_PRIORITY); // 设置新的 BASEPRI 值
+  return originalBasepri; // 返回旧的 BASEPRI 值
+}
+
 /*-----------------------------------------------------------*/
 
-void vClearInterruptMask(__attribute__((
-    unused)) uint32_t ulMask) /* __attribute__(( naked )) PRIVILEGED_FUNCTION */
-{
-  __asm volatile(
-      "   .syntax unified                                 \n"
-      "                                                   \n"
-      "   msr basepri, r0                                 \n" /* basepri =
-                                                                 ulMask. */
-      "   dsb                                             \n"
-      "   isb                                             \n"
-      "   bx lr                                           \n" /* Return. */
-      ::
-          : "memory");
+// 函数用于清除中断屏蔽，设置BASEPRI寄存器为给定的ulMask值
+void vClearInterruptMask(uint32_t ulMask) {
+  writeBasepri(ulMask); // 设置 BASEPRI 寄存器为 ulMask
 }
+
 /*-----------------------------------------------------------*/
 
 #if (configENABLE_MPU == 1)

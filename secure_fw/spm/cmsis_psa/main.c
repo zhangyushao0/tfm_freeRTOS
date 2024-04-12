@@ -132,8 +132,8 @@ int main(void) {
   copy_text2ram(address_b, __text_address__, 0x5000);
   divide();
   relocation(offset_a, offset_b);
-  DWT_enable(address_a + 0x22a, address_a + 0x5000, address_b + 0x22a,
-             address_b + 0x5000);
+  // DWT_enable(address_a + 0x22a, address_a + 0x5000, address_b + 0x22a,
+  //            address_b + 0x5000);
 
   /* Move to handler mode for further SPM initialization. */
   tfm_core_handler_mode();

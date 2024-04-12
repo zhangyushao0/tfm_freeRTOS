@@ -258,6 +258,7 @@ target_compile_options(freertos_kernel
 # MSVC        | MSVC # Note only for MinGW?
 # Renesas     | ?TBD?
 target_compile_options(freertos_kernel PRIVATE
+    -flto
 
     -fno-jump-tables
 

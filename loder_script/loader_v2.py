@@ -1,6 +1,6 @@
 from elftools.elf.elffile import ELFFile
 
-elf_path = "./build_re/bin/ns_app.elf"
+elf_path = "./build/bin/ns_app.elf"
 output_relocation_info_path = (
     "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/relocation.c"
 )
@@ -128,11 +128,11 @@ def generate_relocation_info(elf_file, symbol_tables, sections_info):
 
     # # Iterate over the relocation entries
     for rel_section, index in rel_sections:
-        section_addr = sections_info[index][0]
+        section_addr = 0
         print(f"Relocation section {rel_section.name} at {hex(section_addr)}")
         for relocation in rel_section.iter_relocations():
             symbol = symbol_tables[relocation["r_info_sym"]]
-            value = symbol[0] + sections_info[symbol[3]][0]
+            value = symbol[0]
             offset = relocation["r_offset"] + section_addr
             relocation_type = relocation["r_info_type"]
             type = -1

@@ -18,18 +18,6 @@ set(NS_APP_DIR ${STM32L563E_DK_DIR}/nsapp)
 # NSAPP
 add_executable(ns_app)
 
-target_compile_options(ns_app
-    PUBLIC
-
-    # -mcmodel=small
-    # -fno-pic
-    -flto
-    -fno-jump-tables
-    -Xclang -fpass-plugin=/home/zys/repo/llvm-tutor/build/lib/libInlineHandler.so
-
-    # -fPIE
-)
-
 # def for stm32l5xx
 include(${STM_COMMON_DIR}/stm32l5xx/CMakeLists.txt)
 
@@ -44,29 +32,22 @@ set_target_properties(ns_app PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
-if(ENABLE_RE)
-    target_link_options(ns_app
-        PRIVATE
+target_compile_options(ns_app
+    PUBLIC
 
-        # -fPIE
-        -r
-        -e Reset_Handler
-        $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
-        $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
-        $<$<C_COMPILER_ID:ARMClang>:--map>
-        $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
-    )
-else()
-    target_link_options(ns_app
-        PRIVATE
+    -flto
+    -fno-jump-tables
 
-        # -fPIE
-        $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
-        $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
-        $<$<C_COMPILER_ID:ARMClang>:--map>
-        $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
-    )
-endif()
+    # -fPIE
+)
+target_link_options(ns_app
+    PRIVATE
+    LINKER:--load-pass-plugin /home/zys/repo/llvm-tutor/build/lib/libInlineHandler.so
+    $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
+    $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
+    $<$<C_COMPILER_ID:ARMClang>:--map>
+    $<$<C_COMPILER_ID:IAR>:--map\;${CMAKE_BINARY_DIR}/bin/ns_app.map>
+)
 
 add_convert_to_bin_target(ns_app)
 target_include_directories(ns_app
