@@ -811,21 +811,21 @@ void SVC_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 
 #else /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 
-void SVC_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
-{
-  __asm volatile("   .syntax unified                                 \n"
-                 "                                                   \n"
-                 "   tst lr, #4                                      \n"
-                 "   ite eq                                          \n"
-                 "   mrseq r0, msp                                   \n"
-                 "   mrsne r0, psp                                   \n"
-                 " MOVW    r1, :lower16:vPortSVCHandler_C\n"
-                 " MOVT    r1, :upper16:vPortSVCHandler_C\n"
-                 "   bx r1                                           \n"
-                 "                                                   \n"
-                 "   .align 4                                        \n"
-                 //  "svchandler_address_const: .word vPortSVCHandler_C  \n"
+extern void vPortSVCHandler_C(uint32_t *pulParam);
+
+void SVC_Handler(void) {
+  uint32_t *stack;
+
+  // 内联汇编，用于选择正确的栈指针（MSP 或 PSP）
+  __asm volatile("   tst lr, #4                     \n"
+                 "   ite eq                         \n"
+                 "   mrseq %0, msp                  \n"
+                 "   mrsne %0, psp                  \n"
+                 : "=r"(stack) // 输出到stack变量
   );
+
+  // C语言调用 vPortSVCHandler_C，传入选定的栈指针
+  vPortSVCHandler_C(stack);
 }
 
 #endif /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) */

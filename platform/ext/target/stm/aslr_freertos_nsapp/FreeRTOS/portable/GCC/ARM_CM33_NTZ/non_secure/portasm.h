@@ -96,7 +96,7 @@ void PendSV_Handler(void) __attribute__((naked)) PRIVILEGED_FUNCTION;
 /**
  * @brief SVC Handler.
  */
-void SVC_Handler(void) __attribute__((naked)) PRIVILEGED_FUNCTION;
+void SVC_Handler(void) PRIVILEGED_FUNCTION;
 
 /**
  * @brief Allocate a Secure context for the calling task.

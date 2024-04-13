@@ -162,9 +162,7 @@ def generate_functions_info(symbol_tables, sections_info):
     functions_info = []
     for symbol in symbol_tables:
         if symbol[2] == "STT_FUNC":
-            functions_info.append(
-                [symbol[0] + sections_info[symbol[3]][0], symbol[1], symbol[4]]
-            )
+            functions_info.append([symbol[0], symbol[1], symbol[4]])
     return functions_info
 
 

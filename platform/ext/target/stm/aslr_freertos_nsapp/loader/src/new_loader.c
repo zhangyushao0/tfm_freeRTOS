@@ -116,11 +116,14 @@ uint32_t movt_calculate(uint32_t ori_val, uint32_t addr) {
 }
 
 void relocation(uint32_t offset_a, uint32_t offset_b) {
-  *((uint32_t *)(relocation_info[0].addr + offset_a)) =
-      relocation_info[0].value;
-  for (int i = 1; i < table_size; ++i) {
+  // *((uint32_t *)(relocation_info[0].addr + offset_a)) =
+  //     relocation_info[0].value;
+  for (int i = 0; i < table_size; ++i) {
     // which range of the identifier
     if (relocation_info[i].type == 0) { // exception entry
+      if (relocation_info[i].value > 0x20000000) {
+        continue;
+      }
       if (in_range(relocation_info[i].value) == 0) {
         *((uint32_t *)(relocation_info[i].addr + offset_a)) =
             relocation_info[i].value + offset_a;
