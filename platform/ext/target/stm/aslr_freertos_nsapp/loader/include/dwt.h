@@ -29,5 +29,5 @@ struct DWTComparatorPair {
 };
 
 void DWT_enable(uint32_t base1, uint32_t end1, uint32_t base2, uint32_t end2);
-
+void DWT_enable2(uint32_t begin1, uint32_t end1);
 #endif /* INC_DWT_H_ */

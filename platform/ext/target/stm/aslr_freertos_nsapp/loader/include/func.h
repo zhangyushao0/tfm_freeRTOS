@@ -5,7 +5,7 @@
 typedef struct {
     uint32_t addr;
     uint32_t size;
-    uint32_t region;
+    int      region;
     uint32_t reloc_addr;
 } func_info_t;
 

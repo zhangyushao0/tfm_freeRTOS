@@ -5,5 +5,5 @@
 extern region_t tramp_section;
 extern region_t tramp_a2b;
 extern region_t tramp_b2a;
-
+extern region_t tramp_blx;
 #endif

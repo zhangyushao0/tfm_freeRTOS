@@ -1,6 +1,6 @@
 from elftools.elf.elffile import ELFFile
 
-elf_path = "./build_re/bin/ns_app.elf"
+elf_path = "./build/bin/ns_app.elf"
 output_relocation_info_path = (
     "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/relocation.c"
 )
@@ -20,6 +20,8 @@ tra_A_B_addr = 0
 tra_A_B_size = 0
 tra_B_A_addr = 0
 tra_B_A_size = 0
+trampoline_blx_addr = 0
+trampoline_blx_size = 0
 
 
 def section_index(section, sections):
@@ -87,7 +89,7 @@ def output_functions_info(functions_info):
                 + ", "
                 + str(size)
                 + ", "
-                + str(0)
+                + str(-1)
                 + ", "
                 + str(0)
                 + "},"
@@ -142,7 +144,7 @@ def parse_section_table(elf_file):
     return sections_info
 
 
-def generate_relocation_info(elf_file, symbol_tables, sections_info, functions_info):
+def generate_relocation_info(elf_file, symbol_tables, functions_info):
     rel_sections = []
     for index, section in enumerate(elf_file.iter_sections()):
         for need_section in need_relocation_secions:
@@ -156,12 +158,14 @@ def generate_relocation_info(elf_file, symbol_tables, sections_info, functions_i
 
     # # Iterate over the relocation entries
     for rel_section, index in rel_sections:
-        section_addr = sections_info[index][0]
-        print(f"Relocation section {rel_section.name} at {hex(section_addr)}")
+        # section_addr = sections_info[index][0]
+        # print(f"Relocation section {rel_section.name} at {hex(section_addr)}")
         for relocation in rel_section.iter_relocations():
             symbol = symbol_tables[relocation["r_info_sym"]]
-            value = symbol[0] + sections_info[symbol[3]][0]
-            offset = relocation["r_offset"] + section_addr
+            value = symbol[0]
+            #  + sections_info[symbol[3]][0]
+            offset = relocation["r_offset"]
+            # + section_addr
             relocation_type = relocation["r_info_type"]
             type = -1
             name = symbol[4]
@@ -170,7 +174,7 @@ def generate_relocation_info(elf_file, symbol_tables, sections_info, functions_i
             if relocation_type == 0x02:
                 type = 0  # exception entry
                 func_id2 = get_function_id(functions_info, value)
-                offset -= section_addr
+                # offset -= section_addr
             elif relocation_type == 0x03 and symbol[2] == "STT_FUNC":
                 type = 1  # func pointer
             elif relocation_type == 0x03:
@@ -196,23 +200,32 @@ def generate_relocation_info(elf_file, symbol_tables, sections_info, functions_i
     return info
 
 
-def generate_functions_info(symbol_tables, sections_info):
+def generate_functions_info(symbol_tables):
     functions_info = []
     for symbol in symbol_tables:
         if symbol[2] == "STT_FUNC":
             functions_info.append(
-                [symbol[0] + sections_info[symbol[3]][0], symbol[1], symbol[4]]
+                #  + sections_info[symbol[3]][0]
+                [symbol[0], symbol[1], symbol[4]]
             )
         if symbol[4]=="trampoline_A_B":
             global tra_A_B_addr
-            tra_A_B_addr = symbol[0] + sections_info[symbol[3]][0]
+            tra_A_B_addr = symbol[0]
+            # + sections_info[symbol[3]][0]
             global tra_A_B_size
             tra_A_B_size = symbol[1]
         if symbol[4]=="trampoline_B_A":
             global tra_B_A_addr
-            tra_B_A_addr = symbol[0] + sections_info[symbol[3]][0]
+            tra_B_A_addr = symbol[0]
+            # + sections_info[symbol[3]][0]
             global tra_B_A_size
             tra_B_A_size = symbol[1]
+        if symbol[4]=="trampoline_blx":
+            global trampoline_blx_addr
+            trampoline_blx_addr = symbol[0]
+            # + sections_info[symbol[3]][0]
+            global trampoline_blx_size
+            trampoline_blx_size = symbol[1]
 
     return functions_info
 
@@ -223,15 +236,17 @@ def output_trampoline():
         f.write('region_t tramp_section = {' + hex(tra_section_addr) + ', ' + hex(tra_section_size)+ '};\n')
         f.write('region_t tramp_a2b = {' + hex(tra_A_B_addr) + ', ' + hex(tra_A_B_size)+ '};\n')
         f.write('region_t tramp_b2a = {' + hex(tra_B_A_addr) + ', ' + hex(tra_B_A_size)+ '};\n')
+        f.write('region_t tramp_blx = {' + hex(trampoline_blx_addr) + ', ' + hex(trampoline_blx_size)+ '};\n')
+
 def generate(elf_filename):
     with open(elf_filename, "rb") as f:
         elf_file = ELFFile(f)
 
         symbol_tables = parse_symbol_table(elf_file)
         sections_info = parse_section_table(elf_file)
-        functions_info = generate_functions_info(symbol_tables, sections_info)
+        functions_info = generate_functions_info(symbol_tables)
         output_functions_info(functions_info)
-        info = generate_relocation_info(elf_file, symbol_tables, sections_info, functions_info)
+        info = generate_relocation_info(elf_file, symbol_tables, functions_info)
         output_relocation_info(info)
         output_trampoline()
 
