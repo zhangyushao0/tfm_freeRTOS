@@ -14,6 +14,7 @@ set(COMMON_DIR ${STM32L563E_DK_DIR}/../../../common)
 set(TOP_DIR ${STM32L563E_DK_DIR}/../../../../..)
 set(ASLR_DIR ${STM32L563E_DK_DIR}/aslr)
 set(NS_APP_DIR ${STM32L563E_DK_DIR}/nsapp)
+set(INLINE_PLUGIN_DIR ${STM32L563E_DK_DIR}/inline-plugin)
 
 # NSAPP
 add_executable(ns_app)
@@ -42,7 +43,7 @@ target_compile_options(ns_app
 )
 target_link_options(ns_app
     PRIVATE
-    LINKER:--load-pass-plugin /home/zys/repo/llvm-tutor/build/lib/libInlineHandler.so
+    LINKER:--load-pass-plugin ${INLINE_PLUGIN_DIR}/libInlineHandler.so
     $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:ARMClang>:--map>
