@@ -22,7 +22,8 @@ tra_B_A_addr = 0
 tra_B_A_size = 0
 trampoline_blx_addr = 0
 trampoline_blx_size = 0
-
+handler_section_addr = 0
+handler_section_size = 0
 
 def section_index(section, sections):
     for i in range(len(sections)):
@@ -37,6 +38,8 @@ def get_function_id(functions_info, addr):
     return -1
 
 def output_relocation_info(info):
+    # 将 info 按第一位从小到大排序
+    info.sort(key=lambda x: x[0])
     with open(output_relocation_info_path, "w") as f:
         f.write('#include "relocation.h"\n')
         f.write("\n")
@@ -125,11 +128,18 @@ def parse_section_table(elf_file):
     sections_info = []
     for section in elf_file.iter_sections():
         sections_info.append([section["sh_addr"], section.name])
+        # print(section.name)
         if section.name == ".tram_section":
             global tra_section_addr
             tra_section_addr = section["sh_addr"]
             global tra_section_size
             tra_section_size = section["sh_size"]
+        if section.name == '.handler':
+            global handler_section_addr
+            handler_section_addr = section["sh_addr"]
+            global handler_section_size
+            handler_section_size = section["sh_size"]
+
         # name = section.name
         # type_str = section['sh_type']
         # addr = section['sh_addr']
@@ -237,6 +247,8 @@ def output_trampoline():
         f.write('region_t tramp_a2b = {' + hex(tra_A_B_addr) + ', ' + hex(tra_A_B_size)+ '};\n')
         f.write('region_t tramp_b2a = {' + hex(tra_B_A_addr) + ', ' + hex(tra_B_A_size)+ '};\n')
         f.write('region_t tramp_blx = {' + hex(trampoline_blx_addr) + ', ' + hex(trampoline_blx_size)+ '};\n')
+        f.write('region_t handler_section = {' + hex(handler_section_addr) + ', ' + hex(handler_section_size)+ '};\n')
+
 
 def generate(elf_filename):
     with open(elf_filename, "rb") as f:

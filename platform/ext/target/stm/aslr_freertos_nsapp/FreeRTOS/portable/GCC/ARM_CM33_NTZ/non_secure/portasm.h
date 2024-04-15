@@ -91,12 +91,12 @@ void vClearInterruptMask(uint32_t ulMask) PRIVILEGED_FUNCTION;
 /**
  * @brief PendSV Exception handler.
  */
-void PendSV_Handler(void) __attribute__((naked)) PRIVILEGED_FUNCTION;
+__attribute__((section(".handler"))) void PendSV_Handler(void) __attribute__((naked)) PRIVILEGED_FUNCTION;
 
 /**
  * @brief SVC Handler.
  */
-void SVC_Handler(void) PRIVILEGED_FUNCTION;
+__attribute__((section(".handler"))) void SVC_Handler(void) PRIVILEGED_FUNCTION;
 
 /**
  * @brief Allocate a Secure context for the calling task.
@@ -112,7 +112,7 @@ void vPortAllocateSecureContext(uint32_t ulSecureStackSize)
  *
  * @param[in] pulTCB Pointer to the Task Control Block (TCB) of the task.
  */
-void vPortFreeSecureContext(uint32_t *pulTCB)
+void vPortFreeSecureContext(uint32_t* pulTCB)
     __attribute__((naked)) PRIVILEGED_FUNCTION;
 
 #endif /* __PORT_ASM_H__ */

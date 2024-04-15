@@ -110,10 +110,10 @@ uint32_t movt_address_calculate(uint32_t ori_val, uint32_t addr) {
     return new_val;
 }
 
-void vector_table_calculate(relocation_info_t* entry, region_t* vector_addr, uint32_t src_address) {
+void vector_table_calculate(relocation_info_t* entry, region_t* vector_addr, uint32_t handler_addr, uint32_t src_address) {
     int func_id = entry->func_id2;
     *((uint32_t*)(entry->addr + vector_addr->region_start - src_address)) =
-        func_info[func_id].reloc_addr;
+        func_info[func_id].addr - src_address + handler_addr;
     vector_addr->region_size += 4;
 }
 
@@ -152,7 +152,7 @@ void movt_calculate(relocation_info_t* entry) {
     }
 }
 
-int relocation(region_t* vector_addr, uint32_t tram_addr, uint32_t src_address) {
+int relocation(region_t* vector_addr, uint32_t tram_addr, uint32_t handler_addr, uint32_t src_address) {
     int reset_region = -1;
     // 第一项，直接写入即可
     *((uint32_t*)(relocation_info[0].addr + vector_addr->region_start - src_address)) =
@@ -167,7 +167,7 @@ int relocation(region_t* vector_addr, uint32_t tram_addr, uint32_t src_address) 
     for (int i = 2; i < table_size; ++i) {
         // which range of the identifier
         if (relocation_info[i].type == 0) { // exception entry
-            vector_table_calculate(relocation_info + i, vector_addr, src_address);
+            vector_table_calculate(relocation_info + i, vector_addr, handler_addr, src_address);
         } else if (relocation_info[i].type == 4) { // func call
             bl_calculate(relocation_info + i, tram_addr);
         } else if (relocation_info[i].type == 5) { // absoultably address: movw
@@ -180,7 +180,7 @@ int relocation(region_t* vector_addr, uint32_t tram_addr, uint32_t src_address) 
     return reset_region;
 }
 
-int loader(region_t* a, region_t* b, region_t* vector_addr, uint32_t tram_addr, uint32_t src_address) {
+int loader(region_t* a, region_t* b, region_t* vector_addr, uint32_t tram_addr, uint32_t handler_addr, uint32_t src_address) {
     int reset_region = -1;
     // 划分 a 和 b 区域
     divide();
@@ -188,6 +188,8 @@ int loader(region_t* a, region_t* b, region_t* vector_addr, uint32_t tram_addr, 
     copy_text(a, b, src_address);
     // 复制 tramp 函数到 tramp_section 区域
     copy_text2ram(tram_addr, tramp_section.region_start, tramp_section.region_size);
-    reset_region = relocation(vector_addr, tram_addr, src_address);
+    // 复制 handler 到 handler_section 区域
+    copy_text2ram(handler_addr, handler_section.region_start, handler_section.region_size);
+    reset_region = relocation(vector_addr, tram_addr, handler_addr, src_address);
     return reset_region;
 }
