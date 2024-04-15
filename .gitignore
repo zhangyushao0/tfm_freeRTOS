@@ -16,3 +16,6 @@
 **/__pycache__
 *.pyc
 /.cache
+
+ld.lld
+clang-17

@@ -80,7 +80,7 @@ extern "C" {
 #define FIH_ENABLE_CFI
 
 #elif defined(TFM_FIH_PROFILE_HIGH)
-#define FIH_ENABLE_DELAY         /* Requires an hardware entropy source */
+#define FIH_ENABLE_DELAY /* Requires an hardware entropy source */
 #define FIH_ENABLE_DOUBLE_VARS
 #define FIH_ENABLE_GLOBAL_FAIL
 #define FIH_ENABLE_CFI
@@ -89,12 +89,12 @@ extern "C" {
 #error "Invalid FIH Profile configuration"
 #endif /* TFM_FIH_PROFILE */
 
-#define FIH_TRUE              0xC35A
-#define FIH_FALSE             0x0
+#define FIH_TRUE 0xC35A
+#define FIH_FALSE 0x0
 
 #ifdef FIH_ENABLE_DOUBLE_VARS
-#define FIH_POSITIVE_VALUE    0x5555AAAA
-#define FIH_NEGATIVE_VALUE    0xAAAA5555
+#define FIH_POSITIVE_VALUE 0x5555AAAA
+#define FIH_NEGATIVE_VALUE 0xAAAA5555
 
 /*
  * A volatile mask is used to prevent compiler optimization - the mask is xored
@@ -102,25 +102,26 @@ extern "C" {
  * another xor. The mask value doesn't _really_ matter that much, as long as
  * it has reasonably high hamming weight.
  */
-#define _FIH_MASK_VALUE       0xA5C35A3C
+#define _FIH_MASK_VALUE 0xA5C35A3C
 
 /*
  * All ints are replaced with two int - the normal one and a backup which is
  * XORed with the mask.
  */
 typedef volatile struct {
-    volatile int32_t val;
-    volatile int32_t msk;
+  volatile int32_t val;
+  volatile int32_t msk;
 } fih_int;
 
-#define FIH_INT_INIT(x)       {(x), (x) ^ _FIH_MASK_VALUE}
+#define FIH_INT_INIT(x)                                                        \
+  { (x), (x) ^ _FIH_MASK_VALUE }
 #else /* FIH_ENABLE_DOUBLE_VARS */
-#define FIH_POSITIVE_VALUE    0x0
-#define FIH_NEGATIVE_VALUE    0xAAAA5555
+#define FIH_POSITIVE_VALUE 0x0
+#define FIH_NEGATIVE_VALUE 0xAAAA5555
 
 typedef volatile int32_t fih_int;
 
-#define FIH_INT_INIT(x)       (x)
+#define FIH_INT_INIT(x) (x)
 #endif /* FIH_ENABLE_DOUBLE_VARS */
 
 extern fih_int FIH_SUCCESS;
@@ -138,12 +139,13 @@ extern fih_int FIH_FAILURE;
 __attribute__((noinline)) __attribute__((used)) void fih_panic_loop(void);
 #define FIH_PANIC fih_panic_loop()
 #else /* FIH_ENABLE_GLOBAL_FAIL */
-#define FIH_PANIC  \
-        do { \
-            FIH_LABEL("FAILURE_LOOP"); \
-            while (1) {} \
-        } while (0)
-#endif  /* FIH_ENABLE_GLOBAL_FAIL */
+#define FIH_PANIC                                                              \
+  do {                                                                         \
+    FIH_LABEL("FAILURE_LOOP");                                                 \
+    while (1) {                                                                \
+    }                                                                          \
+  } while (0)
+#endif /* FIH_ENABLE_GLOBAL_FAIL */
 
 /*
  * NOTE
@@ -166,28 +168,26 @@ void fih_delay_init(void);
 uint8_t fih_delay_random(void);
 
 /* Delaying logic, with randomness from a CSPRNG */
-__attribute__((always_inline)) inline
-void fih_delay(void)
-{
-    uint32_t i = 0;
-    volatile uint32_t delay = FIH_NEGATIVE_VALUE;
-    volatile uint32_t counter = 0;
+__attribute__((always_inline)) inline void fih_delay(void) {
+  uint32_t i = 0;
+  volatile uint32_t delay = FIH_NEGATIVE_VALUE;
+  volatile uint32_t counter = 0;
 
-    delay = fih_delay_random();
+  delay = fih_delay_random();
 
-    if (delay == FIH_NEGATIVE_VALUE) {
-        FIH_PANIC;
-    }
+  if (delay == FIH_NEGATIVE_VALUE) {
+    FIH_PANIC;
+  }
 
-    delay &= 0xFF;
+  delay &= 0xFF;
 
-    for (i = 0; i < delay; i++) {
-        counter++;
-    }
+  for (i = 0; i < delay; i++) {
+    counter++;
+  }
 
-    if (counter != delay) {
-        FIH_PANIC;
-    }
+  if (counter != delay) {
+    FIH_PANIC;
+  }
 }
 #else /* FIH_ENABLE_DELAY */
 #define fih_delay_init()
@@ -196,130 +196,116 @@ void fih_delay(void)
 #endif /* FIH_ENABLE_DELAY */
 
 #ifdef FIH_ENABLE_DOUBLE_VARS
-__attribute__((always_inline)) inline
-void fih_int_validate(fih_int x)
-{
-    if (x.val != (x.msk ^ _FIH_MASK_VALUE)) {
-        FIH_PANIC;
-    }
+__attribute__((always_inline)) inline void fih_int_validate(fih_int x) {
+  if (x.val != (x.msk ^ _FIH_MASK_VALUE)) {
+    FIH_PANIC;
+  }
 }
 
 /* Convert a fih_int to an int. Validate for tampering. */
-__attribute__((always_inline)) inline
-int32_t fih_int_decode(fih_int x)
-{
-    fih_int_validate(x);
-    return x.val;
+__attribute__((always_inline)) inline int32_t fih_int_decode(fih_int x) {
+  fih_int_validate(x);
+  return x.val;
 }
 
 /* Convert an int to a fih_int, can be used to encode specific error codes. */
-__attribute__((always_inline)) inline
-fih_int fih_int_encode(int32_t x)
-{
-    fih_int ret = {x, x ^ _FIH_MASK_VALUE};
-    return ret;
+__attribute__((always_inline)) inline fih_int fih_int_encode(int32_t x) {
+  fih_int ret = {x, x ^ _FIH_MASK_VALUE};
+  return ret;
 }
 
 /* Standard equality. If A == B then 1, else 0 */
-__attribute__((always_inline)) inline
-int32_t fih_eq(fih_int x, fih_int y)
-{
-    volatile int32_t rc1 = FIH_FALSE;
-    volatile int32_t rc2 = FIH_FALSE;
+__attribute__((always_inline)) inline int32_t fih_eq(fih_int x, fih_int y) {
+  volatile int32_t rc1 = FIH_FALSE;
+  volatile int32_t rc2 = FIH_FALSE;
 
-    fih_int_validate(x);
-    fih_int_validate(y);
+  fih_int_validate(x);
+  fih_int_validate(y);
 
-    if (x.val == y.val) {
-        rc1 = FIH_TRUE;
-    }
+  if (x.val == y.val) {
+    rc1 = FIH_TRUE;
+  }
 
-    fih_delay();
+  fih_delay();
 
-    if (x.msk == y.msk) {
-        rc2 = FIH_TRUE;
-    }
+  if (x.msk == y.msk) {
+    rc2 = FIH_TRUE;
+  }
 
-    fih_delay();
+  fih_delay();
 
-    if (rc1 != rc2) {
-        FIH_PANIC;
-    }
+  if (rc1 != rc2) {
+    FIH_PANIC;
+  }
 
-    return rc1;
+  return rc1;
 }
 
-__attribute__((always_inline)) inline
-int32_t fih_not_eq(fih_int x, fih_int y)
-{
-    volatile int32_t rc1 = FIH_FALSE;
-    volatile int32_t rc2 = FIH_FALSE;
+__attribute__((always_inline)) inline int32_t fih_not_eq(fih_int x, fih_int y) {
+  volatile int32_t rc1 = FIH_FALSE;
+  volatile int32_t rc2 = FIH_FALSE;
 
-    fih_int_validate(x);
-    fih_int_validate(y);
+  fih_int_validate(x);
+  fih_int_validate(y);
 
-    if (x.val != y.val) {
-        rc1 = FIH_TRUE;
-    }
+  if (x.val != y.val) {
+    rc1 = FIH_TRUE;
+  }
 
-    fih_delay();
+  fih_delay();
 
-    if (x.msk != y.msk) {
-        rc2 = FIH_TRUE;
-    }
+  if (x.msk != y.msk) {
+    rc2 = FIH_TRUE;
+  }
 
-    fih_delay();
+  fih_delay();
 
-    if (rc1 != rc2) {
-        FIH_PANIC;
-    }
+  if (rc1 != rc2) {
+    FIH_PANIC;
+  }
 
-    return rc1;
+  return rc1;
 }
 #else /* FIH_ENABLE_DOUBLE_VARS */
 /* NOOP */
 #define fih_int_validate(x)
 
 /* NOOP */
-#define fih_int_decode(x)          (x)
+#define fih_int_decode(x) (x)
 
 /* NOOP */
-#define fih_int_encode(x)          (x)
+#define fih_int_encode(x) (x)
 
-__attribute__((always_inline)) inline
-int32_t fih_eq(fih_int x, fih_int y)
-{
-    volatile int32_t rc = FIH_FALSE;
+__attribute__((always_inline)) inline int32_t fih_eq(fih_int x, fih_int y) {
+  volatile int32_t rc = FIH_FALSE;
 
-    if (x == y) {
-        rc = FIH_TRUE;
-    }
+  if (x == y) {
+    rc = FIH_TRUE;
+  }
 
-    fih_delay();
+  fih_delay();
 
-    if (x != y) {
-        rc = FIH_FALSE;
-    }
+  if (x != y) {
+    rc = FIH_FALSE;
+  }
 
-    return rc;
+  return rc;
 }
 
-__attribute__((always_inline)) inline
-int32_t fih_not_eq(fih_int x, fih_int y)
-{
-    volatile int32_t rc = FIH_FALSE;
+__attribute__((always_inline)) inline int32_t fih_not_eq(fih_int x, fih_int y) {
+  volatile int32_t rc = FIH_FALSE;
 
-    if (x != y) {
-        rc = FIH_TRUE;
-    }
+  if (x != y) {
+    rc = FIH_TRUE;
+  }
 
-    fih_delay();
+  fih_delay();
 
-    if (x == y) {
-        rc = FIH_FALSE;
-    }
+  if (x == y) {
+    rc = FIH_FALSE;
+  }
 
-    return rc;
+  return rc;
 }
 #endif /* FIH_ENABLE_DOUBLE_VARS */
 
@@ -328,14 +314,13 @@ int32_t fih_not_eq(fih_int x, fih_int y)
  * errors. This function converts 0 to FIH_SUCCESS and any other number to a
  * value that is not FIH_SUCCESS
  */
-__attribute__((always_inline)) inline
-fih_int fih_int_encode_zero_equality(int32_t x)
-{
-    if (x) {
-        return FIH_FAILURE;
-    } else {
-        return FIH_SUCCESS;
-    }
+__attribute__((always_inline)) inline fih_int
+fih_int_encode_zero_equality(int32_t x) {
+  if (x) {
+    return FIH_FAILURE;
+  } else {
+    return FIH_SUCCESS;
+  }
 }
 
 #ifdef FIH_ENABLE_CFI
@@ -380,14 +365,12 @@ void fih_cfi_decrement(void);
  * function in order to decrement the counter, so the function must have been
  * called.
  */
-#define FIH_CFI_PRECALL_BLOCK \
-        fih_int _fih_cfi_precall_saved_value = fih_cfi_get_and_increment(1)
+#define FIH_CFI_PRECALL_BLOCK                                                  \
+  fih_int _fih_cfi_precall_saved_value = fih_cfi_get_and_increment(1)
 
-#define FIH_CFI_POSTCALL_BLOCK \
-        fih_cfi_validate(_fih_cfi_precall_saved_value)
+#define FIH_CFI_POSTCALL_BLOCK fih_cfi_validate(_fih_cfi_precall_saved_value)
 
-#define FIH_CFI_PRERET \
-        fih_cfi_decrement()
+#define FIH_CFI_PRERET fih_cfi_decrement()
 
 /*
  * Marcos to support protect the control flow integrity inside a function.
@@ -404,15 +387,14 @@ void fih_cfi_decrement(void);
  * FIH_CFI_STEP_INIT() saves the CFI counter and increase the CFI counter by the
  * number of the critical steps. It should be called before execution starts.
  */
-#define FIH_CFI_STEP_INIT(x) \
-        fih_int _fih_cfi_step_saved_value = fih_cfi_get_and_increment(x)
+#define FIH_CFI_STEP_INIT(x)                                                   \
+  fih_int _fih_cfi_step_saved_value = fih_cfi_get_and_increment(x)
 
 /*
  * FIH_CFI_STEP_DECREMENT() decrease the CFI counter by one. It can be called
  * after each critical step execution completes.
  */
-#define FIH_CFI_STEP_DECREMENT() \
-        fih_cfi_decrement()
+#define FIH_CFI_STEP_DECREMENT() fih_cfi_decrement()
 
 /*
  * FIH_CFI_STEP_ERR_RESET() resets the CFI counter to the previous value saved
@@ -421,11 +403,11 @@ void fih_cfi_decrement(void);
  * the functionality error other than being trapped in fault injection error
  * handling.
  */
-#define FIH_CFI_STEP_ERR_RESET() \
-        do { \
-            _fih_cfi_ctr = _fih_cfi_step_saved_value; \
-            fih_int_validate(_fih_cfi_ctr); \
-        } while(0)
+#define FIH_CFI_STEP_ERR_RESET()                                               \
+  do {                                                                         \
+    _fih_cfi_ctr = _fih_cfi_step_saved_value;                                  \
+    fih_int_validate(_fih_cfi_ctr);                                            \
+  } while (0)
 
 #else /* FIH_ENABLE_CFI */
 #define FIH_CFI_PRECALL_BLOCK
@@ -441,7 +423,7 @@ void fih_cfi_decrement(void);
  * Label for interacting with FIH testing tool. Can be parsed from the elf file
  * after compilation. Does not require debug symbols.
  */
-#define FIH_LABEL(str) __asm volatile ("FIH_LABEL_" str "_0_%=:" ::)
+#define FIH_LABEL(str) __asm volatile("FIH_LABEL_" str "_0_%=:" ::)
 #define FIH_LABEL_CRITICAL_POINT() FIH_LABEL("FIH_CRITICAL_POINT")
 
 /*
@@ -460,74 +442,76 @@ void fih_cfi_decrement(void);
  * previously saved value. If this is equal then the function call and all child
  * function calls were performed.
  */
-#define FIH_CALL(f, ret, ...) \
-    do { \
-        FIH_LABEL("FIH_CALL_START_" # f); \
-        FIH_CFI_PRECALL_BLOCK; \
-        ret = FIH_FAILURE; \
-        fih_delay(); \
-        ret = f(__VA_ARGS__); \
-        FIH_CFI_POSTCALL_BLOCK; \
-        fih_int_validate(ret); \
-        FIH_LABEL("FIH_CALL_END"); \
-    } while (0)
+#define FIH_CALL(f, ret, ...)                                                  \
+  do {                                                                         \
+    FIH_LABEL("FIH_CALL_START_" #f);                                           \
+    FIH_CFI_PRECALL_BLOCK;                                                     \
+    ret = FIH_FAILURE;                                                         \
+    fih_delay();                                                               \
+    ret = f(__VA_ARGS__);                                                      \
+    FIH_CFI_POSTCALL_BLOCK;                                                    \
+    fih_int_validate(ret);                                                     \
+    FIH_LABEL("FIH_CALL_END");                                                 \
+  } while (0)
 
 /*
  * FIH return changes the state of the internal state machine. If you do a
  * FIH_CALL then you need to do a FIH_RET else the state machine will detect
  * tampering and panic.
  */
-#define FIH_RET(ret) \
-    do { \
-        FIH_CFI_PRERET; \
-        return ret; \
-    } while (0)
+#define FIH_RET(ret)                                                           \
+  do {                                                                         \
+    FIH_CFI_PRERET;                                                            \
+    return ret;                                                                \
+  } while (0)
 
 /*
  * FIH return type macro changes the function return types to fih_int.
  * All functions that need to be protected by FIH and called via FIH_CALL must
  * return a fih_int type.
  */
-#define FIH_RET_TYPE(type)    fih_int
+#define FIH_RET_TYPE(type) fih_int
 
 #else /* TFM_FIH_PROFILE_ON */
 typedef int32_t fih_int;
 
-#define FIH_INT_INIT(x)       (x)
+#define FIH_INT_INIT(x) (x)
 
-#define FIH_SUCCESS           0
-#define FIH_FAILURE           -1
+#define FIH_SUCCESS 0
+#define FIH_FAILURE -1
 
 #define fih_int_validate(x)
 
-#define fih_int_decode(x)     (x)
+#define fih_int_decode(x) (x)
 
-#define fih_int_encode(x)     (x)
+#define fih_int_encode(x) (x)
 
 #define fih_int_encode_zero_equality(x) ((x) == 0 ? 0 : 1)
 
-#define fih_eq(x, y)          ((x) == (y))
+#define fih_eq(x, y) ((x) == (y))
 
-#define fih_not_eq(x, y)      ((x) != (y))
+#define fih_not_eq(x, y) ((x) != (y))
 
-#define fih_delay_init()      (0)
+#define fih_delay_init() (0)
 #define fih_delay()
 
-#define FIH_CALL(f, ret, ...) \
-    do { \
-        ret = f(__VA_ARGS__); \
-    } while (0)
+#define FIH_CALL(f, ret, ...)                                                  \
+  do {                                                                         \
+    ret = f(__VA_ARGS__);                                                      \
+  } while (0)
 
-#define FIH_RET(ret) \
-    do { \
-        return ret; \
-    } while (0)
+#define FIH_RET(ret)                                                           \
+  do {                                                                         \
+    return ret;                                                                \
+  } while (0)
 
-#define FIH_RET_TYPE(type)    type
+#define FIH_RET_TYPE(type) type
 
-#define FIH_PANIC do { \
-        while(1) {}; \
-    } while (0)
+#define FIH_PANIC                                                              \
+  do {                                                                         \
+    while (1) {                                                                \
+    };                                                                         \
+  } while (0)
 
 #define FIH_CFI_STEP_INIT(x)
 #define FIH_CFI_STEP_DECREMENT()

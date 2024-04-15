@@ -7,11 +7,11 @@
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER "/lib/llvm-17/bin/clang")
-set(CMAKE_CXX_COMPILER "/lib/llvm-17/bin/clang")
-set(CMAKE_ASM_COMPILER "/lib/llvm-17/bin/clang")
+set(CMAKE_C_COMPILER "/home/zys/repo/embedded/relo/clang-17")
+set(CMAKE_CXX_COMPILER "/home/zys/repo/embedded/relo/clang-17")
+set(CMAKE_ASM_COMPILER "/home/zys/repo/embedded/relo/clang-17")
 set(TARGET_TRIPLE arm-none-eabi)
-
+include_directories(/usr/lib/llvm-17/lib/clang/17/include/)
 set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})
 set(CMAKE_CXX_COMPILER_TARGET ${TARGET_TRIPLE})
 
@@ -46,9 +46,6 @@ macro(tfm_toolchain_reset_compiler_flags)
 
     add_compile_options(
 
-        # -specs=nano.specs
-        # -flto
-        # -Xclang -fpass-plugin=/home/zys/repo/llvm-tutor/build/lib/libInlineHandler.so
         -Wall
         -Wno-format
         -Wno-return-type
@@ -207,12 +204,12 @@ macro(tfm_toolchain_reload_compiler)
     set(CMAKE_ASM_FLAGS ${CMAKE_ASM_FLAGS_INIT})
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I/usr/lib/arm-none-eabi/include")
 
-    # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdlib")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdlib")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/lib/arm-none-eabi/include")
 
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
-    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/lib/llvm-17/bin/ld.lld")
+    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/home/zys/repo/embedded/relo/ld.lld")
 
     # set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
     set(BL2_COMPILER_CP_FLAG -mfloat-abi=soft)

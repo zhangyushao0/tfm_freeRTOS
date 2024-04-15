@@ -43,6 +43,7 @@ target_compile_options(ns_app
 )
 target_link_options(ns_app
     PRIVATE
+
     LINKER:--load-pass-plugin ${INLINE_PLUGIN_DIR}/libInlineHandler.so
     $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>

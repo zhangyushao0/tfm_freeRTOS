@@ -8,6 +8,7 @@ endif()
 # FreeRTOS internal cmake file. Do not use it in user top-level project
 add_library(freertos_kernel_port STATIC)
 target_compile_options(freertos_kernel_port PUBLIC
+
     -flto
     -fno-jump-tables
 
