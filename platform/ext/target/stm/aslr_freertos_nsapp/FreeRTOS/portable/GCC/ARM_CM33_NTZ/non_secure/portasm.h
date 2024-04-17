@@ -91,7 +91,7 @@ void vClearInterruptMask(uint32_t ulMask) PRIVILEGED_FUNCTION;
 /**
  * @brief PendSV Exception handler.
  */
-void PendSV_Handler(void) __attribute__((naked)) PRIVILEGED_FUNCTION;
+void PendSV_Handler(void) PRIVILEGED_FUNCTION;
 
 /**
  * @brief SVC Handler.

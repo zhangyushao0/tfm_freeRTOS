@@ -7,9 +7,9 @@
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER "/home/zys/repo/embedded/relo/clang-17")
-set(CMAKE_CXX_COMPILER "/home/zys/repo/embedded/relo/clang-17")
-set(CMAKE_ASM_COMPILER "/home/zys/repo/embedded/relo/clang-17")
+set(CMAKE_C_COMPILER "/usr/bin/clang-17")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang-17")
+set(CMAKE_ASM_COMPILER "/usr/bin/clang-17")
 set(TARGET_TRIPLE arm-none-eabi)
 include_directories(/usr/lib/llvm-17/lib/clang/17/include/)
 set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})

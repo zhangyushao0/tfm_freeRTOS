@@ -639,127 +639,39 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 
 #else /* configENABLE_MPU */
 
-void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
-{
-  __asm volatile(
-      "   .syntax unified                                 \n"
-      "                                                   \n"
-      "   mrs r0, psp                                     \n" /* Read PSP in r0.
-                                                               */
-      "                                                   \n"
-#if ((configENABLE_FPU == 1) || (configENABLE_MVE == 1))
-      "   tst lr, #0x10                                   \n" /* Test Bit[4] in
-                                                                 LR. Bit[4] of
-                                                                 EXC_RETURN is 0
-                                                                 if the Extended
-                                                                 Stack Frame is
-                                                                 in use. */
-      "   it eq                                           \n"
-      "   vstmdbeq r0!, {s16-s31}                         \n" /* Store the
-                                                                 additional FP
-                                                                 context
-                                                                 registers which
-                                                                 are not saved
-                                                                 automatically.
-                                                               */
-#endif /* configENABLE_FPU || configENABLE_MVE */
-      "                                                   \n"
-      "   mrs r2, psplim                                  \n" /* r2 = PSPLIM. */
-      "   mov r3, lr                                      \n" /* r3 =
-                                                                 LR/EXC_RETURN.
-                                                               */
-      "   stmdb r0!, {r2-r11}                             \n" /* Store on the
-                                                                 stack - PSPLIM,
-                                                                 LR and
-                                                                 registers that
-                                                                 are not
-                                                                 automatically
-                                                                 saved. */
-      "                                                   \n"
-      " MOVW    r2, :lower16:pxCurrentTCB\n"
-      " MOVT    r2, :upper16:pxCurrentTCB\n"
-      /* Read the
-                                                                 location of
-                                                                 pxCurrentTCB
-                                                                 i.e. &(
-                                                                 pxCurrentTCB ).
-                                                               */
-      "   ldr r1, [r2]                                    \n" /* Read
-                                                                 pxCurrentTCB.
-                                                               */
-      "   str r0, [r1]                                    \n" /* Save the new
-                                                                 top of stack in
-                                                                 TCB. */
-      "                                                   \n"
-      "   mov r0, %0                                      \n" /* r0 =
-                                                                 configMAX_SYSCALL_INTERRUPT_PRIORITY
-                                                               */
-      "   msr basepri, r0                                 \n" /* Disable
-                                                                 interrupts upto
-                                                                 configMAX_SYSCALL_INTERRUPT_PRIORITY.
-                                                               */
-      "   dsb                                             \n"
-      "   isb                                             \n"
-      "   bl vTaskSwitchContext                           \n"
-      "   mov r0, #0                                      \n" /* r0 = 0. */
-      "   msr basepri, r0                                 \n" /* Enable
-                                                                 interrupts. */
-      "                                                   \n"
-      " MOVW    r2, :lower16:pxCurrentTCB\n"
-      " MOVT    r2, :upper16:pxCurrentTCB\n"                  /* Read the
-                                                                                  location of
-                                                                                  pxCurrentTCB
-                                                                                  i.e. &(
-                                                                                  pxCurrentTCB ).
-                                                                                */
-      "   ldr r1, [r2]                                    \n" /* Read
-                                                                 pxCurrentTCB.
-                                                               */
-      "   ldr r0, [r1]                                    \n" /* The first item
-                                                                 in pxCurrentTCB
-                                                                 is the task top
-                                                                 of stack. r0
-                                                                 now points to
-                                                                 the top of
-                                                                 stack. */
-      "                                                   \n"
-      "   ldmia r0!, {r2-r11}                             \n" /* Read from stack
-                                                                 - r2 = PSPLIM,
-                                                                 r3 = LR and
-                                                                 r4-r11
-                                                                 restored. */
-      "                                                   \n"
-#if ((configENABLE_FPU == 1) || (configENABLE_MVE == 1))
-      "   tst r3, #0x10                                   \n" /* Test Bit[4] in
-                                                                 LR. Bit[4] of
-                                                                 EXC_RETURN is 0
-                                                                 if the Extended
-                                                                 Stack Frame is
-                                                                 in use. */
-      "   it eq                                           \n"
-      "   vldmiaeq r0!, {s16-s31}                         \n" /* Restore the
-                                                                 additional FP
-                                                                 context
-                                                                 registers which
-                                                                 are not
-                                                                 restored
-                                                                 automatically.
-                                                               */
-#endif /* configENABLE_FPU || configENABLE_MVE */
-      "                                                   \n"
-      "   msr psplim, r2                                  \n" /* Restore the
-                                                                 PSPLIM register
-                                                                 value for the
-                                                                 task. */
-      "   msr psp, r0                                     \n" /* Remember the
-                                                                 new top of
-                                                                 stack for the
-                                                                 task. */
-      "   bx r3                                           \n"
-      "                                                   \n"
-      "   .align 4                                        \n"
-      //   "pxCurrentTCBConst: .word pxCurrentTCB              \n"
-      ::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY));
+extern void vTaskSwitchContext(void);
+void PendSV_Handler(void) {
+  // 上下文保存
+  uint32_t *stackPointer;
+  __asm("mrs %0, psp" : "=r"(stackPointer));
+  __asm("mrs r2, psplim");
+#if (configENABLE_FPU == 1 || configENABLE_MVE == 1)
+  // 保存浮点寄存器，如果启用
+  asm volatile("vstmdbeq %0!, {s16-s31}" : "+r"(stackPointer));
+#endif
+  __asm volatile("stmdb %0!, {r2-r11}" : "+r"(stackPointer));
+
+  // 更新当前任务的TCB中的栈顶
+  extern uint32_t *pxCurrentTCB;
+  *pxCurrentTCB = (uint32_t)stackPointer;
+  // 关中断
+  writeBasepri(configMAX_SYSCALL_INTERRUPT_PRIORITY);
+  // 调用任务切换
+  vTaskSwitchContext();
+  // 开中断
+  writeBasepri(0);
+  // 上下文恢复
+  stackPointer = (uint32_t *)*pxCurrentTCB;
+  __asm volatile("ldmia %0!, {r2-r11}" : "+r"(stackPointer));
+#if (configENABLE_FPU == 1 || configENABLE_MVE == 1)
+  // 恢复浮点寄存器，如果启用
+  asm volatile("vldmiaeq %0!, {s16-s31}" : "+r"(stackPointer));
+#endif
+  __asm("msr psplim, r2");
+  __asm("msr psp, %0" : : "r"(stackPointer));
+
+  // 返回到新的任务
+  __asm("bx lr");
 }
 
 #endif /* configENABLE_MPU */
