@@ -31,13 +31,12 @@ void* ret_addr2;
 int sum(int a, int b) {
     return a + b;
 }
-void testThread(void* pvParameters) {
+void testThread1(void* pvParameters) {
     while (1) {
         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-        int a = 2;
-        int b = 3;
-        int c = sum(a, b);
-        vTaskDelay(500);
+        for (int i = 0; i < 100000; i++) {
+            __ASM volatile("nop");
+        }
     }
 }
 
@@ -59,7 +58,15 @@ int  main() {
      HAL_Init();
      MX_GPIO_Init();
 
-     xTaskCreate(testThread, "testThread", 256, NULL, 1, NULL);
+     BaseType_t xReturned;
+
+     xReturned = xTaskCreate(
+         testThread1,           /* Function that implements the task. */
+         "testThread1",         /* Text name for the task. */
+         ((uint16_t)300),       /* Stack size in words, not bytes. */
+         NULL,                  /* Parameter passed into the task. */
+         1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
+         NULL);                 /* Used to pass out the created task's handle. */
 
      /* 启动调度器 */
      vTaskStartScheduler();

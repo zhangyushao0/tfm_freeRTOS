@@ -203,54 +203,70 @@ void vRestoreContextOfFirstTask(
 
 #else /* configENABLE_MPU */
 
+#define MPU_BASE (0xe000ed90)
 void vRestoreContextOfFirstTask(
     void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 {
     __asm volatile(
-        "   .syntax unified                                 \n"
-        "                                                   \n"
+        "   .syntax unified                        \n"
+        "                                          \n"
         " MOVW    r2, :lower16:pxCurrentTCB\n"
         " MOVT    r2, :upper16:pxCurrentTCB\n"
-        "   ldr  r1, [r2]                                   \n" /* Read
-                                                                   pxCurrentTCB.
-                                                                 */
-        "   ldr  r0, [r1]                                   \n" /* Read top of
-                                                                   stack from TCB
-                                                                   - The first
-                                                                   item in
-                                                                   pxCurrentTCB is
-                                                                   the task top of
-                                                                   stack. */
-        "                                                   \n"
-        "   ldm  r0!, {r1-r2}                               \n" /* Read from stack
-                                                                   - r1 = PSPLIM
-                                                                   and r2 =
-                                                                   EXC_RETURN. */
-        "   msr  psplim, r1                                 \n" /* Set this task's
-                                                                   PSPLIM value.
-                                                                 */
-        "   movs r1, #2                                     \n" /* r1 = 2. */
-        "   msr  CONTROL, r1                                \n" /* Switch to use
-                                                                   PSP in the
-                                                                   thread mode. */
-        "   adds r0, #32                                    \n" /* Discard
-                                                                   everything up
-                                                                   to r0. */
-        "   msr  psp, r0                                    \n" /* This is now the
-                                                                   new top of
-                                                                   stack to use in
-                                                                   the task. */
-        "   isb                                             \n"
-        "   mov  r0, #0                                     \n"
-        "   msr  basepri, r0                                \n" /* Ensure that
-                                                                   interrupts are
-                                                                   enabled when
-                                                                   the first task
-                                                                   starts. */
-        "   bx   r2                                         \n" /* Finally, branch
-                                                                   to EXC_RETURN.
-                                                                 */
-        "                                                   \n"
+        "   ldr  r1, [r2]      \n"                     /* Read pxCurrentTCB. */
+        "   ldr  r0, [r1]                          \n" /* Read top of stack from TCB - The first item in pxCurrentTCB is the task top of stack. */
+        "                                          \n"
+        "   ldm  r0!, {r1-r2}                      \n" /* Read from stack- r1 = PSPLIM and r2 = EXC_RETURN. */
+        "   msr  psplim, r1                        \n" /* Set this task's PSPLIM value.*/
+        "   movs r1, #2                            \n" /* r1 = 2. */
+        "   msr  CONTROL, r1                       \n" /* Switch to use  PSP in the thread mode. */
+        "   adds r0, #32                           \n" /* Discard everything up to r0. */
+        "   msr  psp, r0                           \n" /* This is now the new top of stack to use in the task. */
+        "   isb                                    \n");
+    __asm__ volatile(
+        "   sub      sp, #0x10          \n"
+        "   str      r3, [sp]      \n"
+        "   str      r2, [sp, #0x4]      \n"
+        "   str      r1, [sp, #0x8]      \n"
+        "   str      r0, [sp, #0xc]            \n");
+    __asm__ volatile(
+        "movw r0, %0"
+        :
+        : "i"(MPU_BASE & 0xFFFF));
+    __asm__ volatile(
+        "movt r0, %0"
+        :
+        : "i"((MPU_BASE >> 16) & 0xFFFF));
+    __asm__ volatile(
+        "   ldr      r1, [r0, #0x4]          \n"
+        "   mov      r2, #0x0                \n"
+        "   str      r2, [r0, #0x4]          \n"
+        "   str      r2, [r0, #0x8]          \n"
+        "   ldr      r3, [r0, #0x10]          \n"
+        "   bic      r3, r3, #0x1             \n"
+        "   str      r3, [r0, #0x10]          \n"
+        "   mov      r2, #1                   \n"
+        "   str      r2, [r0, #0x8]          \n"
+        "   ldr      r3, [r0, #0x10]          \n"
+        "   bic      r3, r3, #0x1             \n"
+        "   str      r3, [r0, #0x10]          \n"
+        "   str      r1, [r0, #0x4]          \n");
+    __asm__ volatile(
+        "dsb 0xF" ::
+            : "memory");
+    __asm__ volatile(
+        "isb 0xF" ::
+            : "memory");
+    __asm__ volatile(
+        "   ldr      r3, [sp]            \n"
+        "   ldr      r2, [sp, #0x4]      \n"
+        "   ldr      r1, [sp, #0x8]      \n"
+        "   ldr      r0, [sp, #0xc]      \n"
+        "   add      sp, #0x10            \n");
+    __asm__ volatile(
+        "   mov  r0, #0                            \n"
+        "   msr  basepri, r0                       \n" /* Ensure that interrupts are enabled when  the first task starts. */
+        " bx r2                                \n "    /* Finally, branch to EXC_RETURN. */
+        "                                          \n"
         //   "   .align 4                                        \n"
         //   "pxCurrentTCBConst2: .word pxCurrentTCB             \n"
     );
@@ -641,127 +657,86 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 
 #else /* configENABLE_MPU */
 
-__attribute__((section(".handler"))) void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
-{
-    __asm volatile(
-        "   .syntax unified                                 \n"
-        "                                                   \n"
-        "   mrs r0, psp                                     \n" /* Read PSP in r0.
-                                                                 */
-        "                                                   \n"
-#if ((configENABLE_FPU == 1) || (configENABLE_MVE == 1))
-        "   tst lr, #0x10                                   \n" /* Test Bit[4] in
-                                                                   LR. Bit[4] of
-                                                                   EXC_RETURN is 0
-                                                                   if the Extended
-                                                                   Stack Frame is
-                                                                   in use. */
-        "   it eq                                           \n"
-        "   vstmdbeq r0!, {s16-s31}                         \n" /* Store the
-                                                                   additional FP
-                                                                   context
-                                                                   registers which
-                                                                   are not saved
-                                                                   automatically.
-                                                                 */
-#endif /* configENABLE_FPU || configENABLE_MVE */
-        "                                                   \n"
-        "   mrs r2, psplim                                  \n" /* r2 = PSPLIM. */
-        "   mov r3, lr                                      \n" /* r3 =
-                                                                   LR/EXC_RETURN.
-                                                                 */
-        "   stmdb r0!, {r2-r11}                             \n" /* Store on the
-                                                                   stack - PSPLIM,
-                                                                   LR and
-                                                                   registers that
-                                                                   are not
-                                                                   automatically
-                                                                   saved. */
-        "                                                   \n"
-        " MOVW    r2, :lower16:pxCurrentTCB\n"
-        " MOVT    r2, :upper16:pxCurrentTCB\n"
-        /* Read the
-                                                                   location of
-                                                                   pxCurrentTCB
-                                                                   i.e. &(
-                                                                   pxCurrentTCB ).
-                                                                 */
-        "   ldr r1, [r2]                                    \n" /* Read
-                                                                   pxCurrentTCB.
-                                                                 */
-        "   str r0, [r1]                                    \n" /* Save the new
-                                                                   top of stack in
-                                                                   TCB. */
-        "                                                   \n"
-        "   mov r0, %0                                      \n" /* r0 =
-                                                                   configMAX_SYSCALL_INTERRUPT_PRIORITY
-                                                                 */
-        "   msr basepri, r0                                 \n" /* Disable
-                                                                   interrupts upto
-                                                                   configMAX_SYSCALL_INTERRUPT_PRIORITY.
-                                                                 */
-        "   dsb                                             \n"
-        "   isb                                             \n"
-        "   bl vTaskSwitchContext                           \n"
-        "   mov r0, #0                                      \n" /* r0 = 0. */
-        "   msr basepri, r0                                 \n" /* Enable
-                                                                   interrupts. */
-        "                                                   \n"
-        " MOVW    r2, :lower16:pxCurrentTCB\n"
-        " MOVT    r2, :upper16:pxCurrentTCB\n"                  /* Read the
-                                                                                    location of
-                                                                                    pxCurrentTCB
-                                                                                    i.e. &(
-                                                                                    pxCurrentTCB ).
-                                                                                  */
-        "   ldr r1, [r2]                                    \n" /* Read
-                                                                   pxCurrentTCB.
-                                                                 */
-        "   ldr r0, [r1]                                    \n" /* The first item
-                                                                   in pxCurrentTCB
-                                                                   is the task top
-                                                                   of stack. r0
-                                                                   now points to
-                                                                   the top of
-                                                                   stack. */
-        "                                                   \n"
-        "   ldmia r0!, {r2-r11}                             \n" /* Read from stack
-                                                                   - r2 = PSPLIM,
-                                                                   r3 = LR and
-                                                                   r4-r11
-                                                                   restored. */
-        "                                                   \n"
-#if ((configENABLE_FPU == 1) || (configENABLE_MVE == 1))
-        "   tst r3, #0x10                                   \n" /* Test Bit[4] in
-                                                                   LR. Bit[4] of
-                                                                   EXC_RETURN is 0
-                                                                   if the Extended
-                                                                   Stack Frame is
-                                                                   in use. */
-        "   it eq                                           \n"
-        "   vldmiaeq r0!, {s16-s31}                         \n" /* Restore the
-                                                                   additional FP
-                                                                   context
-                                                                   registers which
-                                                                   are not
-                                                                   restored
-                                                                   automatically.
-                                                                 */
-#endif /* configENABLE_FPU || configENABLE_MVE */
-        "                                                   \n"
-        "   msr psplim, r2                                  \n" /* Restore the
-                                                                   PSPLIM register
-                                                                   value for the
-                                                                   task. */
-        "   msr psp, r0                                     \n" /* Remember the
-                                                                   new top of
-                                                                   stack for the
-                                                                   task. */
-        "   bx r3                                           \n"
-        "                                                   \n"
-        "   .align 4                                        \n"
-        //   "pxCurrentTCBConst: .word pxCurrentTCB              \n"
-        ::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY));
+extern void vTaskSwitchContext(void);
+void        PendSV_Handler(void) {
+           // 上下文保存
+    uint32_t* stackPointer;
+    __asm("mrs %0, psp"
+          : "=r"(stackPointer));
+    __asm("mrs r2, psplim");
+#if (configENABLE_FPU == 1 || configENABLE_MVE == 1)
+    // 保存浮点寄存器，如果启用
+    asm volatile("vstmdbeq %0!, {s16-s31}"
+                 : "+r"(stackPointer));
+#endif
+    __asm volatile("stmdb %0!, {r2-r11}"
+                   : "+r"(stackPointer));
+
+    // 更新当前任务的TCB中的栈顶
+    extern uint32_t* pxCurrentTCB;
+    *pxCurrentTCB = (uint32_t)stackPointer;
+    // 关中断
+    writeBasepri(configMAX_SYSCALL_INTERRUPT_PRIORITY);
+    // 调用任务切换
+    vTaskSwitchContext();
+    // 开中断
+    writeBasepri(0);
+    // 上下文恢复
+    stackPointer = (uint32_t*)*pxCurrentTCB;
+    __asm volatile("ldmia %0!, {r2-r11}"
+                   : "+r"(stackPointer));
+#if (configENABLE_FPU == 1 || configENABLE_MVE == 1)
+    // 恢复浮点寄存器，如果启用
+    asm volatile("vldmiaeq %0!, {s16-s31}"
+                 : "+r"(stackPointer));
+#endif
+    __asm__ volatile(
+        "   sub      sp, #0x10          \n"
+               "   str      r3, [sp]      \n"
+               "   str      r2, [sp, #0x4]      \n"
+               "   str      r1, [sp, #0x8]      \n"
+               "   str      r0, [sp, #0xc]            \n");
+    __asm__ volatile(
+        "movw r0, %0"
+        :
+        : "i"(MPU_BASE & 0xFFFF));
+    __asm__ volatile(
+        "movt r0, %0"
+        :
+        : "i"((MPU_BASE >> 16) & 0xFFFF));
+    __asm__ volatile(
+        "   ldr      r1, [r0, #0x4]          \n"
+               "   mov      r2, #0x0                \n"
+               "   str      r2, [r0, #0x4]          \n"
+               "   str      r2, [r0, #0x8]          \n"
+               "   ldr      r3, [r0, #0x10]          \n"
+               "   bic      r3, r3, #0x1             \n"
+               "   str      r3, [r0, #0x10]          \n"
+               "   mov      r2, #1                   \n"
+               "   str      r2, [r0, #0x8]          \n"
+               "   ldr      r3, [r0, #0x10]          \n"
+               "   bic      r3, r3, #0x1             \n"
+               "   str      r3, [r0, #0x10]          \n"
+               "   str      r1, [r0, #0x4]          \n");
+    __asm__ volatile(
+        "dsb 0xF" ::
+            : "memory");
+    __asm__ volatile(
+        "isb 0xF" ::
+            : "memory");
+    __asm__ volatile(
+        "   ldr      r3, [sp]            \n"
+               "   ldr      r2, [sp, #0x4]      \n"
+               "   ldr      r1, [sp, #0x8]      \n"
+               "   ldr      r0, [sp, #0xc]      \n"
+               "   add      sp, #0x10            \n");
+    __asm("msr psplim, r2");
+    __asm("msr psp, %0"
+          :
+          : "r"(stackPointer));
+    // 返回到新的任务
+    __asm("add sp, #0x20");
+    __asm("bx r3");
 }
 
 #endif /* configENABLE_MPU */
@@ -815,7 +790,7 @@ void SVC_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 
 extern void vPortSVCHandler_C(uint32_t* pulParam);
 
-__attribute__((section(".handler"))) void SVC_Handler(void) {
+void SVC_Handler(void) {
     uint32_t* stack;
 
     // 内联汇编，用于选择正确的栈指针（MSP 或 PSP）
@@ -831,4 +806,4 @@ __attribute__((section(".handler"))) void SVC_Handler(void) {
 }
 
 #endif /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/

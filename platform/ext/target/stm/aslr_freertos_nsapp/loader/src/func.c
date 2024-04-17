@@ -1,8 +1,8 @@
 #include "func.h"
 
-uint32_t func_info_size = 206;
+uint32_t func_info_size = 204;
 
-func_info_t func_info[206] = {
+func_info_t func_info[204] = {
     {0x8055385, 78, -1, 0},  //HAL_Init
     {0x805597d, 28, -1, 0},  //HAL_NVIC_SetPriorityGrouping
     {0x8055445, 368, -1, 0},  //SystemCoreClockUpdate
@@ -19,7 +19,7 @@ func_info_t func_info[206] = {
     {0x8055a2f, 98, -1, 0},  //NVIC_EncodePriority
     {0x8055a91, 66, -1, 0},  //__NVIC_SetPriority
     {0x8055aed, 92, -1, 0},  //SysTick_Config
-    {0x8055e3d, 122, -1, 0},  //main
+    {0x8055e29, 124, -1, 0},  //main
     {0x8055c27, 4, -1, 0},  //NMI_Handler
     {0x8055c2b, 4, -1, 0},  //HardFault_Handler
     {0x8055c2f, 4, -1, 0},  //MemManage_Handler
@@ -134,79 +134,77 @@ func_info_t func_info[206] = {
     {0x8055de3, 4, -1, 0},  //UCPD1_IRQHandler
     {0x8055de7, 4, -1, 0},  //ICACHE_IRQHandler
     {0x8055deb, 4, -1, 0},  //OTFDEC1_IRQHandler
-    {0x8055def, 16, -1, 0},  //sum
-    {0x8055dff, 62, -1, 0},  //testThread
-    {0x80569eb, 126, -1, 0},  //vTaskDelay
-    {0x8055eb7, 92, -1, 0},  //MX_GPIO_Init
-    {0x8055fdd, 104, -1, 0},  //xTaskCreate
-    {0x8056b81, 158, -1, 0},  //vTaskStartScheduler
-    {0x8058965, 204, -1, 0},  //trampoline_A_B
-    {0x8058a31, 204, -1, 0},  //trampoline_B_A
-    {0x8058afd, 440, -1, 0},  //trampoline_blx
-    {0x80588b1, 34, -1, 0},  //ulSetInterruptMask
-    {0x8056045, 178, -1, 0},  //prvCreateTask
-    {0x80560f7, 384, -1, 0},  //prvAddNewTaskToReadyList
-    {0x8057f97, 738, -1, 0},  //pvPortMalloc
-    {0x8058323, 266, -1, 0},  //vPortFree
-    {0x8056333, 320, -1, 0},  //prvInitialiseNewTask
-    {0x80585a9, 40, -1, 0},  //vPortEnterCritical
-    {0x8056277, 188, -1, 0},  //prvInitialiseTaskLists
-    {0x80585d1, 70, -1, 0},  //vPortExitCritical
-    {0x8058591, 24, -1, 0},  //vPortYield
-    {0x8057179, 46, -1, 0},  //vListInitialise
-    {0x80571a7, 14, -1, 0},  //vListInitialiseItem
-    {0x8058617, 266, -1, 0},  //pxPortInitialiseStack
-    {0x8056473, 16, -1, 0},  //vTaskSuspendAll
-    {0x8056483, 624, -1, 0},  //xTaskResumeAll
-    {0x80566f3, 60, -1, 0},  //prvResetNextTaskUnblockTime
-    {0x805672f, 700, -1, 0},  //xTaskIncrementTick
-    {0x8056a69, 280, -1, 0},  //prvAddCurrentTaskToDelayedList
-    {0x805721f, 72, -1, 0},  //uxListRemove
-    {0x80571b5, 106, -1, 0},  //vListInsert
-    {0x8056c1f, 158, -1, 0},  //prvCreateIdleTasks
-    {0x8057267, 114, -1, 0},  //xTimerCreateTimerTask
-    {0x8058765, 300, -1, 0},  //xPortStartScheduler
-    {0x8056cbd, 56, -1, 0},  //prvIdleTask
-    {0x8056cf5, 124, -1, 0},  //prvCheckTasksWaitingTermination
-    {0x8056d71, 42, -1, 0},  //prvDeleteTCB
-    {0x8056d9b, 20, -1, 0},  //xTaskGetTickCount
-    {0x8056daf, 78, -1, 0},  //vTaskPlaceOnEventList
-    {0x8056dfd, 132, -1, 0},  //vTaskPlaceOnEventListRestricted
-    {0x8056e81, 430, -1, 0},  //xTaskRemoveFromEventList
-    {0x805702f, 36, -1, 0},  //vTaskInternalSetTimeOutState
-    {0x8057053, 224, -1, 0},  //xTaskCheckForTimeOut
-    {0x8057133, 14, -1, 0},  //vTaskMissedYield
-    {0x8057141, 56, -1, 0},  //xTaskGetSchedulerState
-    {0x80572d9, 166, -1, 0},  //prvCheckForValidListAndQueue
-    {0x805737f, 56, -1, 0},  //prvTimerTask
-    {0x805798f, 168, -1, 0},  //xQueueGenericCreate
-    {0x8057e53, 190, -1, 0},  //vQueueAddToRegistry
-    {0x80573b7, 64, -1, 0},  //prvGetNextExpireTime
-    {0x80573f7, 202, -1, 0},  //prvProcessTimerOrBlockTask
-    {0x80574c1, 450, -1, 0},  //prvProcessReceivedCommands
-    {0x8057683, 86, -1, 0},  //prvSampleTimeNow
-    {0x805780d, 104, -1, 0},  //prvProcessExpiredTimer
-    {0x8057f11, 134, -1, 0},  //vQueueWaitForMessageRestricted
-    {0x8057a87, 594, -1, 0},  //xQueueReceive
-    {0x80576d9, 152, -1, 0},  //prvInsertTimerInActiveList
-    {0x8057771, 64, -1, 0},  //prvReloadTimer
-    {0x80577b1, 92, -1, 0},  //prvSwitchTimerLists
-    {0x8057875, 282, -1, 0},  //xQueueGenericReset
-    {0x8057a37, 80, -1, 0},  //prvInitialiseNewQueue
-    {0x8057cd9, 76, -1, 0},  //prvCopyDataFromQueue
-    {0x8057d25, 58, -1, 0},  //prvIsQueueEmpty
-    {0x8057d5f, 244, -1, 0},  //prvUnlockQueue
-    {0x8058279, 170, -1, 0},  //prvHeapInit
-    {0x805842d, 286, -1, 0},  //prvInsertBlockIntoFreeList
-    {0x805854b, 70, -1, 0},  //vPortSetupTimerInterrupt
-    {0x80588d3, 28, -1, 0},  //vClearInterruptMask
-    {0x8058cc1, 748, -1, 0},  //SysTick_Handler
-    {0x8058721, 68, -1, 0},  //prvTaskExitError
-    {0x8058891, 32, -1, 0},  //vStartFirstTask
-    {0x8058fad, 84, -1, 0},  //PendSV_Handler
-    {0x8059001, 120, -1, 0},  //SVC_Handler
+    {0x8055def, 58, -1, 0},  //testThread1
+    {0x8055ea5, 92, -1, 0},  //MX_GPIO_Init
+    {0x8055fd7, 104, -1, 0},  //xTaskCreate
+    {0x8056a13, 158, -1, 0},  //vTaskStartScheduler
+    {0x805890d, 204, -1, 0},  //trampoline_A_B
+    {0x80589d9, 204, -1, 0},  //trampoline_B_A
+    {0x8058aa5, 440, -1, 0},  //trampoline_blx
+    {0x805603f, 224, -1, 0},  //prvCreateTask
+    {0x805611f, 384, -1, 0},  //prvAddNewTaskToReadyList
+    {0x8057f41, 738, -1, 0},  //pvPortMalloc
+    {0x80582cd, 266, -1, 0},  //vPortFree
+    {0x805635b, 320, -1, 0},  //prvInitialiseNewTask
+    {0x8058553, 40, -1, 0},  //vPortEnterCritical
+    {0x805629f, 188, -1, 0},  //prvInitialiseTaskLists
+    {0x805857b, 70, -1, 0},  //vPortExitCritical
+    {0x805853b, 24, -1, 0},  //vPortYield
+    {0x8057123, 46, -1, 0},  //vListInitialise
+    {0x805885b, 34, -1, 0},  //ulSetInterruptMask
+    {0x8057151, 14, -1, 0},  //vListInitialiseItem
+    {0x80585c1, 266, -1, 0},  //pxPortInitialiseStack
+    {0x805649b, 16, -1, 0},  //vTaskSuspendAll
+    {0x80564ab, 624, -1, 0},  //xTaskResumeAll
+    {0x805671b, 60, -1, 0},  //prvResetNextTaskUnblockTime
+    {0x8056757, 700, -1, 0},  //xTaskIncrementTick
+    {0x8056ab1, 158, -1, 0},  //prvCreateIdleTasks
+    {0x8057211, 114, -1, 0},  //xTimerCreateTimerTask
+    {0x805870f, 300, -1, 0},  //xPortStartScheduler
+    {0x8056b4f, 56, -1, 0},  //prvIdleTask
+    {0x8056b87, 124, -1, 0},  //prvCheckTasksWaitingTermination
+    {0x80571c9, 72, -1, 0},  //uxListRemove
+    {0x8056c03, 42, -1, 0},  //prvDeleteTCB
+    {0x8056c2d, 20, -1, 0},  //xTaskGetTickCount
+    {0x8056c41, 78, -1, 0},  //vTaskPlaceOnEventList
+    {0x805715f, 106, -1, 0},  //vListInsert
+    {0x8056c8f, 280, -1, 0},  //prvAddCurrentTaskToDelayedList
+    {0x8056da7, 132, -1, 0},  //vTaskPlaceOnEventListRestricted
+    {0x8056e2b, 430, -1, 0},  //xTaskRemoveFromEventList
+    {0x8056fd9, 36, -1, 0},  //vTaskInternalSetTimeOutState
+    {0x8056ffd, 224, -1, 0},  //xTaskCheckForTimeOut
+    {0x80570dd, 14, -1, 0},  //vTaskMissedYield
+    {0x80570eb, 56, -1, 0},  //xTaskGetSchedulerState
+    {0x8057283, 166, -1, 0},  //prvCheckForValidListAndQueue
+    {0x8057329, 56, -1, 0},  //prvTimerTask
+    {0x8057939, 168, -1, 0},  //xQueueGenericCreate
+    {0x8057dfd, 190, -1, 0},  //vQueueAddToRegistry
+    {0x8057361, 64, -1, 0},  //prvGetNextExpireTime
+    {0x80573a1, 202, -1, 0},  //prvProcessTimerOrBlockTask
+    {0x805746b, 450, -1, 0},  //prvProcessReceivedCommands
+    {0x805762d, 86, -1, 0},  //prvSampleTimeNow
+    {0x80577b7, 104, -1, 0},  //prvProcessExpiredTimer
+    {0x8057ebb, 134, -1, 0},  //vQueueWaitForMessageRestricted
+    {0x8057a31, 594, -1, 0},  //xQueueReceive
+    {0x8057683, 152, -1, 0},  //prvInsertTimerInActiveList
+    {0x805771b, 64, -1, 0},  //prvReloadTimer
+    {0x805775b, 92, -1, 0},  //prvSwitchTimerLists
+    {0x805781f, 282, -1, 0},  //xQueueGenericReset
+    {0x80579e1, 80, -1, 0},  //prvInitialiseNewQueue
+    {0x8057c83, 76, -1, 0},  //prvCopyDataFromQueue
+    {0x8057ccf, 58, -1, 0},  //prvIsQueueEmpty
+    {0x8057d09, 244, -1, 0},  //prvUnlockQueue
+    {0x8058223, 170, -1, 0},  //prvHeapInit
+    {0x80583d7, 286, -1, 0},  //prvInsertBlockIntoFreeList
+    {0x80584f5, 70, -1, 0},  //vPortSetupTimerInterrupt
+    {0x805887d, 28, -1, 0},  //vClearInterruptMask
+    {0x8058c5d, 748, -1, 0},  //SysTick_Handler
+    {0x80586cb, 68, -1, 0},  //prvTaskExitError
+    {0x805883b, 32, -1, 0},  //vStartFirstTask
+    {0x8058f49, 380, -1, 0},  //PendSV_Handler
+    {0x80590c5, 190, -1, 0},  //SVC_Handler
     {0x8055b49, 222, -1, 0},  //Reset_Handler
-    {0x8055f13, 202, -1, 0},  //vTaskSwitchContext
+    {0x8055f01, 214, -1, 0},  //vTaskSwitchContext
     {0x80552e1, 164, -1, 0},  //memset
     {0x80551f5, 236, -1, 0},  //memcpy
 };
