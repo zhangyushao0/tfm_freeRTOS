@@ -10,7 +10,7 @@ output_functions_info_path = (
 output_trampline_info_path = (
     "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/trampoline.c"
 )
-need_relocation_secions = ["text"]
+need_relocation_secions = ["text", "handler"]
 
 code_start = 0x08005000
 

@@ -42,6 +42,120 @@
  * header files. */
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
+#define MPU_BASE (0xe000ed90)
+#define REGION_DIVIDE (0x20010000)
+
+#define PUSH()                             \
+    __asm__ volatile(                      \
+        "   sub      sp, #0x10         \n" \
+        "   str      r3, [sp]          \n" \
+        "   str      r2, [sp, #0x4]    \n" \
+        "   str      r1, [sp, #0x8]    \n" \
+        "   str      r0, [sp, #0xc]    \n");
+
+#define POP()                                 \
+    __asm__ volatile(                         \
+        "   ldr      r3, [sp]       \n"       \
+        "   ldr      r2, [sp, #0x4]       \n" \
+        "   ldr      r1, [sp, #0x8]       \n" \
+        "   ldr      r0, [sp, #0xc]      \n"  \
+        "   add     sp, #0x10            \n");
+
+#define MPU_DISABLE_0_ENABLE_1()                                \
+    __asm__ volatile("movw r0, %0"                              \
+                     :                                          \
+                     : "i"(MPU_BASE & 0xFFFF));                 \
+    __asm__ volatile("movt r0, %0"                              \
+                     :                                          \
+                     : "i"((MPU_BASE >> 16) & 0xFFFF));         \
+    __asm__ volatile("   ldr      r1, [r0, #0x4]          \n"   \
+                     "   mov      r2, #0x0                \n"   \
+                     "   str      r2, [r0, #0x4]          \n"   \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   bic      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   mov      r2, #1                   \n"  \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   orr      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   str      r1, [r0, #0x4]          \n"); \
+    __asm__ volatile("dsb 0xF" ::                               \
+                         : "memory");                           \
+    __asm__ volatile("isb 0xF" ::                               \
+                         : "memory");
+
+#define MPU_DISABLE_1_ENABLE_0()                                \
+    __asm__ volatile("movw r0, %0"                              \
+                     :                                          \
+                     : "i"(MPU_BASE & 0xFFFF));                 \
+    __asm__ volatile("movt r0, %0"                              \
+                     :                                          \
+                     : "i"((MPU_BASE >> 16) & 0xFFFF));         \
+    __asm__ volatile("   ldr      r1, [r0, #0x4]          \n"   \
+                     "   mov      r2, #0x0                \n"   \
+                     "   str      r2, [r0, #0x4]          \n"   \
+                     "   mov      r2, #0x1                \n"   \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   bic      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   mov      r2, #0                   \n"  \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   orr      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   str      r1, [r0, #0x4]          \n"); \
+    __asm__ volatile("dsb 0xF" ::                               \
+                         : "memory");                           \
+    __asm__ volatile("isb 0xF" ::                               \
+                         : "memory");
+
+#define MPU_DISABLE_0_DISABLE_1()                               \
+    __asm__ volatile("movw r0, %0"                              \
+                     :                                          \
+                     : "i"(MPU_BASE & 0xFFFF));                 \
+    __asm__ volatile("movt r0, %0"                              \
+                     :                                          \
+                     : "i"((MPU_BASE >> 16) & 0xFFFF));         \
+    __asm__ volatile("   ldr      r1, [r0, #0x4]          \n"   \
+                     "   mov      r2, #0x0                \n"   \
+                     "   str      r2, [r0, #0x4]          \n"   \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   bic      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   mov      r2, #1                   \n"  \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   orr      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   str      r1, [r0, #0x4]          \n"); \
+    __asm__ volatile("dsb 0xF" ::                               \
+                         : "memory");                           \
+    __asm__ volatile("isb 0xF" ::                               \
+                         : "memory");
+
+#define RETURN_REGION_SVC()                                  \
+    __asm__ volatile(                                        \
+        "mrs r0, psp       \n"                               \
+        "ldr r0, [r0, #24] \n");                             \
+    __asm__ volatile("movw r1, %0"                           \
+                     :                                       \
+                     : "i"(REGION_DIVIDE & 0xFFFF));         \
+    __asm__ volatile("movt r1, %0"                           \
+                     :                                       \
+                     : "i"((REGION_DIVIDE >> 16) & 0xFFFF)); \
+    __asm__ volatile(                                        \
+        "cmp r0, r1        \n"                               \
+        "blt svc_second_region  \n");                        \
+    MPU_DISABLE_1_ENABLE_0();                                \
+    __asm__ volatile("b svc_done            \n");            \
+    __asm__ volatile("svc_second_region:     \n");           \
+    MPU_DISABLE_0_ENABLE_1();                                \
+    __asm__ volatile("svc_done:     \n");
+
 #if (configENABLE_MPU == 1)
 
 void vRestoreContextOfFirstTask(
@@ -203,7 +317,6 @@ void vRestoreContextOfFirstTask(
 
 #else /* configENABLE_MPU */
 
-#define MPU_BASE (0xe000ed90)
 void vRestoreContextOfFirstTask(
     void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 {
@@ -222,50 +335,14 @@ void vRestoreContextOfFirstTask(
         "   adds r0, #32                           \n" /* Discard everything up to r0. */
         "   msr  psp, r0                           \n" /* This is now the new top of stack to use in the task. */
         "   isb                                    \n");
-    __asm__ volatile(
-        "   sub      sp, #0x10          \n"
-        "   str      r3, [sp]      \n"
-        "   str      r2, [sp, #0x4]      \n"
-        "   str      r1, [sp, #0x8]      \n"
-        "   str      r0, [sp, #0xc]            \n");
-    __asm__ volatile(
-        "movw r0, %0"
-        :
-        : "i"(MPU_BASE & 0xFFFF));
-    __asm__ volatile(
-        "movt r0, %0"
-        :
-        : "i"((MPU_BASE >> 16) & 0xFFFF));
-    __asm__ volatile(
-        "   ldr      r1, [r0, #0x4]          \n"
-        "   mov      r2, #0x0                \n"
-        "   str      r2, [r0, #0x4]          \n"
-        "   str      r2, [r0, #0x8]          \n"
-        "   ldr      r3, [r0, #0x10]          \n"
-        "   bic      r3, r3, #0x1             \n"
-        "   str      r3, [r0, #0x10]          \n"
-        "   mov      r2, #1                   \n"
-        "   str      r2, [r0, #0x8]          \n"
-        "   ldr      r3, [r0, #0x10]          \n"
-        "   bic      r3, r3, #0x1             \n"
-        "   str      r3, [r0, #0x10]          \n"
-        "   str      r1, [r0, #0x4]          \n");
-    __asm__ volatile(
-        "dsb 0xF" ::
-            : "memory");
-    __asm__ volatile(
-        "isb 0xF" ::
-            : "memory");
-    __asm__ volatile(
-        "   ldr      r3, [sp]            \n"
-        "   ldr      r2, [sp, #0x4]      \n"
-        "   ldr      r1, [sp, #0x8]      \n"
-        "   ldr      r0, [sp, #0xc]      \n"
-        "   add      sp, #0x10            \n");
+    PUSH();
+    RETURN_REGION_SVC();
+    POP();
     __asm__ volatile(
         "   mov  r0, #0                            \n"
         "   msr  basepri, r0                       \n" /* Ensure that interrupts are enabled when  the first task starts. */
-        " bx r2                                \n "    /* Finally, branch to EXC_RETURN. */
+
+        " bx r2                                \n " /* Finally, branch to EXC_RETURN. */
         "                                          \n"
         //   "   .align 4                                        \n"
         //   "pxCurrentTCBConst2: .word pxCurrentTCB             \n"
@@ -660,6 +737,7 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 extern void vTaskSwitchContext(void);
 void        PendSV_Handler(void) {
            // 上下文保存
+
     uint32_t* stackPointer;
     __asm("mrs %0, psp"
           : "=r"(stackPointer));
@@ -690,57 +768,14 @@ void        PendSV_Handler(void) {
     asm volatile("vldmiaeq %0!, {s16-s31}"
                  : "+r"(stackPointer));
 #endif
-    __asm__ volatile(
-        "   sub      sp, #0x10          \n"
-               "   str      r3, [sp]      \n"
-               "   str      r2, [sp, #0x4]      \n"
-               "   str      r1, [sp, #0x8]      \n"
-               "   str      r0, [sp, #0xc]            \n");
-    __asm__ volatile(
-        "movw r0, %0"
-        :
-        : "i"(MPU_BASE & 0xFFFF));
-    __asm__ volatile(
-        "movt r0, %0"
-        :
-        : "i"((MPU_BASE >> 16) & 0xFFFF));
-    __asm__ volatile(
-        "   ldr      r1, [r0, #0x4]          \n"
-               "   mov      r2, #0x0                \n"
-               "   str      r2, [r0, #0x4]          \n"
-               "   str      r2, [r0, #0x8]          \n"
-               "   ldr      r3, [r0, #0x10]          \n"
-               "   bic      r3, r3, #0x1             \n"
-               "   str      r3, [r0, #0x10]          \n"
-               "   mov      r2, #1                   \n"
-               "   str      r2, [r0, #0x8]          \n"
-               "   ldr      r3, [r0, #0x10]          \n"
-               "   bic      r3, r3, #0x1             \n"
-               "   str      r3, [r0, #0x10]          \n"
-               "   str      r1, [r0, #0x4]          \n");
-    __asm__ volatile(
-        "dsb 0xF" ::
-            : "memory");
-    __asm__ volatile(
-        "isb 0xF" ::
-            : "memory");
-    __asm__ volatile(
-        "   ldr      r3, [sp]            \n"
-               "   ldr      r2, [sp, #0x4]      \n"
-               "   ldr      r1, [sp, #0x8]      \n"
-               "   ldr      r0, [sp, #0xc]      \n"
-               "   add      sp, #0x10            \n");
     __asm("msr psplim, r2");
     __asm("msr psp, %0"
           :
           : "r"(stackPointer));
-    // 返回到新的任务
-    __asm("add sp, #0x20");
-    __asm("bx r3");
 }
 
 #endif /* configENABLE_MPU */
-/*-----------------------------------------------------------*/
+       /*-----------------------------------------------------------*/
 
 #if ((configENABLE_MPU == 1) && (configUSE_MPU_WRAPPERS_V1 == 0))
 
@@ -790,19 +825,25 @@ void SVC_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 
 extern void vPortSVCHandler_C(uint32_t* pulParam);
 
-void SVC_Handler(void) {
-    uint32_t* stack;
-
-    // 内联汇编，用于选择正确的栈指针（MSP 或 PSP）
-    __asm volatile("   tst lr, #4                     \n"
-                   "   ite eq                         \n"
-                   "   mrseq %0, msp                  \n"
-                   "   mrsne %0, psp                  \n"
-                   : "=r"(stack) // 输出到stack变量
+__attribute__((section(".handler"))) void SVC_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
+{
+    PUSH()
+    MPU_DISABLE_0_DISABLE_1()
+    POP()
+    __asm volatile("   .syntax unified                                 \n"
+                   "                                                   \n"
+                   "   tst lr, #4                                      \n"
+                   "   ite eq                                          \n"
+                   "   mrseq r0, msp                                   \n"
+                   "   mrsne r0, psp                                   \n"
+                   //  "   ldr r1, svchandler_address_const\n"
+                   " MOVW    r1, :lower16:vPortSVCHandler_C\n"
+                   " MOVT    r1, :upper16:vPortSVCHandler_C\n"
+                   "   bx r1                                           \n"
+                   "                                                   \n"
+                   "   .align 4                                        \n"
+                   //  "svchandler_address_const: .word vPortSVCHandler_C  \n"
     );
-
-    // C语言调用 vPortSVCHandler_C，传入选定的栈指针
-    vPortSVCHandler_C(stack);
 }
 
 #endif /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) */

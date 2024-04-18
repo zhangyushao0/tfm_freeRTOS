@@ -15,24 +15,28 @@ void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
     HAL_FLASH_Lock();
 }
 
-void copy_text(region_t* a, region_t* b, uint32_t src_address) {
+void copy_text(region_t* a, region_t* b, uint32_t src_address, uint32_t handler_addr) {
     for (uint32_t i = 0; i < func_info_size; ++i) {
         if (func_info[i].region == 0) {
-            uint32_t addr = a->region_start + a->region_size;
-            copy_text2ram(addr, func_info[i].addr - 1, func_info[i].size);
-            func_info[i].reloc_addr = addr + 1;
-            a->region_size += func_info[i].size;
-            // uint32_t addr = func_info[i].addr - src_address + a->region_start;
-            // copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
-            // func_info[i].reloc_addr = addr;
+            // uint32_t addr = a->region_start + a->region_size;
+            // copy_text2ram(addr, func_info[i].addr - 1, func_info[i].size);
+            // func_info[i].reloc_addr = addr + 1;
+            // a->region_size += func_info[i].size;
+            uint32_t addr = func_info[i].addr - src_address + a->region_start;
+            copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
+            func_info[i].reloc_addr = addr;
         } else {
-            uint32_t addr = b->region_start + b->region_size;
-            copy_text2ram(addr, func_info[i].addr - 1, func_info[i].size);
-            func_info[i].reloc_addr = addr + 1;
-            b->region_size += func_info[i].size;
-            // uint32_t addr = func_info[i].addr - src_address + b->region_start;
-            // copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
-            // func_info[i].reloc_addr = addr;
+            // uint32_t addr = b->region_start + b->region_size;
+            // copy_text2ram(addr, func_info[i].addr - 1, func_info[i].size);
+            // func_info[i].reloc_addr = addr + 1;
+            // b->region_size += func_info[i].size;
+            uint32_t addr = func_info[i].addr - src_address + b->region_start;
+            copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
+            func_info[i].reloc_addr = addr;
+        }
+        if (func_info[i].addr >= handler_section.region_start && func_info[i].addr < handler_section.region_start + handler_section.region_size) {
+            copy_text2ram(func_info[i].addr - handler_section.region_start + handler_addr - 1, func_info[i].reloc_addr - 1, func_info[i].size);
+            func_info[i].reloc_addr = func_info[i].addr - handler_section.region_start + handler_addr;
         }
     }
 }
@@ -188,11 +192,11 @@ int loader(region_t* a, region_t* b, region_t* vector_addr, uint32_t tram_addr, 
     // 划分 a 和 b 区域
     divide();
     // 复制函数到 a 和 b 区域
-    copy_text(a, b, src_address);
+    copy_text(a, b, src_address, handler_addr);
     // 复制 tramp 函数到 tramp_section 区域
     copy_text2ram(tram_addr, tramp_section.region_start, tramp_section.region_size);
     // 复制 handler 到 handler_section 区域
-    copy_text2ram(handler_addr, handler_section.region_start, handler_section.region_size);
+    // copy_text2ram(handler_addr, handler_section.region_start, handler_section.region_size);
     reset_region = relocation(vector_addr, tram_addr, handler_addr, src_address);
     return reset_region;
 }

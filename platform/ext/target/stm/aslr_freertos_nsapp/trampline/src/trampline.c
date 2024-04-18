@@ -70,23 +70,51 @@
     __asm__ volatile("isb 0xF" ::                               \
                          : "memory");
 
-#define PUSH()                                                   \
-    __asm__ volatile("   str      r3, [r10]      \n"             \
-                     "   str      r2, [r10, #0x4]      \n"       \
-                     "   str      r1, [r10, #0x8]      \n"       \
-                     "   str      r0, [r10, #0xc]            \n" \
-                     "   add      r10, #0x10          \n");
+#define MPU_DISABLE_0_DISABLE_1()                               \
+    __asm__ volatile("movw r0, %0"                              \
+                     :                                          \
+                     : "i"(MPU_BASE & 0xFFFF));                 \
+    __asm__ volatile("movt r0, %0"                              \
+                     :                                          \
+                     : "i"((MPU_BASE >> 16) & 0xFFFF));         \
+    __asm__ volatile("   ldr      r1, [r0, #0x4]          \n"   \
+                     "   mov      r2, #0x0                \n"   \
+                     "   str      r2, [r0, #0x4]          \n"   \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   bic      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   mov      r2, #1                   \n"  \
+                     "   str      r2, [r0, #0x8]          \n"   \
+                     "   ldr      r3, [r0, #0x10]          \n"  \
+                     "   orr      r3, r3, #0x1             \n"  \
+                     "   str      r3, [r0, #0x10]          \n"  \
+                     "   str      r1, [r0, #0x4]          \n"); \
+    __asm__ volatile("dsb 0xF" ::                               \
+                         : "memory");                           \
+    __asm__ volatile("isb 0xF" ::                               \
+                         : "memory");
 
-#define POP()                                               \
-    __asm__ volatile("   sub      r10, #0x10            \n" \
-                     "   ldr      r3, [r10]            \n"  \
-                     "   ldr      r2, [r10, #0x4]      \n"  \
-                     "   ldr      r1, [r10, #0x8]      \n"  \
-                     "   ldr      r0, [r10, #0xc]      \n");
+#define PUSH()                                \
+    __asm__ volatile(                         \
+        "   str      r3, [r10, #0x4]      \n" \
+        "   str      r2, [r10, #0x8]      \n" \
+        "   str      r1, [r10, #0xc]      \n" \
+        "   str      r0, [r10, #0x10]     \n" \
+        "   add      r10, #0x10          \n");
+
+#define POP()                                  \
+    __asm__ volatile(                          \
+        "   sub      r10, #0x10            \n" \
+        "   ldr      r3, [r10, #0x4]       \n" \
+        "   ldr      r2, [r10, #0x8]       \n" \
+        "   ldr      r1, [r10, #0xc]       \n" \
+        "   ldr      r0, [r10, #0x10]      \n");
 
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void) {
-    __asm__ volatile("str      lr,[r10]                   \n"
-                     "add      r10,#4                   \n");
+    __asm__ volatile(
+        "add      r10,#4                   \n"
+        "str      lr,[r10]                   \n");
     PUSH()
     MPU_DISABLE_0_ENABLE_1()
     POP()
@@ -94,14 +122,16 @@ __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline
     PUSH()
     MPU_DISABLE_1_ENABLE_0()
     POP()
-    __asm__ volatile("   sub r10, #4    \n"
-                     "   ldr lr, [r10]  \n"
-                     "   bx  lr         \n");
+    __asm__ volatile(
+        "   ldr lr, [r10]  \n"
+        "   sub r10, #4    \n"
+        "   bx  lr         \n");
 }
 
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_B_A(void) {
-    __asm__ volatile("str      lr,[r10]                   \n"
-                     "add      r10,#4                   \n");
+    __asm__ volatile(
+        "add      r10,#4                   \n"
+        "str      lr,[r10]                   \n");
     PUSH()
     MPU_DISABLE_1_ENABLE_0()
     POP()
@@ -109,50 +139,63 @@ __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline
     PUSH()
     MPU_DISABLE_0_ENABLE_1()
     POP()
-    __asm__ volatile("   sub r10, #4    \n"
-                     "   ldr lr, [r10]  \n"
-                     "   bx  lr         \n");
+    __asm__ volatile(
+        "   ldr lr, [r10]  \n"
+        "   sub r10, #4    \n"
+        "   bx  lr         \n");
 }
+#define REGION_DIVIDE (20010000)
+
+#define RETURN_REGION1()                                     \
+    __asm__ volatile(                                        \
+        "mov r0, r8       \n");                              \
+    __asm__ volatile("movw r1, %0"                           \
+                     :                                       \
+                     : "i"(REGION_DIVIDE & 0xFFFF));         \
+    __asm__ volatile("movt r1, %0"                           \
+                     :                                       \
+                     : "i"((REGION_DIVIDE >> 16) & 0xFFFF)); \
+    __asm__ volatile(                                        \
+        "cmp r0, r1        \n"                               \
+        "blt second_region1  \n");                           \
+    MPU_DISABLE_1_ENABLE_0();                                \
+    __asm__ volatile("b done1            \n");               \
+    __asm__ volatile("second_region1:     \n");              \
+    MPU_DISABLE_0_ENABLE_1();                                \
+    __asm__ volatile("done1:     \n");
+
+#define RETURN_REGION2()                                     \
+    __asm__ volatile(                                        \
+        "ldr r0, [r10]       \n");                           \
+    __asm__ volatile("movw r1, %0"                           \
+                     :                                       \
+                     : "i"(REGION_DIVIDE & 0xFFFF));         \
+    __asm__ volatile("movt r1, %0"                           \
+                     :                                       \
+                     : "i"((REGION_DIVIDE >> 16) & 0xFFFF)); \
+    __asm__ volatile(                                        \
+        "cmp r0, r1        \n"                               \
+        "blt second_region2  \n");                           \
+    MPU_DISABLE_1_ENABLE_0();                                \
+    __asm__ volatile("b done2            \n");               \
+    __asm__ volatile("second_region2:     \n");              \
+    MPU_DISABLE_0_ENABLE_1();                                \
+    __asm__ volatile("done2:     \n");
 
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_blx(void) {
-    __asm__ volatile("str        lr,[r10]                      \n"
-                     "add        r10,#32                       \n");
-    __asm__ volatile("str        r8,[r10,#-4]                  \n"
-                     "str        r0,[r10,#-8]                  \n"
-                     "subs       r0,lr,r8                      \n"
-                     "cmp.w      r0,#20480                       \n"
-                     "ble        #8                             \n"    /*lr-r8<=0x5000 */
-                     "b          #-2                             \n"); /*lr-r8>0x5000 B to A */
-    /*设A为可执行，B不可执行*/
+    __asm__ volatile(
+        "add      r10,#4                   \n"
+        "str      lr,[r10]                   \n");
     PUSH()
-    MPU_DISABLE_0_ENABLE_1()
+    RETURN_REGION1()
     POP()
-    __asm__ volatile("ldr        r0,[r10,#-8]                  \n"
-                     "blx        r8                            \n");
-    /*设B为可执行，A不可执行*/
+    __asm__ volatile(
+        "blx        r8                            \n");
     PUSH()
-    MPU_DISABLE_1_ENABLE_0()
+    RETURN_REGION2()
     POP()
-    __asm__ volatile("b          #24                             \n" /*跳到结尾*/
-                     "subs       r0,r8,lr                      \n"
-                     "cmp.w      r0,#20480                       \n"
-                     "ble        #8                             \n"    /*r8-lr<=0x5000 */
-                     "b          #-2                             \n"); /*r8-lr>0x5000 A to B */
-    /*设B为可执行，A不可执行*/
-    PUSH()
-    MPU_DISABLE_1_ENABLE_0();
-    POP()
-    __asm__ volatile("ldr        r0,[r10,#-8]                  \n" /*恢复r0*/
-                     "blx        r8                            \n");
-    /*设A为可执行，B不可执行*/
-    PUSH()
-    MPU_DISABLE_0_ENABLE_1();
-    POP()
-    __asm__ volatile("  b          #4                              \n" /*跳到结尾*/
-                     /*以下说明不跨区域*/
-                     "  ldr        r0,[r10,#-8]                  \n" /*恢复r0*/
-                     "  blx        r8                            \n");
-    __asm__ volatile("   sub r10, #32    \n"
-                     "   ldr lr, [r10]  \n"
-                     "   bx  lr         \n");
+    __asm__ volatile(
+        "   ldr lr, [r10]  \n"
+        "   sub r10, #4    \n"
+        "   bx  lr         \n");
 }

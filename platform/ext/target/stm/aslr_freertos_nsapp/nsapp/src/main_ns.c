@@ -32,23 +32,26 @@ int sum(int a, int b) {
     return a + b;
 }
 void testThread1(void* pvParameters) {
+    initialise_benchmark();
+    int result = benchmark();
+    verify_benchmark(result);
     while (1) {
-        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-        for (int i = 0; i < 100000; i++) {
-            __ASM volatile("nop");
-        }
+        vTaskDelay(500);
     }
 }
 
 void testThread2(void* pvParameters) {
-    initialise_benchmark();
-    int result = benchmark();
-    // assert(verify_benchmark(result));
     while (1) {
         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-        int a = 2;
-        int b = 3;
-        int c = sum(a, b);
+        vTaskDelay(500);
+    }
+}
+
+void testThread3(void* pvParameters) {
+    initialise_benchmark();
+    int result = benchmark();
+    verify_benchmark(result);
+    while (1) {
         vTaskDelay(500);
     }
 }
@@ -63,11 +66,26 @@ int  main() {
      xReturned = xTaskCreate(
          testThread1,           /* Function that implements the task. */
          "testThread1",         /* Text name for the task. */
-         ((uint16_t)300),       /* Stack size in words, not bytes. */
+         ((uint16_t)100),       /* Stack size in words, not bytes. */
          NULL,                  /* Parameter passed into the task. */
          1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
          NULL);                 /* Used to pass out the created task's handle. */
 
+     xReturned = xTaskCreate(
+         testThread2,           /* Function that implements the task. */
+         "testThread2",         /* Text name for the task. */
+         ((uint16_t)100),       /* Stack size in words, not bytes. */
+         NULL,                  /* Parameter passed into the task. */
+         1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
+         NULL);                 /* Used to pass out the created task's handle. */
+
+     xReturned = xTaskCreate(
+         testThread3,           /* Function that implements the task. */
+         "testThread3",         /* Text name for the task. */
+         ((uint16_t)100),       /* Stack size in words, not bytes. */
+         NULL,                  /* Parameter passed into the task. */
+         1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
+         NULL);
      /* 启动调度器 */
      vTaskStartScheduler();
 
