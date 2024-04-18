@@ -156,6 +156,25 @@
     MPU_DISABLE_0_ENABLE_1();                                \
     __asm__ volatile("svc_done:     \n");
 
+#define RETURN_REGION_PendSV()                               \
+    __asm__ volatile(                                        \
+        "mrs r0, psp       \n"                               \
+        "ldr r0, [r0, #24] \n");                             \
+    __asm__ volatile("movw r1, %0"                           \
+                     :                                       \
+                     : "i"(REGION_DIVIDE & 0xFFFF));         \
+    __asm__ volatile("movt r1, %0"                           \
+                     :                                       \
+                     : "i"((REGION_DIVIDE >> 16) & 0xFFFF)); \
+    __asm__ volatile(                                        \
+        "cmp r0, r1        \n"                               \
+        "blt pendsv_second_region  \n");                     \
+    MPU_DISABLE_1_ENABLE_0();                                \
+    __asm__ volatile("b pendsv_done            \n");         \
+    __asm__ volatile("pendsv_second_region:     \n");        \
+    MPU_DISABLE_0_ENABLE_1();                                \
+    __asm__ volatile("pendsv_done:     \n");
+
 #if (configENABLE_MPU == 1)
 
 void vRestoreContextOfFirstTask(
@@ -317,7 +336,7 @@ void vRestoreContextOfFirstTask(
 
 #else /* configENABLE_MPU */
 
-void vRestoreContextOfFirstTask(
+__attribute__((section(".handler"))) void vRestoreContextOfFirstTask(
     void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 {
     __asm volatile(
@@ -822,8 +841,6 @@ void SVC_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 }
 
 #else /* ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
-
-extern void vPortSVCHandler_C(uint32_t* pulParam);
 
 __attribute__((section(".handler"))) void SVC_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 {

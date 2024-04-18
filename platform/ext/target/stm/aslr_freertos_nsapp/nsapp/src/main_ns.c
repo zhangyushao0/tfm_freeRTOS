@@ -9,6 +9,8 @@
 
 #define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
+// inline_vectors int (*inline_vectors[])(void) __attribute__((used)) = {SysTick_Handler};
+
 static void MX_GPIO_Init(void) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -47,14 +49,14 @@ void testThread2(void* pvParameters) {
     }
 }
 
-void testThread3(void* pvParameters) {
-    initialise_benchmark();
-    int result = benchmark();
-    verify_benchmark(result);
-    while (1) {
-        vTaskDelay(500);
-    }
-}
+// void testThread3(void* pvParameters) {
+//     initialise_benchmark();
+//     int result = benchmark();
+//     verify_benchmark(result);
+//     while (1) {
+//         vTaskDelay(500);
+//     }
+// }
 
 char cArray[128] __attribute__((aligned(128)));
 int  main() {
@@ -79,13 +81,13 @@ int  main() {
          1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
          NULL);                 /* Used to pass out the created task's handle. */
 
-     xReturned = xTaskCreate(
-         testThread3,           /* Function that implements the task. */
-         "testThread3",         /* Text name for the task. */
-         ((uint16_t)100),       /* Stack size in words, not bytes. */
-         NULL,                  /* Parameter passed into the task. */
-         1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
-         NULL);
+     //  xReturned = xTaskCreate(
+     //      testThread3,           /* Function that implements the task. */
+     //      "testThread3",         /* Text name for the task. */
+     //      ((uint16_t)100),       /* Stack size in words, not bytes. */
+     //      NULL,                  /* Parameter passed into the task. */
+     //      1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
+     //      NULL);
      /* 启动调度器 */
      vTaskStartScheduler();
 
