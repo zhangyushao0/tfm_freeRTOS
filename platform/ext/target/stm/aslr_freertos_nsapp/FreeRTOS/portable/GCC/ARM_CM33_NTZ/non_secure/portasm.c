@@ -129,7 +129,7 @@
                      "   mov      r2, #1                   \n"  \
                      "   str      r2, [r0, #0x8]          \n"   \
                      "   ldr      r3, [r0, #0x10]          \n"  \
-                     "   orr      r3, r3, #0x1             \n"  \
+                     "   bic      r3, r3, #0x1             \n"  \
                      "   str      r3, [r0, #0x10]          \n"  \
                      "   str      r1, [r0, #0x4]          \n"); \
     __asm__ volatile("dsb 0xF" ::                               \
@@ -360,8 +360,7 @@ __attribute__((section(".handler"))) void vRestoreContextOfFirstTask(
     __asm__ volatile(
         "   mov  r0, #0                            \n"
         "   msr  basepri, r0                       \n" /* Ensure that interrupts are enabled when  the first task starts. */
-
-        " bx r2                                \n " /* Finally, branch to EXC_RETURN. */
+        " bx r2                                \n "    /* Finally, branch to EXC_RETURN. */
         "                                          \n"
         //   "   .align 4                                        \n"
         //   "pxCurrentTCBConst2: .word pxCurrentTCB             \n"
@@ -756,7 +755,6 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
 extern void vTaskSwitchContext(void);
 void        PendSV_Handler(void) {
            // 上下文保存
-
     uint32_t* stackPointer;
     __asm("mrs %0, psp"
           : "=r"(stackPointer));
@@ -791,6 +789,9 @@ void        PendSV_Handler(void) {
     __asm("msr psp, %0"
           :
           : "r"(stackPointer));
+    PUSH();
+    RETURN_REGION_PendSV();
+    POP();
 }
 
 #endif /* configENABLE_MPU */

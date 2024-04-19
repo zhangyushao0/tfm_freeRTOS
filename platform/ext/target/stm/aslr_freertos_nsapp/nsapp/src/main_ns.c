@@ -33,19 +33,24 @@ void* ret_addr2;
 int sum(int a, int b) {
     return a + b;
 }
+int a = 0;
+int b = 0;
+
 void testThread1(void* pvParameters) {
     initialise_benchmark();
     int result = benchmark();
     verify_benchmark(result);
     while (1) {
-        vTaskDelay(500);
+        ++a;
+        vTaskDelay(50);
     }
 }
 
 void testThread2(void* pvParameters) {
     while (1) {
+        ++b;
         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-        vTaskDelay(500);
+        vTaskDelay(50);
     }
 }
 

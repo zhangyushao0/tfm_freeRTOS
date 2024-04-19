@@ -4212,8 +4212,11 @@ BaseType_t xTaskIncrementTick(void) {
          * the  queue in the order of their wake time - meaning once one task
          * has been found whose block time has not expired there is no need to
          * look any further down the list. */
+        // if (pxDelayedTaskList == NULL)
+        //     return xSwitchRequired;
         if (xConstTickCount >= xNextTaskUnblockTime) {
             for (;;) {
+                // if (pxDelayedTaskList == NULL) return pdFALSE;
                 if (listLIST_IS_EMPTY(pxDelayedTaskList) != pdFALSE) {
                     /* The delayed list is empty.  Set xNextTaskUnblockTime
                      * to the maximum possible value so it is extremely
