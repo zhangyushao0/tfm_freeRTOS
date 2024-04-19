@@ -5143,7 +5143,8 @@ static portTASK_FUNCTION(prvIdleTask, pvParameters) {
         taskYIELD();
     }
 #endif /* #if ( configNUMBER_OF_CORES > 1 ) */
-
+    for (;;)
+        ;
     for (; configCONTROL_INFINITE_LOOP();) {
         /* See if any tasks have deleted themselves - if so then the idle task
          * is responsible for freeing the deleted task's TCB and stack. */

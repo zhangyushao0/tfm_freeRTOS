@@ -26,18 +26,18 @@
     __asm__ volatile("movt r0, %0"                              \
                      :                                          \
                      : "i"((MPU_BASE >> 16) & 0xFFFF));         \
-    __asm__ volatile("   ldr      r1, [r0, #0x4]          \n"   \
-                     "   mov      r2, #0x0                \n"   \
-                     "   str      r2, [r0, #0x4]          \n"   \
-                     "   str      r2, [r0, #0x8]          \n"   \
-                     "   ldr      r3, [r0, #0x10]          \n"  \
-                     "   bic      r3, r3, #0x1             \n"  \
-                     "   str      r3, [r0, #0x10]          \n"  \
-                     "   mov      r2, #1                   \n"  \
-                     "   str      r2, [r0, #0x8]          \n"   \
-                     "   ldr      r3, [r0, #0x10]          \n"  \
-                     "   orr      r3, r3, #0x1             \n"  \
-                     "   str      r3, [r0, #0x10]          \n"  \
+    __asm__ volatile("   mov      r1, #0x0                \n"   \
+                     "   str      r1, [r0, #0x4]          \n"   \
+                     "   str      r1, [r0, #0x8]          \n"   \
+                     "   ldr      r1, [r0, #0x10]          \n"  \
+                     "   bic      r1, r1, #0x1             \n"  \
+                     "   str      r1, [r0, #0x10]          \n"  \
+                     "   mov      r1, #1                   \n"  \
+                     "   str      r1, [r0, #0x8]          \n"   \
+                     "   ldr      r1, [r0, #0x10]          \n"  \
+                     "   orr      r1, r1, #0x1             \n"  \
+                     "   str      r1, [r0, #0x10]          \n"  \
+                     "   mov      r1, #0x5          \n"         \
                      "   str      r1, [r0, #0x4]          \n"); \
     __asm__ volatile("dsb 0xF" ::                               \
                          : "memory");                           \
@@ -51,19 +51,18 @@
     __asm__ volatile("movt r0, %0"                              \
                      :                                          \
                      : "i"((MPU_BASE >> 16) & 0xFFFF));         \
-    __asm__ volatile("   ldr      r1, [r0, #0x4]          \n"   \
-                     "   mov      r2, #0x0                \n"   \
-                     "   str      r2, [r0, #0x4]          \n"   \
-                     "   mov      r2, #0x1                \n"   \
-                     "   str      r2, [r0, #0x8]          \n"   \
-                     "   ldr      r3, [r0, #0x10]          \n"  \
-                     "   bic      r3, r3, #0x1             \n"  \
-                     "   str      r3, [r0, #0x10]          \n"  \
-                     "   mov      r2, #0                   \n"  \
-                     "   str      r2, [r0, #0x8]          \n"   \
-                     "   ldr      r3, [r0, #0x10]          \n"  \
-                     "   orr      r3, r3, #0x1             \n"  \
-                     "   str      r3, [r0, #0x10]          \n"  \
+    __asm__ volatile("   mov      r1, #0x0                \n"   \
+                     "   str      r1, [r0, #0x4]          \n"   \
+                     "   str      r1, [r0, #0x8]          \n"   \
+                     "   ldr      r1, [r0, #0x10]          \n"  \
+                     "   orr      r1, r1, #0x1             \n"  \
+                     "   str      r1, [r0, #0x10]          \n"  \
+                     "   mov      r1, #0x1                \n"   \
+                     "   str      r1, [r0, #0x8]          \n"   \
+                     "   ldr      r1, [r0, #0x10]          \n"  \
+                     "   bic      r1, r1, #0x1             \n"  \
+                     "   str      r1, [r0, #0x10]          \n"  \
+                     "   mov      r1, #0x5          \n"         \
                      "   str      r1, [r0, #0x4]          \n"); \
     __asm__ volatile("dsb 0xF" ::                               \
                          : "memory");                           \
@@ -97,11 +96,11 @@
 
 #define PUSH()        \
     __asm__ volatile( \
-        "push    {r0-r3}                \n");
+        "push    {r0-r1}                \n");
 
 #define POP()         \
     __asm__ volatile( \
-        "pop    {r0-r3}                \n");
+        "pop    {r0-r1}                \n");
 
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void) {
     __asm__ volatile(

@@ -34,10 +34,10 @@ void copy_text(region_t* a, region_t* b, uint32_t src_address, uint32_t handler_
             copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
             func_info[i].reloc_addr = addr;
         }
-        if (func_info[i].addr >= handler_section.region_start && func_info[i].addr < handler_section.region_start + handler_section.region_size) {
-            copy_text2ram(func_info[i].addr - handler_section.region_start + handler_addr - 1, func_info[i].reloc_addr - 1, func_info[i].size);
-            func_info[i].reloc_addr = func_info[i].addr - handler_section.region_start + handler_addr;
-        }
+        // if (func_info[i].addr >= handler_section.region_start && func_info[i].addr < handler_section.region_start + handler_section.region_size) {
+        //     copy_text2ram(func_info[i].addr - handler_section.region_start + handler_addr - 1, func_info[i].reloc_addr - 1, func_info[i].size);
+        //     func_info[i].reloc_addr = func_info[i].addr - handler_section.region_start + handler_addr;
+        // }
     }
 }
 
@@ -117,9 +117,9 @@ uint32_t movt_address_calculate(uint32_t ori_val, uint32_t addr) {
 void vector_table_calculate(relocation_info_t* entry, region_t* vector_addr, uint32_t handler_addr, uint32_t src_address, int i) {
     int func_id = entry->func_id2;
     int addr = func_info[func_id].reloc_addr;
-    if (i == 8 || i == 10 || i == 11) {
-        addr = func_info[func_id].addr + handler_addr - handler_section.region_start;
-    }
+    // if (i == 8 || i == 10 || i == 11) {
+    //     addr = func_info[func_id].addr + handler_addr - handler_section.region_start;
+    // }
     *((uint32_t*)(entry->addr + vector_addr->region_start - src_address)) = addr;
     vector_addr->region_size += 4;
 }

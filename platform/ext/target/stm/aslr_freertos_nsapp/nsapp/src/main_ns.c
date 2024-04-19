@@ -42,7 +42,7 @@ void testThread1(void* pvParameters) {
     verify_benchmark(result);
     while (1) {
         ++a;
-        vTaskDelay(50);
+        vTaskDelay(1000);
     }
 }
 
@@ -50,7 +50,7 @@ void testThread2(void* pvParameters) {
     while (1) {
         ++b;
         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-        vTaskDelay(50);
+        vTaskDelay(1000);
     }
 }
 
