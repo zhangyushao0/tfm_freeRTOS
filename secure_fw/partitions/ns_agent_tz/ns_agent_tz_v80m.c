@@ -20,7 +20,7 @@ extern uint32_t tramp_blx_addr;
 // clang-format off
 __naked void ns_agent_tz_main(uint32_t c_entry)
 {
-    __ASM volatile(
+     __ASM volatile(
 #ifndef __ICCARM__
         ".syntax unified                            \n"
 #endif

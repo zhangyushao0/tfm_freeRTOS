@@ -88,11 +88,11 @@ target_sources(platform_s
 )
 
 # FreeRTOS
-add_subdirectory(FreeRTOS)
-target_link_libraries(ns_app
-    PUBLIC
-    freertos_kernel
-)
+# add_subdirectory(FreeRTOS)
+# target_link_libraries(ns_app
+#     PUBLIC
+#     freertos_kernel
+# )
 
 # test
 set(TEST_TARGET "" CACHE STRING "Test target to build")

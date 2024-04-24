@@ -137,7 +137,8 @@ int main(void) {
 
     int reset_region = loader(&a, &b, &vector_table, tramp_section_addr, handler_section_addr, __text_address__);
 
-    // mpu_init_st(a.region_start, a.region_start + 0x4900, b.region_start, b.region_start + 0x4900, reset_region);
+    mpu_init_st(a.region_start, a.region_start + a.region_size, b.region_start, b.region_start + b.region_size, reset_region);
+
     // DWT_enable(a, b);
 
     /* Move to handler mode for further SPM initialization. */
