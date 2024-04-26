@@ -669,9 +669,6 @@ void PendSV_Handler(void) {
 #endif
   __asm("msr psplim, r2");
   __asm("msr psp, %0" : : "r"(stackPointer));
-
-  // 返回到新的任务
-  __asm("bx lr");
 }
 
 #endif /* configENABLE_MPU */

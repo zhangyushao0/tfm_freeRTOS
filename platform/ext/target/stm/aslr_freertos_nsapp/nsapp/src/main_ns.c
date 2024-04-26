@@ -29,23 +29,24 @@ void *ret_addr2;
 int sum(int a, int b) { return a + b; }
 void testThread(void *pvParameters) {
   while (1) {
-    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-    int a = 2;
-    int b = 3;
-    int c = sum(a, b);
+    // HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+    // int a = 2;
+    // int b = 3;
+    // int c = sum(a, b);
     vTaskDelay(500);
   }
 }
 
 void testThread2(void *pvParameters) {
-  initialise_benchmark();
-  int result = benchmark();
-  // assert(verify_benchmark(result));
+  // initialise_benchmark();
+  // int result = benchmark();
+  // // assert(verify_benchmark(result));
   while (1) {
     HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
     int a = 2;
     int b = 3;
     int c = sum(a, b);
+
     vTaskDelay(500);
   }
 }
@@ -56,6 +57,7 @@ int main() {
   MX_GPIO_Init();
 
   xTaskCreate(testThread, "testThread", 256, NULL, 1, NULL);
+  xTaskCreate(testThread2, "testThread2", 256, NULL, 1, NULL);
 
   /* 启动调度器 */
   vTaskStartScheduler();
