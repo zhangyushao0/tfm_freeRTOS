@@ -5,4 +5,7 @@ __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_B_A(void);
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_blx(void);
 
+int geta_b();
+int getb_a();
+
 #endif

@@ -102,8 +102,17 @@
     __asm__ volatile( \
         "pop    {r0-r1}                \n");
 
-int                                                                   a_b = 0;
-int                                                                   b_a = 0;
+int a_b = 0;
+int b_a = 0;
+
+int geta_b() {
+    return a_b;
+}
+
+int getb_a() {
+    return b_a;
+}
+
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void) {
     __asm__ volatile(
         "add      r10,#4                   \n"

@@ -83,17 +83,20 @@ int main() {
 
     SysTick->CTRL = 0;          // Disable SysTick
     SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
-    SysTick->VAL = 0;           // Clear the current value to 0
+    SysTick->VAL = 0x0;         // Clear the current value to 0
     SysTick->CTRL = 0x5;
     uint32_t start = SysTick->VAL;
-    for (int i = 0; i < 1000; ++i) {
-        initialise_benchmark();
-        int result = benchmark();
-        verify_benchmark(result);
-    }
+    // for (int i = 0; i < 1000; ++i) {
+    initialise_benchmark();
+    int result = benchmark();
+    verify_benchmark(result);
+    // }
     uint32_t end = SysTick->VAL;
     uint32_t end2 = SysTick->VAL;
     uint32_t res = start - end;
+    int      a_b = 0;
+    a_b = geta_b();
+    int b_a = getb_a();
 
     //  BaseType_t xReturned;
 
