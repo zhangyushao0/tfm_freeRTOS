@@ -87,7 +87,7 @@ int main_ex(void) {
   /* USER CODE END Init */
 
   /* Configure the system clock */
-  SystemClock_Config();
+  //SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
 
@@ -106,12 +106,12 @@ int main_ex(void) {
   /* USER CODE END 2 */
 
   /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1) {
-    /* USER CODE END WHILE */
+  // /* USER CODE BEGIN WHILE */
+  // while (1) {
+  //   /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
-  }
+  //   /* USER CODE BEGIN 3 */
+  // }
   /* USER CODE END 3 */
 }
 

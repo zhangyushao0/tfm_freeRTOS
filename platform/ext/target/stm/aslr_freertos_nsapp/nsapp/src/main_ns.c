@@ -86,7 +86,7 @@ int main() {
     SysTick->VAL = 0;           // Clear the current value to 0
     SysTick->CTRL = 0x5;
     uint32_t start = SysTick->VAL;
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 10; ++i) {
         initialise_benchmark();
         int result = benchmark();
         verify_benchmark(result);
@@ -125,8 +125,8 @@ int main() {
 
     /* 如果系统正常工作，以下代码不会执行 */
     for (;;) {
-        //  trampoline_A_B();
-        //  trampoline_B_A();
-        //  trampoline_blx();
+         trampoline_A_B();
+         trampoline_B_A();
+         trampoline_blx();
     }
 }

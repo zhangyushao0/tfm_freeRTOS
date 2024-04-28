@@ -80,7 +80,7 @@ int main_ex(void) {
   /* USER CODE END Init */
 
   /* Configure the system clock */
-  SystemClock_Config();
+  //SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
 
@@ -95,10 +95,11 @@ int main_ex(void) {
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1) {
+  int jj=5;
+  while (jj--) {
     HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_12);
     /* Insert delay 100 ms */
-    HAL_Delay(100);
+    //HAL_Delay(5);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

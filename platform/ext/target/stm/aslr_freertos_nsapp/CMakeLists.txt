@@ -98,7 +98,7 @@ target_sources(platform_s
 set(TEST_TARGET "" CACHE STRING "Test target to build")
 
 # 分割字符串 _
-string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
+string(REPLACE "+" ";" TEST_TARGET_LIST ${TEST_TARGET})
 list(GET TEST_TARGET_LIST 0 FIRST_PART)
 
 # 添加测试

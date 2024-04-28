@@ -1,14 +1,15 @@
+#!/usr/bin/python3
 from elftools.elf.elffile import ELFFile
 
-elf_path = "./build/bin/ns_app.elf"
+elf_path = "/home/jiangzixian/relocation/5_relocation_v1/build/bin/ns_app.elf"
 output_relocation_info_path = (
-    "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/relocation.c"
+    "/home/jiangzixian/relocation/5_relocation_v1/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/relocation.c"
 )
 output_functions_info_path = (
-    "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c"
+    "/home/jiangzixian/relocation/5_relocation_v1/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c"
 )
 output_trampline_info_path = (
-    "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/trampoline.c"
+    "/home/jiangzixian/relocation/5_relocation_v1/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/trampoline.c"
 )
 need_relocation_secions = ["text", "handler"]
 
@@ -86,13 +87,14 @@ def output_functions_info(functions_info):
         f.write(str(len(functions_info)))
         f.write("] = {\n")
         for addr, size, name in functions_info:
+            region = 1 if ((addr >> 1) & 1) == 1 else 0
             f.write(
                 "    {"
                 + hex(addr)
                 + ", "
                 + str(size)
                 + ", "
-                + str(-1)
+                + str(region)
                 + ", "
                 + str(0)
                 + "},"

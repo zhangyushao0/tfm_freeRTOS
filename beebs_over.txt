@@ -1,0 +1,12 @@
+beebs:
+    compress 1000 100
+    cnt 1000 60
+    cover 1000 100
+    bs 
+ 
+can not:
+    dtoa
+    qsort
+    qurt
+    edn
+

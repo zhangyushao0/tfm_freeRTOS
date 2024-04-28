@@ -108,7 +108,8 @@ int main_ex(void) {
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1) {
+  int jj=5;
+  while (jj--) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -119,7 +120,7 @@ int main_ex(void) {
 
     /* Toggle LED10 in an infinite loop */
     BSP_LED_Toggle(LED10);
-    HAL_Delay(100);
+    //HAL_Delay(1);
   }
 
   /* USER CODE END 3 */
@@ -135,9 +136,9 @@ void SystemClock_Config(void) {
 
   /** Configure the main internal regulator output voltage
    */
-  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE0) != HAL_OK) {
-    Error_Handler();
-  }
+  // if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE0) != HAL_OK) {
+  //   Error_Handler();
+  // }
 
   /** Initializes the RCC Oscillators according to the specified parameters
    * in the RCC_OscInitTypeDef structure.
@@ -153,9 +154,9 @@ void SystemClock_Config(void) {
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-    Error_Handler();
-  }
+  // if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+  //   Error_Handler();
+  // }
 
   /** Initializes the CPU, AHB and APB buses clocks
    */
@@ -166,9 +167,9 @@ void SystemClock_Config(void) {
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK) {
-    Error_Handler();
-  }
+  // if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK) {
+  //   Error_Handler();
+  // }
 }
 
 /**

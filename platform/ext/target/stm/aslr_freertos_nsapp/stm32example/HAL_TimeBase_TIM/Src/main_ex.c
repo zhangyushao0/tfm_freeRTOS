@@ -91,7 +91,7 @@ int main_ex(void) {
   /* USER CODE END Init */
 
   /* Configure the system clock */
-  SystemClock_Config();
+  //SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
 
@@ -110,12 +110,13 @@ int main_ex(void) {
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   /* Insert a Delay of 1000 ms and toggle LED10, in an infinite loop */
-  while (1) {
+  int jj=5;
+  while (jj--) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
     /* Insert a 1s delay */
-    HAL_Delay(1000);
+    //HAL_Delay(1000);
 
     /* Toggle LED10 */
     BSP_LED_Toggle(LED10);
