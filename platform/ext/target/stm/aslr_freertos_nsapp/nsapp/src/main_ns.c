@@ -38,9 +38,9 @@ void testThread(void *pvParameters) {
 }
 
 void testThread2(void *pvParameters) {
-  // initialise_benchmark();
-  // int result = benchmark();
-  // // assert(verify_benchmark(result));
+  initialise_benchmark();
+  int result = benchmark();
+  // assert(verify_benchmark(result));
   while (1) {
     HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
     int a = 2;

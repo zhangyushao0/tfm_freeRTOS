@@ -57,7 +57,8 @@ macro(tfm_toolchain_reset_compiler_flags)
         -fshort-enums
         -funsigned-char
         -mthumb
-        -nostdlib
+
+        # -nostdlib
         $<$<COMPILE_LANGUAGE:C>:-std=c99>
         $<$<COMPILE_LANGUAGE:CXX>:-std=c++11>
         $<$<OR:$<BOOL:${TFM_DEBUG_SYMBOLS}>,$<BOOL:${TFM_CODE_COVERAGE}>>:-g>
@@ -204,7 +205,7 @@ macro(tfm_toolchain_reload_compiler)
     set(CMAKE_ASM_FLAGS ${CMAKE_ASM_FLAGS_INIT})
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I/usr/lib/arm-none-eabi/include")
 
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdlib")
+    # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdlib")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/lib/arm-none-eabi/include")
 
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
