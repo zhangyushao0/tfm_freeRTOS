@@ -102,16 +102,30 @@
     __asm__ volatile( \
         "pop    {r0-r1}                \n");
 
+int                                                                   a_b = 0;
+int                                                                   b_a = 0;
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void) {
     __asm__ volatile(
         "add      r10,#4                   \n"
         "str      lr,[r10]                   \n");
     PUSH()
     MPU_DISABLE_0_ENABLE_1()
+    __asm__ volatile(
+        "add %0, %0, #1 \n"
+        : "+r"(a_b) // Input and output is the value of a_b
+        :
+        : // No clobbers
+    );
     POP()
     __asm__ volatile("blx      r8                   \n");
     PUSH()
     MPU_DISABLE_1_ENABLE_0()
+    __asm__ volatile(
+        "add %0, %0, #1 \n"
+        : "+r"(b_a) // Input and output is the value of a_b
+        :
+        : // No clobbers
+    );
     POP()
     __asm__ volatile(
         "   ldr lr, [r10]  \n"
@@ -125,10 +139,22 @@ __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline
         "str      lr,[r10]                   \n");
     PUSH()
     MPU_DISABLE_1_ENABLE_0()
+    __asm__ volatile(
+        "add %0, %0, #1 \n"
+        : "+r"(b_a) // Input and output is the value of a_b
+        :
+        : // No clobbers
+    );
     POP()
     __asm__ volatile("blx      r8                   \n");
     PUSH()
     MPU_DISABLE_0_ENABLE_1()
+    __asm__ volatile(
+        "add %0, %0, #1 \n"
+        : "+r"(a_b) // Input and output is the value of a_b
+        :
+        : // No clobbers
+    );
     POP()
     __asm__ volatile(
         "   ldr lr, [r10]  \n"

@@ -80,7 +80,7 @@ char cArray[128] __attribute__((aligned(128)));
 int main() {
     HAL_Init();
     MX_GPIO_Init();
-    SystemInit();
+
     SysTick->CTRL = 0;          // Disable SysTick
     SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
     SysTick->VAL = 0;           // Clear the current value to 0
@@ -125,8 +125,8 @@ int main() {
 
     /* 如果系统正常工作，以下代码不会执行 */
     for (;;) {
-        //  trampoline_A_B();
-        //  trampoline_B_A();
-        //  trampoline_blx();
+        trampoline_A_B();
+        trampoline_B_A();
+        trampoline_blx();
     }
 }

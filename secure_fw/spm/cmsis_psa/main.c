@@ -137,7 +137,7 @@ int main(void) {
 
     int reset_region = loader(&a, &b, &vector_table, tramp_section_addr, handler_section_addr, __text_address__);
 
-    mpu_init_st(a.region_start, a.region_start + a.region_size, b.region_start, b.region_start + b.region_size, reset_region);
+    mpu_init_st(a.region_start, a.region_start + 0x5000, b.region_start, b.region_start + 0x5000, reset_region);
 
     // DWT_enable(a, b);
 

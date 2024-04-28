@@ -1,8 +1,8 @@
 #include "func.h"
 
-uint32_t func_info_size = 141;
+uint32_t func_info_size = 144;
 
-func_info_t func_info[141] = {
+func_info_t func_info[144] = {
     {0x80551f5, 78, -1, 0},  //HAL_Init
     {0x80557bb, 28, -1, 0},  //HAL_NVIC_SetPriorityGrouping
     {0x80552b5, 368, -1, 0},  //SystemCoreClockUpdate
@@ -18,7 +18,7 @@ func_info_t func_info[141] = {
     {0x805586d, 98, -1, 0},  //NVIC_EncodePriority
     {0x80558cf, 66, -1, 0},  //__NVIC_SetPriority
     {0x805592b, 92, -1, 0},  //SysTick_Config
-    {0x8055c35, 180, -1, 0},  //main
+    {0x8055c35, 204, -1, 0},  //main
     {0x8055a65, 4, -1, 0},  //NMI_Handler
     {0x8055a69, 4, -1, 0},  //HardFault_Handler
     {0x8055a6d, 4, -1, 0},  //MemManage_Handler
@@ -28,7 +28,7 @@ func_info_t func_info[141] = {
     {0x8055a7d, 4, -1, 0},  //SVC_Handler
     {0x8055a81, 4, -1, 0},  //DebugMon_Handler
     {0x8055a85, 4, -1, 0},  //PendSV_Handler
-    {0x8056a4d, 2, -1, 0},  //SysTick_Handler
+    {0x8056a65, 2, -1, 0},  //SysTick_Handler
     {0x8055a89, 4, -1, 0},  //WWDG_IRQHandler
     {0x8055a8d, 4, -1, 0},  //PVD_PVM_IRQHandler
     {0x8055a91, 4, -1, 0},  //RTC_IRQHandler
@@ -136,12 +136,15 @@ func_info_t func_info[141] = {
     {0x8055c29, 4, -1, 0},  //UCPD1_IRQHandler
     {0x8055c2d, 4, -1, 0},  //ICACHE_IRQHandler
     {0x8055c31, 4, -1, 0},  //OTFDEC1_IRQHandler
-    {0x8055ce9, 92, -1, 0},  //MX_GPIO_Init
-    {0x8056999, 2, -1, 0},  //initialise_benchmark
-    {0x805699b, 64, -1, 0},  //benchmark
-    {0x80569db, 34, -1, 0},  //verify_benchmark
-    {0x8055d45, 1968, -1, 0},  //swi120
-    {0x80564f5, 1006, -1, 0},  //swi50
-    {0x80568e3, 182, -1, 0},  //swi10
+    {0x8055d01, 92, -1, 0},  //MX_GPIO_Init
+    {0x80569b1, 2, -1, 0},  //initialise_benchmark
+    {0x80569b3, 64, -1, 0},  //benchmark
+    {0x80569f3, 34, -1, 0},  //verify_benchmark
+    {0x8056a67, 164, -1, 0},  //trampoline_A_B
+    {0x8056b0b, 164, -1, 0},  //trampoline_B_A
+    {0x8056baf, 270, -1, 0},  //trampoline_blx
+    {0x8055d5d, 1968, -1, 0},  //swi120
+    {0x805650d, 1006, -1, 0},  //swi50
+    {0x80568fb, 182, -1, 0},  //swi10
     {0x8055987, 222, -1, 0},  //Reset_Handler
 };

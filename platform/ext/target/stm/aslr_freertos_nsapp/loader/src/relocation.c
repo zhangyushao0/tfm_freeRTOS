@@ -1,10 +1,10 @@
 #include "relocation.h"
 
-uint32_t table_size = 174;
+uint32_t table_size = 176;
 
-relocation_info_t relocation_info[174] = {
+relocation_info_t relocation_info[176] = {
     {0x8055000, 0x20001120, 0, -1, -1},  //__StackTop
-    {0x8055004, 0x8055987, 0, -1, 140},  //Reset_Handler
+    {0x8055004, 0x8055987, 0, -1, 143},  //Reset_Handler
     {0x8055008, 0x8055a65, 0, -1, 16},  //NMI_Handler
     {0x805500c, 0x8055a69, 0, -1, 17},  //HardFault_Handler
     {0x8055010, 0x8055a6d, 0, -1, 18},  //MemManage_Handler
@@ -14,7 +14,7 @@ relocation_info_t relocation_info[174] = {
     {0x805502c, 0x8055a7d, 0, -1, 22},  //SVC_Handler
     {0x8055030, 0x8055a81, 0, -1, 23},  //DebugMon_Handler
     {0x8055038, 0x8055a85, 0, -1, 24},  //PendSV_Handler
-    {0x805503c, 0x8056a4d, 0, -1, 25},  //SysTick_Handler
+    {0x805503c, 0x8056a65, 0, -1, 25},  //SysTick_Handler
     {0x8055040, 0x8055a89, 0, -1, 26},  //WWDG_IRQHandler
     {0x8055044, 0x8055a8d, 0, -1, 27},  //PVD_PVM_IRQHandler
     {0x8055048, 0x8055a91, 0, -1, 28},  //RTC_IRQHandler
@@ -130,8 +130,8 @@ relocation_info_t relocation_info[174] = {
     {0x8055258, 0x20000100, 6, 3, -1},  //SystemCoreClock
     {0x8055274, 0x8055911, 4, 3, 5},  //HAL_SYSTICK_Config
     {0x805528e, 0x8055813, 4, 3, 6},  //HAL_NVIC_SetPriority
-    {0x80552ee, 0x80569fc, 5, 2, 136},  //MSIRangeTable
-    {0x80552f2, 0x80569fc, 6, 2, 136},  //MSIRangeTable
+    {0x80552ee, 0x8056a14, 5, 2, 136},  //MSIRangeTable
+    {0x80552f2, 0x8056a14, 6, 2, 136},  //MSIRangeTable
     {0x8055322, 0x20000100, 5, 2, -1},  //SystemCoreClock
     {0x8055326, 0x20000100, 6, 2, -1},  //SystemCoreClock
     {0x805532e, 0x20000100, 5, 2, -1},  //SystemCoreClock
@@ -142,8 +142,8 @@ relocation_info_t relocation_info[174] = {
     {0x80553de, 0x20000100, 6, 2, -1},  //SystemCoreClock
     {0x80553e8, 0x20000100, 5, 2, -1},  //SystemCoreClock
     {0x80553ec, 0x20000100, 6, 2, -1},  //SystemCoreClock
-    {0x8055402, 0x8056a3c, 5, 2, -1},  //AHBPrescTable
-    {0x8055406, 0x8056a3c, 6, 2, -1},  //AHBPrescTable
+    {0x8055402, 0x8056a54, 5, 2, -1},  //AHBPrescTable
+    {0x8055406, 0x8056a54, 6, 2, -1},  //AHBPrescTable
     {0x8055410, 0x20000100, 5, 2, -1},  //SystemCoreClock
     {0x8055414, 0x20000100, 6, 2, -1},  //SystemCoreClock
     {0x80557ce, 0x80557d7, 4, 1, 10},  //__NVIC_SetPriorityGrouping
@@ -152,29 +152,31 @@ relocation_info_t relocation_info[174] = {
     {0x8055854, 0x80558cf, 4, 6, 13},  //__NVIC_SetPriority
     {0x8055922, 0x805592b, 4, 5, 14},  //SysTick_Config
     {0x8055962, 0x80558cf, 4, 14, 13},  //__NVIC_SetPriority
-    {0x805598c, 0x20000120, 5, 140, -1},  //__StackLimit
-    {0x8055990, 0x20000120, 6, 140, -1},  //__StackLimit
-    {0x805599c, 0x20001120, 5, 140, -1},  //__StackTop
-    {0x80559a0, 0x20001120, 6, 140, -1},  //__StackTop
-    {0x80559bc, 0x80552b3, 4, 140, 7},  //SystemInit
-    {0x80559c0, 0x8056a60, 5, 140, -1},  //__copy_table_start__
-    {0x80559c4, 0x8056a60, 6, 140, -1},  //__copy_table_start__
-    {0x80559ce, 0x8056a78, 5, 140, -1},  //__copy_table_end__
-    {0x80559d2, 0x8056a78, 6, 140, -1},  //__copy_table_end__
-    {0x8055a0e, 0x8056a78, 5, 140, -1},  //__zero_table_start__
-    {0x8055a12, 0x8056a78, 6, 140, -1},  //__zero_table_start__
-    {0x8055a1c, 0x8056a88, 5, 140, -1},  //__zero_table_end__
-    {0x8055a20, 0x8056a88, 6, 140, -1},  //__zero_table_end__
-    {0x8055a60, 0x8055c35, 4, 140, 15},  //main
+    {0x805598c, 0x20000120, 5, 143, -1},  //__StackLimit
+    {0x8055990, 0x20000120, 6, 143, -1},  //__StackLimit
+    {0x805599c, 0x20001120, 5, 143, -1},  //__StackTop
+    {0x80559a0, 0x20001120, 6, 143, -1},  //__StackTop
+    {0x80559bc, 0x80552b3, 4, 143, 7},  //SystemInit
+    {0x80559c0, 0x8056ccc, 5, 143, -1},  //__copy_table_start__
+    {0x80559c4, 0x8056ccc, 6, 143, -1},  //__copy_table_start__
+    {0x80559ce, 0x8056ce4, 5, 143, -1},  //__copy_table_end__
+    {0x80559d2, 0x8056ce4, 6, 143, -1},  //__copy_table_end__
+    {0x8055a0e, 0x8056ce4, 5, 143, -1},  //__zero_table_start__
+    {0x8055a12, 0x8056ce4, 6, 143, -1},  //__zero_table_start__
+    {0x8055a1c, 0x8056cf4, 5, 143, -1},  //__zero_table_end__
+    {0x8055a20, 0x8056cf4, 6, 143, -1},  //__zero_table_end__
+    {0x8055a60, 0x8055c35, 4, 143, 15},  //main
     {0x8055c46, 0x80551f5, 4, 15, 0},  //HAL_Init
-    {0x8055c52, 0x8055ce9, 4, 15, 133},  //MX_GPIO_Init
-    {0x8055c5e, 0x80552b3, 4, 15, 7},  //SystemInit
-    {0x8055ca2, 0x8056999, 4, 15, 134},  //initialise_benchmark
-    {0x8055cae, 0x805699b, 4, 15, 135},  //benchmark
-    {0x8055cbe, 0x80569db, 4, 15, 136},  //verify_benchmark
-    {0x8055d20, 0x8055783, 4, 133, 9},  //HAL_GPIO_WritePin
-    {0x8055d3c, 0x8055425, 4, 133, 8},  //HAL_GPIO_Init
-    {0x80569ae, 0x80568e3, 4, 135, 139},  //swi10
-    {0x80569be, 0x80564f5, 4, 135, 138},  //swi50
-    {0x80569ce, 0x8055d45, 4, 135, 137},  //swi120
+    {0x8055c52, 0x8055d01, 4, 15, 133},  //MX_GPIO_Init
+    {0x8055c96, 0x80569b1, 4, 15, 134},  //initialise_benchmark
+    {0x8055ca2, 0x80569b3, 4, 15, 135},  //benchmark
+    {0x8055cb2, 0x80569f3, 4, 15, 136},  //verify_benchmark
+    {0x8055ce2, 0x8056a67, 4, 15, 137},  //trampoline_A_B
+    {0x8055cee, 0x8056b0b, 4, 15, 138},  //trampoline_B_A
+    {0x8055cfa, 0x8056baf, 4, 15, 139},  //trampoline_blx
+    {0x8055d38, 0x8055783, 4, 133, 9},  //HAL_GPIO_WritePin
+    {0x8055d54, 0x8055425, 4, 133, 8},  //HAL_GPIO_Init
+    {0x80569c6, 0x80568fb, 4, 135, 142},  //swi10
+    {0x80569d6, 0x805650d, 4, 135, 141},  //swi50
+    {0x80569e6, 0x8055d5d, 4, 135, 140},  //swi120
 };
