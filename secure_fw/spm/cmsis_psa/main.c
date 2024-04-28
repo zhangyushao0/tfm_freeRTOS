@@ -6,24 +6,30 @@
  */
 
 #include "build_config_check.h"
-#include "fih.h"
 #include "ffm/tfm_boot_data.h"
+#include "fih.h"
 #include "memory_symbols.h"
 #include "spm.h"
+#include "sys/_stdint.h"
+#include "target_cfg.h"
+#include "tfm_api.h"
 #include "tfm_hal_isolation.h"
 #include "tfm_hal_platform.h"
-#include "tfm_api.h"
-#include "tfm_spm_log.h"
-#include "tfm_version.h"
 #include "tfm_plat_otp.h"
 #include "tfm_plat_provisioning.h"
+#include "tfm_spm_log.h"
+#include "tfm_version.h"
+
+#include "trampoline.h"
+#include "loader.h"
+#include "dwt.h"
+#include "mpu_st.h"
 
 uintptr_t spm_boundary = (uintptr_t)NULL;
 
-static fih_int tfm_core_init(void)
-{
+static fih_int tfm_core_init(void) {
     enum tfm_plat_err_t plat_err = TFM_PLAT_ERR_SYSTEM_ERR;
-    fih_int fih_rc = FIH_FAILURE;
+    fih_int             fih_rc = FIH_FAILURE;
 
     /*
      * Access to any peripheral should be performed after programming
@@ -81,8 +87,11 @@ static fih_int tfm_core_init(void)
     FIH_RET(fih_int_encode(TFM_SUCCESS));
 }
 
-int main(void)
-{
+uint32_t vector_offset = 0;
+uint32_t tramp_stack_addr = 0;
+uint32_t tramp_blx_addr = 0;
+
+int main(void) {
     fih_int fih_rc = FIH_FAILURE;
 
     /* set Main Stack Pointer limit */
@@ -99,7 +108,7 @@ int main(void)
     FIH_LABEL_CRITICAL_POINT();
 
     /* Print the TF-M version */
-    SPMLOG_INFMSG("\033[1;34mBooting TF-M "VERSION_FULLSTR"\033[0m\r\n");
+    SPMLOG_INFMSG("\033[1;34mBooting TF-M " VERSION_FULLSTR "\033[0m\r\n");
 
     /*
      * Prioritise secure exceptions to avoid NS being able to pre-empt
@@ -111,9 +120,26 @@ int main(void)
     /* Check secure exception priority */
     FIH_CALL(tfm_arch_verify_secure_exception_priorities, fih_rc);
     if (fih_not_eq(fih_rc, FIH_SUCCESS)) {
-         tfm_core_panic();
+        tfm_core_panic();
     }
 #endif
+
+    // uint32_t __text_address__ = 0x8055000;
+    // region_t a = {0x20005000, 0};             // region a
+    // region_t b = {0x20010000, 0};             // region b
+    // region_t vector_table = {0x20015000, 0};  // vector table
+    // uint32_t tramp_section_addr = 0x20018000; // tramp section address
+    // uint32_t handler_section_addr = 0x20016000;
+    // tramp_stack_addr = 0x2001a000; // tramp stack address
+
+    // vector_offset = vector_table.region_start - __text_address__;                              // vector offset
+    // tramp_blx_addr = tramp_blx.region_start + tramp_section_addr - tramp_section.region_start; // tramp blx address
+
+    // int reset_region = loader(&a, &b, &vector_table, tramp_section_addr, handler_section_addr, __text_address__);
+
+    //mpu_init_st(a.region_start, a.region_start + a.region_size, b.region_start, b.region_start + b.region_size, reset_region);
+
+    // DWT_enable(a, b);
 
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();
