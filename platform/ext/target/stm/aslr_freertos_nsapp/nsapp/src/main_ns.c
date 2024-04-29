@@ -95,6 +95,7 @@ int main() {
     uint32_t end2 = SysTick->VAL;
     uint32_t res = start - end;
     int      a_b = 0;
+
     a_b = geta_b();
     int b_a = getb_a();
 

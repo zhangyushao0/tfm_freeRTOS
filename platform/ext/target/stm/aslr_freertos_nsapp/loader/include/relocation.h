@@ -11,4 +11,5 @@ typedef struct {
 
 extern uint32_t          table_size;
 extern relocation_info_t relocation_info[];
+
 #endif
