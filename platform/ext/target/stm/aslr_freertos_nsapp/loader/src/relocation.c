@@ -130,8 +130,8 @@ relocation_info_t relocation_info[194] = {
     {0x8055258, 0x20000100, 6, 3, -1},  //SystemCoreClock
     {0x8055274, 0x8055911, 4, 3, 5},  //HAL_SYSTICK_Config
     {0x805528e, 0x8055813, 4, 3, 6},  //HAL_NVIC_SetPriority
-    {0x80552ee, 0x8055f30, 5, 2, 136},  //MSIRangeTable
-    {0x80552f2, 0x8055f30, 6, 2, 136},  //MSIRangeTable
+    {0x80552ee, 0x8055f30, 5, 2, -1},  //MSIRangeTable
+    {0x80552f2, 0x8055f30, 6, 2, -1},  //MSIRangeTable
     {0x8055322, 0x20000100, 5, 2, -1},  //SystemCoreClock
     {0x8055326, 0x20000100, 6, 2, -1},  //SystemCoreClock
     {0x805532e, 0x20000100, 5, 2, -1},  //SystemCoreClock
@@ -157,14 +157,14 @@ relocation_info_t relocation_info[194] = {
     {0x805599c, 0x200012c0, 5, 147, -1},  //__StackTop
     {0x80559a0, 0x200012c0, 6, 147, -1},  //__StackTop
     {0x80559bc, 0x80552b3, 4, 147, 7},  //SystemInit
-    {0x80559c0, 0x80561e8, 5, 147, -1},  //__copy_table_start__
-    {0x80559c4, 0x80561e8, 6, 147, -1},  //__copy_table_start__
-    {0x80559ce, 0x8056200, 5, 147, -1},  //__copy_table_end__
-    {0x80559d2, 0x8056200, 6, 147, -1},  //__copy_table_end__
-    {0x8055a0e, 0x8056200, 5, 147, -1},  //__zero_table_start__
-    {0x8055a12, 0x8056200, 6, 147, -1},  //__zero_table_start__
-    {0x8055a1c, 0x8056210, 5, 147, -1},  //__zero_table_end__
-    {0x8055a20, 0x8056210, 6, 147, -1},  //__zero_table_end__
+    {0x80559c0, 0x8056178, 5, 147, -1},  //__copy_table_start__
+    {0x80559c4, 0x8056178, 6, 147, -1},  //__copy_table_start__
+    {0x80559ce, 0x8056190, 5, 147, -1},  //__copy_table_end__
+    {0x80559d2, 0x8056190, 6, 147, -1},  //__copy_table_end__
+    {0x8055a0e, 0x8056190, 5, 147, -1},  //__zero_table_start__
+    {0x8055a12, 0x8056190, 6, 147, -1},  //__zero_table_start__
+    {0x8055a1c, 0x80561a0, 5, 147, -1},  //__zero_table_end__
+    {0x8055a20, 0x80561a0, 6, 147, -1},  //__zero_table_end__
     {0x8055a60, 0x8055c35, 4, 147, 15},  //main
     {0x8055c46, 0x80551f5, 4, 15, 0},  //HAL_Init
     {0x8055c52, 0x8055cff, 4, 15, 133},  //MX_GPIO_Init
@@ -174,13 +174,13 @@ relocation_info_t relocation_info[194] = {
     {0x8055cc2, 0x8055d5b, 4, 15, 137},  //geta_b
     {0x8055cd0, 0x8055d67, 4, 15, 138},  //getb_a
     {0x8055ce0, 0x8055f83, 4, 15, 139},  //trampoline_A_B
-    {0x8055cec, 0x8056027, 4, 15, 140},  //trampoline_B_A
-    {0x8055cf8, 0x80560cb, 4, 15, 141},  //trampoline_blx
+    {0x8055cec, 0x805600b, 4, 15, 140},  //trampoline_B_A
+    {0x8055cf8, 0x8056093, 4, 15, 141},  //trampoline_blx
     {0x8055d36, 0x8055783, 4, 133, 9},  //HAL_GPIO_WritePin
     {0x8055d52, 0x8055425, 4, 133, 8},  //HAL_GPIO_Init
-    {0x8055d5a, 0x20000104, 5, 133, -1},  //a_b
+    {0x8055d5a, 0x20000104, 5, 137, -1},  //a_b
     {0x8055d5e, 0x20000104, 6, 137, -1},  //a_b
-    {0x8055d66, 0x20000108, 5, 137, -1},  //b_a
+    {0x8055d66, 0x20000108, 5, 138, -1},  //b_a
     {0x8055d6a, 0x20000108, 6, 138, -1},  //b_a
     {0x8055d7e, 0x8055d85, 4, 135, 142},  //Test
     {0x8055d8a, 0x2000010c, 5, 142, -1},  //Array
@@ -191,9 +191,9 @@ relocation_info_t relocation_info[194] = {
     {0x8055e54, 0x2000010c, 5, 144, -1},  //Array
     {0x8055e58, 0x2000010c, 6, 144, -1},  //Array
     {0x8055e82, 0x8055eb1, 4, 144, 145},  //RandomInteger
-    {0x8055eb0, 0x2000029c, 5, 144, -1},  //Seed
+    {0x8055eb0, 0x2000029c, 5, 145, -1},  //Seed
     {0x8055eb4, 0x2000029c, 6, 145, -1},  //Seed
-    {0x8055edc, 0x2000029c, 5, 145, -1},  //Seed
+    {0x8055edc, 0x2000029c, 5, 146, -1},  //Seed
     {0x8055ee0, 0x2000029c, 6, 146, -1},  //Seed
     {0x8055ef6, 0x8055edd, 4, 134, 146},  //InitSeed
     {0x8055f02, 0x8055e4f, 4, 134, 144},  //Initialize

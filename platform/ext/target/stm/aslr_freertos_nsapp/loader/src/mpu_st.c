@@ -1,12 +1,13 @@
 #include "mpu_st.h"
 #include "stm32l5xx.h"
+#include "read_flash.h"
 
 static struct mpu_armv8m_region_cfg_st_t region_a = {
     0x0,
     0,
     0,
     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ST,
-    MPU_ARMV8M_XN_EXEC_NEVER,
+    MPU_ARMV8M_XN_EXEC_OK,
     MPU_ARMV8M_AP_RO_PRIV_ONLY,
     MPU_ARMV8M_SH_NONE};
 
@@ -15,6 +16,60 @@ static struct mpu_armv8m_region_cfg_st_t region_b = {
     0,
     0,
     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ST,
+    MPU_ARMV8M_XN_EXEC_OK,
+    MPU_ARMV8M_AP_RO_PRIV_ONLY,
+    MPU_ARMV8M_SH_NONE};
+
+static struct mpu_armv8m_region_cfg_st_t region_data = {
+    0x2,
+    0,
+    0,
+    MPU_ARMV8M_MAIR_ATTR_DATA_IDX_ST,
+    MPU_ARMV8M_XN_EXEC_NEVER,
+    MPU_ARMV8M_AP_RW_PRIV_UNPRIV,
+    MPU_ARMV8M_SH_NONE};
+
+static struct mpu_armv8m_region_cfg_st_t region_device = {
+    0x3,
+    0,
+    0,
+    MPU_ARMV8M_MAIR_ATTR_DEVICE_IDX_ST,
+    MPU_ARMV8M_XN_EXEC_NEVER,
+    MPU_ARMV8M_AP_RW_PRIV_UNPRIV,
+    MPU_ARMV8M_SH_NONE};
+
+static struct mpu_armv8m_region_cfg_st_t region_table = {
+    0x4,
+    0,
+    0,
+    MPU_ARMV8M_MAIR_ATTR_DATA_IDX_ST,
+    MPU_ARMV8M_XN_EXEC_NEVER,
+    MPU_ARMV8M_AP_RO_PRIV_ONLY,
+    MPU_ARMV8M_SH_NONE};
+
+static struct mpu_armv8m_region_cfg_st_t region_code = {
+    0x5,
+    0,
+    0,
+    MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ST,
+    MPU_ARMV8M_XN_EXEC_OK,
+    MPU_ARMV8M_AP_RO_PRIV_ONLY,
+    MPU_ARMV8M_SH_NONE};
+
+static struct mpu_armv8m_region_cfg_st_t region_stack = {
+    0x6,
+    0,
+    0,
+    MPU_ARMV8M_MAIR_ATTR_DATA_IDX_ST,
+    MPU_ARMV8M_XN_EXEC_NEVER,
+    MPU_ARMV8M_AP_RW_PRIV_ONLY,
+    MPU_ARMV8M_SH_NONE};
+
+static struct mpu_armv8m_region_cfg_st_t region_flash = {
+    0x7,
+    0,
+    0,
+    MPU_ARMV8M_MAIR_ATTR_DATA_IDX_ST,
     MPU_ARMV8M_XN_EXEC_NEVER,
     MPU_ARMV8M_AP_RO_PRIV_ONLY,
     MPU_ARMV8M_SH_NONE};
@@ -106,7 +161,7 @@ enum mpu_armv8m_error_st_t mpu_armv8m_enable_st(
      */
     mpu->MAIR0 = (MPU_ARMV8M_MAIR_ATTR_DEVICE_VAL_ST << MPU_MAIR0_Attr0_Pos) | (MPU_ARMV8M_MAIR_ATTR_CODE_VAL_ST << MPU_MAIR0_Attr1_Pos) | (MPU_ARMV8M_MAIR_ATTR_DATA_VAL_ST << MPU_MAIR0_Attr2_Pos);
 
-    mpu->CTRL = (privdef_en ? MPU_CTRL_PRIVDEFENA_Msk : 0) | (hfnmi_en ? MPU_CTRL_HFNMIENA_Msk : 0);
+    mpu->CTRL = (0 << 2) | (1 << 1);
 
     /*Ensure all configuration is written before enable*/
 
@@ -118,16 +173,43 @@ enum mpu_armv8m_error_st_t mpu_armv8m_enable_st(
     return MPU_ARMV8M_OK;
 }
 
-void mpu_init_st(uint32_t region_a_base,
-                 uint32_t region_a_limit, uint32_t region_b_base, uint32_t region_b_limit, int reset_region) {
-    region_a.region_base = region_a_base;
-    region_a.region_limit = region_a_limit;
-    region_b.region_base = region_b_base;
-    region_b.region_limit = region_b_limit;
+uint32_t roundup(uint32_t x) {
+    if (x % 0x100 == 0) return x;
+    return (x / 0x100 + 1) * 0x100;
+}
+
+uint32_t rounddown(uint32_t x) {
+    return x / 0x100 * 0x100;
+}
+
+void mpu_init_st(region_t a, region_t b, uint32_t code_addr, uint32_t table_addr, uint32_t stack_addr, int reset_region) {
+    region_a.region_base = a.region_start;
+    region_a.region_limit = a.region_start + a.region_size;
+    region_b.region_base = b.region_start;
+    region_b.region_limit = b.region_start + b.region_size;
+    region_data.region_base = 0x20000000;
+    region_data.region_limit = 0x20005000;
+    region_device.region_base = 0x40000000;
+    region_device.region_limit = 0x50000000;
+    region_code.region_base = code_addr;
+    region_code.region_limit = code_addr + 0x3000;
+    region_table.region_base = table_addr,
+    region_table.region_limit = table_addr + 0x2000;
+    region_stack.region_base = stack_addr;
+    region_stack.region_limit = stack_addr + 0x1000;
+    region_flash.region_base = rounddown(new_copy_table.old_addr);
+    region_flash.region_limit = roundup(new_zero_table.end_addr);
+    mpu_armv8m_enable_st(&dev_mpu_ns, 0, 0);
+
+    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_data);
+    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_device);
+    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_table);
+    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_code);
+    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_stack);
+    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_flash);
 
     mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_a);
     mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_b);
-
-    mpu_armv8m_enable_st(&dev_mpu_ns, PRIVILEGED_DEFAULT_ENABLE_ST, 0);
+    reset_region = reset_region == 0 ? 1 : 0;
     mpu_armv8m_region_disable_st(reset_region);
 }

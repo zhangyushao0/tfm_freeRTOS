@@ -142,9 +142,9 @@ func_info_t func_info[148] = {
     {0x8055f09, 40, -1, 0},  //verify_benchmark
     {0x8055d5b, 12, -1, 0},  //geta_b
     {0x8055d67, 12, -1, 0},  //getb_a
-    {0x8055f83, 164, -1, 0},  //trampoline_A_B
-    {0x8056027, 164, -1, 0},  //trampoline_B_A
-    {0x80560cb, 270, -1, 0},  //trampoline_blx
+    {0x8055f83, 136, -1, 0},  //trampoline_A_B
+    {0x805600b, 136, -1, 0},  //trampoline_B_A
+    {0x8056093, 214, -1, 0},  //trampoline_blx
     {0x8055d85, 34, -1, 0},  //Test
     {0x8055da7, 168, -1, 0},  //Sum
     {0x8055e4f, 98, -1, 0},  //Initialize

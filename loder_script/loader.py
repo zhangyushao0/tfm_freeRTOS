@@ -10,6 +10,9 @@ output_functions_info_path = (
 output_trampline_info_path = (
     "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/trampoline.c"
 )
+output_read_flash_path = (
+    "platform/ext/target/stm/aslr_freertos_nsapp/loader/src/read_flash.c"
+)
 need_relocation_secions = ["text", "handler"]
 
 code_start = 0x08005000
@@ -33,7 +36,7 @@ def section_index(section, sections):
 
 def get_function_id(functions_info, addr):
     for i in range(len(functions_info)):
-        if addr >= functions_info[i][0] and addr < functions_info[i][0] + functions_info[i][1]:
+        if addr >= functions_info[i][0] - 1 and addr < functions_info[i][0] + functions_info[i][1] - 1:
             return i
     return -1
 
@@ -102,7 +105,7 @@ def output_functions_info(functions_info):
             )
         f.write("};\n")
 
-
+# 生成符号表信息
 def parse_symbol_table(elf_file):
     symbol_tables = elf_file.get_section_by_name(".symtab")
     table_infos = []
@@ -121,7 +124,7 @@ def parse_symbol_table(elf_file):
         # print(f'index {i}, value {symbol["st_value"]}, size {symbol["st_size"]}, type {symbol["st_info"]["type"]}, visibility {symbol["st_other"]["visibility"]}, bind {symbol["st_info"]["bind"]}, section index {symbol["st_shndx"]}, name {symbol.name if symbol.name else ""}')
     return table_infos
 
-
+# 生成 trampline 对应的 section 信息
 def parse_section_table(elf_file):
 
     # print("There are %d section headers, starting at offset 0x%x:" % (elf_file.num_sections(), elf_file['e_shoff']))
@@ -153,7 +156,7 @@ def parse_section_table(elf_file):
         # print(f'name {name}, type {type_str}, addr {hex(addr)}, offset {hex(offset)}, size {size}, es {es}, flags {flags}, link {link}, info {info}, align {align}')
     return sections_info
 
-
+# 生成 relocation 信息
 def generate_relocation_info(elf_file, symbol_tables, functions_info):
     rel_sections = []
     for index, section in enumerate(elf_file.iter_sections()):
@@ -209,7 +212,7 @@ def generate_relocation_info(elf_file, symbol_tables, functions_info):
             info.append([offset, value, type,  func_id1, func_id2, name])
     return info
 
-
+# 生成函数信息
 def generate_functions_info(symbol_tables):
     functions_info = []
     for symbol in symbol_tables:
@@ -243,15 +246,34 @@ def output_trampoline():
     with open(output_trampline_info_path, "w") as f:
         f.write('#include "trampoline.h"\n')
         f.write("\n")
-        f.write('region_t tramp_section = {' + hex(tra_section_addr) + ', ' + hex(tra_section_size)+ '};\n')
-        f.write('region_t tramp_a2b = {' + hex(tra_A_B_addr) + ', ' + hex(tra_A_B_size)+ '};\n')
-        f.write('region_t tramp_b2a = {' + hex(tra_B_A_addr) + ', ' + hex(tra_B_A_size)+ '};\n')
-        f.write('region_t tramp_blx = {' + hex(trampoline_blx_addr) + ', ' + hex(trampoline_blx_size)+ '};\n')
-        f.write('region_t handler_section = {' + hex(handler_section_addr) + ', ' + hex(handler_section_size)+ '};\n')
+        f.write('region_t old_trampline_section = {' + hex(tra_section_addr) + ', ' + hex(tra_section_size)+ '};\n')
+        f.write('region_t old_trampline_a2b = {' + hex(tra_A_B_addr) + ', ' + hex(tra_A_B_size)+ '};\n')
+        f.write('region_t old_trampline_b2a = {' + hex(tra_B_A_addr) + ', ' + hex(tra_B_A_size)+ '};\n')
+        f.write('region_t old_trampline_blx = {' + hex(trampoline_blx_addr) + ', ' + hex(trampoline_blx_size)+ '};\n')
+        f.write('region_t old_handler_section = {' + hex(handler_section_addr) + ', ' + hex(handler_section_size)+ '};\n')
+
+# 输出 copy_table 和 zero_table 信息
+def output_read_flash(symbol_tables):
+    with open(output_read_flash_path, "w") as f:
+        f.write('#include "read_flash.h"\n')
+        for symbol in symbol_tables:
+            if symbol[4] == "__copy_table_start__":
+                f.write('copy_region_t new_copy_table = {' + hex(symbol[0]) + ', ');
+            if symbol[4] == "__copy_table_end__":
+                f.write(hex(symbol[0]) + ', 0};\n')
+            if symbol[4] == "__zero_table_start__":
+                f.write('copy_region_t new_zero_table = {' + hex(symbol[0]) + ', ');
+            if symbol[4] == "__zero_table_end__":
+                f.write(hex(symbol[0]) + ', 0};\n')
+            if symbol[4] == "MSIRangeTable":
+               f.write('copy_region_t new_MSIRangeTable = {' + hex(symbol[0]) + ', ' + hex(symbol[0] + symbol[1]) + ', 0};\n')
+            if symbol[4] == "AHBPrescTable":
+                f.write('copy_region_t new_AHBPrescTable = {' + hex(symbol[0]) + ', '  + hex(symbol[0] + symbol[1]) + ', 0};\n')
 
 
 def generate(elf_filename):
     with open(elf_filename, "rb") as f:
+
         elf_file = ELFFile(f)
 
         symbol_tables = parse_symbol_table(elf_file)
@@ -261,5 +283,6 @@ def generate(elf_filename):
         info = generate_relocation_info(elf_file, symbol_tables, functions_info)
         output_relocation_info(info)
         output_trampoline()
+        output_read_flash(symbol_tables)
 
 generate(elf_path)

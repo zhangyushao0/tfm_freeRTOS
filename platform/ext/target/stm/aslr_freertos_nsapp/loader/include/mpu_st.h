@@ -1,7 +1,7 @@
 #ifndef __MPU_H__
 #define __MPU_H__
 
-#include "stm32l562xx.h"
+#include "loader_region.h"
 
 #define PRIVILEGED_DEFAULT_ENABLE_ST 1
 #define HARDFAULT_NMI_ENABLE_ST 1
@@ -60,7 +60,6 @@ struct mpu_armv8m_region_cfg_raw_st_t {
 // enum mpu_armv8m_error_st_t mpu_armv8m_region_disable_st(
 //     uint32_t region_nr);
 
-void mpu_init_st(uint32_t region_a_base,
-                 uint32_t region_a_limit, uint32_t region_b_base, uint32_t region_b_limit, int reset_region);
+void mpu_init_st(region_t a, region_t b, uint32_t code_addr, uint32_t table_addr, uint32_t stack_addr, int reset_region);
 
 #endif /* __MPU_ARMV8M_DRV_H__ */
