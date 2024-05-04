@@ -16,9 +16,6 @@
 
 // clang-format off
 
-extern uint32_t tramp_stack_addr;
-extern uint32_t tramp_blx_addr;
-
 __naked void ns_agent_tz_main(uint32_t c_entry)
 {
     __ASM volatile(
@@ -54,12 +51,8 @@ __naked void ns_agent_tz_main(uint32_t c_entry)
         "   mov      r7, r0                         \n"
         "   mov      r8, r0                         \n"
         "   mov      r9, #1                         \n"
-        "   movw     r11, :lower16:tramp_stack_addr \n"
-        "   movt     r11, :upper16:tramp_stack_addr \n"
-        "   ldr      r10, [r11]                     \n"
-        "   movw     r12, :lower16:tramp_blx_addr   \n"
-        "   movt     r12, :upper16:tramp_blx_addr   \n"
-        "   ldr      r11, [r12]                     \n"
+        "   mov      r10, r0                        \n"
+        "   mov      r11, r0                        \n"
         "   mov      r12, r0                        \n"
         "   mov      r14, r0                        \n"
         "   bxns     r0                             \n"

@@ -14,15 +14,10 @@ set(COMMON_DIR ${STM32L563E_DK_DIR}/../../../common)
 set(TOP_DIR ${STM32L563E_DK_DIR}/../../../../..)
 set(ASLR_DIR ${STM32L563E_DK_DIR}/aslr)
 set(NS_APP_DIR ${STM32L563E_DK_DIR}/nsapp)
+set(INLINE_PLUGIN_DIR ${STM32L563E_DK_DIR}/inline-plugin)
 
 # NSAPP
 add_executable(ns_app)
-
-target_compile_options(ns_app
-    PUBLIC
-    -fno-jump-tables
-    # -fPIE
-)
 
 # def for stm32l5xx
 include(${STM_COMMON_DIR}/stm32l5xx/CMakeLists.txt)
@@ -38,12 +33,18 @@ set_target_properties(ns_app PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
+target_compile_options(ns_app
+    PUBLIC
+
+    -flto
+    -fno-jump-tables
+
+    # -fPIE
+)
 target_link_options(ns_app
     PRIVATE
-    # -fPIE
-    # -r
-    LINKER:--emit-relocs
-    -e Reset_Handler
+
+    # LINKER:--load-pass-plugin ${INLINE_PLUGIN_DIR}/libInlineHandler.so
     $<$<C_COMPILER_ID:GNU>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:Clang>:-Wl,-Map=${CMAKE_BINARY_DIR}/bin/ns_app.map>
     $<$<C_COMPILER_ID:ARMClang>:--map>
@@ -55,7 +56,7 @@ target_include_directories(ns_app
     PUBLIC
     ${STM32L563E_DK_DIR}/include
     ${NS_APP_DIR}/include
-    ${STM32L563E_DK_DIR}/trampline/include
+    # ${STM32L563E_DK_DIR}/trampline/include
 )
 target_link_libraries(ns_app
     PUBLIC
@@ -66,7 +67,7 @@ target_sources(ns_app
     PRIVATE
     ${STM_COMMON_DIR}/stm32l5xx/Device/Source/startup_stm32l5xx_ns.c
     ${NS_APP_DIR}/src/main_ns.c
-    ${STM32L563E_DK_DIR}/trampline/src/trampline.c
+    # ${STM32L563E_DK_DIR}/trampline/src/trampline.c
 )
 
 # loader
@@ -79,12 +80,9 @@ target_sources(platform_s
     PRIVATE
     ${STM32L563E_DK_DIR}/loader/src/func.c
     ${STM32L563E_DK_DIR}/loader/src/relocation.c
-    ${STM32L563E_DK_DIR}/loader/src/divide.c
-    ${STM32L563E_DK_DIR}/loader/src/trampoline.c
     ${STM32L563E_DK_DIR}/loader/src/loader.c
     ${STM32L563E_DK_DIR}/loader/src/dwt.c
-    ${STM32L563E_DK_DIR}/loader/src/mpu_st.c
-
+    ${STM32L563E_DK_DIR}/loader/src/read_flash.c
 )
 
 # FreeRTOS

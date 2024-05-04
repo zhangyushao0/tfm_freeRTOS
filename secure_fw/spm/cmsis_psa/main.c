@@ -18,10 +18,8 @@
 #include "tfm_spm_log.h"
 #include "tfm_version.h"
 #include "target_cfg.h"
-#include "trampoline.h"
 #include "loader.h"
 #include "dwt.h"
-#include "mpu_st.h"
 uintptr_t spm_boundary = (uintptr_t)NULL;
 
 static fih_int tfm_core_init(void) {
@@ -84,8 +82,6 @@ static fih_int tfm_core_init(void) {
     FIH_RET(fih_int_encode(TFM_SUCCESS));
 }
 uint32_t vector_offset = 0;
-uint32_t tramp_stack_addr = 0;
-uint32_t tramp_blx_addr = 0;
 
 int main(void) {
     fih_int fih_rc = FIH_FAILURE;
@@ -121,19 +117,18 @@ int main(void) {
 #endif
 
     uint32_t __text_address__ = 0x8055000;
-    region_t a = {0x20005000, 0};             // region a
-    region_t b = {0x20015000, 0};             // region b
-    region_t vector_table = {0x20010000, 0};  // vector table
-    uint32_t tramp_section_addr = 0x2000b000; // tramp section address
-    tramp_stack_addr = 0x2001b000;            // tramp stack address
+    region_t a = {0x20005000, 0};
 
-    vector_offset = vector_table.region_start - __text_address__;                              // vector offset
-    tramp_blx_addr = tramp_blx.region_start + tramp_section_addr - tramp_section.region_start; // tramp blx address
+    uint32_t new_table_addr = 0x20015000;
+    region_t vector_table = {0x20016000, 0};
 
-    int reset_region = loader(&a, &b, &vector_table, tramp_section_addr, __text_address__);
+    vector_offset = vector_table.region_start - __text_address__;
 
-    mpu_init_st(a.region_start, a.region_start + 0x2000, b.region_start, b.region_start + 0x2000, reset_region);
-    // DWT_enable(a, b);
+    loader(&a, &vector_table, new_table_addr, __text_address__);
+
+    a.region_size = 0x5000;
+    DWT_enable(&a);
+
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();
 

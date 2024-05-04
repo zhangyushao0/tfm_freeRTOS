@@ -8,7 +8,7 @@
 #ifndef INC_DWT_H_
 #define INC_DWT_H_
 
-#include "stm32l562xx.h"
+#include "loader_region.h"
 
 //=============================================================================
 // DWT
@@ -28,6 +28,6 @@ struct DWTComparatorPair {
     volatile uint32_t func1;
 };
 
-void DWT_enable(uint32_t base1, uint32_t end1, uint32_t base2, uint32_t end2);
-void DWT_enable2(uint32_t begin1, uint32_t end1);
+// void DWT_enable(uint32_t base1, uint32_t end1, uint32_t base2, uint32_t end2);
+void DWT_enable(region_t* a);
 #endif /* INC_DWT_H_ */
