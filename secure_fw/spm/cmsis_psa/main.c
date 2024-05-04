@@ -20,6 +20,7 @@
 #include "target_cfg.h"
 #include "loader.h"
 #include "dwt.h"
+#include "mpu_st.h"
 uintptr_t spm_boundary = (uintptr_t)NULL;
 
 static fih_int tfm_core_init(void) {
@@ -115,7 +116,8 @@ int main(void) {
         tfm_core_panic();
     }
 #endif
-
+// #define TFM_ASLR
+#ifdef TFM_ASLR
     uint32_t __text_address__ = 0x8055000;
     region_t a = {0x20005000, 0};
 
@@ -128,7 +130,8 @@ int main(void) {
 
     a.region_size = 0x5000;
     DWT_enable(&a);
-
+    // mpu_init_st(a, new_table_addr);
+#endif
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();
 

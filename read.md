@@ -1,3 +1,3 @@
-脚本改为 loader_script/loader_v2.py
-
-需要修改 new_loader.c 下的 relocation 中 type 5/6 情况，分别对应 movw 和 movt
+```bash
+cmake -S . -B build -DTFM_PLATFORM=stm/aslr_freertos_nsapp -DBL2=OFF -DNS=OFF -DNS_APP=ON -DCMAKE_BUILD_TYPE=Debug -DFREERTOS_PORT=GCC_ARM_CM33_NTZ_NONSECURE -DFREERTOS_HEAP=4 -DTFM_TOOLCHAIN_FILE=toolchain_GNUARM.cmake -DTEST_TARGET=beebs_cnt
+```

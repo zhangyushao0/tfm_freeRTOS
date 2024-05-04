@@ -83,6 +83,7 @@ target_sources(platform_s
     ${STM32L563E_DK_DIR}/loader/src/loader.c
     ${STM32L563E_DK_DIR}/loader/src/dwt.c
     ${STM32L563E_DK_DIR}/loader/src/read_flash.c
+    ${STM32L563E_DK_DIR}/loader/src/mpu_st.c
 )
 
 # FreeRTOS

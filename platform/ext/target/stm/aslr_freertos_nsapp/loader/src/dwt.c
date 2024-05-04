@@ -8,9 +8,6 @@
 #include "dwt.h"
 
 void DWT_enable(region_t* a) {
-    //	/* Check ROM table for DWT and ITM implementation */
-    //	assert(ROMDWT_DWT_IMPL && "DWT not implemented!");
-    //	assert(ROMITM_ITM_IMPL && "ITM not implemented!");
     DWT->COMP0 = a->region_start;
     DWT->FUNCTION0 = (1U << DWT_FUNCTION_ACTION_Pos) | (DWT_FUNCTION_MATCH_D_RW << DWT_FUNCTION_MATCH_Pos);
     DWT->COMP1 = a->region_start + a->region_size;

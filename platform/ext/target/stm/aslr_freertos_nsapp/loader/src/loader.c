@@ -16,9 +16,9 @@ void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
 
 void copy_text(region_t* a, uint32_t src_address) {
     for (uint32_t i = 0; i < func_info_size; ++i) {
-        // uint32_t addr = a->region_start + a->region_size;
-        // copy_text2ram(addr, func_info[i].addr - 1, func_info[i].size);
-        // func_info[i].reloc_addr = addr + 1;
+        // uint32_t addr = a->region_start + a->region_size + 1;
+        // copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
+        // func_info[i].reloc_addr = addr;
         // a->region_size += func_info[i].size;
         uint32_t addr = func_info[i].addr - src_address + a->region_start;
         copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
@@ -44,7 +44,6 @@ uint32_t movw_address_calculate(uint32_t ori_val, uint32_t addr) {
     } else {
         ori_val = ori_val | 0x00000200;
     }
-
     uint32_t new_val = ori_val | ((addr & 0xf00) << 20) | ((addr & 0xff) << 16) | ((addr & 0xf000) >> 12);
     return new_val;
 }
@@ -58,7 +57,6 @@ uint32_t movt_address_calculate(uint32_t ori_val, uint32_t addr) {
     } else {
         ori_val = ori_val | 0x00000200;
     }
-
     uint32_t new_val = ori_val | ((addr & 0xf00) << 20) | ((addr & 0xff) << 16) | ((addr & 0xf000) >> 12);
     return new_val;
 }
@@ -75,7 +73,6 @@ void bl_calculate(relocation_info_t* entry) {
     int      func_id2 = entry->func_id2;
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = func_info[func_id2].reloc_addr;
-
     *((uint32_t*)pos) = bl_address_calculate(pos, val);
 }
 

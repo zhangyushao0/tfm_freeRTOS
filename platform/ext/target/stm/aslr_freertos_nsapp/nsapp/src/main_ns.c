@@ -51,12 +51,12 @@ void testThread1(void* pvParameters) {
     }
 }
 
-// void testThread2(void* pvParameters) {
-//     while (1) {
-//         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-//         vTaskDelay(1000);
-//     }
-// }
+void testThread2(void* pvParameters) {
+    while (1) {
+        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+        vTaskDelay(1000);
+    }
+}
 
 // void testThread3(void* pvParameters) {
 //     initialise_benchmark();
@@ -82,13 +82,13 @@ int  main() {
         1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
         NULL);                 /* Used to pass out the created task's handle. */
 
-    //  xReturned = xTaskCreate(
-    //      testThread2,           /* Function that implements the task. */
-    //      "testThread2",         /* Text name for the task. */
-    //      ((uint16_t)200),       /* Stack size in words, not bytes. */
-    //      NULL,                  /* Parameter passed into the task. */
-    //      1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
-    //      NULL);                 /* Used to pass out the created task's handle. */
+    xReturned = xTaskCreate(
+        testThread2,           /* Function that implements the task. */
+        "testThread2",         /* Text name for the task. */
+        ((uint16_t)200),       /* Stack size in words, not bytes. */
+        NULL,                  /* Parameter passed into the task. */
+        1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
+        NULL);                 /* Used to pass out the created task's handle. */
 
     //  xReturned = xTaskCreate(
     //      testThread3,           /* Function that implements the task. */

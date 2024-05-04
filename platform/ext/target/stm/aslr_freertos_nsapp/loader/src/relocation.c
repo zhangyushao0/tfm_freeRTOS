@@ -1,135 +1,135 @@
 #include "relocation.h"
 
-uint32_t table_size = 753;
+uint32_t table_size = 767;
 
-relocation_info_t relocation_info[753] = {
-    {0x8055000, 0x20003520, 0, -1, -1},  //__StackTop
-    {0x8055004, 0x8057ff3, 0, -1, 170},  //Reset_Handler
-    {0x8055008, 0x80580c1, 0, -1, 43},  //NMI_Handler
-    {0x805500c, 0x80580c5, 0, -1, 44},  //HardFault_Handler
-    {0x8055010, 0x80580c9, 0, -1, 45},  //MemManage_Handler
-    {0x8055014, 0x80580cd, 0, -1, 46},  //BusFault_Handler
-    {0x8055018, 0x80580d1, 0, -1, 47},  //UsageFault_Handler
-    {0x805501c, 0x80580d5, 0, -1, 48},  //SecureFault_Handler
-    {0x805502c, 0x8057711, 0, -1, 167},  //SVC_Handler
-    {0x8055030, 0x80580d9, 0, -1, 49},  //DebugMon_Handler
-    {0x8055038, 0x80576c1, 0, -1, 168},  //PendSV_Handler
-    {0x805503c, 0x80573ad, 0, -1, 169},  //SysTick_Handler
-    {0x8055040, 0x80580dd, 0, -1, 50},  //WWDG_IRQHandler
-    {0x8055044, 0x80580e1, 0, -1, 51},  //PVD_PVM_IRQHandler
-    {0x8055048, 0x80580e5, 0, -1, 52},  //RTC_IRQHandler
-    {0x805504c, 0x80580e9, 0, -1, 53},  //RTC_IRQHandler_S
-    {0x8055050, 0x80580ed, 0, -1, 54},  //TAMP_IRQHandler
-    {0x8055054, 0x80580f1, 0, -1, 55},  //TAMP_IRQHandler_S
-    {0x8055058, 0x80580f5, 0, -1, 56},  //FLASH_IRQHandler
-    {0x805505c, 0x80580f9, 0, -1, 57},  //FLASH_IRQHandler_S
-    {0x8055060, 0x80580fd, 0, -1, 58},  //SERR_IRQHandler
-    {0x8055064, 0x8058101, 0, -1, 59},  //RCC_IRQHandler
-    {0x8055068, 0x8058105, 0, -1, 60},  //RCC_IRQHandler_S
-    {0x805506c, 0x8058109, 0, -1, 61},  //EXTI0_IRQHandler
-    {0x8055070, 0x805810d, 0, -1, 62},  //EXTI1_IRQHandler
-    {0x8055074, 0x8058111, 0, -1, 63},  //EXTI2_IRQHandler
-    {0x8055078, 0x8058115, 0, -1, 64},  //EXTI3_IRQHandler
-    {0x805507c, 0x8058119, 0, -1, 65},  //EXTI4_IRQHandler
-    {0x8055080, 0x805811d, 0, -1, 66},  //EXTI5_IRQHandler
-    {0x8055084, 0x8058121, 0, -1, 67},  //EXTI6_IRQHandler
-    {0x8055088, 0x8058125, 0, -1, 68},  //EXTI7_IRQHandler
-    {0x805508c, 0x8058129, 0, -1, 69},  //EXTI8_IRQHandler
-    {0x8055090, 0x805812d, 0, -1, 70},  //EXTI9_IRQHandler
-    {0x8055094, 0x8058131, 0, -1, 71},  //EXTI10_IRQHandler
-    {0x8055098, 0x8058135, 0, -1, 72},  //EXTI11_IRQHandler
-    {0x805509c, 0x8058139, 0, -1, 73},  //EXTI12_IRQHandler
-    {0x80550a0, 0x805813d, 0, -1, 74},  //EXTI13_IRQHandler
-    {0x80550a4, 0x8058141, 0, -1, 75},  //EXTI14_IRQHandler
-    {0x80550a8, 0x8058145, 0, -1, 76},  //EXTI15_IRQHandler
-    {0x80550ac, 0x8058149, 0, -1, 77},  //DMAMUX1_IRQHandler
-    {0x80550b0, 0x805814d, 0, -1, 78},  //DMAMUX1_IRQHandler_S
-    {0x80550b4, 0x8058151, 0, -1, 79},  //DMA1_Channel1_IRQHandler
-    {0x80550b8, 0x8058155, 0, -1, 80},  //DMA1_Channel2_IRQHandler
-    {0x80550bc, 0x8058159, 0, -1, 81},  //DMA1_Channel3_IRQHandler
-    {0x80550c0, 0x805815d, 0, -1, 82},  //DMA1_Channel4_IRQHandler
-    {0x80550c4, 0x8058161, 0, -1, 83},  //DMA1_Channel5_IRQHandler
-    {0x80550c8, 0x8058165, 0, -1, 84},  //DMA1_Channel6_IRQHandler
-    {0x80550cc, 0x8058169, 0, -1, 85},  //DMA1_Channel7_IRQHandler
-    {0x80550d0, 0x805816d, 0, -1, 86},  //DMA1_Channel8_IRQHandler
-    {0x80550d4, 0x8058171, 0, -1, 87},  //ADC1_2_IRQHandler
-    {0x80550d8, 0x8058175, 0, -1, 88},  //DAC_IRQHandler
-    {0x80550dc, 0x8058179, 0, -1, 89},  //FDCAN1_IT0_IRQHandler
-    {0x80550e0, 0x805817d, 0, -1, 90},  //FDCAN1_IT1_IRQHandler
-    {0x80550e4, 0x8058181, 0, -1, 91},  //TIM1_BRK_IRQHandler
-    {0x80550e8, 0x8058185, 0, -1, 92},  //TIM1_UP_IRQHandler
-    {0x80550ec, 0x8058189, 0, -1, 93},  //TIM1_TRG_COM_IRQHandler
-    {0x80550f0, 0x805818d, 0, -1, 94},  //TIM1_CC_IRQHandler
-    {0x80550f4, 0x8058191, 0, -1, 95},  //TIM2_IRQHandler
-    {0x80550f8, 0x8058195, 0, -1, 96},  //TIM3_IRQHandler
-    {0x80550fc, 0x8058199, 0, -1, 97},  //TIM4_IRQHandler
-    {0x8055100, 0x805819d, 0, -1, 98},  //TIM5_IRQHandler
-    {0x8055104, 0x80581a1, 0, -1, 99},  //TIM6_IRQHandler
-    {0x8055108, 0x80581a5, 0, -1, 100},  //TIM7_IRQHandler
-    {0x805510c, 0x80581a9, 0, -1, 101},  //TIM8_BRK_IRQHandler
-    {0x8055110, 0x80581ad, 0, -1, 102},  //TIM8_UP_IRQHandler
-    {0x8055114, 0x80581b1, 0, -1, 103},  //TIM8_TRG_COM_IRQHandler
-    {0x8055118, 0x80581b5, 0, -1, 104},  //TIM8_CC_IRQHandler
-    {0x805511c, 0x80581b9, 0, -1, 105},  //I2C1_EV_IRQHandler
-    {0x8055120, 0x80581bd, 0, -1, 106},  //I2C1_ER_IRQHandler
-    {0x8055124, 0x80581c1, 0, -1, 107},  //I2C2_EV_IRQHandler
-    {0x8055128, 0x80581c5, 0, -1, 108},  //I2C2_ER_IRQHandler
-    {0x805512c, 0x80581c9, 0, -1, 109},  //SPI1_IRQHandler
-    {0x8055130, 0x80581cd, 0, -1, 110},  //SPI2_IRQHandler
-    {0x8055134, 0x80581d1, 0, -1, 111},  //USART1_IRQHandler
-    {0x8055138, 0x80581d5, 0, -1, 112},  //USART2_IRQHandler
-    {0x805513c, 0x80581d9, 0, -1, 113},  //USART3_IRQHandler
-    {0x8055140, 0x80581dd, 0, -1, 114},  //UART4_IRQHandler
-    {0x8055144, 0x80581e1, 0, -1, 115},  //UART5_IRQHandler
-    {0x8055148, 0x80581e5, 0, -1, 116},  //LPUART1_IRQHandler
-    {0x805514c, 0x80581e9, 0, -1, 117},  //LPTIM1_IRQHandler
-    {0x8055150, 0x80581ed, 0, -1, 118},  //LPTIM2_IRQHandler
-    {0x8055154, 0x80581f1, 0, -1, 119},  //TIM15_IRQHandler
-    {0x8055158, 0x80581f5, 0, -1, 120},  //TIM16_IRQHandler
-    {0x805515c, 0x80581f9, 0, -1, 121},  //TIM17_IRQHandler
-    {0x8055160, 0x80581fd, 0, -1, 122},  //COMP_IRQHandler
-    {0x8055164, 0x8058201, 0, -1, 123},  //USB_FS_IRQHandler
-    {0x8055168, 0x8058205, 0, -1, 124},  //CRS_IRQHandler
-    {0x805516c, 0x8058209, 0, -1, 125},  //FMC_IRQHandler
-    {0x8055170, 0x805820d, 0, -1, 126},  //OCTOSPI1_IRQHandler
-    {0x8055178, 0x8058211, 0, -1, 127},  //SDMMC1_IRQHandler
-    {0x8055180, 0x8058215, 0, -1, 128},  //DMA2_Channel1_IRQHandler
-    {0x8055184, 0x8058219, 0, -1, 129},  //DMA2_Channel2_IRQHandler
-    {0x8055188, 0x805821d, 0, -1, 130},  //DMA2_Channel3_IRQHandler
-    {0x805518c, 0x8058221, 0, -1, 131},  //DMA2_Channel4_IRQHandler
-    {0x8055190, 0x8058225, 0, -1, 132},  //DMA2_Channel5_IRQHandler
-    {0x8055194, 0x8058229, 0, -1, 133},  //DMA2_Channel6_IRQHandler
-    {0x8055198, 0x805822d, 0, -1, 134},  //DMA2_Channel7_IRQHandler
-    {0x805519c, 0x8058231, 0, -1, 135},  //DMA2_Channel8_IRQHandler
-    {0x80551a0, 0x8058235, 0, -1, 136},  //I2C3_EV_IRQHandler
-    {0x80551a4, 0x8058239, 0, -1, 137},  //I2C3_ER_IRQHandler
-    {0x80551a8, 0x805823d, 0, -1, 138},  //SAI1_IRQHandler
-    {0x80551ac, 0x8058241, 0, -1, 139},  //SAI2_IRQHandler
-    {0x80551b0, 0x8058245, 0, -1, 140},  //TSC_IRQHandler
-    {0x80551b4, 0x8058249, 0, -1, 141},  //AES_IRQHandler
-    {0x80551b8, 0x805824d, 0, -1, 142},  //RNG_IRQHandler
-    {0x80551bc, 0x8058251, 0, -1, 143},  //FPU_IRQHandler
-    {0x80551c0, 0x8058255, 0, -1, 144},  //HASH_IRQHandler
-    {0x80551c4, 0x8058259, 0, -1, 145},  //PKA_IRQHandler
-    {0x80551c8, 0x805825d, 0, -1, 146},  //LPTIM3_IRQHandler
-    {0x80551cc, 0x8058261, 0, -1, 147},  //SPI3_IRQHandler
-    {0x80551d0, 0x8058265, 0, -1, 148},  //I2C4_ER_IRQHandler
-    {0x80551d4, 0x8058269, 0, -1, 149},  //I2C4_EV_IRQHandler
-    {0x80551d8, 0x805826d, 0, -1, 150},  //DFSDM1_FLT0_IRQHandler
-    {0x80551dc, 0x8058271, 0, -1, 151},  //DFSDM1_FLT1_IRQHandler
-    {0x80551e0, 0x8058275, 0, -1, 152},  //DFSDM1_FLT2_IRQHandler
-    {0x80551e4, 0x8058279, 0, -1, 153},  //DFSDM1_FLT3_IRQHandler
-    {0x80551e8, 0x805827d, 0, -1, 154},  //UCPD1_IRQHandler
-    {0x80551ec, 0x8058281, 0, -1, 155},  //ICACHE_IRQHandler
-    {0x80551f0, 0x8058285, 0, -1, 156},  //OTFDEC1_IRQHandler
-    {0x8055226, 0x805524d, 4, 173, 0},  //prvCreateTask
-    {0x8055234, 0x80552e7, 4, 173, 1},  //prvAddNewTaskToReadyList
-    {0x805526e, 0x8056d9f, 4, 0, 184},  //pvPortMalloc
-    {0x805527c, 0x8056d9f, 4, 0, 184},  //pvPortMalloc
-    {0x805528e, 0x805781d, 4, 0, 185},  //memset
-    {0x805529c, 0x80570fb, 4, 0, 186},  //vPortFree
+relocation_info_t relocation_info[767] = {
+    {0x8055000, 0x200033a0, 0, -1, -1},  //__StackTop
+    {0x8055004, 0x8058025, 0, -1, 171},  //Reset_Handler
+    {0x8055008, 0x80580f3, 0, -1, 44},  //NMI_Handler
+    {0x805500c, 0x80580f7, 0, -1, 45},  //HardFault_Handler
+    {0x8055010, 0x80580fb, 0, -1, 46},  //MemManage_Handler
+    {0x8055014, 0x80580ff, 0, -1, 47},  //BusFault_Handler
+    {0x8055018, 0x8058103, 0, -1, 48},  //UsageFault_Handler
+    {0x805501c, 0x8058107, 0, -1, 49},  //SecureFault_Handler
+    {0x805502c, 0x8057711, 0, -1, 168},  //SVC_Handler
+    {0x8055030, 0x805810b, 0, -1, 50},  //DebugMon_Handler
+    {0x8055038, 0x80576c1, 0, -1, 169},  //PendSV_Handler
+    {0x805503c, 0x80573ad, 0, -1, 170},  //SysTick_Handler
+    {0x8055040, 0x805810f, 0, -1, 51},  //WWDG_IRQHandler
+    {0x8055044, 0x8058113, 0, -1, 52},  //PVD_PVM_IRQHandler
+    {0x8055048, 0x8058117, 0, -1, 53},  //RTC_IRQHandler
+    {0x805504c, 0x805811b, 0, -1, 54},  //RTC_IRQHandler_S
+    {0x8055050, 0x805811f, 0, -1, 55},  //TAMP_IRQHandler
+    {0x8055054, 0x8058123, 0, -1, 56},  //TAMP_IRQHandler_S
+    {0x8055058, 0x8058127, 0, -1, 57},  //FLASH_IRQHandler
+    {0x805505c, 0x805812b, 0, -1, 58},  //FLASH_IRQHandler_S
+    {0x8055060, 0x805812f, 0, -1, 59},  //SERR_IRQHandler
+    {0x8055064, 0x8058133, 0, -1, 60},  //RCC_IRQHandler
+    {0x8055068, 0x8058137, 0, -1, 61},  //RCC_IRQHandler_S
+    {0x805506c, 0x805813b, 0, -1, 62},  //EXTI0_IRQHandler
+    {0x8055070, 0x805813f, 0, -1, 63},  //EXTI1_IRQHandler
+    {0x8055074, 0x8058143, 0, -1, 64},  //EXTI2_IRQHandler
+    {0x8055078, 0x8058147, 0, -1, 65},  //EXTI3_IRQHandler
+    {0x805507c, 0x805814b, 0, -1, 66},  //EXTI4_IRQHandler
+    {0x8055080, 0x805814f, 0, -1, 67},  //EXTI5_IRQHandler
+    {0x8055084, 0x8058153, 0, -1, 68},  //EXTI6_IRQHandler
+    {0x8055088, 0x8058157, 0, -1, 69},  //EXTI7_IRQHandler
+    {0x805508c, 0x805815b, 0, -1, 70},  //EXTI8_IRQHandler
+    {0x8055090, 0x805815f, 0, -1, 71},  //EXTI9_IRQHandler
+    {0x8055094, 0x8058163, 0, -1, 72},  //EXTI10_IRQHandler
+    {0x8055098, 0x8058167, 0, -1, 73},  //EXTI11_IRQHandler
+    {0x805509c, 0x805816b, 0, -1, 74},  //EXTI12_IRQHandler
+    {0x80550a0, 0x805816f, 0, -1, 75},  //EXTI13_IRQHandler
+    {0x80550a4, 0x8058173, 0, -1, 76},  //EXTI14_IRQHandler
+    {0x80550a8, 0x8058177, 0, -1, 77},  //EXTI15_IRQHandler
+    {0x80550ac, 0x805817b, 0, -1, 78},  //DMAMUX1_IRQHandler
+    {0x80550b0, 0x805817f, 0, -1, 79},  //DMAMUX1_IRQHandler_S
+    {0x80550b4, 0x8058183, 0, -1, 80},  //DMA1_Channel1_IRQHandler
+    {0x80550b8, 0x8058187, 0, -1, 81},  //DMA1_Channel2_IRQHandler
+    {0x80550bc, 0x805818b, 0, -1, 82},  //DMA1_Channel3_IRQHandler
+    {0x80550c0, 0x805818f, 0, -1, 83},  //DMA1_Channel4_IRQHandler
+    {0x80550c4, 0x8058193, 0, -1, 84},  //DMA1_Channel5_IRQHandler
+    {0x80550c8, 0x8058197, 0, -1, 85},  //DMA1_Channel6_IRQHandler
+    {0x80550cc, 0x805819b, 0, -1, 86},  //DMA1_Channel7_IRQHandler
+    {0x80550d0, 0x805819f, 0, -1, 87},  //DMA1_Channel8_IRQHandler
+    {0x80550d4, 0x80581a3, 0, -1, 88},  //ADC1_2_IRQHandler
+    {0x80550d8, 0x80581a7, 0, -1, 89},  //DAC_IRQHandler
+    {0x80550dc, 0x80581ab, 0, -1, 90},  //FDCAN1_IT0_IRQHandler
+    {0x80550e0, 0x80581af, 0, -1, 91},  //FDCAN1_IT1_IRQHandler
+    {0x80550e4, 0x80581b3, 0, -1, 92},  //TIM1_BRK_IRQHandler
+    {0x80550e8, 0x80581b7, 0, -1, 93},  //TIM1_UP_IRQHandler
+    {0x80550ec, 0x80581bb, 0, -1, 94},  //TIM1_TRG_COM_IRQHandler
+    {0x80550f0, 0x80581bf, 0, -1, 95},  //TIM1_CC_IRQHandler
+    {0x80550f4, 0x80581c3, 0, -1, 96},  //TIM2_IRQHandler
+    {0x80550f8, 0x80581c7, 0, -1, 97},  //TIM3_IRQHandler
+    {0x80550fc, 0x80581cb, 0, -1, 98},  //TIM4_IRQHandler
+    {0x8055100, 0x80581cf, 0, -1, 99},  //TIM5_IRQHandler
+    {0x8055104, 0x80581d3, 0, -1, 100},  //TIM6_IRQHandler
+    {0x8055108, 0x80581d7, 0, -1, 101},  //TIM7_IRQHandler
+    {0x805510c, 0x80581db, 0, -1, 102},  //TIM8_BRK_IRQHandler
+    {0x8055110, 0x80581df, 0, -1, 103},  //TIM8_UP_IRQHandler
+    {0x8055114, 0x80581e3, 0, -1, 104},  //TIM8_TRG_COM_IRQHandler
+    {0x8055118, 0x80581e7, 0, -1, 105},  //TIM8_CC_IRQHandler
+    {0x805511c, 0x80581eb, 0, -1, 106},  //I2C1_EV_IRQHandler
+    {0x8055120, 0x80581ef, 0, -1, 107},  //I2C1_ER_IRQHandler
+    {0x8055124, 0x80581f3, 0, -1, 108},  //I2C2_EV_IRQHandler
+    {0x8055128, 0x80581f7, 0, -1, 109},  //I2C2_ER_IRQHandler
+    {0x805512c, 0x80581fb, 0, -1, 110},  //SPI1_IRQHandler
+    {0x8055130, 0x80581ff, 0, -1, 111},  //SPI2_IRQHandler
+    {0x8055134, 0x8058203, 0, -1, 112},  //USART1_IRQHandler
+    {0x8055138, 0x8058207, 0, -1, 113},  //USART2_IRQHandler
+    {0x805513c, 0x805820b, 0, -1, 114},  //USART3_IRQHandler
+    {0x8055140, 0x805820f, 0, -1, 115},  //UART4_IRQHandler
+    {0x8055144, 0x8058213, 0, -1, 116},  //UART5_IRQHandler
+    {0x8055148, 0x8058217, 0, -1, 117},  //LPUART1_IRQHandler
+    {0x805514c, 0x805821b, 0, -1, 118},  //LPTIM1_IRQHandler
+    {0x8055150, 0x805821f, 0, -1, 119},  //LPTIM2_IRQHandler
+    {0x8055154, 0x8058223, 0, -1, 120},  //TIM15_IRQHandler
+    {0x8055158, 0x8058227, 0, -1, 121},  //TIM16_IRQHandler
+    {0x805515c, 0x805822b, 0, -1, 122},  //TIM17_IRQHandler
+    {0x8055160, 0x805822f, 0, -1, 123},  //COMP_IRQHandler
+    {0x8055164, 0x8058233, 0, -1, 124},  //USB_FS_IRQHandler
+    {0x8055168, 0x8058237, 0, -1, 125},  //CRS_IRQHandler
+    {0x805516c, 0x805823b, 0, -1, 126},  //FMC_IRQHandler
+    {0x8055170, 0x805823f, 0, -1, 127},  //OCTOSPI1_IRQHandler
+    {0x8055178, 0x8058243, 0, -1, 128},  //SDMMC1_IRQHandler
+    {0x8055180, 0x8058247, 0, -1, 129},  //DMA2_Channel1_IRQHandler
+    {0x8055184, 0x805824b, 0, -1, 130},  //DMA2_Channel2_IRQHandler
+    {0x8055188, 0x805824f, 0, -1, 131},  //DMA2_Channel3_IRQHandler
+    {0x805518c, 0x8058253, 0, -1, 132},  //DMA2_Channel4_IRQHandler
+    {0x8055190, 0x8058257, 0, -1, 133},  //DMA2_Channel5_IRQHandler
+    {0x8055194, 0x805825b, 0, -1, 134},  //DMA2_Channel6_IRQHandler
+    {0x8055198, 0x805825f, 0, -1, 135},  //DMA2_Channel7_IRQHandler
+    {0x805519c, 0x8058263, 0, -1, 136},  //DMA2_Channel8_IRQHandler
+    {0x80551a0, 0x8058267, 0, -1, 137},  //I2C3_EV_IRQHandler
+    {0x80551a4, 0x805826b, 0, -1, 138},  //I2C3_ER_IRQHandler
+    {0x80551a8, 0x805826f, 0, -1, 139},  //SAI1_IRQHandler
+    {0x80551ac, 0x8058273, 0, -1, 140},  //SAI2_IRQHandler
+    {0x80551b0, 0x8058277, 0, -1, 141},  //TSC_IRQHandler
+    {0x80551b4, 0x805827b, 0, -1, 142},  //AES_IRQHandler
+    {0x80551b8, 0x805827f, 0, -1, 143},  //RNG_IRQHandler
+    {0x80551bc, 0x8058283, 0, -1, 144},  //FPU_IRQHandler
+    {0x80551c0, 0x8058287, 0, -1, 145},  //HASH_IRQHandler
+    {0x80551c4, 0x805828b, 0, -1, 146},  //PKA_IRQHandler
+    {0x80551c8, 0x805828f, 0, -1, 147},  //LPTIM3_IRQHandler
+    {0x80551cc, 0x8058293, 0, -1, 148},  //SPI3_IRQHandler
+    {0x80551d0, 0x8058297, 0, -1, 149},  //I2C4_ER_IRQHandler
+    {0x80551d4, 0x805829b, 0, -1, 150},  //I2C4_EV_IRQHandler
+    {0x80551d8, 0x805829f, 0, -1, 151},  //DFSDM1_FLT0_IRQHandler
+    {0x80551dc, 0x80582a3, 0, -1, 152},  //DFSDM1_FLT1_IRQHandler
+    {0x80551e0, 0x80582a7, 0, -1, 153},  //DFSDM1_FLT2_IRQHandler
+    {0x80551e4, 0x80582ab, 0, -1, 154},  //DFSDM1_FLT3_IRQHandler
+    {0x80551e8, 0x80582af, 0, -1, 155},  //UCPD1_IRQHandler
+    {0x80551ec, 0x80582b3, 0, -1, 156},  //ICACHE_IRQHandler
+    {0x80551f0, 0x80582b7, 0, -1, 157},  //OTFDEC1_IRQHandler
+    {0x8055226, 0x805524d, 4, 174, 0},  //prvCreateTask
+    {0x8055234, 0x80552e7, 4, 174, 1},  //prvAddNewTaskToReadyList
+    {0x805526e, 0x8056d9f, 4, 0, 185},  //pvPortMalloc
+    {0x805527c, 0x8056d9f, 4, 0, 185},  //pvPortMalloc
+    {0x805528e, 0x805781d, 4, 0, 186},  //memset
+    {0x805529c, 0x80570fb, 4, 0, 187},  //vPortFree
     {0x80552d6, 0x805600f, 4, 0, 2},  //prvInitialiseNewTask
-    {0x80552ee, 0x8057355, 4, 1, 187},  //vPortEnterCritical
+    {0x80552ee, 0x8057355, 4, 1, 188},  //vPortEnterCritical
     {0x80552f2, 0x20000128, 5, 1, -1},  //uxCurrentNumberOfTasks
     {0x80552f6, 0x20000128, 6, 1, -1},  //uxCurrentNumberOfTasks
     {0x8055300, 0x20000108, 5, 1, -1},  //pxCurrentTCB
@@ -153,12 +153,12 @@ relocation_info_t relocation_info[753] = {
     {0x80553a2, 0x200002a8, 6, 1, -1},  //uxTopReadyPriority
     {0x80553b6, 0x20000168, 5, 1, -1},  //pxReadyTasksLists
     {0x80553ba, 0x20000168, 6, 1, -1},  //pxReadyTasksLists
-    {0x805540a, 0x8057375, 4, 1, 188},  //vPortExitCritical
+    {0x805540a, 0x8057375, 4, 1, 189},  //vPortExitCritical
     {0x805540e, 0x2000012c, 5, 1, -1},  //xSchedulerRunning
     {0x8055412, 0x2000012c, 6, 1, -1},  //xSchedulerRunning
     {0x805541e, 0x20000108, 5, 1, -1},  //pxCurrentTCB
     {0x8055422, 0x20000108, 6, 1, -1},  //pxCurrentTCB
-    {0x8055434, 0x805733d, 4, 1, 189},  //vPortYield
+    {0x8055434, 0x805733d, 4, 1, 190},  //vPortYield
     {0x8055446, 0x20000138, 5, 4, -1},  //pxDelayedTaskList
     {0x805544a, 0x20000138, 6, 4, -1},  //pxDelayedTaskList
     {0x8055456, 0x200002b0, 5, 4, -1},  //xNextTaskUnblockTime
@@ -167,15 +167,15 @@ relocation_info_t relocation_info[753] = {
     {0x805546a, 0x20000138, 6, 4, -1},  //pxDelayedTaskList
     {0x8055474, 0x200002b0, 5, 4, -1},  //xNextTaskUnblockTime
     {0x8055478, 0x200002b0, 6, 4, -1},  //xNextTaskUnblockTime
-    {0x805548e, 0x80570fb, 4, 5, 186},  //vPortFree
-    {0x8055494, 0x80570fb, 4, 5, 186},  //vPortFree
-    {0x805549c, 0x20000130, 5, 191, -1},  //uxSchedulerSuspended
-    {0x80554a0, 0x20000130, 6, 191, -1},  //uxSchedulerSuspended
+    {0x805548e, 0x80570fb, 4, 5, 187},  //vPortFree
+    {0x8055494, 0x80570fb, 4, 5, 187},  //vPortFree
+    {0x805549c, 0x20000130, 5, 192, -1},  //uxSchedulerSuspended
+    {0x80554a0, 0x20000130, 6, 192, -1},  //uxSchedulerSuspended
     {0x80554b6, 0x20000134, 5, 6, -1},  //xTickCount
     {0x80554ba, 0x20000134, 6, 6, -1},  //xTickCount
     {0x80554c2, 0x20000108, 5, 6, -1},  //pxCurrentTCB
     {0x80554c6, 0x20000108, 6, 6, -1},  //pxCurrentTCB
-    {0x80554ce, 0x80562d7, 4, 6, 178},  //uxListRemove
+    {0x80554ce, 0x80562d7, 4, 6, 179},  //uxListRemove
     {0x80554ea, 0x20000154, 5, 6, -1},  //xSuspendedTaskList
     {0x80554ee, 0x20000154, 6, 6, -1},  //xSuspendedTaskList
     {0x80554f8, 0x20000108, 5, 6, -1},  //pxCurrentTCB
@@ -186,205 +186,205 @@ relocation_info_t relocation_info[753] = {
     {0x8055550, 0x2000013c, 6, 6, -1},  //pxOverflowDelayedTaskList
     {0x8055556, 0x20000108, 5, 6, -1},  //pxCurrentTCB
     {0x805555a, 0x20000108, 6, 6, -1},  //pxCurrentTCB
-    {0x8055562, 0x805626d, 4, 6, 177},  //vListInsert
+    {0x8055562, 0x805626d, 4, 6, 178},  //vListInsert
     {0x8055568, 0x20000138, 5, 6, -1},  //pxDelayedTaskList
     {0x805556c, 0x20000138, 6, 6, -1},  //pxDelayedTaskList
     {0x8055572, 0x20000108, 5, 6, -1},  //pxCurrentTCB
     {0x8055576, 0x20000108, 6, 6, -1},  //pxCurrentTCB
-    {0x805557e, 0x805626d, 4, 6, 177},  //vListInsert
+    {0x805557e, 0x805626d, 4, 6, 178},  //vListInsert
     {0x8055584, 0x200002b0, 5, 6, -1},  //xNextTaskUnblockTime
     {0x8055588, 0x200002b0, 6, 6, -1},  //xNextTaskUnblockTime
     {0x8055596, 0x200002b0, 5, 6, -1},  //xNextTaskUnblockTime
     {0x805559a, 0x200002b0, 6, 6, -1},  //xNextTaskUnblockTime
-    {0x80555ba, 0x8057355, 4, 192, 187},  //vPortEnterCritical
-    {0x80555c2, 0x20000130, 5, 192, -1},  //uxSchedulerSuspended
-    {0x80555c6, 0x20000130, 6, 192, -1},  //uxSchedulerSuspended
-    {0x80555d0, 0x8057697, 4, 192, 190},  //ulSetInterruptMask
-    {0x80555d8, 0x20000130, 5, 192, -1},  //uxSchedulerSuspended
-    {0x80555dc, 0x20000130, 6, 192, -1},  //uxSchedulerSuspended
-    {0x80555f0, 0x20000128, 5, 192, -1},  //uxCurrentNumberOfTasks
-    {0x80555f4, 0x20000128, 6, 192, -1},  //uxCurrentNumberOfTasks
-    {0x8055604, 0x20000140, 5, 192, -1},  //xPendingReadyList
-    {0x8055608, 0x20000140, 6, 192, -1},  //xPendingReadyList
-    {0x8055616, 0x20000140, 5, 192, -1},  //xPendingReadyList
-    {0x805561a, 0x20000140, 6, 192, -1},  //xPendingReadyList
-    {0x80556ac, 0x200002a8, 5, 192, -1},  //uxTopReadyPriority
-    {0x80556b0, 0x200002a8, 6, 192, -1},  //uxTopReadyPriority
-    {0x80556c0, 0x200002a8, 5, 192, -1},  //uxTopReadyPriority
-    {0x80556c4, 0x200002a8, 6, 192, -1},  //uxTopReadyPriority
-    {0x80556d8, 0x20000168, 5, 192, -1},  //pxReadyTasksLists
-    {0x80556dc, 0x20000168, 6, 192, -1},  //pxReadyTasksLists
-    {0x8055730, 0x20000108, 5, 192, -1},  //pxCurrentTCB
-    {0x8055734, 0x20000108, 6, 192, -1},  //pxCurrentTCB
-    {0x8055744, 0x200002ac, 5, 192, -1},  //xYieldPendings
-    {0x8055748, 0x200002ac, 6, 192, -1},  //xYieldPendings
-    {0x805575e, 0x8055447, 4, 192, 4},  //prvResetNextTaskUnblockTime
-    {0x8055764, 0x200002b8, 5, 192, -1},  //xPendedTicks
-    {0x8055768, 0x200002b8, 6, 192, -1},  //xPendedTicks
-    {0x8055778, 0x8055a11, 4, 192, 193},  //xTaskIncrementTick
-    {0x8055782, 0x200002ac, 5, 192, -1},  //xYieldPendings
-    {0x8055786, 0x200002ac, 6, 192, -1},  //xYieldPendings
-    {0x80557a4, 0x200002b8, 5, 192, -1},  //xPendedTicks
-    {0x80557a8, 0x200002b8, 6, 192, -1},  //xPendedTicks
-    {0x80557b6, 0x200002ac, 5, 192, -1},  //xYieldPendings
-    {0x80557ba, 0x200002ac, 6, 192, -1},  //xYieldPendings
-    {0x80557cc, 0x20000108, 5, 192, -1},  //pxCurrentTCB
-    {0x80557d0, 0x20000108, 6, 192, -1},  //pxCurrentTCB
-    {0x80557d6, 0x805733d, 4, 192, 189},  //vPortYield
-    {0x80557e6, 0x8057375, 4, 192, 188},  //vPortExitCritical
-    {0x8055802, 0x805549d, 4, 172, 191},  //vTaskSuspendAll
-    {0x8055806, 0x20000130, 5, 172, -1},  //uxSchedulerSuspended
-    {0x805580a, 0x20000130, 6, 172, -1},  //uxSchedulerSuspended
-    {0x8055816, 0x8057697, 4, 172, 190},  //ulSetInterruptMask
-    {0x8055822, 0x80554ad, 4, 172, 6},  //prvAddCurrentTaskToDelayedList
-    {0x8055826, 0x80555ad, 4, 172, 192},  //xTaskResumeAll
-    {0x8055836, 0x805733d, 4, 172, 189},  //vPortYield
-    {0x8055848, 0x20000130, 5, 195, -1},  //uxSchedulerSuspended
-    {0x805584c, 0x20000130, 6, 195, -1},  //uxSchedulerSuspended
-    {0x8055856, 0x200002ac, 5, 195, -1},  //xYieldPendings
-    {0x805585a, 0x200002ac, 6, 195, -1},  //xYieldPendings
-    {0x8055864, 0x200002ac, 5, 195, -1},  //xYieldPendings
-    {0x8055868, 0x200002ac, 6, 195, -1},  //xYieldPendings
-    {0x8055872, 0x200002a8, 5, 195, -1},  //uxTopReadyPriority
-    {0x8055876, 0x200002a8, 6, 195, -1},  //uxTopReadyPriority
-    {0x8055886, 0x20000168, 5, 195, -1},  //pxReadyTasksLists
-    {0x805588a, 0x20000168, 6, 195, -1},  //pxReadyTasksLists
-    {0x805589c, 0x8057697, 4, 195, 190},  //ulSetInterruptMask
-    {0x80558b4, 0x20000168, 5, 195, -1},  //pxReadyTasksLists
-    {0x80558b8, 0x20000168, 6, 195, -1},  //pxReadyTasksLists
-    {0x80558e4, 0x20000108, 5, 195, -1},  //pxCurrentTCB
-    {0x80558e8, 0x20000108, 6, 195, -1},  //pxCurrentTCB
-    {0x80558f2, 0x200002a8, 5, 195, -1},  //uxTopReadyPriority
-    {0x80558f6, 0x200002a8, 6, 195, -1},  //uxTopReadyPriority
-    {0x805590a, 0x805597b, 4, 174, 7},  //prvCreateIdleTasks
-    {0x8055918, 0x805631f, 4, 174, 196},  //xTimerCreateTimerTask
-    {0x805592a, 0x8057697, 4, 174, 190},  //ulSetInterruptMask
-    {0x805592e, 0x200002b0, 5, 174, -1},  //xNextTaskUnblockTime
-    {0x8055932, 0x200002b0, 6, 174, -1},  //xNextTaskUnblockTime
-    {0x805593c, 0x2000012c, 5, 174, -1},  //xSchedulerRunning
-    {0x8055940, 0x2000012c, 6, 174, -1},  //xSchedulerRunning
-    {0x8055948, 0x20000134, 5, 174, -1},  //xTickCount
-    {0x805594c, 0x20000134, 6, 174, -1},  //xTickCount
-    {0x8055954, 0x805754b, 4, 174, 197},  //xPortStartScheduler
-    {0x8055962, 0x8057697, 4, 174, 190},  //ulSetInterruptMask
-    {0x805596c, 0x8058500, 5, 174, -1},  //uxTopUsedPriority
-    {0x8055970, 0x8058500, 6, 174, -1},  //uxTopUsedPriority
-    {0x8055996, 0x8058509, 5, 7, -1},  //.L.str
-    {0x805599a, 0x8058509, 6, 7, -1},  //.L.str
+    {0x80555ba, 0x8057355, 4, 193, 188},  //vPortEnterCritical
+    {0x80555c2, 0x20000130, 5, 193, -1},  //uxSchedulerSuspended
+    {0x80555c6, 0x20000130, 6, 193, -1},  //uxSchedulerSuspended
+    {0x80555d0, 0x8057697, 4, 193, 191},  //ulSetInterruptMask
+    {0x80555d8, 0x20000130, 5, 193, -1},  //uxSchedulerSuspended
+    {0x80555dc, 0x20000130, 6, 193, -1},  //uxSchedulerSuspended
+    {0x80555f0, 0x20000128, 5, 193, -1},  //uxCurrentNumberOfTasks
+    {0x80555f4, 0x20000128, 6, 193, -1},  //uxCurrentNumberOfTasks
+    {0x8055604, 0x20000140, 5, 193, -1},  //xPendingReadyList
+    {0x8055608, 0x20000140, 6, 193, -1},  //xPendingReadyList
+    {0x8055616, 0x20000140, 5, 193, -1},  //xPendingReadyList
+    {0x805561a, 0x20000140, 6, 193, -1},  //xPendingReadyList
+    {0x80556ac, 0x200002a8, 5, 193, -1},  //uxTopReadyPriority
+    {0x80556b0, 0x200002a8, 6, 193, -1},  //uxTopReadyPriority
+    {0x80556c0, 0x200002a8, 5, 193, -1},  //uxTopReadyPriority
+    {0x80556c4, 0x200002a8, 6, 193, -1},  //uxTopReadyPriority
+    {0x80556d8, 0x20000168, 5, 193, -1},  //pxReadyTasksLists
+    {0x80556dc, 0x20000168, 6, 193, -1},  //pxReadyTasksLists
+    {0x8055730, 0x20000108, 5, 193, -1},  //pxCurrentTCB
+    {0x8055734, 0x20000108, 6, 193, -1},  //pxCurrentTCB
+    {0x8055744, 0x200002ac, 5, 193, -1},  //xYieldPendings
+    {0x8055748, 0x200002ac, 6, 193, -1},  //xYieldPendings
+    {0x805575e, 0x8055447, 4, 193, 4},  //prvResetNextTaskUnblockTime
+    {0x8055764, 0x200002b8, 5, 193, -1},  //xPendedTicks
+    {0x8055768, 0x200002b8, 6, 193, -1},  //xPendedTicks
+    {0x8055778, 0x8055a11, 4, 193, 194},  //xTaskIncrementTick
+    {0x8055782, 0x200002ac, 5, 193, -1},  //xYieldPendings
+    {0x8055786, 0x200002ac, 6, 193, -1},  //xYieldPendings
+    {0x80557a4, 0x200002b8, 5, 193, -1},  //xPendedTicks
+    {0x80557a8, 0x200002b8, 6, 193, -1},  //xPendedTicks
+    {0x80557b6, 0x200002ac, 5, 193, -1},  //xYieldPendings
+    {0x80557ba, 0x200002ac, 6, 193, -1},  //xYieldPendings
+    {0x80557cc, 0x20000108, 5, 193, -1},  //pxCurrentTCB
+    {0x80557d0, 0x20000108, 6, 193, -1},  //pxCurrentTCB
+    {0x80557d6, 0x805733d, 4, 193, 190},  //vPortYield
+    {0x80557e6, 0x8057375, 4, 193, 189},  //vPortExitCritical
+    {0x8055802, 0x805549d, 4, 173, 192},  //vTaskSuspendAll
+    {0x8055806, 0x20000130, 5, 173, -1},  //uxSchedulerSuspended
+    {0x805580a, 0x20000130, 6, 173, -1},  //uxSchedulerSuspended
+    {0x8055816, 0x8057697, 4, 173, 191},  //ulSetInterruptMask
+    {0x8055822, 0x80554ad, 4, 173, 6},  //prvAddCurrentTaskToDelayedList
+    {0x8055826, 0x80555ad, 4, 173, 193},  //xTaskResumeAll
+    {0x8055836, 0x805733d, 4, 173, 190},  //vPortYield
+    {0x8055848, 0x20000130, 5, 196, -1},  //uxSchedulerSuspended
+    {0x805584c, 0x20000130, 6, 196, -1},  //uxSchedulerSuspended
+    {0x8055856, 0x200002ac, 5, 196, -1},  //xYieldPendings
+    {0x805585a, 0x200002ac, 6, 196, -1},  //xYieldPendings
+    {0x8055864, 0x200002ac, 5, 196, -1},  //xYieldPendings
+    {0x8055868, 0x200002ac, 6, 196, -1},  //xYieldPendings
+    {0x8055872, 0x200002a8, 5, 196, -1},  //uxTopReadyPriority
+    {0x8055876, 0x200002a8, 6, 196, -1},  //uxTopReadyPriority
+    {0x8055886, 0x20000168, 5, 196, -1},  //pxReadyTasksLists
+    {0x805588a, 0x20000168, 6, 196, -1},  //pxReadyTasksLists
+    {0x805589c, 0x8057697, 4, 196, 191},  //ulSetInterruptMask
+    {0x80558b4, 0x20000168, 5, 196, -1},  //pxReadyTasksLists
+    {0x80558b8, 0x20000168, 6, 196, -1},  //pxReadyTasksLists
+    {0x80558e4, 0x20000108, 5, 196, -1},  //pxCurrentTCB
+    {0x80558e8, 0x20000108, 6, 196, -1},  //pxCurrentTCB
+    {0x80558f2, 0x200002a8, 5, 196, -1},  //uxTopReadyPriority
+    {0x80558f6, 0x200002a8, 6, 196, -1},  //uxTopReadyPriority
+    {0x805590a, 0x805597b, 4, 175, 7},  //prvCreateIdleTasks
+    {0x8055918, 0x805631f, 4, 175, 197},  //xTimerCreateTimerTask
+    {0x805592a, 0x8057697, 4, 175, 191},  //ulSetInterruptMask
+    {0x805592e, 0x200002b0, 5, 175, -1},  //xNextTaskUnblockTime
+    {0x8055932, 0x200002b0, 6, 175, -1},  //xNextTaskUnblockTime
+    {0x805593c, 0x2000012c, 5, 175, -1},  //xSchedulerRunning
+    {0x8055940, 0x2000012c, 6, 175, -1},  //xSchedulerRunning
+    {0x8055948, 0x20000134, 5, 175, -1},  //xTickCount
+    {0x805594c, 0x20000134, 6, 175, -1},  //xTickCount
+    {0x8055954, 0x805754b, 4, 175, 198},  //xPortStartScheduler
+    {0x8055962, 0x8057697, 4, 175, 191},  //ulSetInterruptMask
+    {0x805596c, 0x805852c, 5, 175, -1},  //uxTopUsedPriority
+    {0x8055970, 0x805852c, 6, 175, -1},  //uxTopUsedPriority
+    {0x8055996, 0x8058541, 5, 7, -1},  //.L.str
+    {0x805599a, 0x8058541, 6, 7, -1},  //.L.str
     {0x80559c8, 0x80561ad, 5, 7, 8},  //prvIdleTask
     {0x80559cc, 0x80561ad, 6, 7, 8},  //prvIdleTask
     {0x80559d6, 0x200002b4, 5, 7, -1},  //xIdleTaskHandles
     {0x80559da, 0x200002b4, 6, 7, -1},  //xIdleTaskHandles
-    {0x80559f0, 0x80551f5, 4, 7, 173},  //xTaskCreate
-    {0x8055a1a, 0x20000130, 5, 193, -1},  //uxSchedulerSuspended
-    {0x8055a1e, 0x20000130, 6, 193, -1},  //uxSchedulerSuspended
-    {0x8055a2c, 0x20000134, 5, 193, -1},  //xTickCount
-    {0x8055a30, 0x20000134, 6, 193, -1},  //xTickCount
-    {0x8055a46, 0x20000138, 5, 193, -1},  //pxDelayedTaskList
-    {0x8055a4a, 0x20000138, 6, 193, -1},  //pxDelayedTaskList
-    {0x8055a56, 0x8057697, 4, 193, 190},  //ulSetInterruptMask
-    {0x8055a5e, 0x20000138, 5, 193, -1},  //pxDelayedTaskList
-    {0x8055a62, 0x20000138, 6, 193, -1},  //pxDelayedTaskList
-    {0x8055a6a, 0x2000013c, 5, 193, -1},  //pxOverflowDelayedTaskList
-    {0x8055a6e, 0x2000013c, 6, 193, -1},  //pxOverflowDelayedTaskList
-    {0x8055a7a, 0x200002bc, 5, 193, -1},  //xNumOfOverflows
-    {0x8055a7e, 0x200002bc, 6, 193, -1},  //xNumOfOverflows
-    {0x8055a88, 0x8055447, 4, 193, 4},  //prvResetNextTaskUnblockTime
-    {0x8055a94, 0x200002b0, 5, 193, -1},  //xNextTaskUnblockTime
-    {0x8055a98, 0x200002b0, 6, 193, -1},  //xNextTaskUnblockTime
-    {0x8055aa8, 0x20000138, 5, 193, -1},  //pxDelayedTaskList
-    {0x8055aac, 0x20000138, 6, 193, -1},  //pxDelayedTaskList
-    {0x8055ab8, 0x200002b0, 5, 193, -1},  //xNextTaskUnblockTime
-    {0x8055abc, 0x200002b0, 6, 193, -1},  //xNextTaskUnblockTime
-    {0x8055ac8, 0x20000138, 5, 193, -1},  //pxDelayedTaskList
-    {0x8055acc, 0x20000138, 6, 193, -1},  //pxDelayedTaskList
-    {0x8055aea, 0x200002b0, 5, 193, -1},  //xNextTaskUnblockTime
-    {0x8055aee, 0x200002b0, 6, 193, -1},  //xNextTaskUnblockTime
-    {0x8055b8c, 0x200002a8, 5, 193, -1},  //uxTopReadyPriority
-    {0x8055b90, 0x200002a8, 6, 193, -1},  //uxTopReadyPriority
-    {0x8055ba0, 0x200002a8, 5, 193, -1},  //uxTopReadyPriority
-    {0x8055ba4, 0x200002a8, 6, 193, -1},  //uxTopReadyPriority
-    {0x8055bb8, 0x20000168, 5, 193, -1},  //pxReadyTasksLists
-    {0x8055bbc, 0x20000168, 6, 193, -1},  //pxReadyTasksLists
-    {0x8055c10, 0x20000108, 5, 193, -1},  //pxCurrentTCB
-    {0x8055c14, 0x20000108, 6, 193, -1},  //pxCurrentTCB
-    {0x8055c30, 0x20000108, 5, 193, -1},  //pxCurrentTCB
-    {0x8055c34, 0x20000108, 6, 193, -1},  //pxCurrentTCB
-    {0x8055c40, 0x20000168, 5, 193, -1},  //pxReadyTasksLists
-    {0x8055c44, 0x20000168, 6, 193, -1},  //pxReadyTasksLists
-    {0x8055c5a, 0x200002ac, 5, 193, -1},  //xYieldPendings
-    {0x8055c5e, 0x200002ac, 6, 193, -1},  //xYieldPendings
-    {0x8055c72, 0x200002b8, 5, 193, -1},  //xPendedTicks
-    {0x8055c76, 0x200002b8, 6, 193, -1},  //xPendedTicks
-    {0x8055c8a, 0x20000134, 5, 171, -1},  //xTickCount
-    {0x8055c8e, 0x20000134, 6, 171, -1},  //xTickCount
-    {0x8055cac, 0x8057697, 4, 198, 190},  //ulSetInterruptMask
-    {0x8055cb6, 0x20000108, 5, 198, -1},  //pxCurrentTCB
-    {0x8055cba, 0x20000108, 6, 198, -1},  //pxCurrentTCB
-    {0x8055cc2, 0x805626d, 4, 198, 177},  //vListInsert
-    {0x8055cca, 0x80554ad, 4, 198, 6},  //prvAddCurrentTaskToDelayedList
-    {0x8055ce4, 0x8057697, 4, 199, 190},  //ulSetInterruptMask
-    {0x8055cf6, 0x20000108, 5, 199, -1},  //pxCurrentTCB
-    {0x8055cfa, 0x20000108, 6, 199, -1},  //pxCurrentTCB
-    {0x8055d3e, 0x80554ad, 4, 199, 6},  //prvAddCurrentTaskToDelayedList
-    {0x8055d5c, 0x8057697, 4, 200, 190},  //ulSetInterruptMask
-    {0x8055da4, 0x20000130, 5, 200, -1},  //uxSchedulerSuspended
-    {0x8055da8, 0x20000130, 6, 200, -1},  //uxSchedulerSuspended
-    {0x8055dfc, 0x200002a8, 5, 200, -1},  //uxTopReadyPriority
-    {0x8055e00, 0x200002a8, 6, 200, -1},  //uxTopReadyPriority
-    {0x8055e10, 0x200002a8, 5, 200, -1},  //uxTopReadyPriority
-    {0x8055e14, 0x200002a8, 6, 200, -1},  //uxTopReadyPriority
-    {0x8055e28, 0x20000168, 5, 200, -1},  //pxReadyTasksLists
-    {0x8055e2c, 0x20000168, 6, 200, -1},  //pxReadyTasksLists
-    {0x8055e80, 0x20000140, 5, 200, -1},  //xPendingReadyList
-    {0x8055e84, 0x20000140, 6, 200, -1},  //xPendingReadyList
-    {0x8055ebe, 0x20000108, 5, 200, -1},  //pxCurrentTCB
-    {0x8055ec2, 0x20000108, 6, 200, -1},  //pxCurrentTCB
-    {0x8055ed4, 0x200002ac, 5, 200, -1},  //xYieldPendings
-    {0x8055ed8, 0x200002ac, 6, 200, -1},  //xYieldPendings
-    {0x8055ef0, 0x200002bc, 5, 201, -1},  //xNumOfOverflows
-    {0x8055ef4, 0x200002bc, 6, 201, -1},  //xNumOfOverflows
-    {0x8055efe, 0x20000134, 5, 201, -1},  //xTickCount
-    {0x8055f02, 0x20000134, 6, 201, -1},  //xTickCount
-    {0x8055f20, 0x8057697, 4, 202, 190},  //ulSetInterruptMask
-    {0x8055f2e, 0x8057697, 4, 202, 190},  //ulSetInterruptMask
-    {0x8055f36, 0x8057355, 4, 202, 187},  //vPortEnterCritical
-    {0x8055f3a, 0x20000134, 5, 202, -1},  //xTickCount
-    {0x8055f3e, 0x20000134, 6, 202, -1},  //xTickCount
-    {0x8055f60, 0x200002bc, 5, 202, -1},  //xNumOfOverflows
-    {0x8055f64, 0x200002bc, 6, 202, -1},  //xNumOfOverflows
-    {0x8055fa4, 0x8055eed, 4, 202, 201},  //vTaskInternalSetTimeOutState
-    {0x8055fbe, 0x8057375, 4, 202, 188},  //vPortExitCritical
-    {0x8055fc8, 0x200002ac, 5, 203, -1},  //xYieldPendings
-    {0x8055fcc, 0x200002ac, 6, 203, -1},  //xYieldPendings
-    {0x8055fd8, 0x2000012c, 5, 204, -1},  //xSchedulerRunning
-    {0x8055fdc, 0x2000012c, 6, 204, -1},  //xSchedulerRunning
-    {0x8055fec, 0x20000130, 5, 204, -1},  //uxSchedulerSuspended
-    {0x8055ff0, 0x20000130, 6, 204, -1},  //uxSchedulerSuspended
-    {0x8056036, 0x805781d, 4, 2, 185},  //memset
-    {0x805605a, 0x8057697, 4, 2, 190},  //ulSetInterruptMask
-    {0x80560b0, 0x8057697, 4, 2, 190},  //ulSetInterruptMask
-    {0x80560d8, 0x805625f, 4, 2, 176},  //vListInitialiseItem
-    {0x80560e0, 0x805625f, 4, 2, 176},  //vListInitialiseItem
-    {0x8056100, 0x805740d, 4, 2, 205},  //pxPortInitialiseStack
+    {0x80559f0, 0x80551f5, 4, 7, 174},  //xTaskCreate
+    {0x8055a1a, 0x20000130, 5, 194, -1},  //uxSchedulerSuspended
+    {0x8055a1e, 0x20000130, 6, 194, -1},  //uxSchedulerSuspended
+    {0x8055a2c, 0x20000134, 5, 194, -1},  //xTickCount
+    {0x8055a30, 0x20000134, 6, 194, -1},  //xTickCount
+    {0x8055a46, 0x20000138, 5, 194, -1},  //pxDelayedTaskList
+    {0x8055a4a, 0x20000138, 6, 194, -1},  //pxDelayedTaskList
+    {0x8055a56, 0x8057697, 4, 194, 191},  //ulSetInterruptMask
+    {0x8055a5e, 0x20000138, 5, 194, -1},  //pxDelayedTaskList
+    {0x8055a62, 0x20000138, 6, 194, -1},  //pxDelayedTaskList
+    {0x8055a6a, 0x2000013c, 5, 194, -1},  //pxOverflowDelayedTaskList
+    {0x8055a6e, 0x2000013c, 6, 194, -1},  //pxOverflowDelayedTaskList
+    {0x8055a7a, 0x200002bc, 5, 194, -1},  //xNumOfOverflows
+    {0x8055a7e, 0x200002bc, 6, 194, -1},  //xNumOfOverflows
+    {0x8055a88, 0x8055447, 4, 194, 4},  //prvResetNextTaskUnblockTime
+    {0x8055a94, 0x200002b0, 5, 194, -1},  //xNextTaskUnblockTime
+    {0x8055a98, 0x200002b0, 6, 194, -1},  //xNextTaskUnblockTime
+    {0x8055aa8, 0x20000138, 5, 194, -1},  //pxDelayedTaskList
+    {0x8055aac, 0x20000138, 6, 194, -1},  //pxDelayedTaskList
+    {0x8055ab8, 0x200002b0, 5, 194, -1},  //xNextTaskUnblockTime
+    {0x8055abc, 0x200002b0, 6, 194, -1},  //xNextTaskUnblockTime
+    {0x8055ac8, 0x20000138, 5, 194, -1},  //pxDelayedTaskList
+    {0x8055acc, 0x20000138, 6, 194, -1},  //pxDelayedTaskList
+    {0x8055aea, 0x200002b0, 5, 194, -1},  //xNextTaskUnblockTime
+    {0x8055aee, 0x200002b0, 6, 194, -1},  //xNextTaskUnblockTime
+    {0x8055b8c, 0x200002a8, 5, 194, -1},  //uxTopReadyPriority
+    {0x8055b90, 0x200002a8, 6, 194, -1},  //uxTopReadyPriority
+    {0x8055ba0, 0x200002a8, 5, 194, -1},  //uxTopReadyPriority
+    {0x8055ba4, 0x200002a8, 6, 194, -1},  //uxTopReadyPriority
+    {0x8055bb8, 0x20000168, 5, 194, -1},  //pxReadyTasksLists
+    {0x8055bbc, 0x20000168, 6, 194, -1},  //pxReadyTasksLists
+    {0x8055c10, 0x20000108, 5, 194, -1},  //pxCurrentTCB
+    {0x8055c14, 0x20000108, 6, 194, -1},  //pxCurrentTCB
+    {0x8055c30, 0x20000108, 5, 194, -1},  //pxCurrentTCB
+    {0x8055c34, 0x20000108, 6, 194, -1},  //pxCurrentTCB
+    {0x8055c40, 0x20000168, 5, 194, -1},  //pxReadyTasksLists
+    {0x8055c44, 0x20000168, 6, 194, -1},  //pxReadyTasksLists
+    {0x8055c5a, 0x200002ac, 5, 194, -1},  //xYieldPendings
+    {0x8055c5e, 0x200002ac, 6, 194, -1},  //xYieldPendings
+    {0x8055c72, 0x200002b8, 5, 194, -1},  //xPendedTicks
+    {0x8055c76, 0x200002b8, 6, 194, -1},  //xPendedTicks
+    {0x8055c8a, 0x20000134, 5, 172, -1},  //xTickCount
+    {0x8055c8e, 0x20000134, 6, 172, -1},  //xTickCount
+    {0x8055cac, 0x8057697, 4, 199, 191},  //ulSetInterruptMask
+    {0x8055cb6, 0x20000108, 5, 199, -1},  //pxCurrentTCB
+    {0x8055cba, 0x20000108, 6, 199, -1},  //pxCurrentTCB
+    {0x8055cc2, 0x805626d, 4, 199, 178},  //vListInsert
+    {0x8055cca, 0x80554ad, 4, 199, 6},  //prvAddCurrentTaskToDelayedList
+    {0x8055ce4, 0x8057697, 4, 200, 191},  //ulSetInterruptMask
+    {0x8055cf6, 0x20000108, 5, 200, -1},  //pxCurrentTCB
+    {0x8055cfa, 0x20000108, 6, 200, -1},  //pxCurrentTCB
+    {0x8055d3e, 0x80554ad, 4, 200, 6},  //prvAddCurrentTaskToDelayedList
+    {0x8055d5c, 0x8057697, 4, 201, 191},  //ulSetInterruptMask
+    {0x8055da4, 0x20000130, 5, 201, -1},  //uxSchedulerSuspended
+    {0x8055da8, 0x20000130, 6, 201, -1},  //uxSchedulerSuspended
+    {0x8055dfc, 0x200002a8, 5, 201, -1},  //uxTopReadyPriority
+    {0x8055e00, 0x200002a8, 6, 201, -1},  //uxTopReadyPriority
+    {0x8055e10, 0x200002a8, 5, 201, -1},  //uxTopReadyPriority
+    {0x8055e14, 0x200002a8, 6, 201, -1},  //uxTopReadyPriority
+    {0x8055e28, 0x20000168, 5, 201, -1},  //pxReadyTasksLists
+    {0x8055e2c, 0x20000168, 6, 201, -1},  //pxReadyTasksLists
+    {0x8055e80, 0x20000140, 5, 201, -1},  //xPendingReadyList
+    {0x8055e84, 0x20000140, 6, 201, -1},  //xPendingReadyList
+    {0x8055ebe, 0x20000108, 5, 201, -1},  //pxCurrentTCB
+    {0x8055ec2, 0x20000108, 6, 201, -1},  //pxCurrentTCB
+    {0x8055ed4, 0x200002ac, 5, 201, -1},  //xYieldPendings
+    {0x8055ed8, 0x200002ac, 6, 201, -1},  //xYieldPendings
+    {0x8055ef0, 0x200002bc, 5, 202, -1},  //xNumOfOverflows
+    {0x8055ef4, 0x200002bc, 6, 202, -1},  //xNumOfOverflows
+    {0x8055efe, 0x20000134, 5, 202, -1},  //xTickCount
+    {0x8055f02, 0x20000134, 6, 202, -1},  //xTickCount
+    {0x8055f20, 0x8057697, 4, 203, 191},  //ulSetInterruptMask
+    {0x8055f2e, 0x8057697, 4, 203, 191},  //ulSetInterruptMask
+    {0x8055f36, 0x8057355, 4, 203, 188},  //vPortEnterCritical
+    {0x8055f3a, 0x20000134, 5, 203, -1},  //xTickCount
+    {0x8055f3e, 0x20000134, 6, 203, -1},  //xTickCount
+    {0x8055f60, 0x200002bc, 5, 203, -1},  //xNumOfOverflows
+    {0x8055f64, 0x200002bc, 6, 203, -1},  //xNumOfOverflows
+    {0x8055fa4, 0x8055eed, 4, 203, 202},  //vTaskInternalSetTimeOutState
+    {0x8055fbe, 0x8057375, 4, 203, 189},  //vPortExitCritical
+    {0x8055fc8, 0x200002ac, 5, 204, -1},  //xYieldPendings
+    {0x8055fcc, 0x200002ac, 6, 204, -1},  //xYieldPendings
+    {0x8055fd8, 0x2000012c, 5, 205, -1},  //xSchedulerRunning
+    {0x8055fdc, 0x2000012c, 6, 205, -1},  //xSchedulerRunning
+    {0x8055fec, 0x20000130, 5, 205, -1},  //uxSchedulerSuspended
+    {0x8055ff0, 0x20000130, 6, 205, -1},  //uxSchedulerSuspended
+    {0x8056036, 0x805781d, 4, 2, 186},  //memset
+    {0x805605a, 0x8057697, 4, 2, 191},  //ulSetInterruptMask
+    {0x80560b0, 0x8057697, 4, 2, 191},  //ulSetInterruptMask
+    {0x80560d8, 0x805625f, 4, 2, 177},  //vListInitialiseItem
+    {0x80560e0, 0x805625f, 4, 2, 177},  //vListInitialiseItem
+    {0x8056100, 0x805740d, 4, 2, 206},  //pxPortInitialiseStack
     {0x8056136, 0x20000168, 5, 3, -1},  //pxReadyTasksLists
     {0x805613a, 0x20000168, 6, 3, -1},  //pxReadyTasksLists
-    {0x8056142, 0x8056231, 4, 3, 175},  //vListInitialise
+    {0x8056142, 0x8056231, 4, 3, 176},  //vListInitialise
     {0x8056150, 0x200002c0, 5, 3, -1},  //xDelayedTaskList1
     {0x8056154, 0x200002c0, 6, 3, -1},  //xDelayedTaskList1
-    {0x805615a, 0x8056231, 4, 3, 175},  //vListInitialise
+    {0x805615a, 0x8056231, 4, 3, 176},  //vListInitialise
     {0x805615e, 0x200002d4, 5, 3, -1},  //xDelayedTaskList2
     {0x8056162, 0x200002d4, 6, 3, -1},  //xDelayedTaskList2
-    {0x8056168, 0x8056231, 4, 3, 175},  //vListInitialise
+    {0x8056168, 0x8056231, 4, 3, 176},  //vListInitialise
     {0x805616c, 0x20000140, 5, 3, -1},  //xPendingReadyList
     {0x8056170, 0x20000140, 6, 3, -1},  //xPendingReadyList
-    {0x8056174, 0x8056231, 4, 3, 175},  //vListInitialise
+    {0x8056174, 0x8056231, 4, 3, 176},  //vListInitialise
     {0x8056178, 0x20000110, 5, 3, -1},  //xTasksWaitingTermination
     {0x805617c, 0x20000110, 6, 3, -1},  //xTasksWaitingTermination
-    {0x8056180, 0x8056231, 4, 3, 175},  //vListInitialise
+    {0x8056180, 0x8056231, 4, 3, 176},  //vListInitialise
     {0x8056184, 0x20000154, 5, 3, -1},  //xSuspendedTaskList
     {0x8056188, 0x20000154, 6, 3, -1},  //xSuspendedTaskList
-    {0x805618c, 0x8056231, 4, 3, 175},  //vListInitialise
+    {0x805618c, 0x8056231, 4, 3, 176},  //vListInitialise
     {0x8056194, 0x20000138, 5, 3, -1},  //pxDelayedTaskList
     {0x8056198, 0x20000138, 6, 3, -1},  //pxDelayedTaskList
     {0x805619e, 0x2000013c, 5, 3, -1},  //pxOverflowDelayedTaskList
@@ -392,52 +392,52 @@ relocation_info_t relocation_info[753] = {
     {0x80561b6, 0x80561d5, 4, 8, 9},  //prvCheckTasksWaitingTermination
     {0x80561ba, 0x20000168, 5, 8, -1},  //pxReadyTasksLists
     {0x80561be, 0x20000168, 6, 8, -1},  //pxReadyTasksLists
-    {0x80561ca, 0x805733d, 4, 8, 189},  //vPortYield
+    {0x80561ca, 0x805733d, 4, 8, 190},  //vPortYield
     {0x80561dc, 0x20000124, 5, 9, -1},  //uxDeletedTasksWaitingCleanUp
     {0x80561e0, 0x20000124, 6, 9, -1},  //uxDeletedTasksWaitingCleanUp
-    {0x80561ea, 0x8057355, 4, 9, 187},  //vPortEnterCritical
+    {0x80561ea, 0x8057355, 4, 9, 188},  //vPortEnterCritical
     {0x80561ee, 0x20000110, 5, 9, -1},  //xTasksWaitingTermination
     {0x80561f2, 0x20000110, 6, 9, -1},  //xTasksWaitingTermination
-    {0x8056200, 0x80562d7, 4, 9, 178},  //uxListRemove
+    {0x8056200, 0x80562d7, 4, 9, 179},  //uxListRemove
     {0x8056204, 0x20000128, 5, 9, -1},  //uxCurrentNumberOfTasks
     {0x8056208, 0x20000128, 6, 9, -1},  //uxCurrentNumberOfTasks
     {0x8056212, 0x20000124, 5, 9, -1},  //uxDeletedTasksWaitingCleanUp
     {0x8056216, 0x20000124, 6, 9, -1},  //uxDeletedTasksWaitingCleanUp
-    {0x8056220, 0x8057375, 4, 9, 188},  //vPortExitCritical
+    {0x8056220, 0x8057375, 4, 9, 189},  //vPortExitCritical
     {0x8056226, 0x8055483, 4, 9, 5},  //prvDeleteTCB
-    {0x8056328, 0x805637f, 4, 196, 10},  //prvCheckForValidListAndQueue
-    {0x805632c, 0x200002e8, 5, 196, -1},  //xTimerQueue
-    {0x8056330, 0x200002e8, 6, 196, -1},  //xTimerQueue
-    {0x805633a, 0x200002ec, 5, 196, -1},  //xTimerTaskHandle
-    {0x805633e, 0x200002ec, 6, 196, -1},  //xTimerTaskHandle
-    {0x805634a, 0x805640d, 5, 196, 11},  //prvTimerTask
-    {0x805634e, 0x805640d, 6, 196, 11},  //prvTimerTask
-    {0x8056352, 0x805850e, 5, 196, -1},  //.L.str
-    {0x8056356, 0x805850e, 6, 196, -1},  //.L.str
-    {0x8056360, 0x80551f5, 4, 196, 173},  //xTaskCreate
-    {0x8056370, 0x8057697, 4, 196, 190},  //ulSetInterruptMask
-    {0x8056384, 0x8057355, 4, 10, 187},  //vPortEnterCritical
+    {0x8056328, 0x805637f, 4, 197, 10},  //prvCheckForValidListAndQueue
+    {0x805632c, 0x200002e8, 5, 197, -1},  //xTimerQueue
+    {0x8056330, 0x200002e8, 6, 197, -1},  //xTimerQueue
+    {0x805633a, 0x200002ec, 5, 197, -1},  //xTimerTaskHandle
+    {0x805633e, 0x200002ec, 6, 197, -1},  //xTimerTaskHandle
+    {0x805634a, 0x805640d, 5, 197, 11},  //prvTimerTask
+    {0x805634e, 0x805640d, 6, 197, 11},  //prvTimerTask
+    {0x8056352, 0x8058546, 5, 197, -1},  //.L.str
+    {0x8056356, 0x8058546, 6, 197, -1},  //.L.str
+    {0x8056360, 0x80551f5, 4, 197, 174},  //xTaskCreate
+    {0x8056370, 0x8057697, 4, 197, 191},  //ulSetInterruptMask
+    {0x8056384, 0x8057355, 4, 10, 188},  //vPortEnterCritical
     {0x8056388, 0x200002e8, 5, 10, -1},  //xTimerQueue
     {0x805638c, 0x200002e8, 6, 10, -1},  //xTimerQueue
     {0x8056396, 0x200002fc, 5, 10, -1},  //xActiveTimerList1
     {0x805639a, 0x200002fc, 6, 10, -1},  //xActiveTimerList1
-    {0x80563a0, 0x8056231, 4, 10, 175},  //vListInitialise
+    {0x80563a0, 0x8056231, 4, 10, 176},  //vListInitialise
     {0x80563a4, 0x20000310, 5, 10, -1},  //xActiveTimerList2
     {0x80563a8, 0x20000310, 6, 10, -1},  //xActiveTimerList2
-    {0x80563ae, 0x8056231, 4, 10, 175},  //vListInitialise
+    {0x80563ae, 0x8056231, 4, 10, 176},  //vListInitialise
     {0x80563b6, 0x200002f0, 5, 10, -1},  //pxCurrentTimerList
     {0x80563ba, 0x200002f0, 6, 10, -1},  //pxCurrentTimerList
     {0x80563c0, 0x200002f4, 5, 10, -1},  //pxOverflowTimerList
     {0x80563c4, 0x200002f4, 6, 10, -1},  //pxOverflowTimerList
-    {0x80563d0, 0x8056907, 4, 10, 180},  //xQueueGenericCreate
+    {0x80563d0, 0x8056907, 4, 10, 181},  //xQueueGenericCreate
     {0x80563d6, 0x200002e8, 5, 10, -1},  //xTimerQueue
     {0x80563da, 0x200002e8, 6, 10, -1},  //xTimerQueue
     {0x80563e6, 0x200002e8, 5, 10, -1},  //xTimerQueue
     {0x80563ea, 0x200002e8, 6, 10, -1},  //xTimerQueue
-    {0x80563f0, 0x8058504, 5, 10, -1},  //.L.str.1
-    {0x80563f4, 0x8058504, 6, 10, -1},  //.L.str.1
-    {0x80563f8, 0x8056c8d, 4, 10, 182},  //vQueueAddToRegistry
-    {0x8056404, 0x8057375, 4, 10, 188},  //vPortExitCritical
+    {0x80563f0, 0x8058530, 5, 10, -1},  //.L.str.1
+    {0x80563f4, 0x8058530, 6, 10, -1},  //.L.str.1
+    {0x80563f8, 0x8056c8d, 4, 10, 183},  //vQueueAddToRegistry
+    {0x8056404, 0x8057375, 4, 10, 189},  //vPortExitCritical
     {0x8056418, 0x805642d, 4, 11, 12},  //prvGetNextExpireTime
     {0x8056422, 0x805646d, 4, 11, 13},  //prvProcessTimerOrBlockTask
     {0x8056426, 0x80564f7, 4, 11, 14},  //prvProcessReceivedCommands
@@ -445,30 +445,30 @@ relocation_info_t relocation_info[753] = {
     {0x8056434, 0x200002f0, 6, 12, -1},  //pxCurrentTimerList
     {0x805644e, 0x200002f0, 5, 12, -1},  //pxCurrentTimerList
     {0x8056452, 0x200002f0, 6, 12, -1},  //pxCurrentTimerList
-    {0x8056476, 0x805549d, 4, 13, 191},  //vTaskSuspendAll
+    {0x8056476, 0x805549d, 4, 13, 192},  //vTaskSuspendAll
     {0x805647c, 0x805667d, 4, 13, 15},  //prvSampleTimeNow
-    {0x8056498, 0x80555ad, 4, 13, 192},  //xTaskResumeAll
+    {0x8056498, 0x80555ad, 4, 13, 193},  //xTaskResumeAll
     {0x80564a0, 0x80566c3, 4, 13, 16},  //prvProcessExpiredTimer
     {0x80564ac, 0x200002f4, 5, 13, -1},  //pxOverflowTimerList
     {0x80564b0, 0x200002f4, 6, 13, -1},  //pxOverflowTimerList
     {0x80564c2, 0x200002e8, 5, 13, -1},  //xTimerQueue
     {0x80564c6, 0x200002e8, 6, 13, -1},  //xTimerQueue
-    {0x80564d4, 0x8056d39, 4, 13, 183},  //vQueueWaitForMessageRestricted
-    {0x80564d8, 0x80555ad, 4, 13, 192},  //xTaskResumeAll
-    {0x80564e0, 0x805733d, 4, 13, 189},  //vPortYield
-    {0x80564ec, 0x80555ad, 4, 13, 192},  //xTaskResumeAll
+    {0x80564d4, 0x8056d39, 4, 13, 184},  //vQueueWaitForMessageRestricted
+    {0x80564d8, 0x80555ad, 4, 13, 193},  //xTaskResumeAll
+    {0x80564e0, 0x805733d, 4, 13, 190},  //vPortYield
+    {0x80564ec, 0x80555ad, 4, 13, 193},  //xTaskResumeAll
     {0x80564fe, 0x200002e8, 5, 14, -1},  //xTimerQueue
     {0x8056502, 0x200002e8, 6, 14, -1},  //xTimerQueue
-    {0x805650c, 0x8056a8f, 4, 14, 181},  //xQueueReceive
-    {0x805652e, 0x8057697, 4, 14, 190},  //ulSetInterruptMask
-    {0x805655e, 0x80562d7, 4, 14, 178},  //uxListRemove
+    {0x805650c, 0x8056a8f, 4, 14, 182},  //xQueueReceive
+    {0x805652e, 0x8057697, 4, 14, 191},  //ulSetInterruptMask
+    {0x805655e, 0x80562d7, 4, 14, 179},  //uxListRemove
     {0x8056568, 0x805667d, 4, 14, 15},  //prvSampleTimeNow
     {0x80565c4, 0x80567a3, 4, 14, 17},  //prvInsertTimerInActiveList
     {0x80565e4, 0x805676d, 4, 14, 18},  //prvReloadTimer
-    {0x8056632, 0x8057697, 4, 14, 190},  //ulSetInterruptMask
+    {0x8056632, 0x8057697, 4, 14, 191},  //ulSetInterruptMask
     {0x8056644, 0x80567a3, 4, 14, 17},  //prvInsertTimerInActiveList
-    {0x805665a, 0x80570fb, 4, 14, 186},  //vPortFree
-    {0x8056684, 0x8055c89, 4, 15, 171},  //xTaskGetTickCount
+    {0x805665a, 0x80570fb, 4, 14, 187},  //vPortFree
+    {0x8056684, 0x8055c89, 4, 15, 172},  //xTaskGetTickCount
     {0x805668c, 0x200002f8, 5, 15, -1},  //prvSampleTimeNow.xLastTime
     {0x8056690, 0x200002f8, 6, 15, -1},  //prvSampleTimeNow.xLastTime
     {0x805669c, 0x8056719, 4, 15, 19},  //prvSwitchTimerLists
@@ -476,7 +476,7 @@ relocation_info_t relocation_info[753] = {
     {0x80566b6, 0x200002f8, 6, 15, -1},  //prvSampleTimeNow.xLastTime
     {0x80566cc, 0x200002f0, 5, 16, -1},  //pxCurrentTimerList
     {0x80566d0, 0x200002f0, 6, 16, -1},  //pxCurrentTimerList
-    {0x80566e0, 0x80562d7, 4, 16, 178},  //uxListRemove
+    {0x80566e0, 0x80562d7, 4, 16, 179},  //uxListRemove
     {0x80566f8, 0x805676d, 4, 16, 18},  //prvReloadTimer
     {0x8056720, 0x200002f0, 5, 19, -1},  //pxCurrentTimerList
     {0x8056724, 0x200002f0, 6, 19, -1},  //pxCurrentTimerList
@@ -490,111 +490,111 @@ relocation_info_t relocation_info[753] = {
     {0x8056784, 0x80567a3, 4, 18, 17},  //prvInsertTimerInActiveList
     {0x80567de, 0x200002f4, 5, 17, -1},  //pxOverflowTimerList
     {0x80567e2, 0x200002f4, 6, 17, -1},  //pxOverflowTimerList
-    {0x80567ec, 0x805626d, 4, 17, 177},  //vListInsert
+    {0x80567ec, 0x805626d, 4, 17, 178},  //vListInsert
     {0x805680e, 0x200002f0, 5, 17, -1},  //pxCurrentTimerList
     {0x8056812, 0x200002f0, 6, 17, -1},  //pxCurrentTimerList
-    {0x805681c, 0x805626d, 4, 17, 177},  //vListInsert
-    {0x8056842, 0x8057697, 4, 179, 190},  //ulSetInterruptMask
-    {0x8056870, 0x8057355, 4, 179, 187},  //vPortEnterCritical
-    {0x80568be, 0x8055d47, 4, 179, 200},  //xTaskRemoveFromEventList
-    {0x80568c6, 0x805733d, 4, 179, 189},  //vPortYield
-    {0x80568d8, 0x8056231, 4, 179, 175},  //vListInitialise
-    {0x80568e0, 0x8056231, 4, 179, 175},  //vListInitialise
-    {0x80568e6, 0x8057375, 4, 179, 188},  //vPortExitCritical
-    {0x80568f8, 0x8057697, 4, 179, 190},  //ulSetInterruptMask
-    {0x805694a, 0x8056d9f, 4, 180, 184},  //pvPortMalloc
-    {0x8056974, 0x8056995, 4, 180, 20},  //prvInitialiseNewQueue
-    {0x8056984, 0x8057697, 4, 180, 190},  //ulSetInterruptMask
-    {0x80569cc, 0x805682b, 4, 20, 179},  //xQueueGenericReset
-    {0x80569e6, 0x8057355, 4, 21, 187},  //vPortEnterCritical
-    {0x8056a0c, 0x8055d47, 4, 21, 200},  //xTaskRemoveFromEventList
-    {0x8056a14, 0x8055fc9, 4, 21, 203},  //vTaskMissedYield
-    {0x8056a34, 0x8057375, 4, 21, 188},  //vPortExitCritical
-    {0x8056a38, 0x8057355, 4, 21, 187},  //vPortEnterCritical
-    {0x8056a5e, 0x8055d47, 4, 21, 200},  //xTaskRemoveFromEventList
-    {0x8056a66, 0x8055fc9, 4, 21, 203},  //vTaskMissedYield
-    {0x8056a86, 0x8057375, 4, 21, 188},  //vPortExitCritical
-    {0x8056aa8, 0x8057697, 4, 181, 190},  //ulSetInterruptMask
-    {0x8056ad0, 0x8057697, 4, 181, 190},  //ulSetInterruptMask
-    {0x8056ad8, 0x8055fd7, 4, 181, 204},  //xTaskGetSchedulerState
-    {0x8056afa, 0x8057697, 4, 181, 190},  //ulSetInterruptMask
-    {0x8056b04, 0x8057355, 4, 181, 187},  //vPortEnterCritical
-    {0x8056b18, 0x8056c1f, 4, 181, 23},  //prvCopyDataFromQueue
-    {0x8056b30, 0x8055d47, 4, 181, 200},  //xTaskRemoveFromEventList
-    {0x8056b38, 0x805733d, 4, 181, 189},  //vPortYield
-    {0x8056b44, 0x8057375, 4, 181, 188},  //vPortExitCritical
-    {0x8056b54, 0x8057375, 4, 181, 188},  //vPortExitCritical
-    {0x8056b66, 0x8055eed, 4, 181, 201},  //vTaskInternalSetTimeOutState
-    {0x8056b76, 0x8057375, 4, 181, 188},  //vPortExitCritical
-    {0x8056b7a, 0x805549d, 4, 181, 191},  //vTaskSuspendAll
-    {0x8056b7e, 0x8057355, 4, 181, 187},  //vPortEnterCritical
-    {0x8056bae, 0x8057375, 4, 181, 188},  //vPortExitCritical
-    {0x8056bb6, 0x8055f11, 4, 181, 202},  //xTaskCheckForTimeOut
-    {0x8056bc0, 0x8056c63, 4, 181, 22},  //prvIsQueueEmpty
-    {0x8056bce, 0x8055c9d, 4, 181, 198},  //vTaskPlaceOnEventList
-    {0x8056bd4, 0x80569df, 4, 181, 21},  //prvUnlockQueue
-    {0x8056bd8, 0x80555ad, 4, 181, 192},  //xTaskResumeAll
-    {0x8056be0, 0x805733d, 4, 181, 189},  //vPortYield
-    {0x8056bec, 0x80569df, 4, 181, 21},  //prvUnlockQueue
-    {0x8056bf0, 0x80555ad, 4, 181, 192},  //xTaskResumeAll
-    {0x8056bfa, 0x80569df, 4, 181, 21},  //prvUnlockQueue
-    {0x8056bfe, 0x80555ad, 4, 181, 192},  //xTaskResumeAll
-    {0x8056c04, 0x8056c63, 4, 181, 22},  //prvIsQueueEmpty
-    {0x8056c58, 0x8057731, 4, 23, 206},  //memcpy
-    {0x8056c6a, 0x8057355, 4, 22, 187},  //vPortEnterCritical
-    {0x8056c82, 0x8057375, 4, 22, 188},  //vPortExitCritical
-    {0x8056ca0, 0x8057697, 4, 182, 190},  //ulSetInterruptMask
-    {0x8056cc0, 0x20000324, 5, 182, -1},  //xQueueRegistry
-    {0x8056cc4, 0x20000324, 6, 182, -1},  //xQueueRegistry
-    {0x8056cd6, 0x20000324, 5, 182, -1},  //xQueueRegistry
-    {0x8056cda, 0x20000324, 6, 182, -1},  //xQueueRegistry
-    {0x8056cee, 0x20000324, 5, 182, -1},  //xQueueRegistry
-    {0x8056cf2, 0x20000324, 6, 182, -1},  //xQueueRegistry
-    {0x8056d00, 0x20000324, 5, 182, -1},  //xQueueRegistry
-    {0x8056d04, 0x20000324, 6, 182, -1},  //xQueueRegistry
-    {0x8056d48, 0x8057355, 4, 183, 187},  //vPortEnterCritical
-    {0x8056d78, 0x8057375, 4, 183, 188},  //vPortExitCritical
-    {0x8056d8c, 0x8055cd3, 4, 183, 199},  //vTaskPlaceOnEventListRestricted
-    {0x8056d96, 0x80569df, 4, 183, 21},  //prvUnlockQueue
-    {0x8056e02, 0x805549d, 4, 184, 191},  //vTaskSuspendAll
-    {0x8056e06, 0x20000364, 5, 184, -1},  //pxEnd
-    {0x8056e0a, 0x20000364, 6, 184, -1},  //pxEnd
-    {0x8056e14, 0x8057051, 4, 184, 24},  //prvHeapInit
-    {0x8056e36, 0x20000368, 5, 184, -1},  //xFreeBytesRemaining
-    {0x8056e3a, 0x20000368, 6, 184, -1},  //xFreeBytesRemaining
-    {0x8056e48, 0x2000036c, 5, 184, -1},  //xStart
-    {0x8056e4c, 0x2000036c, 6, 184, -1},  //xStart
-    {0x8056e5a, 0x20000374, 5, 184, -1},  //ucHeap
-    {0x8056e5e, 0x20000374, 6, 184, -1},  //ucHeap
-    {0x8056e6c, 0x20000374, 5, 184, -1},  //ucHeap
-    {0x8056e70, 0x20000374, 6, 184, -1},  //ucHeap
-    {0x8056e8e, 0x8057697, 4, 184, 190},  //ulSetInterruptMask
-    {0x8056ecc, 0x20000374, 5, 184, -1},  //ucHeap
-    {0x8056ed0, 0x20000374, 6, 184, -1},  //ucHeap
-    {0x8056ede, 0x20000374, 5, 184, -1},  //ucHeap
-    {0x8056ee2, 0x20000374, 6, 184, -1},  //ucHeap
-    {0x8056f00, 0x8057697, 4, 184, 190},  //ulSetInterruptMask
-    {0x8056f0c, 0x20000364, 5, 184, -1},  //pxEnd
-    {0x8056f10, 0x20000364, 6, 184, -1},  //pxEnd
-    {0x8056f2a, 0x20000374, 5, 184, -1},  //ucHeap
-    {0x8056f2e, 0x20000374, 6, 184, -1},  //ucHeap
-    {0x8056f3c, 0x20000374, 5, 184, -1},  //ucHeap
-    {0x8056f40, 0x20000374, 6, 184, -1},  //ucHeap
-    {0x8056f5e, 0x8057697, 4, 184, 190},  //ulSetInterruptMask
-    {0x8056f7a, 0x8057697, 4, 184, 190},  //ulSetInterruptMask
-    {0x8056fa2, 0x8057697, 4, 184, 190},  //ulSetInterruptMask
-    {0x8056fd2, 0x20000368, 5, 184, -1},  //xFreeBytesRemaining
-    {0x8056fd6, 0x20000368, 6, 184, -1},  //xFreeBytesRemaining
-    {0x8056fe2, 0x20002374, 5, 184, -1},  //xMinimumEverFreeBytesRemaining
-    {0x8056fe6, 0x20002374, 6, 184, -1},  //xMinimumEverFreeBytesRemaining
-    {0x8056ff2, 0x20000368, 5, 184, -1},  //xFreeBytesRemaining
-    {0x8056ff6, 0x20000368, 6, 184, -1},  //xFreeBytesRemaining
-    {0x8056ffc, 0x20002374, 5, 184, -1},  //xMinimumEverFreeBytesRemaining
-    {0x8057000, 0x20002374, 6, 184, -1},  //xMinimumEverFreeBytesRemaining
-    {0x805701a, 0x20002378, 5, 184, -1},  //xNumberOfSuccessfulAllocations
-    {0x805701e, 0x20002378, 6, 184, -1},  //xNumberOfSuccessfulAllocations
-    {0x8057034, 0x80555ad, 4, 184, 192},  //xTaskResumeAll
-    {0x8057042, 0x8057697, 4, 184, 190},  //ulSetInterruptMask
+    {0x805681c, 0x805626d, 4, 17, 178},  //vListInsert
+    {0x8056842, 0x8057697, 4, 180, 191},  //ulSetInterruptMask
+    {0x8056870, 0x8057355, 4, 180, 188},  //vPortEnterCritical
+    {0x80568be, 0x8055d47, 4, 180, 201},  //xTaskRemoveFromEventList
+    {0x80568c6, 0x805733d, 4, 180, 190},  //vPortYield
+    {0x80568d8, 0x8056231, 4, 180, 176},  //vListInitialise
+    {0x80568e0, 0x8056231, 4, 180, 176},  //vListInitialise
+    {0x80568e6, 0x8057375, 4, 180, 189},  //vPortExitCritical
+    {0x80568f8, 0x8057697, 4, 180, 191},  //ulSetInterruptMask
+    {0x805694a, 0x8056d9f, 4, 181, 185},  //pvPortMalloc
+    {0x8056974, 0x8056995, 4, 181, 20},  //prvInitialiseNewQueue
+    {0x8056984, 0x8057697, 4, 181, 191},  //ulSetInterruptMask
+    {0x80569cc, 0x805682b, 4, 20, 180},  //xQueueGenericReset
+    {0x80569e6, 0x8057355, 4, 21, 188},  //vPortEnterCritical
+    {0x8056a0c, 0x8055d47, 4, 21, 201},  //xTaskRemoveFromEventList
+    {0x8056a14, 0x8055fc9, 4, 21, 204},  //vTaskMissedYield
+    {0x8056a34, 0x8057375, 4, 21, 189},  //vPortExitCritical
+    {0x8056a38, 0x8057355, 4, 21, 188},  //vPortEnterCritical
+    {0x8056a5e, 0x8055d47, 4, 21, 201},  //xTaskRemoveFromEventList
+    {0x8056a66, 0x8055fc9, 4, 21, 204},  //vTaskMissedYield
+    {0x8056a86, 0x8057375, 4, 21, 189},  //vPortExitCritical
+    {0x8056aa8, 0x8057697, 4, 182, 191},  //ulSetInterruptMask
+    {0x8056ad0, 0x8057697, 4, 182, 191},  //ulSetInterruptMask
+    {0x8056ad8, 0x8055fd7, 4, 182, 205},  //xTaskGetSchedulerState
+    {0x8056afa, 0x8057697, 4, 182, 191},  //ulSetInterruptMask
+    {0x8056b04, 0x8057355, 4, 182, 188},  //vPortEnterCritical
+    {0x8056b18, 0x8056c1f, 4, 182, 23},  //prvCopyDataFromQueue
+    {0x8056b30, 0x8055d47, 4, 182, 201},  //xTaskRemoveFromEventList
+    {0x8056b38, 0x805733d, 4, 182, 190},  //vPortYield
+    {0x8056b44, 0x8057375, 4, 182, 189},  //vPortExitCritical
+    {0x8056b54, 0x8057375, 4, 182, 189},  //vPortExitCritical
+    {0x8056b66, 0x8055eed, 4, 182, 202},  //vTaskInternalSetTimeOutState
+    {0x8056b76, 0x8057375, 4, 182, 189},  //vPortExitCritical
+    {0x8056b7a, 0x805549d, 4, 182, 192},  //vTaskSuspendAll
+    {0x8056b7e, 0x8057355, 4, 182, 188},  //vPortEnterCritical
+    {0x8056bae, 0x8057375, 4, 182, 189},  //vPortExitCritical
+    {0x8056bb6, 0x8055f11, 4, 182, 203},  //xTaskCheckForTimeOut
+    {0x8056bc0, 0x8056c63, 4, 182, 22},  //prvIsQueueEmpty
+    {0x8056bce, 0x8055c9d, 4, 182, 199},  //vTaskPlaceOnEventList
+    {0x8056bd4, 0x80569df, 4, 182, 21},  //prvUnlockQueue
+    {0x8056bd8, 0x80555ad, 4, 182, 193},  //xTaskResumeAll
+    {0x8056be0, 0x805733d, 4, 182, 190},  //vPortYield
+    {0x8056bec, 0x80569df, 4, 182, 21},  //prvUnlockQueue
+    {0x8056bf0, 0x80555ad, 4, 182, 193},  //xTaskResumeAll
+    {0x8056bfa, 0x80569df, 4, 182, 21},  //prvUnlockQueue
+    {0x8056bfe, 0x80555ad, 4, 182, 193},  //xTaskResumeAll
+    {0x8056c04, 0x8056c63, 4, 182, 22},  //prvIsQueueEmpty
+    {0x8056c58, 0x8057731, 4, 23, 207},  //memcpy
+    {0x8056c6a, 0x8057355, 4, 22, 188},  //vPortEnterCritical
+    {0x8056c82, 0x8057375, 4, 22, 189},  //vPortExitCritical
+    {0x8056ca0, 0x8057697, 4, 183, 191},  //ulSetInterruptMask
+    {0x8056cc0, 0x20000324, 5, 183, -1},  //xQueueRegistry
+    {0x8056cc4, 0x20000324, 6, 183, -1},  //xQueueRegistry
+    {0x8056cd6, 0x20000324, 5, 183, -1},  //xQueueRegistry
+    {0x8056cda, 0x20000324, 6, 183, -1},  //xQueueRegistry
+    {0x8056cee, 0x20000324, 5, 183, -1},  //xQueueRegistry
+    {0x8056cf2, 0x20000324, 6, 183, -1},  //xQueueRegistry
+    {0x8056d00, 0x20000324, 5, 183, -1},  //xQueueRegistry
+    {0x8056d04, 0x20000324, 6, 183, -1},  //xQueueRegistry
+    {0x8056d48, 0x8057355, 4, 184, 188},  //vPortEnterCritical
+    {0x8056d78, 0x8057375, 4, 184, 189},  //vPortExitCritical
+    {0x8056d8c, 0x8055cd3, 4, 184, 200},  //vTaskPlaceOnEventListRestricted
+    {0x8056d96, 0x80569df, 4, 184, 21},  //prvUnlockQueue
+    {0x8056e02, 0x805549d, 4, 185, 192},  //vTaskSuspendAll
+    {0x8056e06, 0x20000364, 5, 185, -1},  //pxEnd
+    {0x8056e0a, 0x20000364, 6, 185, -1},  //pxEnd
+    {0x8056e14, 0x8057051, 4, 185, 24},  //prvHeapInit
+    {0x8056e36, 0x20000368, 5, 185, -1},  //xFreeBytesRemaining
+    {0x8056e3a, 0x20000368, 6, 185, -1},  //xFreeBytesRemaining
+    {0x8056e48, 0x2000036c, 5, 185, -1},  //xStart
+    {0x8056e4c, 0x2000036c, 6, 185, -1},  //xStart
+    {0x8056e5a, 0x20000374, 5, 185, -1},  //ucHeap
+    {0x8056e5e, 0x20000374, 6, 185, -1},  //ucHeap
+    {0x8056e6c, 0x20000374, 5, 185, -1},  //ucHeap
+    {0x8056e70, 0x20000374, 6, 185, -1},  //ucHeap
+    {0x8056e8e, 0x8057697, 4, 185, 191},  //ulSetInterruptMask
+    {0x8056ecc, 0x20000374, 5, 185, -1},  //ucHeap
+    {0x8056ed0, 0x20000374, 6, 185, -1},  //ucHeap
+    {0x8056ede, 0x20000374, 5, 185, -1},  //ucHeap
+    {0x8056ee2, 0x20000374, 6, 185, -1},  //ucHeap
+    {0x8056f00, 0x8057697, 4, 185, 191},  //ulSetInterruptMask
+    {0x8056f0c, 0x20000364, 5, 185, -1},  //pxEnd
+    {0x8056f10, 0x20000364, 6, 185, -1},  //pxEnd
+    {0x8056f2a, 0x20000374, 5, 185, -1},  //ucHeap
+    {0x8056f2e, 0x20000374, 6, 185, -1},  //ucHeap
+    {0x8056f3c, 0x20000374, 5, 185, -1},  //ucHeap
+    {0x8056f40, 0x20000374, 6, 185, -1},  //ucHeap
+    {0x8056f5e, 0x8057697, 4, 185, 191},  //ulSetInterruptMask
+    {0x8056f7a, 0x8057697, 4, 185, 191},  //ulSetInterruptMask
+    {0x8056fa2, 0x8057697, 4, 185, 191},  //ulSetInterruptMask
+    {0x8056fd2, 0x20000368, 5, 185, -1},  //xFreeBytesRemaining
+    {0x8056fd6, 0x20000368, 6, 185, -1},  //xFreeBytesRemaining
+    {0x8056fe2, 0x20002374, 5, 185, -1},  //xMinimumEverFreeBytesRemaining
+    {0x8056fe6, 0x20002374, 6, 185, -1},  //xMinimumEverFreeBytesRemaining
+    {0x8056ff2, 0x20000368, 5, 185, -1},  //xFreeBytesRemaining
+    {0x8056ff6, 0x20000368, 6, 185, -1},  //xFreeBytesRemaining
+    {0x8056ffc, 0x20002374, 5, 185, -1},  //xMinimumEverFreeBytesRemaining
+    {0x8057000, 0x20002374, 6, 185, -1},  //xMinimumEverFreeBytesRemaining
+    {0x805701a, 0x20002378, 5, 185, -1},  //xNumberOfSuccessfulAllocations
+    {0x805701e, 0x20002378, 6, 185, -1},  //xNumberOfSuccessfulAllocations
+    {0x8057034, 0x80555ad, 4, 185, 193},  //xTaskResumeAll
+    {0x8057042, 0x8057697, 4, 185, 191},  //ulSetInterruptMask
     {0x8057058, 0x20000374, 5, 24, -1},  //ucHeap
     {0x805705c, 0x20000374, 6, 24, -1},  //ucHeap
     {0x805707c, 0x20000374, 5, 24, -1},  //ucHeap
@@ -607,20 +607,20 @@ relocation_info_t relocation_info[753] = {
     {0x80570e2, 0x20002374, 6, 24, -1},  //xMinimumEverFreeBytesRemaining
     {0x80570ec, 0x20000368, 5, 24, -1},  //xFreeBytesRemaining
     {0x80570f0, 0x20000368, 6, 24, -1},  //xFreeBytesRemaining
-    {0x805711c, 0x20000374, 5, 186, -1},  //ucHeap
-    {0x8057120, 0x20000374, 6, 186, -1},  //ucHeap
-    {0x805712e, 0x20000374, 5, 186, -1},  //ucHeap
-    {0x8057132, 0x20000374, 6, 186, -1},  //ucHeap
-    {0x8057150, 0x8057697, 4, 186, 190},  //ulSetInterruptMask
-    {0x8057166, 0x8057697, 4, 186, 190},  //ulSetInterruptMask
-    {0x8057176, 0x8057697, 4, 186, 190},  //ulSetInterruptMask
-    {0x805719e, 0x805549d, 4, 186, 191},  //vTaskSuspendAll
-    {0x80571a6, 0x20000368, 5, 186, -1},  //xFreeBytesRemaining
-    {0x80571aa, 0x20000368, 6, 186, -1},  //xFreeBytesRemaining
-    {0x80571b6, 0x80571db, 4, 186, 25},  //prvInsertBlockIntoFreeList
-    {0x80571ba, 0x2000237c, 5, 186, -1},  //xNumberOfSuccessfulFrees
-    {0x80571be, 0x2000237c, 6, 186, -1},  //xNumberOfSuccessfulFrees
-    {0x80571c8, 0x80555ad, 4, 186, 192},  //xTaskResumeAll
+    {0x805711c, 0x20000374, 5, 187, -1},  //ucHeap
+    {0x8057120, 0x20000374, 6, 187, -1},  //ucHeap
+    {0x805712e, 0x20000374, 5, 187, -1},  //ucHeap
+    {0x8057132, 0x20000374, 6, 187, -1},  //ucHeap
+    {0x8057150, 0x8057697, 4, 187, 191},  //ulSetInterruptMask
+    {0x8057166, 0x8057697, 4, 187, 191},  //ulSetInterruptMask
+    {0x8057176, 0x8057697, 4, 187, 191},  //ulSetInterruptMask
+    {0x805719e, 0x805549d, 4, 187, 192},  //vTaskSuspendAll
+    {0x80571a6, 0x20000368, 5, 187, -1},  //xFreeBytesRemaining
+    {0x80571aa, 0x20000368, 6, 187, -1},  //xFreeBytesRemaining
+    {0x80571b6, 0x80571db, 4, 187, 25},  //prvInsertBlockIntoFreeList
+    {0x80571ba, 0x2000237c, 5, 187, -1},  //xNumberOfSuccessfulFrees
+    {0x80571be, 0x2000237c, 6, 187, -1},  //xNumberOfSuccessfulFrees
+    {0x80571c8, 0x80555ad, 4, 187, 193},  //xTaskResumeAll
     {0x80571e2, 0x2000036c, 5, 25, -1},  //xStart
     {0x80571e6, 0x2000036c, 6, 25, -1},  //xStart
     {0x8057206, 0x2000036c, 5, 25, -1},  //xStart
@@ -629,68 +629,68 @@ relocation_info_t relocation_info[753] = {
     {0x805721c, 0x20000374, 6, 25, -1},  //ucHeap
     {0x805722a, 0x20000374, 5, 25, -1},  //ucHeap
     {0x805722e, 0x20000374, 6, 25, -1},  //ucHeap
-    {0x805724c, 0x8057697, 4, 25, 190},  //ulSetInterruptMask
+    {0x805724c, 0x8057697, 4, 25, 191},  //ulSetInterruptMask
     {0x8057298, 0x20000364, 5, 25, -1},  //pxEnd
     {0x805729c, 0x20000364, 6, 25, -1},  //pxEnd
     {0x80572c2, 0x20000364, 5, 25, -1},  //pxEnd
     {0x80572c6, 0x20000364, 6, 25, -1},  //pxEnd
-    {0x805730e, 0x20000104, 5, 207, -1},  //SystemCoreClock
-    {0x8057312, 0x20000104, 6, 207, -1},  //SystemCoreClock
-    {0x8057358, 0x8057697, 4, 187, 190},  //ulSetInterruptMask
-    {0x805735c, 0x20000100, 5, 187, -1},  //ulCriticalNesting
-    {0x8057360, 0x20000100, 6, 187, -1},  //ulCriticalNesting
-    {0x8057378, 0x20000100, 5, 188, -1},  //ulCriticalNesting
-    {0x805737c, 0x20000100, 6, 188, -1},  //ulCriticalNesting
-    {0x8057386, 0x8057697, 4, 188, 190},  //ulSetInterruptMask
-    {0x805738e, 0x20000100, 5, 188, -1},  //ulCriticalNesting
-    {0x8057392, 0x20000100, 6, 188, -1},  //ulCriticalNesting
-    {0x80573a4, 0x80576ad, 4, 188, 194},  //vClearInterruptMask
-    {0x80573b2, 0x8057697, 4, 169, 190},  //ulSetInterruptMask
-    {0x80573b8, 0x8055a11, 4, 169, 193},  //xTaskIncrementTick
-    {0x80573d4, 0x80576ad, 4, 169, 194},  //vClearInterruptMask
-    {0x80573fa, 0x805764b, 4, 208, 209},  //vRestoreContextOfFirstTask
-    {0x8057400, 0x8057697, 4, 208, 190},  //ulSetInterruptMask
-    {0x8057438, 0x8057517, 5, 205, 26},  //prvTaskExitError
-    {0x805743c, 0x8057517, 6, 205, 26},  //prvTaskExitError
+    {0x805730e, 0x20000104, 5, 208, -1},  //SystemCoreClock
+    {0x8057312, 0x20000104, 6, 208, -1},  //SystemCoreClock
+    {0x8057358, 0x8057697, 4, 188, 191},  //ulSetInterruptMask
+    {0x805735c, 0x20000100, 5, 188, -1},  //ulCriticalNesting
+    {0x8057360, 0x20000100, 6, 188, -1},  //ulCriticalNesting
+    {0x8057378, 0x20000100, 5, 189, -1},  //ulCriticalNesting
+    {0x805737c, 0x20000100, 6, 189, -1},  //ulCriticalNesting
+    {0x8057386, 0x8057697, 4, 189, 191},  //ulSetInterruptMask
+    {0x805738e, 0x20000100, 5, 189, -1},  //ulCriticalNesting
+    {0x8057392, 0x20000100, 6, 189, -1},  //ulCriticalNesting
+    {0x80573a4, 0x80576ad, 4, 189, 195},  //vClearInterruptMask
+    {0x80573b2, 0x8057697, 4, 170, 191},  //ulSetInterruptMask
+    {0x80573b8, 0x8055a11, 4, 170, 194},  //xTaskIncrementTick
+    {0x80573d4, 0x80576ad, 4, 170, 195},  //vClearInterruptMask
+    {0x80573fa, 0x805764b, 4, 209, 210},  //vRestoreContextOfFirstTask
+    {0x8057400, 0x8057697, 4, 209, 191},  //ulSetInterruptMask
+    {0x8057438, 0x8057517, 5, 206, 26},  //prvTaskExitError
+    {0x805743c, 0x8057517, 6, 206, 26},  //prvTaskExitError
     {0x8057520, 0x20000100, 5, 26, -1},  //ulCriticalNesting
     {0x8057524, 0x20000100, 6, 26, -1},  //ulCriticalNesting
-    {0x8057530, 0x8057697, 4, 26, 190},  //ulSetInterruptMask
-    {0x8057538, 0x8057697, 4, 26, 190},  //ulSetInterruptMask
-    {0x8057576, 0x20002380, 5, 197, -1},  //ucMaxSysCallPriority
-    {0x805757a, 0x20002380, 6, 197, -1},  //ucMaxSysCallPriority
-    {0x8057586, 0x8057697, 4, 197, 190},  //ulSetInterruptMask
-    {0x805759c, 0x8057697, 4, 197, 190},  //ulSetInterruptMask
-    {0x80575cc, 0x20002384, 5, 197, -1},  //ulMaxPRIGROUPValue
-    {0x80575d0, 0x20002384, 6, 197, -1},  //ulMaxPRIGROUPValue
-    {0x80575e0, 0x20002384, 5, 197, -1},  //ulMaxPRIGROUPValue
-    {0x80575e4, 0x20002384, 6, 197, -1},  //ulMaxPRIGROUPValue
-    {0x80575ec, 0x20002384, 5, 197, -1},  //ulMaxPRIGROUPValue
-    {0x80575f0, 0x20002384, 6, 197, -1},  //ulMaxPRIGROUPValue
-    {0x8057626, 0x80572f7, 4, 197, 207},  //vPortSetupTimerInterrupt
-    {0x805762a, 0x20000100, 5, 197, -1},  //ulCriticalNesting
-    {0x805762e, 0x20000100, 6, 197, -1},  //ulCriticalNesting
-    {0x8057638, 0x8057677, 4, 197, 210},  //vStartFirstTask
-    {0x805763c, 0x8055843, 4, 197, 195},  //vTaskSwitchContext
-    {0x8057640, 0x8057517, 4, 197, 26},  //prvTaskExitError
-    {0x805764a, 0x20000108, 5, 209, -1},  //pxCurrentTCB
-    {0x805764e, 0x20000108, 6, 209, -1},  //pxCurrentTCB
-    {0x80576ce, 0x20000108, 5, 168, -1},  //pxCurrentTCB
-    {0x80576d2, 0x20000108, 6, 168, -1},  //pxCurrentTCB
-    {0x80576ea, 0x8055843, 4, 168, 195},  //vTaskSwitchContext
-    {0x80576f6, 0x20000108, 5, 168, -1},  //pxCurrentTCB
-    {0x80576fa, 0x20000108, 6, 168, -1},  //pxCurrentTCB
-    {0x805771e, 0x80573dd, 5, 167, 208},  //vPortSVCHandler_C
-    {0x8057722, 0x80573dd, 6, 167, 208},  //vPortSVCHandler_C
-    {0x80578cc, 0x8057e57, 4, 27, 28},  //HAL_NVIC_SetPriorityGrouping
+    {0x8057530, 0x8057697, 4, 26, 191},  //ulSetInterruptMask
+    {0x8057538, 0x8057697, 4, 26, 191},  //ulSetInterruptMask
+    {0x8057576, 0x20002380, 5, 198, -1},  //ucMaxSysCallPriority
+    {0x805757a, 0x20002380, 6, 198, -1},  //ucMaxSysCallPriority
+    {0x8057586, 0x8057697, 4, 198, 191},  //ulSetInterruptMask
+    {0x805759c, 0x8057697, 4, 198, 191},  //ulSetInterruptMask
+    {0x80575cc, 0x20002384, 5, 198, -1},  //ulMaxPRIGROUPValue
+    {0x80575d0, 0x20002384, 6, 198, -1},  //ulMaxPRIGROUPValue
+    {0x80575e0, 0x20002384, 5, 198, -1},  //ulMaxPRIGROUPValue
+    {0x80575e4, 0x20002384, 6, 198, -1},  //ulMaxPRIGROUPValue
+    {0x80575ec, 0x20002384, 5, 198, -1},  //ulMaxPRIGROUPValue
+    {0x80575f0, 0x20002384, 6, 198, -1},  //ulMaxPRIGROUPValue
+    {0x8057626, 0x80572f7, 4, 198, 208},  //vPortSetupTimerInterrupt
+    {0x805762a, 0x20000100, 5, 198, -1},  //ulCriticalNesting
+    {0x805762e, 0x20000100, 6, 198, -1},  //ulCriticalNesting
+    {0x8057638, 0x8057677, 4, 198, 211},  //vStartFirstTask
+    {0x805763c, 0x8055843, 4, 198, 196},  //vTaskSwitchContext
+    {0x8057640, 0x8057517, 4, 198, 26},  //prvTaskExitError
+    {0x805764a, 0x20000108, 5, 210, -1},  //pxCurrentTCB
+    {0x805764e, 0x20000108, 6, 210, -1},  //pxCurrentTCB
+    {0x80576ce, 0x20000108, 5, 169, -1},  //pxCurrentTCB
+    {0x80576d2, 0x20000108, 6, 169, -1},  //pxCurrentTCB
+    {0x80576ea, 0x8055843, 4, 169, 196},  //vTaskSwitchContext
+    {0x80576f6, 0x20000108, 5, 169, -1},  //pxCurrentTCB
+    {0x80576fa, 0x20000108, 6, 169, -1},  //pxCurrentTCB
+    {0x805771e, 0x80573dd, 5, 168, 209},  //vPortSVCHandler_C
+    {0x8057722, 0x80573dd, 6, 168, 209},  //vPortSVCHandler_C
+    {0x80578cc, 0x8057e89, 4, 27, 28},  //HAL_NVIC_SetPriorityGrouping
     {0x80578d0, 0x8057951, 4, 27, 29},  //SystemCoreClockUpdate
     {0x80578d4, 0x80578ef, 4, 27, 30},  //HAL_InitTick
     {0x80578e4, 0x805794d, 4, 27, 31},  //HAL_MspInit
     {0x8057900, 0x20000104, 5, 30, -1},  //SystemCoreClock
     {0x8057904, 0x20000104, 6, 30, -1},  //SystemCoreClock
-    {0x8057918, 0x8057f8d, 4, 30, 32},  //HAL_SYSTICK_Config
-    {0x805792a, 0x8057ea7, 4, 30, 33},  //HAL_NVIC_SetPriority
-    {0x805798a, 0x8058524, 5, 29, -1},  //MSIRangeTable
-    {0x805798e, 0x8058524, 6, 29, -1},  //MSIRangeTable
+    {0x8057918, 0x8057fbf, 4, 30, 32},  //HAL_SYSTICK_Config
+    {0x805792a, 0x8057ed9, 4, 30, 33},  //HAL_NVIC_SetPriority
+    {0x805798a, 0x805855c, 5, 29, -1},  //MSIRangeTable
+    {0x805798e, 0x805855c, 6, 29, -1},  //MSIRangeTable
     {0x80579be, 0x20000104, 5, 29, -1},  //SystemCoreClock
     {0x80579c2, 0x20000104, 6, 29, -1},  //SystemCoreClock
     {0x80579ca, 0x20000104, 5, 29, -1},  //SystemCoreClock
@@ -701,59 +701,73 @@ relocation_info_t relocation_info[753] = {
     {0x8057a7a, 0x20000104, 6, 29, -1},  //SystemCoreClock
     {0x8057a84, 0x20000104, 5, 29, -1},  //SystemCoreClock
     {0x8057a88, 0x20000104, 6, 29, -1},  //SystemCoreClock
-    {0x8057a9e, 0x8058564, 5, 29, -1},  //AHBPrescTable
-    {0x8057aa2, 0x8058564, 6, 29, -1},  //AHBPrescTable
+    {0x8057a9e, 0x805859c, 5, 29, -1},  //AHBPrescTable
+    {0x8057aa2, 0x805859c, 6, 29, -1},  //AHBPrescTable
     {0x8057aac, 0x20000104, 5, 29, -1},  //SystemCoreClock
     {0x8057ab0, 0x20000104, 6, 29, -1},  //SystemCoreClock
-    {0x8057e62, 0x8057e6b, 4, 28, 37},  //__NVIC_SetPriorityGrouping
-    {0x8057eb8, 0x8057ed9, 4, 33, 38},  //__NVIC_GetPriorityGrouping
-    {0x8057ec8, 0x8057ee9, 4, 33, 39},  //NVIC_EncodePriority
-    {0x8057ed0, 0x8057f4b, 4, 33, 40},  //__NVIC_SetPriority
-    {0x8057f96, 0x8057f9f, 4, 32, 41},  //SysTick_Config
-    {0x8057fce, 0x8057f4b, 4, 41, 40},  //__NVIC_SetPriority
-    {0x8057ff8, 0x20002520, 5, 170, -1},  //__StackLimit
-    {0x8057ffc, 0x20002520, 6, 170, -1},  //__StackLimit
-    {0x8058008, 0x20003520, 5, 170, -1},  //__StackTop
-    {0x805800c, 0x20003520, 6, 170, -1},  //__StackTop
-    {0x8058020, 0x805794f, 4, 170, 34},  //SystemInit
-    {0x8058024, 0x8058584, 5, 170, -1},  //__copy_table_start__
-    {0x8058028, 0x8058584, 6, 170, -1},  //__copy_table_start__
-    {0x8058032, 0x805859c, 5, 170, -1},  //__copy_table_end__
-    {0x8058036, 0x805859c, 6, 170, -1},  //__copy_table_end__
-    {0x8058072, 0x805859c, 5, 170, -1},  //__zero_table_start__
-    {0x8058076, 0x805859c, 6, 170, -1},  //__zero_table_start__
-    {0x8058080, 0x80585ac, 5, 170, -1},  //__zero_table_end__
-    {0x8058084, 0x80585ac, 6, 170, -1},  //__zero_table_end__
-    {0x80580bc, 0x80582e3, 4, 170, 42},  //main
-    {0x8058290, 0x8055c89, 4, 157, 171},  //xTaskGetTickCount
-    {0x80582a6, 0x80584c9, 4, 157, 158},  //initialise_benchmark
-    {0x80582aa, 0x8058369, 4, 157, 159},  //benchmark
-    {0x80582b2, 0x80584d7, 4, 157, 160},  //verify_benchmark
-    {0x80582c0, 0x8055c89, 4, 157, 171},  //xTaskGetTickCount
-    {0x80582dc, 0x80557f1, 4, 157, 172},  //vTaskDelay
-    {0x80582ec, 0x80578c1, 4, 42, 27},  //HAL_Init
-    {0x80582f0, 0x805831d, 4, 42, 161},  //MX_GPIO_Init
-    {0x80582fa, 0x8058289, 5, 42, 157},  //testThread1
-    {0x80582fe, 0x8058289, 6, 42, 157},  //testThread1
-    {0x8058302, 0x8058516, 5, 42, -1},  //.L.str
-    {0x8058306, 0x8058516, 6, 42, -1},  //.L.str
-    {0x805830e, 0x80551f5, 4, 42, 173},  //xTaskCreate
-    {0x8058314, 0x8055905, 4, 42, 174},  //vTaskStartScheduler
-    {0x805834c, 0x8057e1f, 4, 161, 36},  //HAL_GPIO_WritePin
-    {0x8058360, 0x8057ac1, 4, 161, 35},  //HAL_GPIO_Init
-    {0x805836c, 0x8058373, 4, 159, 162},  //Test
-    {0x8058378, 0x20002388, 5, 162, -1},  //Array
-    {0x805837c, 0x20002388, 6, 162, -1},  //Array
-    {0x8058384, 0x805838d, 4, 162, 163},  //Sum
-    {0x8058424, 0x2000251c, 5, 163, -1},  //Negtotal
-    {0x8058428, 0x2000251c, 6, 163, -1},  //Negtotal
-    {0x805843a, 0x20002388, 5, 164, -1},  //Array
-    {0x805843e, 0x20002388, 6, 164, -1},  //Array
-    {0x8058460, 0x805848f, 4, 164, 165},  //RandomInteger
-    {0x805848e, 0x20002518, 5, 165, -1},  //Seed
-    {0x8058492, 0x20002518, 6, 165, -1},  //Seed
-    {0x80584ba, 0x20002518, 5, 166, -1},  //Seed
-    {0x80584be, 0x20002518, 6, 166, -1},  //Seed
-    {0x80584cc, 0x80584bb, 4, 158, 166},  //InitSeed
-    {0x80584d0, 0x8058435, 4, 158, 164},  //Initialize
+    {0x8057e94, 0x8057e9d, 4, 28, 38},  //__NVIC_SetPriorityGrouping
+    {0x8057eea, 0x8057f0b, 4, 33, 39},  //__NVIC_GetPriorityGrouping
+    {0x8057efa, 0x8057f1b, 4, 33, 40},  //NVIC_EncodePriority
+    {0x8057f02, 0x8057f7d, 4, 33, 41},  //__NVIC_SetPriority
+    {0x8057fc8, 0x8057fd1, 4, 32, 42},  //SysTick_Config
+    {0x8058000, 0x8057f7d, 4, 42, 41},  //__NVIC_SetPriority
+    {0x805802a, 0x200023a0, 5, 171, -1},  //__StackLimit
+    {0x805802e, 0x200023a0, 6, 171, -1},  //__StackLimit
+    {0x805803a, 0x200033a0, 5, 171, -1},  //__StackTop
+    {0x805803e, 0x200033a0, 6, 171, -1},  //__StackTop
+    {0x8058052, 0x805794f, 4, 171, 34},  //SystemInit
+    {0x8058056, 0x80585bc, 5, 171, -1},  //__copy_table_start__
+    {0x805805a, 0x80585bc, 6, 171, -1},  //__copy_table_start__
+    {0x8058064, 0x80585d4, 5, 171, -1},  //__copy_table_end__
+    {0x8058068, 0x80585d4, 6, 171, -1},  //__copy_table_end__
+    {0x80580a4, 0x80585d4, 5, 171, -1},  //__zero_table_start__
+    {0x80580a8, 0x80585d4, 6, 171, -1},  //__zero_table_start__
+    {0x80580b2, 0x80585e4, 5, 171, -1},  //__zero_table_end__
+    {0x80580b6, 0x80585e4, 6, 171, -1},  //__zero_table_end__
+    {0x80580ee, 0x805832f, 4, 171, 43},  //main
+    {0x80582c2, 0x8055c89, 4, 158, 172},  //xTaskGetTickCount
+    {0x80582d8, 0x80584e1, 4, 158, 159},  //initialise_benchmark
+    {0x80582dc, 0x805849b, 4, 158, 160},  //benchmark
+    {0x80582e6, 0x8058503, 4, 158, 161},  //verify_benchmark
+    {0x80582f4, 0x8055c89, 4, 158, 172},  //xTaskGetTickCount
+    {0x8058310, 0x80557f1, 4, 158, 173},  //vTaskDelay
+    {0x8058320, 0x8057e57, 4, 162, 37},  //HAL_GPIO_TogglePin
+    {0x8058328, 0x80557f1, 4, 162, 173},  //vTaskDelay
+    {0x8058338, 0x80578c1, 4, 43, 27},  //HAL_Init
+    {0x805833c, 0x8058387, 4, 43, 163},  //MX_GPIO_Init
+    {0x8058346, 0x80582bb, 5, 43, 158},  //testThread1
+    {0x805834a, 0x80582bb, 6, 43, 158},  //testThread1
+    {0x805834e, 0x805854e, 5, 43, -1},  //.L.str
+    {0x8058352, 0x805854e, 6, 43, -1},  //.L.str
+    {0x805835a, 0x80551f5, 4, 43, 174},  //xTaskCreate
+    {0x8058364, 0x8058317, 5, 43, 162},  //testThread2
+    {0x8058368, 0x8058317, 6, 43, 162},  //testThread2
+    {0x805836c, 0x8058535, 5, 43, -1},  //.L.str.1
+    {0x8058370, 0x8058535, 6, 43, -1},  //.L.str.1
+    {0x8058378, 0x80551f5, 4, 43, 174},  //xTaskCreate
+    {0x805837e, 0x8055905, 4, 43, 175},  //vTaskStartScheduler
+    {0x80583b6, 0x8057e1f, 4, 163, 36},  //HAL_GPIO_WritePin
+    {0x80583ca, 0x8057ac1, 4, 163, 35},  //HAL_GPIO_Init
+    {0x80583fa, 0x80583d3, 4, 165, 164},  //divides
+    {0x805840c, 0x80583ef, 4, 166, 165},  //even
+    {0x805843a, 0x80583d3, 4, 166, 164},  //divides
+    {0x805846e, 0x2000238c, 5, 167, -1},  //x
+    {0x8058472, 0x2000238c, 6, 167, -1},  //x
+    {0x8058478, 0x20002390, 5, 167, -1},  //y
+    {0x805847c, 0x20002390, 6, 167, -1},  //y
+    {0x805849e, 0x805846d, 4, 160, 167},  //swap
+    {0x80584a2, 0x2000238c, 5, 160, -1},  //x
+    {0x80584a6, 0x2000238c, 6, 160, -1},  //x
+    {0x80584ac, 0x8058403, 4, 160, 166},  //prime
+    {0x80584b8, 0x20002390, 5, 160, -1},  //y
+    {0x80584bc, 0x20002390, 6, 160, -1},  //y
+    {0x80584c2, 0x8058403, 4, 160, 166},  //prime
+    {0x80584d4, 0x20002388, 5, 160, -1},  //result
+    {0x80584d8, 0x20002388, 6, 160, -1},  //result
+    {0x80584e0, 0x2000238c, 5, 159, -1},  //x
+    {0x80584e4, 0x2000238c, 6, 159, -1},  //x
+    {0x80584ee, 0x20002390, 5, 159, -1},  //y
+    {0x80584f2, 0x20002390, 6, 159, -1},  //y
+    {0x805850a, 0x20002388, 5, 161, -1},  //result
+    {0x805850e, 0x20002388, 6, 161, -1},  //result
 };
