@@ -1,10 +1,10 @@
 #include "relocation.h"
 
-uint32_t table_size = 196;
+uint32_t table_size = 178;
 
-relocation_info_t relocation_info[196] = {
+relocation_info_t relocation_info[178] = {
     {0x8055000, 0x20001120, 0, -1, -1},  //__StackTop
-    {0x8055004, 0x8055927, 0, -1, 142},  //Reset_Handler
+    {0x8055004, 0x8055927, 0, -1, 141},  //Reset_Handler
     {0x8055008, 0x80559f5, 0, -1, 16},  //NMI_Handler
     {0x805500c, 0x80559f9, 0, -1, 17},  //HardFault_Handler
     {0x8055010, 0x80559fd, 0, -1, 18},  //MemManage_Handler
@@ -130,8 +130,8 @@ relocation_info_t relocation_info[196] = {
     {0x8055238, 0x20000100, 6, 3, -1},  //SystemCoreClock
     {0x805524c, 0x80558c1, 4, 3, 5},  //HAL_SYSTICK_Config
     {0x805525e, 0x80557db, 4, 3, 6},  //HAL_NVIC_SetPriority
-    {0x80552be, 0x8055e0c, 5, 2, -1},  //MSIRangeTable
-    {0x80552c2, 0x8055e0c, 6, 2, -1},  //MSIRangeTable
+    {0x80552be, 0x805695c, 5, 2, -1},  //MSIRangeTable
+    {0x80552c2, 0x805695c, 6, 2, -1},  //MSIRangeTable
     {0x80552f2, 0x20000100, 5, 2, -1},  //SystemCoreClock
     {0x80552f6, 0x20000100, 6, 2, -1},  //SystemCoreClock
     {0x80552fe, 0x20000100, 5, 2, -1},  //SystemCoreClock
@@ -142,8 +142,8 @@ relocation_info_t relocation_info[196] = {
     {0x80553ae, 0x20000100, 6, 2, -1},  //SystemCoreClock
     {0x80553b8, 0x20000100, 5, 2, -1},  //SystemCoreClock
     {0x80553bc, 0x20000100, 6, 2, -1},  //SystemCoreClock
-    {0x80553d2, 0x8055e4c, 5, 2, -1},  //AHBPrescTable
-    {0x80553d6, 0x8055e4c, 6, 2, -1},  //AHBPrescTable
+    {0x80553d2, 0x805699c, 5, 2, -1},  //AHBPrescTable
+    {0x80553d6, 0x805699c, 6, 2, -1},  //AHBPrescTable
     {0x80553e0, 0x20000100, 5, 2, -1},  //SystemCoreClock
     {0x80553e4, 0x20000100, 6, 2, -1},  //SystemCoreClock
     {0x8055796, 0x805579f, 4, 1, 10},  //__NVIC_SetPriorityGrouping
@@ -152,51 +152,33 @@ relocation_info_t relocation_info[196] = {
     {0x8055804, 0x805587f, 4, 6, 13},  //__NVIC_SetPriority
     {0x80558ca, 0x80558d3, 4, 5, 14},  //SysTick_Config
     {0x8055902, 0x805587f, 4, 14, 13},  //__NVIC_SetPriority
-    {0x805592c, 0x20000120, 5, 142, -1},  //__StackLimit
-    {0x8055930, 0x20000120, 6, 142, -1},  //__StackLimit
-    {0x805593c, 0x20001120, 5, 142, -1},  //__StackTop
-    {0x8055940, 0x20001120, 6, 142, -1},  //__StackTop
-    {0x8055954, 0x8055283, 4, 142, 7},  //SystemInit
-    {0x8055958, 0x8055e6c, 5, 142, -1},  //__copy_table_start__
-    {0x805595c, 0x8055e6c, 6, 142, -1},  //__copy_table_start__
-    {0x8055966, 0x8055e84, 5, 142, -1},  //__copy_table_end__
-    {0x805596a, 0x8055e84, 6, 142, -1},  //__copy_table_end__
-    {0x80559a6, 0x8055e84, 5, 142, -1},  //__zero_table_start__
-    {0x80559aa, 0x8055e84, 6, 142, -1},  //__zero_table_start__
-    {0x80559b4, 0x8055e94, 5, 142, -1},  //__zero_table_end__
-    {0x80559b8, 0x8055e94, 6, 142, -1},  //__zero_table_end__
-    {0x80559f0, 0x8055c4b, 4, 142, 15},  //main
-    {0x8055bf4, 0x8055dbf, 4, 133, 134},  //initialise_benchmark
-    {0x8055bf8, 0x8055d79, 4, 133, 135},  //benchmark
-    {0x8055c00, 0x8055de1, 4, 133, 136},  //verify_benchmark
-    {0x8055c16, 0x8055dbf, 4, 133, 134},  //initialise_benchmark
-    {0x8055c1a, 0x8055d79, 4, 133, 135},  //benchmark
-    {0x8055c24, 0x8055de1, 4, 133, 136},  //verify_benchmark
-    {0x8055c54, 0x80551f5, 4, 15, 0},  //HAL_Init
-    {0x8055c58, 0x8055c65, 4, 15, 137},  //MX_GPIO_Init
-    {0x8055c5c, 0x8055bc7, 4, 15, 133},  //func
-    {0x8055c94, 0x8055753, 4, 137, 9},  //HAL_GPIO_WritePin
-    {0x8055ca8, 0x80553f5, 4, 137, 8},  //HAL_GPIO_Init
-    {0x8055cd8, 0x8055cb1, 4, 139, 138},  //divides
-    {0x8055cea, 0x8055ccd, 4, 140, 139},  //even
-    {0x8055d18, 0x8055cb1, 4, 140, 138},  //divides
-    {0x8055d4c, 0x20000108, 5, 141, -1},  //x
-    {0x8055d50, 0x20000108, 6, 141, -1},  //x
-    {0x8055d56, 0x2000010c, 5, 141, -1},  //y
-    {0x8055d5a, 0x2000010c, 6, 141, -1},  //y
-    {0x8055d7c, 0x8055d4b, 4, 135, 141},  //swap
-    {0x8055d80, 0x20000108, 5, 135, -1},  //x
-    {0x8055d84, 0x20000108, 6, 135, -1},  //x
-    {0x8055d8a, 0x8055ce1, 4, 135, 140},  //prime
-    {0x8055d96, 0x2000010c, 5, 135, -1},  //y
-    {0x8055d9a, 0x2000010c, 6, 135, -1},  //y
-    {0x8055da0, 0x8055ce1, 4, 135, 140},  //prime
-    {0x8055db2, 0x20000104, 5, 135, -1},  //result
-    {0x8055db6, 0x20000104, 6, 135, -1},  //result
-    {0x8055dbe, 0x20000108, 5, 134, -1},  //x
-    {0x8055dc2, 0x20000108, 6, 134, -1},  //x
-    {0x8055dcc, 0x2000010c, 5, 134, -1},  //y
-    {0x8055dd0, 0x2000010c, 6, 134, -1},  //y
-    {0x8055de8, 0x20000104, 5, 136, -1},  //result
-    {0x8055dec, 0x20000104, 6, 136, -1},  //result
+    {0x805592c, 0x20000120, 5, 141, -1},  //__StackLimit
+    {0x8055930, 0x20000120, 6, 141, -1},  //__StackLimit
+    {0x805593c, 0x20001120, 5, 141, -1},  //__StackTop
+    {0x8055940, 0x20001120, 6, 141, -1},  //__StackTop
+    {0x8055954, 0x8055283, 4, 141, 7},  //SystemInit
+    {0x8055958, 0x80569bc, 5, 141, -1},  //__copy_table_start__
+    {0x805595c, 0x80569bc, 6, 141, -1},  //__copy_table_start__
+    {0x8055966, 0x80569d4, 5, 141, -1},  //__copy_table_end__
+    {0x805596a, 0x80569d4, 6, 141, -1},  //__copy_table_end__
+    {0x80559a6, 0x80569d4, 5, 141, -1},  //__zero_table_start__
+    {0x80559aa, 0x80569d4, 6, 141, -1},  //__zero_table_start__
+    {0x80559b4, 0x80569e4, 5, 141, -1},  //__zero_table_end__
+    {0x80559b8, 0x80569e4, 6, 141, -1},  //__zero_table_end__
+    {0x80559f0, 0x8055c4d, 4, 141, 15},  //main
+    {0x8055bf4, 0x8056911, 4, 133, 134},  //initialise_benchmark
+    {0x8055bf8, 0x8056913, 4, 133, 135},  //benchmark
+    {0x8055c00, 0x805693b, 4, 133, 136},  //verify_benchmark
+    {0x8055c16, 0x8056911, 4, 133, 134},  //initialise_benchmark
+    {0x8055c1a, 0x8056913, 4, 133, 135},  //benchmark
+    {0x8055c22, 0x805693b, 4, 133, 136},  //verify_benchmark
+    {0x8055c56, 0x80551f5, 4, 15, 0},  //HAL_Init
+    {0x8055c5a, 0x8055c71, 55, 15, 137},  //MX_GPIO_Init
+    {0x8055c5e, 0x8055c71, 66, 15, 137},  //MX_GPIO_Init
+    {0x8055c68, 0x8055bc7, 4, 15, 133},  //func
+    {0x8055ca0, 0x8055753, 4, 137, 9},  //HAL_GPIO_WritePin
+    {0x8055cb4, 0x80553f5, 4, 137, 8},  //HAL_GPIO_Init
+    {0x805691e, 0x805685b, 4, 135, 140},  //swi10
+    {0x8056926, 0x805646d, 4, 135, 139},  //swi50
+    {0x805692e, 0x8055cbd, 4, 135, 138},  //swi120
 };

@@ -4,6 +4,8 @@
 #include "stm32l5xx_hal_flash.h"
 #include "read_flash.h"
 
+#define ENCODE_KEY 0x00000001
+
 void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
     HAL_FLASH_Unlock();
     uint32_t i = 0;
@@ -98,6 +100,28 @@ void movt_calculate(relocation_info_t* entry) {
     *((uint32_t*)pos) = movt_address_calculate(*(uint32_t*)(entry->addr), val);
 }
 
+void fp_movw_calculate(relocation_info_t* entry) {
+    int      func_id1 = entry->func_id1;
+    int      func_id2 = entry->func_id2;
+    uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
+    uint32_t val = entry->value^ ENCODE_KEY;
+    if (func_id2 != -1) {
+        val = func_info[func_id2].reloc_addr;
+    }
+    *((uint32_t*)pos) = movw_address_calculate(*(uint32_t*)(entry->addr), val);
+}
+
+void fp_movt_calculate(relocation_info_t* entry) {
+    int      func_id1 = entry->func_id1;
+    int      func_id2 = entry->func_id2;
+    uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
+    uint32_t val = entry->value^ ENCODE_KEY;
+    if (func_id2 != -1) {
+        val = func_info[func_id2].reloc_addr;
+    }
+    *((uint32_t*)pos) = movt_address_calculate(*(uint32_t*)(entry->addr), val);
+}
+
 void relocation(region_t* vector_addr, uint32_t src_address) {
     // 第一项，直接写入即可
     *((uint32_t*)(relocation_info[0].addr + vector_addr->region_start - src_address)) =
@@ -121,7 +145,11 @@ void relocation(region_t* vector_addr, uint32_t src_address) {
             movw_calculate(relocation_info + i);
         } else if (relocation_info[i].type == 6) { // absoulately address: mowt
             movt_calculate(relocation_info + i);
-        } else {
+        } else if (relocation_info[i].type == 55) { // function pointer: moww
+            fp_movt_calculate(relocation_info + i);
+        }else if (relocation_info[i].type == 66) { // function pointer: mowt
+            fp_movt_calculate(relocation_info + i);
+        }else {
         }
     }
 }

@@ -116,7 +116,7 @@ int main(void) {
         tfm_core_panic();
     }
 #endif
-// #define TFM_ASLR
+//#define TFM_ASLR
 #ifdef TFM_ASLR
     uint32_t __text_address__ = 0x8055000;
     region_t a = {0x20005000, 0};

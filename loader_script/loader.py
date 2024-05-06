@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 from elftools.elf.elffile import ELFFile
 
-project_path = '/home/han/srtp/tfm_freeRTOS_dwt'
+project_path = '/home/jiangzixian/relocation/dwt_test'
 
 elf_path = project_path + "/build/bin/ns_app.elf"
 output_relocation_info_path = (
@@ -201,17 +202,24 @@ def generate_relocation_info(elf_file, symbol_tables, functions_info):
                 func_id1 = get_function_id(functions_info, offset)
                 func_id2 = get_function_id(functions_info, value)
             elif relocation_type == 0x2F:
-                type = 5  # absoultably address: movw
                 func_id1 = get_function_id(functions_info, offset)
                 func_id2 = get_function_id(functions_info, value)
+                if value==functions_info[func_id2][0]:
+                    type=55 #func pointer
+                else:
+                    type = 5  # absoultably address: movw
             elif relocation_type == 0x30:
-                type = 6  # absoulately address: movt
                 func_id1 = get_function_id(functions_info, offset)
                 func_id2 = get_function_id(functions_info, value)
+                if value==functions_info[func_id2][0]:
+                    type=66 #func pointer
+                else:
+                    type = 6  # absoultably address: movw
             else:
                 print(f"error occur: the symbol type not found: {name}")
 
             info.append([offset, value, type,  func_id1, func_id2, name])
+    print(info)
     return info
 
 # 生成函数信息
@@ -241,7 +249,6 @@ def generate_functions_info(symbol_tables):
             # + sections_info[symbol[3]][0]
             global trampoline_blx_size
             trampoline_blx_size = symbol[1]
-
     return functions_info
 
 def output_trampoline():

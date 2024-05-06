@@ -1,8 +1,8 @@
 #include "func.h"
 
-uint32_t func_info_size = 143;
+uint32_t func_info_size = 142;
 
-func_info_t func_info[143] = {
+func_info_t func_info[142] = {
     {0x80551f5, 46, -1, 0},  //HAL_Init
     {0x805578b, 20, -1, 0},  //HAL_NVIC_SetPriorityGrouping
     {0x8055285, 368, -1, 0},  //SystemCoreClockUpdate
@@ -18,7 +18,7 @@ func_info_t func_info[143] = {
     {0x805581d, 98, -1, 0},  //NVIC_EncodePriority
     {0x805587f, 66, -1, 0},  //__NVIC_SetPriority
     {0x80558d3, 84, -1, 0},  //SysTick_Config
-    {0x8055c4b, 26, -1, 0},  //main
+    {0x8055c4d, 36, -1, 0},  //main
     {0x80559f5, 4, -1, 0},  //NMI_Handler
     {0x80559f9, 4, -1, 0},  //HardFault_Handler
     {0x80559fd, 4, -1, 0},  //MemManage_Handler
@@ -136,14 +136,13 @@ func_info_t func_info[143] = {
     {0x8055bbb, 4, -1, 0},  //UCPD1_IRQHandler
     {0x8055bbf, 4, -1, 0},  //ICACHE_IRQHandler
     {0x8055bc3, 4, -1, 0},  //OTFDEC1_IRQHandler
-    {0x8055bc7, 132, -1, 0},  //func
-    {0x8055dbf, 34, -1, 0},  //initialise_benchmark
-    {0x8055d79, 70, -1, 0},  //benchmark
-    {0x8055de1, 42, -1, 0},  //verify_benchmark
-    {0x8055c65, 76, -1, 0},  //MX_GPIO_Init
-    {0x8055cb1, 28, -1, 0},  //divides
-    {0x8055ccd, 20, -1, 0},  //even
-    {0x8055ce1, 106, -1, 0},  //prime
-    {0x8055d4b, 46, -1, 0},  //swap
+    {0x8055bc7, 134, -1, 0},  //func
+    {0x8056911, 2, -1, 0},  //initialise_benchmark
+    {0x8056913, 40, -1, 0},  //benchmark
+    {0x805693b, 34, -1, 0},  //verify_benchmark
+    {0x8055c71, 76, -1, 0},  //MX_GPIO_Init
+    {0x8055cbd, 1968, -1, 0},  //swi120
+    {0x805646d, 1006, -1, 0},  //swi50
+    {0x805685b, 182, -1, 0},  //swi10
     {0x8055927, 206, -1, 0},  //Reset_Handler
 };

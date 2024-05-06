@@ -70,19 +70,28 @@ void func() {
     int result = benchmark();
     verify_benchmark(result);
     uint32_t start = SysTick->VAL;
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 500; ++i) {
         initialise_benchmark();
         int result = benchmark();
         verify_benchmark(result);
     }
     uint32_t end = SysTick->VAL;
     uint32_t res = start - end;
+    uint32_t end1 = SysTick->VAL;
 }
 
 char cArray[128] __attribute__((aligned(128)));
 int  main() {
     HAL_Init();
-    MX_GPIO_Init();
+    // 声明一个函数指针类型
+    void (*functionPtr)();
+
+    // 将函数指针指向 greet() 函数
+    functionPtr = MX_GPIO_Init;
+
+    // 通过函数指针调用 greet() 函数
+    functionPtr();
+    //MX_GPIO_Init();
     func();
 
     // BaseType_t xReturned;
