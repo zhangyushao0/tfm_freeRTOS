@@ -216,8 +216,7 @@
 
 ### 不开
 
-<img alt="picture 65" src="https://cdn.jsdelivr.net/gh/zhanghancs/blog-img@main/img/20240511-205331414.png" />
-
+<img alt="picture 66" src="https://cdn.jsdelivr.net/gh/zhanghancs/blog-img@main/img/20240511-212310882.png" />
 
 ## 14. embench_primecount
 

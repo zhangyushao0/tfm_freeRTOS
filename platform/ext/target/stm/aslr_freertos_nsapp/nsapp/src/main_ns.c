@@ -28,46 +28,33 @@ MX_GPIO_Init(void) {
     HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
 
-// int  arr[1000];
-// void testThread1(void* pvParameters) {
-//     uint32_t start = xTaskGetTickCount();
-//     int      count = 0;
-//     // uint32_t end = 0;
-//     // uint32_t res = 0;
-//     for (int i = 0; i < 1000; ++i) {
+extern int cnt;
+
+// void func() {
+//     SysTick->CTRL = 0;          // Disable SysTick
+//     SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
+//     SysTick->VAL = 0;           // Clear the current value to 0
+//     SysTick->CTRL = 0x7;
+//     cnt = 0;
+//     uint32_t start = SysTick->VAL;
+//     for (int i = 0; i < 50; ++i) {
 //         initialise_benchmark();
 //         int result = benchmark();
 //         verify_benchmark(result);
-//         // arr[i] = xTaskGetTickCount();
-//         ++count;
 //     }
-//     uint32_t end = xTaskGetTickCount();
-//     uint32_t res = func(start, end);
-//     while (1) {
-//         res = end - start;
-//         vTaskDelay(1000);
-//     }
+//     uint32_t end = SysTick->VAL;
+//     uint32_t res = start - end;
+//     uint32_t load = cnt;
+//     int      a_b = geta_b();
+//     int      b_a = getb_a();
 // }
 
-// void testThread2(void* pvParameters) {
-//     while (1) {
-//         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-//         vTaskDelay(100);
-//     }
-// }
+char cArray[128] __attribute__((aligned(128)));
 
-// void testThread3(void* pvParameters) {
-//     initialise_benchmark();
-//     int result = benchmark();
-//     verify_benchmark(result);
-//     while (1) {
-//         vTaskDelay(500);
-//     }
-// }
+int main() {
+    HAL_Init();
+    MX_GPIO_Init();
 
-extern int cnt;
-
-void func() {
     SysTick->CTRL = 0;          // Disable SysTick
     SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
     SysTick->VAL = 0;           // Clear the current value to 0
@@ -82,47 +69,15 @@ void func() {
     uint32_t end = SysTick->VAL;
     uint32_t res = start - end;
     uint32_t load = cnt;
-    int      a_b = geta_b();
-    int      b_a = getb_a();
-}
-
-char cArray[128] __attribute__((aligned(128)));
-
-int main() {
-    HAL_Init();
-    MX_GPIO_Init();
-
-    func();
-
-    //  BaseType_t xReturned;
-
-    //  xReturned = xTaskCreate(
-    //      testThread2,           /* Function that implements the task. */
-    //      "testThread1",         /* Text name for the task. */
-    //      ((uint16_t)200),       /* Stack size in words, not bytes. */
-    //      NULL,                  /* Parameter passed into the task. */
-    //      1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
-    //      NULL);                 /* Used to pass out the created task's handle. */
-
-    //  xReturned = xTaskCreate(
-    //      testThread2,           /* Function that implements the task. */
-    //      "testThread2",         /* Text name for the task. */
-    //      ((uint16_t)200),       /* Stack size in words, not bytes. */
-    //      NULL,                  /* Parameter passed into the task. */
-    //      1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
-    //      NULL);                 /* Used to pass out the created task's handle. */
-
-    //  xReturned = xTaskCreate(
-    //      testThread3,           /* Function that implements the task. */
-    //      "testThread3",         /* Text name for the task. */
-    //      ((uint16_t)100),       /* Stack size in words, not bytes. */
-    //      NULL,                  /* Parameter passed into the task. */
-    //      1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
-    //      NULL);
-    /* 启动调度器 */
-    //  vTaskStartScheduler();
+    int      res_a_b = geta_b();
+    int      res_b_a = getb_a();
 
     /* 如果系统正常工作，以下代码不会执行 */
+    __asm__ volatile("mov r3, %0\n\t" : : "r"(start) : "r3");
+    __asm__ volatile("mov r4, %0\n\t" : : "r"(end) : "r4");
+    __asm__ volatile("mov r5, %0\n\t" : : "r"(load) : "r5");
+    __asm__ volatile("mov r6, %0\n\t" : : "r"(res_b_a) : "r6");
+    *((uint32_t*)(0x200049a0)) = 1;
     for (;;) {
         trampoline_A_B();
         trampoline_B_A();

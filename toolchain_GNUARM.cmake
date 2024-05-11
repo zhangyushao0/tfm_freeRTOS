@@ -209,10 +209,10 @@ macro(tfm_toolchain_reload_compiler)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include")
 
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
     set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/home/han/srtp/tfm_freeRTOS/ld/ld.lld")
 
-    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
+    # set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
     set(BL2_COMPILER_CP_FLAG -mfloat-abi=soft)
 
     if(CONFIG_TFM_FLOAT_ABI STREQUAL "hard")

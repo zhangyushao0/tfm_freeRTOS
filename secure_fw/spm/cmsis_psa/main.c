@@ -154,7 +154,7 @@ int main(void) {
     mpu_init_st(a, b, new_handler_section, new_table_addr, tramp_stack_addr, reset_region);
     uint32_t start = x;
     uint32_t end = SysTick->VAL;
-    uint32_t res = start - end;
+    uint32_t res_res = start - end;
 
     // DWT_enable(a, b);
 #endif
