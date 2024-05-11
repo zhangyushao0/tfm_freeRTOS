@@ -197,8 +197,8 @@ void mpu_init_st(region_t a, region_t b, uint32_t code_addr, uint32_t table_addr
     region_table.region_limit = table_addr + 0x2000;
     region_stack.region_base = stack_addr;
     region_stack.region_limit = stack_addr + 0x1000;
-    region_flash.region_base = rounddown(new_copy_table.old_addr);
-    region_flash.region_limit = roundup(new_zero_table.end_addr);
+    region_flash.region_base = 0x08050000;
+    region_flash.region_limit = 0x08100000;
     mpu_armv8m_enable_st(&dev_mpu_ns, 0, 0);
 
     mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_data);

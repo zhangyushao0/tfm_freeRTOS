@@ -6,6 +6,8 @@
 #include "trampoline.h"
 #include "read_flash.h"
 
+#define ENCODE_KEY 0x00000001
+
 void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
     HAL_FLASH_Unlock();
     uint32_t i = 0;
@@ -115,19 +117,23 @@ uint32_t movt_address_calculate(uint32_t ori_val, uint32_t addr) {
     return new_val;
 }
 
-void vector_table_calculate(relocation_info_t* entry, region_t* vector_addr, uint32_t new_handler_addr, uint32_t src_address, int i) {
-    int func_id = entry->func_id2;
-    int addr = func_info[func_id].reloc_addr;
-    if (i == 8 || i == 10 || i == 11) {
+void vector_table_calculate(int i, region_t* vector_addr, uint32_t new_handler_addr, uint32_t src_address) {
+    relocation_info_t* entry = &relocation_info[i];
+
+    uint32_t func_id = entry->func_id2;
+    uint32_t addr = func_info[func_id].reloc_addr;
+    if (i == 11) {
         addr = func_info[func_id].addr + new_handler_addr - old_handler_section.region_start;
     }
     *((uint32_t*)(entry->addr + vector_addr->region_start - src_address)) = addr;
     vector_addr->region_size += 4;
 }
 
-void bl_calculate(relocation_info_t* entry, uint32_t new_trampline_addr) {
-    int      func_id1 = entry->func_id1;
-    int      func_id2 = entry->func_id2;
+void bl_calculate(int i, uint32_t new_trampline_addr) {
+    relocation_info_t* entry = &relocation_info[i];
+
+    uint32_t func_id1 = entry->func_id1;
+    uint32_t func_id2 = entry->func_id2;
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = func_info[func_id2].reloc_addr;
     if (func_info[func_id2].region != func_info[func_id1].region) {
@@ -140,24 +146,30 @@ void bl_calculate(relocation_info_t* entry, uint32_t new_trampline_addr) {
     }
 }
 
-void movw_calculate(relocation_info_t* entry) {
-    int      func_id1 = entry->func_id1;
-    int      func_id2 = entry->func_id2;
+void movw_calculate(int i) {
+    relocation_info_t* entry = &relocation_info[i];
+
+    uint32_t func_id1 = entry->func_id1;
+    uint32_t func_id2 = entry->func_id2;
+
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = entry->value;
     if (func_id2 != -1) {
-        val = func_info[func_id2].reloc_addr;
+        val = func_info[func_id2].reloc_addr; // ^ ENCODE_KEY;
     }
     *((uint32_t*)pos) = movw_address_calculate(*(uint32_t*)(entry->addr), val);
 }
 
-void movt_calculate(relocation_info_t* entry) {
-    int      func_id1 = entry->func_id1;
-    int      func_id2 = entry->func_id2;
+void movt_calculate(int i) {
+    relocation_info_t* entry = &relocation_info[i];
+
+    uint32_t func_id1 = entry->func_id1;
+    uint32_t func_id2 = entry->func_id2;
+
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = entry->value;
     if (func_id2 != -1) {
-        val = func_info[func_id2].reloc_addr;
+        val = func_info[func_id2].reloc_addr; // ^ ENCODE_KEY;
     }
     *((uint32_t*)pos) = movt_address_calculate(*(uint32_t*)(entry->addr), val);
 }
@@ -175,22 +187,15 @@ int relocation(region_t* vector_addr, uint32_t new_trampline_addr, uint32_t new_
     vector_addr->region_size += 4;
     reset_region = func_info[func_id].region;
     for (int i = 2; i < table_size; ++i) {
-        if (relocation_info[i].value == new_AHBPrescTable.old_addr) {
-            relocation_info[i].value = new_AHBPrescTable.new_addr;
-        } else if (relocation_info[i].value == new_MSIRangeTable.old_addr) {
-            relocation_info[i].value = new_MSIRangeTable.new_addr;
-        }
-    }
-    for (int i = 2; i < table_size; ++i) {
         // which range of the identifier
         if (relocation_info[i].type == 0) { // exception entry
-            vector_table_calculate(relocation_info + i, vector_addr, new_handler_addr, src_address, i);
+            vector_table_calculate(i, vector_addr, new_handler_addr, src_address);
         } else if (relocation_info[i].type == 4) { // func call
-            bl_calculate(relocation_info + i, new_trampline_addr);
+            bl_calculate(i, new_trampline_addr);
         } else if (relocation_info[i].type == 5) { // absoultably address: movw
-            movw_calculate(relocation_info + i);
+            movw_calculate(i);
         } else if (relocation_info[i].type == 6) { // absoulately address: mowt
-            movt_calculate(relocation_info + i);
+            movt_calculate(i);
         } else {
         }
     }
@@ -199,7 +204,7 @@ int relocation(region_t* vector_addr, uint32_t new_trampline_addr, uint32_t new_
 
 void copy_trampline_handler(uint32_t new_trampline_addr, uint32_t new_handler_addr) {
     copy_text2ram(new_trampline_addr, old_trampline_section.region_start, old_trampline_section.region_size);
-    copy_text2ram(new_handler_addr, old_handler_section.region_start, old_handler_section.region_size);
+    copy_text2ram(new_handler_addr, old_handler_section.region_start, 0x100);
 }
 
 void copy_table(uint32_t new_table_addr) {

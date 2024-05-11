@@ -27,17 +27,7 @@ MX_GPIO_Init(void) {
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
-void* ret_addr1;
-void* ret_addr2;
 
-int sum(int a, int b) {
-    return a + b;
-}
-int a = 0;
-int b = 0;
-int func(int start, int end) {
-    return end - start;
-}
 // int  arr[1000];
 // void testThread1(void* pvParameters) {
 //     uint32_t start = xTaskGetTickCount();
@@ -75,29 +65,34 @@ int func(int start, int end) {
 //     }
 // }
 
+extern int cnt;
+
+void func() {
+    SysTick->CTRL = 0;          // Disable SysTick
+    SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
+    SysTick->VAL = 0;           // Clear the current value to 0
+    SysTick->CTRL = 0x7;
+    cnt = 0;
+    uint32_t start = SysTick->VAL;
+    for (int i = 0; i < 500; ++i) {
+        initialise_benchmark();
+        int result = benchmark();
+        verify_benchmark(result);
+    }
+    uint32_t end = SysTick->VAL;
+    uint32_t res = start - end;
+    uint32_t load = cnt;
+    int      a_b = geta_b();
+    int      b_a = getb_a();
+}
+
 char cArray[128] __attribute__((aligned(128)));
 
 int main() {
     HAL_Init();
     MX_GPIO_Init();
 
-    SysTick->CTRL = 0;          // Disable SysTick
-    SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
-    SysTick->VAL = 0x0;         // Clear the current value to 0
-    SysTick->CTRL = 0x5;
-    uint32_t start = SysTick->VAL;
-    // for (int i = 0; i < 1000; ++i) {
-    initialise_benchmark();
-    int result = benchmark();
-    verify_benchmark(result);
-    // }
-    uint32_t end = SysTick->VAL;
-    uint32_t end2 = SysTick->VAL;
-    uint32_t res = start - end;
-    int      a_b = 0;
-
-    a_b = geta_b();
-    int b_a = getb_a();
+    func();
 
     //  BaseType_t xReturned;
 

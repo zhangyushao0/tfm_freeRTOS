@@ -161,7 +161,7 @@ __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline
         "   sub r10, #4    \n"
         "   bx  lr         \n");
 }
-#define REGION_DIVIDE (20010000)
+#define REGION_DIVIDE ((0x20010000))
 
 #define RETURN_REGION1()                                     \
     __asm__ volatile(                                        \
@@ -175,10 +175,10 @@ __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline
     __asm__ volatile(                                        \
         "cmp r0, r1        \n"                               \
         "blt second_region1  \n");                           \
-    MPU_DISABLE_1_ENABLE_0();                                \
+    MPU_DISABLE_0_ENABLE_1();                                \
     __asm__ volatile("b done1            \n");               \
     __asm__ volatile("second_region1:     \n");              \
-    MPU_DISABLE_0_ENABLE_1();                                \
+    MPU_DISABLE_1_ENABLE_0();                                \
     __asm__ volatile("done1:     \n");
 
 #define RETURN_REGION2()                                     \
@@ -193,10 +193,10 @@ __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline
     __asm__ volatile(                                        \
         "cmp r0, r1        \n"                               \
         "blt second_region2  \n");                           \
-    MPU_DISABLE_1_ENABLE_0();                                \
+    MPU_DISABLE_0_ENABLE_1();                                \
     __asm__ volatile("b done2            \n");               \
     __asm__ volatile("second_region2:     \n");              \
-    MPU_DISABLE_0_ENABLE_1();                                \
+    MPU_DISABLE_1_ENABLE_0();                                \
     __asm__ volatile("done2:     \n");
 
 __attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_blx(void) {
