@@ -116,8 +116,15 @@ int main(void) {
         tfm_core_panic();
     }
 #endif
-//#define TFM_ASLR
+#define TFM_ASLR
 #ifdef TFM_ASLR
+    SysTick->CTRL = 0;          // Disable SysTick
+    SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
+    SysTick->VAL = 0;           // Clear the current value to 0
+    SysTick->CTRL = 0x5;
+    uint32_t x = 0;
+    x += 1;
+    x = SysTick->VAL;
     uint32_t __text_address__ = 0x8055000;
     region_t a = {0x20005000, 0};
 
@@ -130,7 +137,11 @@ int main(void) {
 
     a.region_size = 0x5000;
     DWT_enable(&a);
-    // mpu_init_st(a, new_table_addr);
+    // mpu_init_st(&a);
+    uint32_t start = x;
+    uint32_t end = SysTick->VAL;
+    uint32_t res = start - end;
+
 #endif
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();

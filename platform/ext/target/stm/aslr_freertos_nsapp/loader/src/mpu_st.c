@@ -2,47 +2,11 @@
 #include "stm32l5xx.h"
 #include "read_flash.h"
 
-static struct mpu_armv8m_region_cfg_st_t region_a = {
+static struct mpu_armv8m_region_cfg_st_t region_flash = {
     0x0,
     0,
     0,
     MPU_ARMV8M_MAIR_ATTR_CODE_IDX_ST,
-    MPU_ARMV8M_XN_EXEC_OK,
-    MPU_ARMV8M_AP_RO_PRIV_ONLY,
-    MPU_ARMV8M_SH_NONE};
-
-static struct mpu_armv8m_region_cfg_st_t region_data = {
-    0x1,
-    0,
-    0,
-    MPU_ARMV8M_MAIR_ATTR_DATA_IDX_ST,
-    MPU_ARMV8M_XN_EXEC_NEVER,
-    MPU_ARMV8M_AP_RW_PRIV_UNPRIV,
-    MPU_ARMV8M_SH_NONE};
-
-static struct mpu_armv8m_region_cfg_st_t region_device = {
-    0x2,
-    0,
-    0,
-    MPU_ARMV8M_MAIR_ATTR_DEVICE_IDX_ST,
-    MPU_ARMV8M_XN_EXEC_NEVER,
-    MPU_ARMV8M_AP_RW_PRIV_UNPRIV,
-    MPU_ARMV8M_SH_NONE};
-
-static struct mpu_armv8m_region_cfg_st_t region_table = {
-    0x3,
-    0,
-    0,
-    MPU_ARMV8M_MAIR_ATTR_DATA_IDX_ST,
-    MPU_ARMV8M_XN_EXEC_NEVER,
-    MPU_ARMV8M_AP_RO_PRIV_ONLY,
-    MPU_ARMV8M_SH_NONE};
-
-static struct mpu_armv8m_region_cfg_st_t region_flash = {
-    0x4,
-    0,
-    0,
-    MPU_ARMV8M_MAIR_ATTR_DATA_IDX_ST,
     MPU_ARMV8M_XN_EXEC_NEVER,
     MPU_ARMV8M_AP_RO_PRIV_ONLY,
     MPU_ARMV8M_SH_NONE};
@@ -134,7 +98,7 @@ enum mpu_armv8m_error_st_t mpu_armv8m_enable_st(
      */
     mpu->MAIR0 = (MPU_ARMV8M_MAIR_ATTR_DEVICE_VAL_ST << MPU_MAIR0_Attr0_Pos) | (MPU_ARMV8M_MAIR_ATTR_CODE_VAL_ST << MPU_MAIR0_Attr1_Pos) | (MPU_ARMV8M_MAIR_ATTR_DATA_VAL_ST << MPU_MAIR0_Attr2_Pos);
 
-    mpu->CTRL = (0 << 2) | (1 << 1);
+    // mpu->CTRL = (0 << 2) | (1 << 1);
 
     /*Ensure all configuration is written before enable*/
 
@@ -155,24 +119,11 @@ uint32_t rounddown(uint32_t x) {
     return x / 0x100 * 0x100;
 }
 
-void mpu_init_st(region_t a, uint32_t table_addr) {
-    region_a.region_base = a.region_start;
-    region_a.region_limit = a.region_start + a.region_size;
-    region_data.region_base = 0x20000000;
-    region_data.region_limit = 0x20005000;
-    region_device.region_base = 0x40000000;
-    region_device.region_limit = 0x50000000;
-    region_table.region_base = table_addr,
-    region_table.region_limit = table_addr + 0x2000;
+void mpu_init_st() {
+    region_flash.region_base = 0x8005500;
+    region_flash.region_limit = 0x8015500;
 
-    region_flash.region_base = rounddown(new_copy_table.old_addr);
-    region_flash.region_limit = roundup(new_zero_table.end_addr);
     mpu_armv8m_enable_st(&dev_mpu_ns, 0, 0);
 
-    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_data);
-    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_device);
-    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_table);
     mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_flash);
-
-    mpu_armv8m_region_enable_st(&dev_mpu_ns, &region_a);
 }

@@ -1,0 +1,456 @@
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1e2e7             123623
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cdc in ?? ()
+r3             0xfffffb            16777211
+r4             0xb9250c            12133644
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x2dbbc             187324
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cde in ?? ()
+r3             0xfffffb            16777211
+r4             0xb8501d            12079133
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x2a6a7             173735
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cdc in ?? ()
+r3             0xfffffb            16777211
+r4             0xdc9f35            14458677
+r5             0x1                 1
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x234e3             144611
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005e2e in ?? ()
+r3             0xfffffb            16777211
+r4             0xd213f2            13767666
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1bef9             114425
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cdc in ?? ()
+r3             0xfffffb            16777211
+r4             0xf8010a            16253194
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1ef62             126818
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005d38 in ?? ()
+r3             0xfffffb            16777211
+r4             0x3ed031            4116529
+r5             0x3                 3
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x2781c             161820
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cde in ?? ()
+r3             0xfffffb            16777211
+r4             0xfff8ec            16775404
+r5             0x3                 3
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1cd79             118137
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cde in ?? ()
+r3             0xfffffb            16777211
+r4             0x3e822e            4096558
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1e251             123473
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cde in ?? ()
+r3             0xfffffb            16777211
+r4             0x69d265            6935141
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1d076             118902
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cdc in ?? ()
+r3             0xfffffb            16777211
+r4             0xf8b4ba            16299194
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x24c3c             150588
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cda in ?? ()
+r3             0xfffffb            16777211
+r4             0xccf23             839459
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0xf5af1             1006321
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cdc in ?? ()
+r3             0xfffffb            16777211
+r4             0xcf380e            13580302
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1cbe2             117730
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005cda in ?? ()
+r3             0xfffffb            16777211
+r4             0xecff1a            15531802
+r5             0x3d                61
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x35b27             219943
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005e66 in ?? ()
+r3             0xfffffb            16777211
+r4             0x851b8c            8723340
+r5             0x2                 2
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x21faf             139183
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005e30 in ?? ()
+r3             0xfffffb            16777211
+r4             0xd53c75            13974645
+r5             0x9                 9
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x32473             205939
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005d94 in ?? ()
+r3             0xfffffb            16777211
+r4             0xf94801            16336897
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1e665             124517
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005d38 in ?? ()
+r3             0xfffffc            16777212
+r4             0x83d               2109
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x1cdb8             118200
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20005d12 in ?? ()
+r3             0xfffffb            16777211
+r4             0xbfe               3070
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Breakpoint 1 at 0xc005a6a
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, 0x0c005a6a in ?? ()
+r0             0x43902             276738
+Hardware watchpoint 2: *(0x200049b0)
+Hardware watchpoint 3: *(0x200049b2)
+Hardware watchpoint 4: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x20007296 in ?? ()
+r3             0xfffffb            16777211
+r4             0x3bc               956
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]

@@ -1,0 +1,399 @@
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c82 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xbe33fa            12465146
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c84 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xbeab10            12495632
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c82 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xde9006            14585862
+r5             0x1                 1
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055dd4 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xd48cb6            13929654
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c82 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xf8fb04            16317188
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055cde in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x453398            4535192
+r5             0x3                 3
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c84 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x42c173            4374899
+r5             0x2                 2
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c84 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x4a7c9a            4881562
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c84 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x77247d            7808125
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c82 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xf9aad3            16362195
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c80 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x2d76e0            2979552
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c82 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xd2bbc8            13810632
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055c80 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x6b8d0e            7048462
+r5             0x38                56
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055e0c in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xb06141            11559233
+r5             0x2                 2
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055dd6 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x9e2e88            10366600
+r5             0x8                 8
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055d3a in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xf9e6cc            16377548
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055cd0 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x8c5               2245
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x08055cb8 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0xc3f               3135
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+
+warning: No executable has been specified and target does not support
+determining executable automatically.  Try using the "file" command.
+0x0c000488 in ?? ()
+add symbol table from file "./build/bin/ns_app.elf"
+Hardware watchpoint 1: *(0x200049b0)
+Hardware watchpoint 2: *(0x200049b2)
+Hardware watchpoint 3: *(0x200049ad)
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x080571e8 in main ()
+    at /home/han/srtp_new/tfm_freeRTOS_dwt/platform/ext/target/stm/aslr_freertos_nsapp/nsapp/src/main_ns.c:107
+107	    *((uint32_t*)(0x200049b0)) = 0x2314;
+r3             0xfffffc            16777212
+r4             0x47a               1146
+r5             0x0                 0
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]

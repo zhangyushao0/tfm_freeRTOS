@@ -84,7 +84,7 @@ void movw_calculate(relocation_info_t* entry) {
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = entry->value;
     if (func_id2 != -1) {
-        val = func_info[func_id2].reloc_addr^ ENCODE_KEY;
+        val = func_info[func_id2].reloc_addr ^ ENCODE_KEY;
     }
     *((uint32_t*)pos) = movw_address_calculate(*(uint32_t*)(entry->addr), val);
 }
@@ -95,7 +95,7 @@ void movt_calculate(relocation_info_t* entry) {
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = entry->value;
     if (func_id2 != -1) {
-        val = func_info[func_id2].reloc_addr^ ENCODE_KEY;
+        val = func_info[func_id2].reloc_addr ^ ENCODE_KEY;
     }
     *((uint32_t*)pos) = movt_address_calculate(*(uint32_t*)(entry->addr), val);
 }
@@ -123,7 +123,7 @@ void relocation(region_t* vector_addr, uint32_t src_address) {
             movw_calculate(relocation_info + i);
         } else if (relocation_info[i].type == 6) { // absoulately address: mowt
             movt_calculate(relocation_info + i);
-        }else {
+        } else {
         }
     }
 }

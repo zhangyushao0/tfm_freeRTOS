@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from elftools.elf.elffile import ELFFile
 
-project_path = '/home/jiangzixian/relocation/dwt_test'
+project_path = '/home/han/srtp_new/tfm_freeRTOS_dwt'
 
 elf_path = project_path + "/build/bin/ns_app.elf"
 output_relocation_info_path = (
@@ -82,6 +82,7 @@ def output_relocation_info(info):
 
 
 def output_functions_info(functions_info):
+    # sorted(functions_info, key=lambda x: x[0])
     with open(output_functions_info_path, "w") as f:
         f.write('#include "func.h"\n')
         f.write("\n")
