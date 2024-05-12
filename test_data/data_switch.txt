@@ -413,6 +413,7 @@ A debugging session is active.
 
 Quit anyway? (y or n) [answered Y; input not from terminal]
 
+
 warning: No executable has been specified and target does not support
 determining executable automatically.  Try using the "file" command.
 0x0c000488 in ?? ()
@@ -421,14 +422,14 @@ Breakpoint 1 at 0xc005f72
 Note: automatically using hardware breakpoints for read-only addresses.
 
 Breakpoint 1, 0x0c005f72 in ?? ()
-r0             0x4e4bc             320700
+r0             0x4e4bd             320701
 Hardware watchpoint 2: *0x200049a0
 
 Program received signal SIGTRAP, Trace/breakpoint trap.
 0x2000741a in ?? ()
 r3             0xfffffc            16777212
-r4             0xe9f               3743
-r5             0x1f4               500
+r4             0xea0               3744
+r5             0x1f4               0
 r6             0x290b              10507
 A debugging session is active.
 

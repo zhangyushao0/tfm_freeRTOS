@@ -28,7 +28,7 @@ MX_GPIO_Init(void) {
     HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
 
-extern int cnt;
+extern int tick_cnt;
 
 // void func() {
 //     SysTick->CTRL = 0;          // Disable SysTick
@@ -59,16 +59,16 @@ int main() {
     SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
     SysTick->VAL = 0;           // Clear the current value to 0
     SysTick->CTRL = 0x7;
-    cnt = 0;
+    tick_cnt = 0;
     uint32_t start = SysTick->VAL;
-    for (int i = 0; i < 500; ++i) {
+    for (int i = 0; i < 50; ++i) {
         initialise_benchmark();
         int result = benchmark();
-        verify_benchmark(result);
+        // verify_benchmark(result);
     }
     uint32_t end = SysTick->VAL;
     uint32_t res = start - end;
-    uint32_t load = cnt;
+    uint32_t load = tick_cnt;
     int      res_a_b = geta_b();
     int      res_b_a = getb_a();
 

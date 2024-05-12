@@ -35,10 +35,10 @@ extern void __PROGRAM_START(void) __NO_RETURN;
   Internal References
  *----------------------------------------------------------------------------*/
 void Reset_Handler(void) __NO_RETURN;
-int  cnt = 0;
+int  tick_cnt = 0;
 
 __attribute__((section(".handler"))) void SysTick_Handler(void) {
-    cnt += 1;
+    tick_cnt += 1;
     return;
 }
 /*----------------------------------------------------------------------------
