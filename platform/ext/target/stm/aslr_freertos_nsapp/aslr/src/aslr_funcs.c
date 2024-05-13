@@ -2068,97 +2068,97 @@
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f120,
+      .start_address=0xc00f000,
       .size=144,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f2d4,
+      .start_address=0xc00f1b4,
       .size=100,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f338,
+      .start_address=0xc00f218,
       .size=16,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f528,
+      .start_address=0xc00f408,
       .size=48,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00efc4,
+      .start_address=0xc00eea4,
       .size=92,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ef38,
+      .start_address=0xc00ee18,
       .size=140,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ee80,
+      .start_address=0xc00ed60,
       .size=184,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00edd0,
+      .start_address=0xc00ecb0,
       .size=176,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ed40,
+      .start_address=0xc00ec20,
       .size=16,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f1b0,
+      .start_address=0xc00f090,
       .size=292,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f348,
+      .start_address=0xc00f228,
       .size=300,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ed50,
+      .start_address=0xc00ec30,
       .size=128,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f558,
+      .start_address=0xc00f438,
       .size=60,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f594,
+      .start_address=0xc00f474,
       .size=54,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f4c4,
+      .start_address=0xc00f3a4,
       .size=100,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f070,
+      .start_address=0xc00ef50,
       .size=176,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f020,
+      .start_address=0xc00ef00,
       .size=40,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f474,
+      .start_address=0xc00f354,
       .size=80,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f048,
+      .start_address=0xc00ef28,
       .size=40,
       .call_frame_size=0
   },

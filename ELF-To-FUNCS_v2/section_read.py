@@ -55,7 +55,7 @@ tails2 = [
 
 def get_section_size(section_name, elfpath):
     try:
-        os.system('readelf -S ' + elfpath + '| grep -w ' + section_name + ' > ./ELF_debug_sections.txt')
+        os.system('llvm-readelf-17 -S ' + elfpath + '| grep -w ' + section_name + ' > ./ELF_debug_sections.txt')
     except Exception as e:
         print('[INFO]Command Error:{}'.format(e))
         sys.exit(0)
@@ -75,7 +75,7 @@ def get_section_size(section_name, elfpath):
 
 
 def extract_symbol_address(elf_file, symbol):
-    result = subprocess.run(["readelf", "-s", elf_file], capture_output=True, text=True)
+    result = subprocess.run(["llvm-readelf-17", "-s", elf_file], capture_output=True, text=True)
     lines = result.stdout.splitlines()
     for line in lines:
         if symbol in line:

@@ -7,8 +7,8 @@
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER "/usr/local/llvm-project/build/bin/clang")
-set(CMAKE_CXX_COMPILER "/usr/local/llvm-project/build/bin/clang++")
+set(CMAKE_C_COMPILER "clang-17")
+set(CMAKE_CXX_COMPILER "clang-17")
 # set(CMAKE_C_COMPILER "clang-16")
 # set(CMAKE_CXX_COMPILER "clang++-16")
 set(TARGET_TRIPLE arm-none-eabi)

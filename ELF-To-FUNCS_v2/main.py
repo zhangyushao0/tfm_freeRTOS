@@ -26,8 +26,8 @@ try:
     section_read.generate_flash_config(ELFpath_ns, flash_config_filepath, start_address, end_address)
     section_read.generate_ram_config(ram_config_filepath)
 
-    os.system('readelf -s ' + ELFpath_ns + '| grep FUNC > ./funcs.txt')
-    os.system('readelf -s ' + ELFpath_s + '| grep FUNC > ./funcs_s.txt')
+    os.system('llvm-readelf-17 -s ' + ELFpath_ns + '| grep FUNC > ./funcs.txt')
+    os.system('llvm-readelf-17 -s ' + ELFpath_s + '| grep FUNC > ./funcs_s.txt')
     with open("./funcs_s.txt", "r") as infile, open("./funcs.txt", "a") as outfile:
         for line in infile:
             address = line.split()[1]

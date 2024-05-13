@@ -34,8 +34,8 @@ import sys
 
 def frame_parser(ELFpath_ns, ELFpath_s, filepath, funcs_filepath, funcs_size_filepath):
     try:
-        os.system('readelf --debug-dump=frames ' + ELFpath_ns + '| grep "FDE DW_CFA_def_cfa_offset" > ./ELF_debug_frames.txt')
-        os.system('readelf --debug-dump=frames ' + ELFpath_s + '| grep "FDE DW_CFA_def_cfa_offset" >> ./ELF_debug_frames.txt')
+        os.system('llvm-readelf-17 ' + ELFpath_ns + '| grep "FDE DW_CFA_def_cfa_offset" > ./ELF_debug_frames.txt')
+        os.system('llvm-readelf-17 ' + ELFpath_s + '| grep "FDE DW_CFA_def_cfa_offset" >> ./ELF_debug_frames.txt')
     except Exception as e:
         print('[INFO]Command Error:{}'.format(e))
         sys.exit(0)
