@@ -81,7 +81,7 @@ void vRestoreContextOfFirstTask(
         "    str r3, [r1]                                 \n" /* Program RNR = 12. */
         "    ldmia r0!, {r4-r11}                          \n" /* Read 4 sets of RBAR/RLAR registers from TCB. */
         "    stmia r2, {r4-r11}                           \n" /* Write 4 set of RBAR/RLAR registers using alias registers. */
-#endif /* configTOTAL_MPU_REGIONS == 16 */
+#endif                                                        /* configTOTAL_MPU_REGIONS == 16 */
         "                                                 \n"
         "   ldr r1, xMPUCTRLConst2                        \n" /* r1 = 0xe000ed94 [Location of MPU_CTRL]. */
         "   ldr r2, [r1]                                  \n" /* Read the value of MPU_CTRL. */
@@ -272,7 +272,7 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
         "    vldmiaeq r2, {s0-s16}                        \n" /* Copy hardware saved FP context into s0-s16. */
         "    vstmiaeq r1!, {s0-s16}                       \n" /* Store hardware saved FP context. */
         "    sub r2, r2, #0x20                            \n" /* Set r2 back to the location of hardware saved context. */
-#endif /* configENABLE_FPU || configENABLE_MVE */
+#endif                                                        /* configENABLE_FPU || configENABLE_MVE */
         "                                                 \n"
         "    stmia r1!, {r4-r11}                          \n" /* Store r4-r11. */
         "    ldmia r2, {r4-r11}                           \n" /* Copy the hardware saved context into r4-r11. */
@@ -289,8 +289,8 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
         "    msr basepri, r0                              \n" /* Disable interrupts upto configMAX_SYSCALL_INTERRUPT_PRIORITY. */
         "    dsb                                          \n"
         "    isb                                          \n"
-        "	 movw r3, #0x6eed			             	  \n"
-        "	 movt r3, #0x0805    						  \n"
+        "    movw    r3, :lower16:vTaskSwitchContext      \n"
+        "    movt    r3, :upper16:vTaskSwitchContext      \n"
         "    blx r3                                       \n"
         // "    bl vTaskSwitchContext                        \n"
         "    mov r0, #0                                   \n" /* r0 = 0. */
@@ -329,7 +329,7 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
         "    str r3, [r1]                                 \n" /* Program RNR = 12. */
         "    ldmia r0!, {r4-r11}                          \n" /* Read 4 sets of RBAR/RLAR registers from TCB. */
         "    stmia r2, {r4-r11}                           \n" /* Write 4 set of RBAR/RLAR registers using alias registers. */
-#endif /* configTOTAL_MPU_REGIONS == 16 */
+#endif                                                        /* configTOTAL_MPU_REGIONS == 16 */
         "                                                 \n"
         "   ldr r1, xMPUCTRLConst                         \n" /* r1 = 0xe000ed94 [Location of MPU_CTRL]. */
         "   ldr r2, [r1]                                  \n" /* Read the value of MPU_CTRL. */
@@ -358,7 +358,7 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
         "    vldmdbeq r1!, {s0-s16}                       \n" /* s0-s16 contain hardware saved FP context. */
         "    vstmiaeq r2!, {s0-s16}                       \n" /* Copy hardware saved FP context on the task stack. */
         "    vldmdbeq r1!, {s16-s31}                      \n" /* Restore s16-s31. */
-#endif /* configENABLE_FPU || configENABLE_MVE */
+#endif                                                        /* configENABLE_FPU || configENABLE_MVE */
         "                                                 \n"
         " restore_context_done:                           \n"
         "    str r1, [r0]                                 \n" /* Save the location where the context should be saved next as the first member of TCB. */
