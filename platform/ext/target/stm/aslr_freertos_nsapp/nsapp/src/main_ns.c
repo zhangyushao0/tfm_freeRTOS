@@ -94,7 +94,7 @@ int  main() {
     for (int i = 0; i < 50; ++i) {
         initialise_benchmark();
         int result = benchmark();
-        // verify_benchmark(result);
+        verify_benchmark(result);
     }
     uint32_t end = SysTick->VAL;
     uint32_t res = start - end;

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from elftools.elf.elffile import ELFFile
 
-project_path = '/home/han/srtp_new/tfm_freeRTOS_dwt'
+project_path = '/home/han/tfm_freeRTOS'
 
 elf_path = project_path + "/build/bin/ns_app.elf"
 output_relocation_info_path = (

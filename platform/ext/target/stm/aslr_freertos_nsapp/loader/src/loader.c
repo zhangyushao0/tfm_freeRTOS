@@ -66,7 +66,7 @@ uint32_t movt_address_calculate(uint32_t ori_val, uint32_t addr) {
 void vector_table_calculate(relocation_info_t* entry, region_t* vector_addr, uint32_t src_address, int i) {
     int func_id = entry->func_id2;
     int addr = func_info[func_id].reloc_addr;
-    *((uint32_t*)(entry->addr + vector_addr->region_start - src_address)) = addr;
+    *((uint32_t*)(entry->addr - src_address + vector_addr->region_start)) = addr;
     vector_addr->region_size += 4;
 }
 
@@ -105,14 +105,6 @@ void relocation(region_t* vector_addr, uint32_t src_address) {
     *((uint32_t*)(relocation_info[0].addr + vector_addr->region_start - src_address)) =
         relocation_info[0].value;
     vector_addr->region_size += 4;
-    // 第二项，reset_handler，需要记录该函数在哪个1
-    for (int i = 2; i < table_size; ++i) {
-        if (relocation_info[i].value == new_AHBPrescTable.old_addr) {
-            relocation_info[i].value = new_AHBPrescTable.new_addr;
-        } else if (relocation_info[i].value == new_MSIRangeTable.old_addr) {
-            relocation_info[i].value = new_MSIRangeTable.new_addr;
-        }
-    }
     for (int i = 1; i < table_size; ++i) {
         // which range of the identifier
         if (relocation_info[i].type == 0) { // exception entry
@@ -128,27 +120,8 @@ void relocation(region_t* vector_addr, uint32_t src_address) {
     }
 }
 
-void copy_table(uint32_t new_table_addr) {
-    uint32_t size = 0;
-    copy_text2ram(new_table_addr + size, new_copy_table.old_addr, new_copy_table.end_addr - new_copy_table.old_addr);
-    new_copy_table.new_addr = new_table_addr + size;
-    size += new_copy_table.end_addr - new_copy_table.old_addr;
-    copy_text2ram(new_table_addr + size, new_zero_table.old_addr, new_zero_table.end_addr - new_zero_table.old_addr);
-    new_zero_table.new_addr = new_table_addr + size;
-    size += new_zero_table.end_addr - new_zero_table.old_addr;
-    copy_text2ram(new_table_addr + size, new_MSIRangeTable.old_addr, new_MSIRangeTable.end_addr - new_MSIRangeTable.old_addr);
-    new_MSIRangeTable.new_addr = new_table_addr + size;
-    size += new_MSIRangeTable.end_addr - new_MSIRangeTable.old_addr;
-    copy_text2ram(new_table_addr + size, new_AHBPrescTable.old_addr, new_AHBPrescTable.end_addr - new_AHBPrescTable.old_addr);
-    new_AHBPrescTable.new_addr = new_table_addr + size;
-    size += new_AHBPrescTable.end_addr - new_AHBPrescTable.old_addr;
-}
-
 void loader(region_t* a, region_t* vector_addr, uint32_t new_table_addr, uint32_t src_address) {
-    // 复制 table
-    copy_table(new_table_addr);
-
-    // 复制函数到 a 和 b 区域
+    // 复制函数到 a 区域
     copy_text(a, src_address);
 
     relocation(vector_addr, src_address);
