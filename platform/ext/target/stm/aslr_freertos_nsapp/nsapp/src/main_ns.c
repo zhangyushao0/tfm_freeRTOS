@@ -1,10 +1,10 @@
 #include "main_ns.h"
-// #include "FreeRTOS.h"
+#include "FreeRTOS.h"
 #include "stm32l562xx.h"
 #include "stm32l5xx_hal.h"
 #include "stm32l5xx_hal_rcc.h"
-#include "support.h"
-// #include "task.h"
+// #include "support.h"
+#include "task.h"
 
 #define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
 
@@ -27,57 +27,24 @@ static void MX_GPIO_Init(void) {
     HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
 
-// void testThread1(void* pvParameters) {
-//     //     SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
-//     //     SysTick->VAL = 0;           // Clear the current value to 0
-//     uint32_t start = xTaskGetTickCount();
-//     for (int i = 0; i < 1000; ++i) {
-//         initialise_benchmark();
-//         int result = benchmark();
-//         verify_benchmark(result);
-//     }
-//     uint32_t end = xTaskGetTickCount();
-//     uint32_t res = end - start;
-//     while (1) {
-//         res = end - start;
-//         vTaskDelay(1000);
-//     }
-// }
+void testThread1(void* pvParameters) {
+    uint32_t start = xTaskGetTickCount();
+    for (int i = 0; i < 1000; ++i) {
+    }
+    uint32_t end = xTaskGetTickCount();
+    uint32_t res = end - start;
+    while (1) {
+        res = end - start;
+        vTaskDelay(1000);
+    }
+}
 
-// void testThread2(void* pvParameters) {
-//     while (1) {
-//         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-//         vTaskDelay(1000);
-//     }
-// }
-
-// void testThread3(void* pvParameters) {
-//     initialise_benchmark();
-//     int result = benchmark();
-//     verify_benchmark(result);
-//     while (1) {
-//         vTaskDelay(500);
-//     }
-// }
-
-extern int cnt;
-
-// void func() {
-//     SysTick->CTRL = 0;          // Disable SysTick
-//     SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
-//     SysTick->VAL = 0;           // Clear the current value to 0
-//     SysTick->CTRL = 0x7;
-//     cnt = 0;
-//     uint32_t start = SysTick->VAL;
-//     for (int i = 0; i < 500; ++i) {
-//         initialise_benchmark();
-//         int result = benchmark();
-//         verify_benchmark(result);
-//     }
-//     uint32_t end = SysTick->VAL;
-//     uint32_t res = start - end;
-//     uint32_t load = cnt;
-// }
+void testThread2(void* pvParameters) {
+    while (1) {
+        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+        vTaskDelay(1000);
+    }
+}
 
 char cArray[128] __attribute__((aligned(128)));
 int  main() {
@@ -85,30 +52,40 @@ int  main() {
 
     MX_GPIO_Init();
 
-    SysTick->CTRL = 0;          // Disable SysTick
-    SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
-    SysTick->VAL = 0;           // Clear the current value to 0
-    SysTick->CTRL = 0x7;
-    cnt = 0;
-    uint32_t start = SysTick->VAL;
-    for (int i = 0; i < 50; ++i) {
-        initialise_benchmark();
-        int result = benchmark();
-        verify_benchmark(result);
-    }
-    uint32_t end = SysTick->VAL;
-    uint32_t res = start - end;
-    uint32_t load = cnt;
-    __asm__ volatile("mov r3, %0\n\t" : : "r"(start) : "r3");
-    __asm__ volatile("mov r4, %0\n\t" : : "r"(end) : "r4");
-    __asm__ volatile("mov r5, %0\n\t" : : "r"(load) : "r5");
-    // __asm__ volatile("mov r11, 10\n");
-    *((uint32_t*)(0x200049b0)) = 0x1234;
-    *((uint32_t*)(0x200049b0)) = 0x2314;
-    *((uint32_t*)(0x200049b0)) = 0x4321;
+    static StackType_t xRWAccessTaskStack1[configMINIMAL_STACK_SIZE] __attribute__((aligned(32)));
+    TaskParameters_t   taskParams1 = {
+           .pvTaskCode = testThread1,
+           .pcName = "testThread1",
+           .usStackDepth = configMINIMAL_STACK_SIZE,
+           .pvParameters = NULL,
+           .uxPriority = 1,
+           .puxStackBuffer = xRWAccessTaskStack1,
+           .xRegions = {
+            /* Base address Length Parameters */
+            {0, 0, 0},
+            {0, 0, 0},
+        }};
+
+    static StackType_t xRWAccessTaskStack2[configMINIMAL_STACK_SIZE] __attribute__((aligned(32)));
+    TaskParameters_t   taskParams2 = {
+           .pvTaskCode = testThread2,
+           .pcName = "testThread2",
+           .usStackDepth = configMINIMAL_STACK_SIZE,
+           .pvParameters = NULL,
+           .uxPriority = 1,
+           .puxStackBuffer = xRWAccessTaskStack2,
+           .xRegions = {
+            /* Base address Length Parameters */
+            {(void*)(AHB2PERIPH_BASE_NS), 0x2000UL, portMPU_REGION_READ_WRITE},
+            {0, 0, 0},
+        }};
+
+    xTaskCreateRestricted(&taskParams1, NULL);
+    xTaskCreateRestricted(&taskParams2, NULL);
+
+    /* 启动调度器 */
+    vTaskStartScheduler();
+
     /* 如果系统正常工作，以下代码不会执行 */
-    for (;;) {
-        // HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-        // HAL_Delay(1000);
-    }
+    for (;;) {}
 }

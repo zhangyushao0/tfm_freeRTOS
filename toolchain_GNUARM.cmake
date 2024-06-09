@@ -210,7 +210,7 @@ macro(tfm_toolchain_reload_compiler)
 
     # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
-    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/home/han/tfm_freeRTOS/ld/ld.lld")
+    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/home/han/srtp/tfm_freeRTOS/ld/ld.lld")
 
     # set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/bin/arm-none-eabi-ld")
     set(BL2_COMPILER_CP_FLAG -mfloat-abi=soft)

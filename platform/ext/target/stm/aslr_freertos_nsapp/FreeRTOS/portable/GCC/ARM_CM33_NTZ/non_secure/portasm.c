@@ -51,11 +51,13 @@ void vRestoreContextOfFirstTask(
         " .syntax unified                                 \n"
         "                                                 \n"
         " program_mpu_first_task:                         \n"
-        "    ldr r2, pxCurrentTCBConst2                   \n" /* Read the location
-                                                                 of pxCurrentTCB
-                                                                 i.e. &(
-                                                                 pxCurrentTCB ).
-                                                               */
+        " MOVW    r2, :lower16:pxCurrentTCB\n"
+        " MOVT    r2, :upper16:pxCurrentTCB\n"
+        // "    ldr r2, pxCurrentTCBConst2                   \n" /* Read the location
+        //                                                          of pxCurrentTCB
+        //                                                          i.e. &(
+        //                                                          pxCurrentTCB ).
+        //                                                        */
         "    ldr r0, [r2]                                 \n" /* r0 =
                                                                  pxCurrentTCB. */
         "                                                 \n"
@@ -63,9 +65,11 @@ void vRestoreContextOfFirstTask(
                                                                  outstanding
                                                                  transfers before
                                                                  disabling MPU. */
-        "    ldr r1, xMPUCTRLConst2                       \n" /* r1 = 0xe000ed94
-                                                                 [Location of
-                                                                 MPU_CTRL]. */
+        " MOVW    r1, :lower16:0xe000ed94\n"
+        " MOVT    r1, :upper16:0xe000ed94\n"
+        // "    ldr r1, xMPUCTRLConst2                       \n" /* r1 = 0xe000ed94
+        //                                                          [Location of
+        //                                                          MPU_CTRL]. */
         "    ldr r2, [r1]                                 \n" /* Read the value of
                                                                  MPU_CTRL. */
         "    bic r2, #1                                   \n" /* r2 = r2 & ~1 i.e.
@@ -78,21 +82,27 @@ void vRestoreContextOfFirstTask(
                                                                  MAIR0 in TCB. */
         "    ldr r1, [r0]                                 \n" /* r1 = *r0 i.e. r1
                                                                  = MAIR0. */
-        "    ldr r2, xMAIR0Const2                         \n" /* r2 = 0xe000edc0
-                                                                 [Location of
-                                                                 MAIR0]. */
+        " MOVW    r2, :lower16:0xe000edc0\n"
+        " MOVT    r2, :upper16:0xe000edc0\n"
+        // "    ldr r2, xMAIR0Const2                         \n" /* r2 = 0xe000edc0
+        //                                                          [Location of
+        //                                                          MAIR0]. */
         "    str r1, [r2]                                 \n" /* Program MAIR0. */
         "                                                 \n"
         "    adds r0, #4                                  \n" /* r0 = r0 + 4. r0
                                                                  now points to
                                                                  first RBAR in
                                                                  TCB. */
-        "    ldr r1, xRNRConst2                           \n" /* r1 = 0xe000ed98
-                                                                 [Location of
-                                                                 RNR]. */
-        "    ldr r2, xRBARConst2                          \n" /* r2 = 0xe000ed9c
-                                                                 [Location of
-                                                                 RBAR]. */
+        " MOVW    r1, :lower16:0xe000ed98\n"
+        " MOVT    r1, :upper16:0xe000ed98\n"
+        // "    ldr r1, xRNRConst2                           \n" /* r1 = 0xe000ed98
+        //                                                          [Location of
+        //                                                          RNR]. */
+        " MOVW    r2, :lower16:0xe000ed9c\n"
+        " MOVT    r2, :upper16:0xe000ed9c\n"
+        // "    ldr r2, xRBARConst2                          \n" /* r2 = 0xe000ed9c
+        //                                                          [Location of
+        //                                                          RBAR]. */
         "                                                 \n"
         "    movs r3, #4                                  \n" /* r3 = 4. */
         "    str r3, [r1]                                 \n" /* Program RNR = 4.
@@ -134,9 +144,11 @@ void vRestoreContextOfFirstTask(
                                                                */
 #endif                                                        /* configTOTAL_MPU_REGIONS == 16 */
         "                                                 \n"
-        "   ldr r1, xMPUCTRLConst2                        \n" /* r1 = 0xe000ed94
-                                                                 [Location of
-                                                                 MPU_CTRL]. */
+        " MOVW    r1, :lower16:0xe000ed94\n"
+        " MOVT    r1, :upper16:0xe000ed94\n"
+        // "   ldr r1, xMPUCTRLConst2                        \n" /* r1 = 0xe000ed94
+        //                                                          [Location of
+        //                                                          MPU_CTRL]. */
         "   ldr r2, [r1]                                  \n" /* Read the value of
                                                                  MPU_CTRL. */
         "   orr r2, #1                                    \n" /* r2 = r2 | 1 i.e.
@@ -148,11 +160,13 @@ void vRestoreContextOfFirstTask(
                                                                  continuing. */
         "                                                 \n"
         " restore_context_first_task:                     \n"
-        "    ldr r2, pxCurrentTCBConst2                   \n" /* Read the location
-                                                                 of pxCurrentTCB
-                                                                 i.e. &(
-                                                                 pxCurrentTCB ).
-                                                               */
+        " MOVW    r2, :lower16:pxCurrentTCB\n"
+        " MOVT    r2, :upper16:pxCurrentTCB\n"
+        // "    ldr r2, pxCurrentTCBConst2                   \n" /* Read the location
+        //                                                          of pxCurrentTCB
+        //                                                          i.e. &(
+        //                                                          pxCurrentTCB ).
+        //                                                        */
         "    ldr r0, [r2]                                 \n" /* r0 =
                                                                  pxCurrentTCB.*/
         "    ldr r1, [r0]                                 \n" /* r1 = Location of
@@ -194,11 +208,12 @@ void vRestoreContextOfFirstTask(
         "    bx lr                                        \n"
         "                                                 \n"
         " .align 4                                        \n"
-        " pxCurrentTCBConst2: .word pxCurrentTCB          \n"
-        " xMPUCTRLConst2: .word 0xe000ed94                \n"
-        " xMAIR0Const2: .word 0xe000edc0                  \n"
-        " xRNRConst2: .word 0xe000ed98                    \n"
-        " xRBARConst2: .word 0xe000ed9c                   \n");
+        // " pxCurrentTCBConst2: .word pxCurrentTCB          \n"
+        // " xMPUCTRLConst2: .word 0xe000ed94                \n"
+        // " xMAIR0Const2: .word 0xe000edc0                  \n"
+        // " xRNRConst2: .word 0xe000ed98                    \n"
+        // " xRBARConst2: .word 0xe000ed9c                   \n"
+    );
 }
 
 #else /* configENABLE_MPU */
@@ -417,11 +432,13 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
     __asm volatile(
         " .syntax unified                                 \n"
         "                                                 \n"
-        " ldr r2, pxCurrentTCBConst                       \n" /* Read the location
-                                                                 of pxCurrentTCB
-                                                                 i.e. &(
-                                                                 pxCurrentTCB ).
-                                                               */
+        " MOVW    r2, :lower16:pxCurrentTCB\n"
+        " MOVT    r2, :upper16:pxCurrentTCB\n"
+        // " ldr r2, pxCurrentTCBConst                       \n" /* Read the location
+        //                                                          of pxCurrentTCB
+        //                                                          i.e. &(
+        //                                                          pxCurrentTCB ).
+        //                                                        */
         " ldr r0, [r2]                                    \n" /* r0 =
                                                                  pxCurrentTCB. */
         " ldr r1, [r0]                                    \n" /* r1 = Location in
@@ -490,11 +507,13 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
                                                                  interrupts. */
         "                                                 \n"
         " program_mpu:                                    \n"
-        "    ldr r2, pxCurrentTCBConst                    \n" /* Read the location
-                                                                 of pxCurrentTCB
-                                                                 i.e. &(
-                                                                 pxCurrentTCB ).
-                                                               */
+        " MOVW    r2, :lower16:pxCurrentTCB\n"
+        " MOVT    r2, :upper16:pxCurrentTCB\n"
+        // "    ldr r2, pxCurrentTCBConst                    \n" /* Read the location
+        //                                                          of pxCurrentTCB
+        //                                                          i.e. &(
+        //                                                          pxCurrentTCB ).
+        //    */
         "    ldr r0, [r2]                                 \n" /* r0 =
                                                                  pxCurrentTCB. */
         "                                                 \n"
@@ -502,9 +521,11 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
                                                                  outstanding
                                                                  transfers before
                                                                  disabling MPU. */
-        "    ldr r1, xMPUCTRLConst                        \n" /* r1 = 0xe000ed94
-                                                                 [Location of
-                                                                 MPU_CTRL]. */
+        " MOVW    r1, :lower16:0xe000ed94\n"
+        " MOVT    r1, :upper16:0xe000ed94\n"
+        // "    ldr r1, xMPUCTRLConst                        \n" /* r1 = 0xe000ed94
+        //                                                          [Location of
+        //                                                          MPU_CTRL]. */
         "    ldr r2, [r1]                                 \n" /* Read the value of
                                                                  MPU_CTRL. */
         "    bic r2, #1                                   \n" /* r2 = r2 & ~1 i.e.
@@ -517,21 +538,27 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
                                                                  MAIR0 in TCB. */
         "    ldr r1, [r0]                                 \n" /* r1 = *r0 i.e. r1
                                                                  = MAIR0. */
-        "    ldr r2, xMAIR0Const                          \n" /* r2 = 0xe000edc0
-                                                                 [Location of
-                                                                 MAIR0]. */
+        " MOVW    r2, :lower16:0xe000edc0\n"
+        " MOVT    r2, :upper16:0xe000edc0\n"
+        // "    ldr r2, xMAIR0Const                          \n" /* r2 = 0xe000edc0
+        //                                                          [Location of
+        //                                                          MAIR0]. */
         "    str r1, [r2]                                 \n" /* Program MAIR0. */
         "                                                 \n"
         "    adds r0, #4                                  \n" /* r0 = r0 + 4. r0
                                                                  now points to
                                                                  first RBAR in
                                                                  TCB. */
-        "    ldr r1, xRNRConst                            \n" /* r1 = 0xe000ed98
-                                                                 [Location of
-                                                                 RNR]. */
-        "    ldr r2, xRBARConst                           \n" /* r2 = 0xe000ed9c
-                                                                 [Location of
-                                                                 RBAR]. */
+        " MOVW    r1, :lower16:0xe000ed98\n"
+        " MOVT    r1, :upper16:0xe000ed98\n"
+        // "    ldr r1, xRNRConst                            \n" /* r1 = 0xe000ed98
+        //                                                          [Location of
+        //                                                          RNR]. */
+        " MOVW    r2, :lower16:0xe000ed9c\n"
+        " MOVT    r2, :upper16:0xe000ed9c\n"
+        // "    ldr r2, xRBARConst                           \n" /* r2 = 0xe000ed9c
+        //                                                          [Location of
+        //                                                          RBAR]. */
         "                                                 \n"
         "    movs r3, #4                                  \n" /* r3 = 4. */
         "    str r3, [r1]                                 \n" /* Program RNR = 4.
@@ -573,9 +600,11 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
                                                                */
 #endif                                                        /* configTOTAL_MPU_REGIONS == 16 */
         "                                                 \n"
-        "   ldr r1, xMPUCTRLConst                         \n" /* r1 = 0xe000ed94
-                                                                 [Location of
-                                                                 MPU_CTRL]. */
+        " MOVW    r1, :lower16:0xe000ed94\n"
+        " MOVT    r1, :upper16:0xe000ed94\n"
+        // "   ldr r1, xMPUCTRLConst                         \n" /* r1 = 0xe000ed94
+        //                                                          [Location of
+        //                                                          MPU_CTRL]. */
         "   ldr r2, [r1]                                  \n" /* Read the value of
                                                                  MPU_CTRL. */
         "   orr r2, #1                                    \n" /* r2 = r2 | 1 i.e.
@@ -587,11 +616,13 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
                                                                  continuing. */
         "                                                 \n"
         " restore_context:                                \n"
-        "    ldr r2, pxCurrentTCBConst                    \n" /* Read the location
-                                                                 of pxCurrentTCB
-                                                                 i.e. &(
-                                                                 pxCurrentTCB ).
-                                                               */
+        " MOVW    r2, :lower16:pxCurrentTCB\n"
+        " MOVT    r2, :upper16:pxCurrentTCB\n"
+        // "    ldr r2, pxCurrentTCBConst                    \n" /* Read the location
+        //                                                          of pxCurrentTCB
+        //                                                          i.e. &(
+        //                                                          pxCurrentTCB ).
+        //                                                        */
         "    ldr r0, [r2]                                 \n" /* r0 =
                                                                  pxCurrentTCB.*/
         "    ldr r1, [r0]                                 \n" /* r1 = Location of
@@ -641,11 +672,11 @@ void PendSV_Handler(void) /* __attribute__ (( naked )) PRIVILEGED_FUNCTION */
         "                                                 \n"
         " .align 4                                        \n"
         //   " pxCurrentTCBConst: .word pxCurrentTCB           \n"
-        " xMPUCTRLConst: .word 0xe000ed94                 \n"
-        " xMAIR0Const: .word 0xe000edc0                   \n"
-        " xRNRConst: .word 0xe000ed98                     \n"
-        " xRBARConst: .word 0xe000ed9c                    \n" ::"i"(
-            configMAX_SYSCALL_INTERRUPT_PRIORITY));
+        // " xMPUCTRLConst: .word 0xe000ed94                 \n"
+        // " xMAIR0Const: .word 0xe000edc0                   \n"
+        // " xRNRConst: .word 0xe000ed98                     \n"
+        // " xRBARConst: .word 0xe000ed9c                    \n"
+        ::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY));
 }
 
 #else /* configENABLE_MPU */

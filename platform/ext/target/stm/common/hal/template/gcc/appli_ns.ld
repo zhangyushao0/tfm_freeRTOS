@@ -45,11 +45,10 @@ SECTIONS
         __Vectors_Size = __Vectors_End - __Vectors;
         __end__ = .;
 
-        *(.text*)
+       /* *(.text*) */
 
         KEEP(*(.init))
         KEEP(*(.fini))
-
 
         /* .ctors */
         *crtbegin.o(.ctors)
@@ -70,9 +69,37 @@ SECTIONS
         KEEP(*(.eh_frame*))
     } > FLASH
 
-    .tram_section :
+    /* Privileged functions - Section needs to be 32 byte aligned to satisfy MPU requirements. */
+    .privileged_functions : ALIGN(32)
     {
-        KEEP(*(.tram_section*))  /* 将 custom_section 中的符号保留在此段 */
+        . = ALIGN(32);
+        __privileged_functions_start__ = .;
+        *(privileged_functions)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __privileged_functions_end__ = . - 1;
+    } > FLASH
+
+       /* FreeRTOS System calls - Section needs to be 32 byte aligned to satisfy MPU requirements. */
+    .freertos_system_calls : ALIGN(32)
+    {
+        . = ALIGN(32);
+        __syscalls_flash_start__ = .;
+        *(freertos_system_calls)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __syscalls_flash_end__ = . - 1;
+    } > FLASH
+
+    .unprivileged_functions : ALIGN(32)
+    {
+        . = ALIGN(32);
+        __unprivileged_flash_start__ = .;
+        *(.text*)
+        /* *(.rodata .rodata.* .constdata .constdata.*) */
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __unprivileged_flash_end__ = . - 1;
     } > FLASH
 
     .ARM.extab :
@@ -129,6 +156,15 @@ SECTIONS
     .data (NS_DATA_START+NS_NO_INIT_DATA_SIZE) : AT (__etext)
     {
         __data_start__ = .;
+
+        /* Privileged data - It needs to be 32 byte aligned to satisfy MPU requirements. */
+        . = ALIGN(32);
+        __privileged_sram_start__ = .;
+        *(privileged_data)
+        . = ALIGN(32);
+        /* End address must be the last address in the region, therefore, -1. */
+        __privileged_sram_end__ = . - 1;
+
         *(vtable)
         *(.data*)
 

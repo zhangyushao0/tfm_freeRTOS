@@ -222,12 +222,12 @@
 /* Extract first address of the MPU region as encoded in the
  * RBAR (Region Base Address Register) value. */
 #define portEXTRACT_FIRST_ADDRESS_FROM_RBAR(rbar) \
-    ((rbar)&portMPU_RBAR_ADDRESS_MASK)
+    ((rbar) & portMPU_RBAR_ADDRESS_MASK)
 
 /* Extract last address of the MPU region as encoded in the
  * RLAR (Region Limit Address Register) value. */
 #define portEXTRACT_LAST_ADDRESS_FROM_RLAR(rlar) \
-    (((rlar)&portMPU_RLAR_ADDRESS_MASK) | ~portMPU_RLAR_ADDRESS_MASK)
+    (((rlar) & portMPU_RLAR_ADDRESS_MASK) | ~portMPU_RLAR_ADDRESS_MASK)
 
 /* Does addr lies within [start, end] address range? */
 #define portIS_ADDRESS_WITHIN_RANGE(addr, start, end) \
@@ -1000,8 +1000,8 @@ void vPortSVCHandler_C(uint32_t* pulCallerStackAddress) /* PRIVILEGED_FUNCTION p
     /* Register are stored on the stack in the following order - R0, R1, R2, R3,
      * R12, LR, PC, xPSR. */
     ulPC = pulCallerStackAddress[portOFFSET_TO_PC];
-    // ucSVCNumber = *((uint8_t*)ulPC - 2);
-    ucSVCNumber = 2;
+    ucSVCNumber = *((uint8_t*)ulPC - 2);
+    // ucSVCNumber = 2;
     switch (ucSVCNumber) {
 #if (configENABLE_TRUSTZONE == 1)
     case portSVC_ALLOCATE_SECURE_CONTEXT:

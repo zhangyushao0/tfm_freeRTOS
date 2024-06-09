@@ -36,13 +36,13 @@ extern void __PROGRAM_START(void) __NO_RETURN;
  *----------------------------------------------------------------------------*/
 void Reset_Handler(void) __NO_RETURN;
 
-int cnt = 0;
+// int cnt = 0;
 
-void SysTick_Handler(void) {
-    cnt += 1;
-    return;
-}
-// void SysTick_Handler(void);
+// void SysTick_Handler(void) {
+//     cnt += 1;
+//     return;
+// }
+
 /*----------------------------------------------------------------------------
   Exception / Interrupt Handler
  *----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ DEFAULT_IRQ_HANDLER(SecureFault_Handler)
 DEFAULT_IRQ_HANDLER(SVC_Handler)
 DEFAULT_IRQ_HANDLER(DebugMon_Handler)
 DEFAULT_IRQ_HANDLER(PendSV_Handler)
-// DEFAULT_IRQ_HANDLER(SysTick_Handler)
+DEFAULT_IRQ_HANDLER(SysTick_Handler)
 
 DEFAULT_IRQ_HANDLER(WWDG_IRQHandler)
 DEFAULT_IRQ_HANDLER(PVD_PVM_IRQHandler)

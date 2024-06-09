@@ -56,18 +56,18 @@ target_include_directories(ns_app
     PUBLIC
     ${STM32L563E_DK_DIR}/include
     ${NS_APP_DIR}/include
-    # ${STM32L563E_DK_DIR}/trampline/include
 )
+
 target_link_libraries(ns_app
     PUBLIC
     platform_common_interface
     platform_region_defs
 )
+
 target_sources(ns_app
     PRIVATE
     ${STM_COMMON_DIR}/stm32l5xx/Device/Source/startup_stm32l5xx_ns.c
     ${NS_APP_DIR}/src/main_ns.c
-    # ${STM32L563E_DK_DIR}/trampline/src/trampline.c
 )
 
 # loader
@@ -82,26 +82,25 @@ target_sources(platform_s
     ${STM32L563E_DK_DIR}/loader/src/relocation.c
     ${STM32L563E_DK_DIR}/loader/src/loader.c
     ${STM32L563E_DK_DIR}/loader/src/dwt.c
-    ${STM32L563E_DK_DIR}/loader/src/read_flash.c
     ${STM32L563E_DK_DIR}/loader/src/mpu_st.c
 )
 
 # FreeRTOS
-# add_subdirectory(FreeRTOS)
-# target_link_libraries(ns_app
-#     PUBLIC
-#     freertos_kernel
-# )
+add_subdirectory(FreeRTOS)
+target_link_libraries(ns_app
+    PUBLIC
+    freertos_kernel
+)
 
 # test
-set(TEST_TARGET "" CACHE STRING "Test target to build")
+# set(TEST_TARGET "" CACHE STRING "Test target to build")
 
-# 分割字符串 _
-string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
-list(GET TEST_TARGET_LIST 0 FIRST_PART)
+# # 分割字符串 _
+# string(REPLACE "_" ";" TEST_TARGET_LIST ${TEST_TARGET})
+# list(GET TEST_TARGET_LIST 0 FIRST_PART)
 
-# 添加测试
-add_subdirectory(${FIRST_PART})
+# # 添加测试
+# add_subdirectory(${FIRST_PART})
 
 if(BL2)
     target_sources(bl2
@@ -134,6 +133,7 @@ endif()
 # ${STM32L563E_DK_DIR}/copytext/copytext.c
 # ${STM32L563E_DK_DIR}/copytext/extracted_info.c
 # )
+
 target_include_directories(ns_app
     PUBLIC
     ${STM32L563E_DK_DIR}/copytext

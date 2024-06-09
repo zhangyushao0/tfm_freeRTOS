@@ -21,6 +21,7 @@
 #include "loader.h"
 #include "dwt.h"
 #include "mpu_st.h"
+
 uintptr_t spm_boundary = (uintptr_t)NULL;
 
 static fih_int tfm_core_init(void) {
@@ -82,6 +83,7 @@ static fih_int tfm_core_init(void) {
 
     FIH_RET(fih_int_encode(TFM_SUCCESS));
 }
+
 uint32_t vector_offset = 0;
 
 int main(void) {
@@ -118,29 +120,30 @@ int main(void) {
 #endif
 #define TFM_ASLR
 #ifdef TFM_ASLR
-    SysTick->CTRL = 0;          // Disable SysTick
-    SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
-    SysTick->VAL = 0;           // Clear the current value to 0
-    SysTick->CTRL = 0x5;
-    uint32_t x = 0;
-    x += 1;
-    x = SysTick->VAL;
-    uint32_t __text_address__ = 0x8055000;
-    region_t a = {0x20005000, 0};
+    // SysTick->CTRL = 0;          // Disable SysTick
+    // SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
+    // SysTick->VAL = 0;           // Clear the current value to 0
+    // SysTick->CTRL = 0x5;
+    // uint32_t x = 0;
+    // x += 1;
+    // x = SysTick->VAL;
+    // uint32_t __text_address__ = 0x8055000;
+    // region_t a = {0x20005000, 0};
 
-    uint32_t new_table_addr = 0x20015000;
-    region_t vector_table = {0x20016000, 0};
+    // uint32_t new_table_addr = 0x20015000;
+    // region_t vector_table = {0x20016000, 0};
 
-    vector_offset = vector_table.region_start - __text_address__;
+    // vector_offset = vector_table.region_start - __text_address__;
 
-    loader(&a, &vector_table, new_table_addr, __text_address__);
+    // loader(&a, &vector_table, new_table_addr, __text_address__);
 
-    a.region_size = 0x5000;
+    // a.region_size = 0x5000;
+    region_t a = {0x08055300, 0x8AA0};
     DWT_enable(&a);
     // mpu_init_st(&a);
-    uint32_t start = x;
-    uint32_t end = SysTick->VAL;
-    uint32_t res = start - end;
+    // uint32_t start = x;
+    // uint32_t end = SysTick->VAL;
+    // uint32_t res = start - end;
 
 #endif
     /* Move to handler mode for further SPM initialization. */

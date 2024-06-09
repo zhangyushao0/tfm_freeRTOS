@@ -2,7 +2,6 @@
 #include "func.h"
 #include "relocation.h"
 #include "stm32l5xx_hal_flash.h"
-#include "read_flash.h"
 
 #define ENCODE_KEY 0x00000001
 
@@ -16,15 +15,24 @@ void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
     HAL_FLASH_Lock();
 }
 
-void copy_text(region_t* a, uint32_t src_address) {
+void copy_text() {
+    region_t* a = NULL;
     for (uint32_t i = 0; i < func_info_size; ++i) {
         // uint32_t addr = a->region_start + a->region_size + 1;
         // copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
         // func_info[i].reloc_addr = addr;
         // a->region_size += func_info[i].size;
-        uint32_t addr = func_info[i].addr - src_address + a->region_start;
+        if (func_info[i].reloc_addr == 1) {
+            a = &privileged_region;
+        } else if (func_info[i].reloc_addr == 2) {
+            a = &unprivileged_region;
+        } else if (func_info[i].reloc_addr == 3) {
+            a = &syscall_region;
+        }
+        uint32_t addr = func_info[i].addr - src_start__addr + a->region_start;
         copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
         func_info[i].reloc_addr = addr;
+        a->region_size += func_info[i].size;
     }
 }
 
@@ -63,10 +71,10 @@ uint32_t movt_address_calculate(uint32_t ori_val, uint32_t addr) {
     return new_val;
 }
 
-void vector_table_calculate(relocation_info_t* entry, region_t* vector_addr, uint32_t src_address, int i) {
-    int func_id = entry->func_id2;
+void vector_table_calculate(relocation_info_t entry, region_t* vector_addr, uint32_t src_address) {
+    int func_id = entry.func_id2;
     int addr = func_info[func_id].reloc_addr;
-    *((uint32_t*)(entry->addr - src_address + vector_addr->region_start)) = addr;
+    *((uint32_t*)(entry.addr - src_address + vector_addr->region_start)) = addr;
     vector_addr->region_size += 4;
 }
 
@@ -100,15 +108,15 @@ void movt_calculate(relocation_info_t* entry) {
     *((uint32_t*)pos) = movt_address_calculate(*(uint32_t*)(entry->addr), val);
 }
 
-void relocation(region_t* vector_addr, uint32_t src_address) {
+void relocation() {
     // 第一项，直接写入即可
-    *((uint32_t*)(relocation_info[0].addr + vector_addr->region_start - src_address)) =
+    *((uint32_t*)(relocation_info[0].addr + vector_region.region_start - src_start__addr)) =
         relocation_info[0].value;
-    vector_addr->region_size += 4;
+    vector_region.region_size += 4;
     for (int i = 1; i < table_size; ++i) {
         // which range of the identifier
         if (relocation_info[i].type == 0) { // exception entry
-            vector_table_calculate(relocation_info + i, vector_addr, src_address, i);
+            vector_table_calculate(relocation_info[i], &vector_region, src_start__addr);
         } else if (relocation_info[i].type == 4) { // func call
             bl_calculate(relocation_info + i);
         } else if (relocation_info[i].type == 5) { // absoultably address: movw
@@ -116,13 +124,14 @@ void relocation(region_t* vector_addr, uint32_t src_address) {
         } else if (relocation_info[i].type == 6) { // absoulately address: mowt
             movt_calculate(relocation_info + i);
         } else {
+            // do nothing
         }
     }
 }
 
-void loader(region_t* a, region_t* vector_addr, uint32_t new_table_addr, uint32_t src_address) {
+void loader() {
     // 复制函数到 a 区域
-    copy_text(a, src_address);
+    copy_text();
 
-    relocation(vector_addr, src_address);
+    relocation();
 }

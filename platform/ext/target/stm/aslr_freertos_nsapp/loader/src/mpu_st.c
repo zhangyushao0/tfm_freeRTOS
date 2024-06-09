@@ -1,6 +1,5 @@
 #include "mpu_st.h"
 #include "stm32l5xx.h"
-#include "read_flash.h"
 
 static struct mpu_armv8m_region_cfg_st_t region_flash = {
     0x0,
@@ -108,15 +107,6 @@ enum mpu_armv8m_error_st_t mpu_armv8m_enable_st(
     __DSB();
     __ISB();
     return MPU_ARMV8M_OK;
-}
-
-uint32_t roundup(uint32_t x) {
-    if (x % 0x100 == 0) return x;
-    return (x / 0x100 + 1) * 0x100;
-}
-
-uint32_t rounddown(uint32_t x) {
-    return x / 0x100 * 0x100;
 }
 
 void mpu_init_st() {
