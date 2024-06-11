@@ -16,23 +16,20 @@ void copy_text2ram(uint32_t dst, uint32_t src, uint32_t len) {
 }
 
 void copy_text() {
-    region_t* a = NULL;
+    int region;
     for (uint32_t i = 0; i < func_info_size; ++i) {
         // uint32_t addr = a->region_start + a->region_size + 1;
         // copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
         // func_info[i].reloc_addr = addr;
         // a->region_size += func_info[i].size;
-        if (func_info[i].reloc_addr == 1) {
-            a = &privileged_region;
-        } else if (func_info[i].reloc_addr == 2) {
-            a = &unprivileged_region;
-        } else if (func_info[i].reloc_addr == 3) {
-            a = &syscall_region;
+        region = func_info[i].reloc_addr & 0xff;
+        uint32_t addr = func_info[i].addr - src_region[region].region_start + dst_region[region].region_start;
+        if (func_info[i].reloc_addr & 0x100) {
+            copy_text2ram(addr, func_info[i].addr, func_info[i].size);
+        } else {
+            copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
         }
-        uint32_t addr = func_info[i].addr - src_start__addr + a->region_start;
-        copy_text2ram(addr - 1, func_info[i].addr - 1, func_info[i].size);
         func_info[i].reloc_addr = addr;
-        a->region_size += func_info[i].size;
     }
 }
 
@@ -71,11 +68,18 @@ uint32_t movt_address_calculate(uint32_t ori_val, uint32_t addr) {
     return new_val;
 }
 
-void vector_table_calculate(relocation_info_t entry, region_t* vector_addr, uint32_t src_address) {
-    int func_id = entry.func_id2;
-    int addr = func_info[func_id].reloc_addr;
-    *((uint32_t*)(entry.addr - src_address + vector_addr->region_start)) = addr;
-    vector_addr->region_size += 4;
+void vector_table_calculate(relocation_info_t* entry) {
+    int func_id1 = entry->func_id1;
+    int func_id2 = entry->func_id2;
+    int addr = entry->value;
+    if (func_id2 != -1) {
+        addr = func_info[func_id2].reloc_addr;
+    }
+    if (func_id1 == 0) {
+        *((uint32_t*)(entry->addr - src_region[0].region_start + dst_region[0].region_start)) = addr;
+    } else {
+        *((uint32_t*)(entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr)) = addr;
+    }
 }
 
 void bl_calculate(relocation_info_t* entry) {
@@ -92,7 +96,7 @@ void movw_calculate(relocation_info_t* entry) {
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = entry->value;
     if (func_id2 != -1) {
-        val = func_info[func_id2].reloc_addr ^ ENCODE_KEY;
+        val = func_info[func_id2].reloc_addr; //^ ENCODE_KEY;
     }
     *((uint32_t*)pos) = movw_address_calculate(*(uint32_t*)(entry->addr), val);
 }
@@ -103,20 +107,25 @@ void movt_calculate(relocation_info_t* entry) {
     uint32_t pos = entry->addr - func_info[func_id1].addr + func_info[func_id1].reloc_addr;
     uint32_t val = entry->value;
     if (func_id2 != -1) {
-        val = func_info[func_id2].reloc_addr ^ ENCODE_KEY;
+        val = func_info[func_id2].reloc_addr; // ^ ENCODE_KEY;
     }
     *((uint32_t*)pos) = movt_address_calculate(*(uint32_t*)(entry->addr), val);
 }
 
 void relocation() {
-    // 第一项，直接写入即可
-    *((uint32_t*)(relocation_info[0].addr + vector_region.region_start - src_start__addr)) =
-        relocation_info[0].value;
-    vector_region.region_size += 4;
-    for (int i = 1; i < table_size; ++i) {
+    for (int i = 0; i < index_table_size; ++i) {
+        relocation_info[index_table[i].region_start].func_id2 = -1;
+        int region = index_table[i].region_size & 0xff;
+        if (index_table[i].region_size & 0x100) {
+            relocation_info[index_table[i].region_start].value = dst_region[region].region_start + src_region[region].region_size - 1;
+        } else {
+            relocation_info[index_table[i].region_start].value = dst_region[region].region_start;
+        }
+    }
+    for (int i = 0; i < table_size; ++i) {
         // which range of the identifier
         if (relocation_info[i].type == 0) { // exception entry
-            vector_table_calculate(relocation_info[i], &vector_region, src_start__addr);
+            vector_table_calculate(relocation_info + i);
         } else if (relocation_info[i].type == 4) { // func call
             bl_calculate(relocation_info + i);
         } else if (relocation_info[i].type == 5) { // absoultably address: movw
@@ -130,8 +139,6 @@ void relocation() {
 }
 
 void loader() {
-    // 复制函数到 a 区域
     copy_text();
-
     relocation();
 }

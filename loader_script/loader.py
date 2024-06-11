@@ -10,7 +10,10 @@ output_relocation_info_path = (
 output_functions_info_path = (
     project_path + "/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/func.c"
 )
-need_relocation_secions = ["text", "privileged_functions", "freertos_system_calls", "unprivileged_functions"]
+output_sections_info_path = (
+   project_path + "/platform/ext/target/stm/aslr_freertos_nsapp/loader/src/loader_region.c"
+)
+need_relocation_secions = ["text", "unprivileged_functions", "privileged_functions", "freertos_system_calls"]
 
 # code_start = 0x08005000
 
@@ -34,7 +37,24 @@ def get_function_id(functions_info, addr):
             return i
     return -1
 
-def output_relocation_info(info):
+def output_sections_info(sections_info):
+    with open(output_sections_info_path, 'w') as f:
+        f.write('#include "loader_region.h"\n')
+        f.write("\n")
+        f.write('region_t dst_region[4] = {\n')
+        f.write('    {0x0, 0x0},\n')
+        f.write('    {0x0, 0x0},\n')
+        f.write('    {0x0, 0x0},\n')
+        f.write('    {0x0, 0x0},\n')
+        f.write('};\n')
+        f.write('region_t src_region[4] = {\n')
+        for section in sections_info:
+            f.write('    {')
+            f.write(hex(section[0]) + ', ' + hex(section[1]))
+            f.write('}, \n')
+        f.write('};\n')
+
+def output_relocation_info(info, section_arr):
     # 将 info 按第一位从小到大排序
     info.sort(key=lambda x: x[0])
     with open(output_relocation_info_path, "w") as f:
@@ -70,7 +90,23 @@ def output_relocation_info(info):
                 + "\n"
             )
         f.write("};\n")
-
+        f.write("\n")
+        f.write("uint32_t index_table_size = ")
+        f.write(str(len(section_arr)) + ";\n")
+        f.write("\n")
+        f.write("region_t index_table[")
+        f.write(str(len(section_arr)))
+        f.write("] = {\n")
+        for entry in section_arr:
+            f.write(
+                "    {"
+                + str(entry[0])
+                + ", "
+                + str(entry[1])
+                + "},"
+                + "\n"
+            )
+        f.write("};\n")
 
 def output_functions_info(functions_info, sections):
     with open(output_functions_info_path, "w") as f:
@@ -82,15 +118,17 @@ def output_functions_info(functions_info, sections):
         f.write("func_info_t func_info[")
         f.write(str(len(functions_info)))
         f.write("] = {\n")
-        for addr, size, name in functions_info:
+        for addr, size, name, flag in functions_info:
             type = -1
             for id, section in enumerate(sections):
                 # print(hex(section.header.sh_addr), hex(section.header.sh_size), section.name)
-                if addr >= section.header.sh_addr and addr < section.header.sh_addr + section.header.sh_size:
+                if addr >= section[0] and addr < section[0] + section[1]:
                     type = id
                     break
             if type == -1:
                 print(f"error occur: the function {name} not in any section")
+            if flag == 1:
+                type |= 0x100
             f.write(
                 "    {"
                 + hex(addr)
@@ -104,6 +142,23 @@ def output_functions_info(functions_info, sections):
                 + "\n"
             )
         f.write("};\n")
+
+def generate_sections_arr(relocation_info):
+    arr = []
+    for index, entry in enumerate(relocation_info):
+        if entry[5] == "__unprivileged_flash_start__":
+            arr.append([index, 1])
+        elif entry[5] == "__unprivileged_flash_end__":
+            arr.append([index, 1 | 0x100])
+        elif entry[5] == "__privileged_functions_start__":
+            arr.append([index, 2])
+        elif entry[5] == "__privileged_functions_end__":
+            arr.append([index, 2 | 0x100])
+        elif entry[5] == "__syscalls_flash_start__":
+            arr.append([index, 3])
+        elif entry[5] == "__syscalls_flash_end__":
+            arr.append([index, 3 | 0x100])
+    return arr
 
 # 生成符号表信息
 def parse_symbol_table(elf_file):
@@ -124,6 +179,14 @@ def parse_symbol_table(elf_file):
         # print(f'index {i}, value {symbol["st_value"]}, size {symbol["st_size"]}, type {symbol["st_info"]["type"]}, visibility {symbol["st_other"]["visibility"]}, bind {symbol["st_info"]["bind"]}, section index {symbol["st_shndx"]}, name {symbol.name if symbol.name else ""}')
     return table_infos
 
+# 生成 section 信息
+def getnerate_sections_info(elf_file):
+    sections = get_sections(elf_file, 0)
+    sections_info = []
+    for section in sections:
+        sections_info.append([section.header.sh_addr, section.header.sh_size, section.name])
+    return sections_info
+
 # 生成 relocation 信息
 def generate_relocation_info(elf_file, symbol_tables, functions_info):
     # 获取需要重定向的 section 对应的 section 对象
@@ -142,9 +205,8 @@ def generate_relocation_info(elf_file, symbol_tables, functions_info):
             name = symbol[4]
             func_id1 = -1
             func_id2 = -1
-            if relocation_type == 0x02:
-                type = 0  # exception entry
-                func_id2 = get_function_id(functions_info, value)
+            if relocation_type == 0x02 and symbol[2] != "STT_SECTION":
+                type = 0  # exception entr
             elif relocation_type == 0x03 and symbol[2] == "STT_FUNC":
                 type = 1  # func pointer
             elif relocation_type == 0x03:
@@ -153,31 +215,34 @@ def generate_relocation_info(elf_file, symbol_tables, functions_info):
                 type = 3  # data of some info, like "heap"
             elif relocation_type == 0x0A:
                 type = 4  # func call
-                func_id1 = get_function_id(functions_info, offset)
-                func_id2 = get_function_id(functions_info, value)
             elif relocation_type == 0x2F:
                 type = 5  # absoultably address: movw
-                func_id1 = get_function_id(functions_info, offset)
-                func_id2 = get_function_id(functions_info, value)
             elif relocation_type == 0x30:
                 type = 6  # absoulately address: movt
-                func_id1 = get_function_id(functions_info, offset)
-                func_id2 = get_function_id(functions_info, value)
             else:
                 print(f"error occur: the symbol type not found: {name}")
+                continue
             # print(f"offset: {hex(offset)}, value: {hex(value)}, type: {type}, func_id1: {func_id1}, func_id2: {func_id2}, name: {name}")
-            info.append([offset, value, type,  func_id1, func_id2, name])
+            func_id1 = get_function_id(functions_info, offset)
+            func_id2 = get_function_id(functions_info, value)
+            info.append([offset, value, type, func_id1, func_id2, name])
     return info
 
 # 生成函数信息
 def generate_functions_info(symbol_tables):
     functions_info = []
     for symbol in symbol_tables:
-        if symbol[2] == "STT_FUNC":
+        if symbol[2] == "STT_FUNC" or ():
             functions_info.append(
                 #  + sections_info[symbol[3]][0]
-                [symbol[0], symbol[1], symbol[4]]
+                [symbol[0], symbol[1], symbol[4], 0]
             )
+        elif symbol[2] == 'STT_OBJECT' and int(symbol[0]) > 0x08000000 and int(symbol[0]) < 0x0b000000:
+            # print(hex(symbol[0]), symbol[4])
+            functions_info.append(
+                [symbol[0], symbol[1], symbol[4], 1]
+            )
+    functions_info.sort(key=lambda x: x[0])
     return functions_info
 
 def generate(elf_filename):
@@ -185,9 +250,11 @@ def generate(elf_filename):
         elf_file = ELFFile(f)
         symbol_tables = parse_symbol_table(elf_file)
         functions_info = generate_functions_info(symbol_tables)
-        info = generate_relocation_info(elf_file, symbol_tables, functions_info)
-        sections = get_sections(elf_file, 0)
-        output_functions_info(functions_info, sections)
-        output_relocation_info(info)
+        relocation_info = generate_relocation_info(elf_file, symbol_tables, functions_info)
+        sections_info = getnerate_sections_info(elf_file)
+        section_arr = generate_sections_arr(relocation_info)
+        output_sections_info(sections_info)
+        output_functions_info(functions_info, sections_info)
+        output_relocation_info(relocation_info, section_arr)
 
 generate(elf_path)

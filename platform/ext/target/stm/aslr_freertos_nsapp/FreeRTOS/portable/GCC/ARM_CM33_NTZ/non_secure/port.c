@@ -1470,7 +1470,7 @@ StackType_t* pxPortInitialiseStack(StackType_t*   pxTopOfStack,
     ulIndex++;
     xMPUSettings->ulContext[ulIndex] = 0x08080808; /* r8. */
     ulIndex++;
-    xMPUSettings->ulContext[ulIndex] = 0x09090909; /* r9. */
+    xMPUSettings->ulContext[ulIndex] = 0x1; /* r9. */
     ulIndex++;
     xMPUSettings->ulContext[ulIndex] = 0x10101010; /* r10. */
     ulIndex++;

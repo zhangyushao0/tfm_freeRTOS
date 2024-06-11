@@ -7,10 +7,7 @@ typedef struct region {
     uint32_t region_size;
 } region_t;
 
-extern uint32_t src_start__addr;
-extern region_t vector_region;
-extern region_t privileged_region;
-extern region_t syscall_region;
-extern region_t unprivileged_region;
+extern region_t dst_region[4];
 
+extern region_t src_region[4];
 #endif

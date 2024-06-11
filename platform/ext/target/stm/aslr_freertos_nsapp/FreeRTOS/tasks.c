@@ -181,7 +181,7 @@ uint32_t r10_addr = 0x2001a000;
         listGET_OWNER_OF_NEXT_ENTRY(pxCurrentTCB, &(pxReadyTasksLists[uxTopPriority])); \
         uxTopReadyPriority = uxTopPriority;                                             \
     } while (0) /* taskSELECT_HIGHEST_PRIORITY_TASK */
-#else           /* if ( configNUMBER_OF_CORES == 1 ) */
+#else /* if ( configNUMBER_OF_CORES == 1 ) */
 
 #define taskSELECT_HIGHEST_PRIORITY_TASK(xCoreID) prvSelectHighestPriorityTask(xCoreID)
 
@@ -1430,7 +1430,6 @@ static TCB_t* prvCreateRestrictedTask(const TaskParameters_t* const pxTaskDefini
     } else {
         pxNewTCB = NULL;
     }
-
     return pxNewTCB;
 }
 /*-----------------------------------------------------------*/
@@ -1569,21 +1568,6 @@ static TCB_t* prvCreateTask(TaskFunction_t               pxTaskCode,
         prvInitialiseNewTask(pxTaskCode, pcName, (uint32_t)usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL);
     }
 
-// #define TRAMP
-#ifdef TRAMP
-    // 读取 tcb
-    uintptr_t addr = *((uintptr_t*)pxNewTCB);
-
-    // 指向 r10 的指针
-    uintptr_t* r10_ptr = (uintptr_t*)(addr + 32);
-    *r10_ptr = r10_addr;
-
-    r10_addr += 0x00000500;
-
-    // 指向 r9 的指针
-    uintptr_t* r9_ptr = (uintptr_t*)(addr + 28); // r9
-    *r9_ptr = 0x1;
-#endif
     return pxNewTCB;
 }
 /*-----------------------------------------------------------*/
@@ -3747,14 +3731,14 @@ static TCB_t* prvSearchForNameWithinSingleList(List_t*    pxList,
     return pxReturn;
 }
 #else  /* if ( configNUMBER_OF_CORES == 1 ) */
-static TCB_t* prvSearchForNameWithinSingleList(List_t* pxList,
+static TCB_t* prvSearchForNameWithinSingleList(List_t*    pxList,
                                                const char pcNameToQuery[]) {
-    TCB_t* pxReturn = NULL;
-    UBaseType_t x;
-    char cNextChar;
-    BaseType_t xBreakLoop;
+    TCB_t*            pxReturn = NULL;
+    UBaseType_t       x;
+    char              cNextChar;
+    BaseType_t        xBreakLoop;
     const ListItem_t* pxEndMarker = listGET_END_MARKER(pxList);
-    ListItem_t* pxIterator;
+    ListItem_t*       pxIterator;
 
     /* This function is called with the scheduler suspended. */
 
@@ -5770,7 +5754,7 @@ TaskHandle_t xTaskGetCurrentTaskHandle(void) {
 #else  /* #if ( configNUMBER_OF_CORES == 1 ) */
 TaskHandle_t xTaskGetCurrentTaskHandle(void) {
     TaskHandle_t xReturn;
-    UBaseType_t uxSavedInterruptStatus;
+    UBaseType_t  uxSavedInterruptStatus;
 
     traceENTER_xTaskGetCurrentTaskHandle();
 
@@ -7599,11 +7583,11 @@ void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer,
 #else /* #if ( configNUMBER_OF_CORES == 1 ) */
 
 void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer,
-                                   StackType_t** ppxIdleTaskStackBuffer,
-                                   uint32_t* pulIdleTaskStackSize,
-                                   BaseType_t xCoreId) {
+                                   StackType_t**  ppxIdleTaskStackBuffer,
+                                   uint32_t*      pulIdleTaskStackSize,
+                                   BaseType_t     xCoreId) {
     static StaticTask_t xIdleTaskTCBs[configNUMBER_OF_CORES];
-    static StackType_t uxIdleTaskStacks[configNUMBER_OF_CORES][configMINIMAL_STACK_SIZE];
+    static StackType_t  uxIdleTaskStacks[configNUMBER_OF_CORES][configMINIMAL_STACK_SIZE];
 
     *ppxIdleTaskTCBBuffer = &(xIdleTaskTCBs[xCoreId]);
     *ppxIdleTaskStackBuffer = &(uxIdleTaskStacks[xCoreId][0]);

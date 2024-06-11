@@ -13,3 +13,5 @@ cmake -S . -B build -DTFM_PLATFORM=stm/aslr_freertos_nsapp -DBL2=OFF -DNS=OFF -D
 // #define COMP2 COMP2_S
 #define COMP2_BASE COMP2_BASE_S
 ```
+
+修改 pxPortInitialiseStack 函数，初始化 r9 = 1

@@ -44,8 +44,13 @@ SECTIONS
         __Vectors_End = .;
         __Vectors_Size = __Vectors_End - __Vectors;
         __end__ = .;
+    } > FLASH
 
-       /* *(.text*) */
+   .unprivileged_functions : ALIGN(32)
+    {
+        . = ALIGN(32);
+        __unprivileged_flash_start__ = .;
+        *(.text*)
 
         KEEP(*(.init))
         KEEP(*(.fini))
@@ -65,8 +70,10 @@ SECTIONS
          *(.dtors)
 
         *(.rodata*)
-
         KEEP(*(.eh_frame*))
+
+        . = ALIGN(32);
+        __unprivileged_flash_end__ = . - 1;
     } > FLASH
 
     /* Privileged functions - Section needs to be 32 byte aligned to satisfy MPU requirements. */
@@ -89,17 +96,6 @@ SECTIONS
         . = ALIGN(32);
         /* End address must be the last address in the region, therefore, -1. */
         __syscalls_flash_end__ = . - 1;
-    } > FLASH
-
-    .unprivileged_functions : ALIGN(32)
-    {
-        . = ALIGN(32);
-        __unprivileged_flash_start__ = .;
-        *(.text*)
-        /* *(.rodata .rodata.* .constdata .constdata.*) */
-        . = ALIGN(32);
-        /* End address must be the last address in the region, therefore, -1. */
-        __unprivileged_flash_end__ = . - 1;
     } > FLASH
 
     .ARM.extab :

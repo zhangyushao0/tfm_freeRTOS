@@ -46,21 +46,20 @@ void testThread2(void* pvParameters) {
     }
 }
 
-char cArray[128] __attribute__((aligned(128)));
-int  main() {
+int main() {
     HAL_Init();
 
     MX_GPIO_Init();
 
     static StackType_t xRWAccessTaskStack1[configMINIMAL_STACK_SIZE] __attribute__((aligned(32)));
     TaskParameters_t   taskParams1 = {
-           .pvTaskCode = testThread1,
-           .pcName = "testThread1",
-           .usStackDepth = configMINIMAL_STACK_SIZE,
-           .pvParameters = NULL,
-           .uxPriority = 1,
-           .puxStackBuffer = xRWAccessTaskStack1,
-           .xRegions = {
+          .pvTaskCode = testThread1,
+          .pcName = "testThread1",
+          .usStackDepth = configMINIMAL_STACK_SIZE,
+          .pvParameters = NULL,
+          .uxPriority = 1,
+          .puxStackBuffer = xRWAccessTaskStack1,
+          .xRegions = {
             /* Base address Length Parameters */
             {0, 0, 0},
             {0, 0, 0},
@@ -68,15 +67,16 @@ int  main() {
 
     static StackType_t xRWAccessTaskStack2[configMINIMAL_STACK_SIZE] __attribute__((aligned(32)));
     TaskParameters_t   taskParams2 = {
-           .pvTaskCode = testThread2,
-           .pcName = "testThread2",
-           .usStackDepth = configMINIMAL_STACK_SIZE,
-           .pvParameters = NULL,
-           .uxPriority = 1,
-           .puxStackBuffer = xRWAccessTaskStack2,
-           .xRegions = {
+          .pvTaskCode = testThread2,
+          .pcName = "testThread2",
+          .usStackDepth = configMINIMAL_STACK_SIZE,
+          .pvParameters = NULL,
+          .uxPriority = 1,
+          .puxStackBuffer = xRWAccessTaskStack2,
+          .xRegions = {
             /* Base address Length Parameters */
             {(void*)(AHB2PERIPH_BASE_NS), 0x2000UL, portMPU_REGION_READ_WRITE},
+            {0, 0, 0},
             {0, 0, 0},
         }};
 

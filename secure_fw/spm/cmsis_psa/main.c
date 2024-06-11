@@ -21,6 +21,7 @@
 #include "loader.h"
 #include "dwt.h"
 #include "mpu_st.h"
+#include "loader_region.h"
 
 uintptr_t spm_boundary = (uintptr_t)NULL;
 
@@ -118,34 +119,37 @@ int main(void) {
         tfm_core_panic();
     }
 #endif
-#define TFM_ASLR
-#ifdef TFM_ASLR
-    // SysTick->CTRL = 0;          // Disable SysTick
-    // SysTick->LOAD = 0xFFFFFFFF; // Set the reload value to the maximum
-    // SysTick->VAL = 0;           // Clear the current value to 0
-    // SysTick->CTRL = 0x5;
-    // uint32_t x = 0;
-    // x += 1;
-    // x = SysTick->VAL;
-    // uint32_t __text_address__ = 0x8055000;
-    // region_t a = {0x20005000, 0};
 
-    // uint32_t new_table_addr = 0x20015000;
-    // region_t vector_table = {0x20016000, 0};
-
-    // vector_offset = vector_table.region_start - __text_address__;
-
-    // loader(&a, &vector_table, new_table_addr, __text_address__);
-
-    // a.region_size = 0x5000;
-    region_t a = {0x08055300, 0x8AA0};
-    DWT_enable(&a);
-    // mpu_init_st(&a);
-    // uint32_t start = x;
-    // uint32_t end = SysTick->VAL;
-    // uint32_t res = start - end;
-
+#define TFM_OFFSET
+#ifdef TFM_OFFSET
+    uint32_t offset = 0x17FBB000;
+    for (int i = 0; i < 4; i++) {
+        dst_region[i].region_start = src_region[i].region_start + offset;
+        dst_region[i].region_size = src_region[i].region_size;
+    }
+    vector_offset = dst_region[0].region_start - src_region[0].region_start;
+    region_t code = {0x20010000, 0xf000};
+    loader();
+    DWT_enable(&code);
 #endif
+
+// #define TFM_ASLR
+#ifdef TFM_ASLR
+    dst_region[0].region_start = 0x20010000;
+    dst_region[0].region_size = 0x1000;
+    vector_offset = dst_region[0].region_start - src_region[0].region_start;
+    region_t code = {0x20011000, 0xf000};
+    dst_region[1].region_start = 0x20011000;
+    dst_region[1].region_size = 0x5000;
+    dst_region[2].region_start = 0x20016000;
+    dst_region[2].region_size = 0x9000;
+    dst_region[3].region_start = 0x2001f000;
+    dst_region[3].region_size = 0x1000;
+
+    loader();
+    // DWT_enable(&code);
+#endif
+
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();
 
