@@ -33,7 +33,7 @@ __heap_size__  = BL2_HEAP_SIZE;
 __msp_stack_size__ = BL2_MSP_STACK_SIZE;
 
 /* Library configurations */
-GROUP(libgcc.a libc.a libm.a libnosys.a)
+GROUP(libc.a libnosys.a libgcc.a libm.a)
 
 ENTRY(Reset_Handler)
 

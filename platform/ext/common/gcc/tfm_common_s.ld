@@ -66,7 +66,7 @@ MEMORY
 __msp_stack_size__ = S_MSP_STACK_SIZE;
 
 /* Library configurations */
-GROUP(libgcc.a libc.a libm.a libnosys.a libc_nano.a)
+GROUP(libc.a libnosys.a libgcc.a libm.a libc_nano.a)
 
 ENTRY(Reset_Handler)
 
@@ -273,7 +273,9 @@ SECTIONS
     } > RAM
     Image$$ARM_LIB_STACK$$ZI$$Base = ADDR(.msp_stack);
     Image$$ARM_LIB_STACK$$ZI$$Limit = ADDR(.msp_stack) + SIZEOF(.msp_stack);
-
+    __StackLimit = ADDR(.msp_stack);
+    __StackTop = ADDR(.msp_stack) + SIZEOF(.msp_stack);
+    
     .msp_stack_seal_res :
     {
         . += 0x8;
