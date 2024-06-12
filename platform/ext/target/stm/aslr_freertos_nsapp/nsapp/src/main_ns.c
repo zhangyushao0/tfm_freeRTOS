@@ -1,56 +1,72 @@
-#include "stm32l5xx_hal.h"
-#include "stm32l562xx.h"
-#include "stm32l5xx_hal_rcc.h"
 #include "main_ns.h"
-void SystemClock_Config(void)
+#include "FreeRTOS.h"
+#include "assert.h"
+#include "stm32l562xx.h"
+#include "stm32l5xx_hal.h"
+#include "stm32l5xx_hal_flash.h"
+#include "stm32l5xx_hal_rcc.h"
+#include "support.h"
+#include "task.h"
+#define TFM_SPM_LOG_LEVEL TFM_SPM_LOG_LEVEL_DEBUG
+
+__attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_A_B(void)
 {
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-    /** Configure the main internal regulator output voltage
-     */
-    if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE0) != HAL_OK)
-    {
-        while (1)
-            ;
-    }
-
-    /** Initializes the RCC Oscillators according to the specified parameters
-     * in the RCC_OscInitTypeDef structure.
-     */
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
-    RCC_OscInitStruct.MSIState = RCC_MSI_ON;
-    RCC_OscInitStruct.MSICalibrationValue = RCC_MSICALIBRATION_DEFAULT;
-    RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
-    RCC_OscInitStruct.PLL.PLLM = 1;
-    RCC_OscInitStruct.PLL.PLLN = 55;
-    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV7;
-    RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
-    RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
-        while (1)
-            ;
-    }
-
-    /** Initializes the CPU, AHB and APB buses clocks
-     */
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
-    {
-        while (1)
-            ;
-    }
+    __asm volatile(
+        "str      lr,[r10]                   \n" /* Clear RAM before jump */
+        "add      r10,#8                   \n" /* Clear RAM before jump */
+        "blx      r8                   \n" /* Clear RAM before jump */
+        "sub      r10,#8                   \n" /* Clear RAM before jump */
+        "ldr      pc,[r10]                      \n" /* Jump to Reset_handler */
+    );
 }
-static void MX_GPIO_Init(void)
+
+__attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_B_A(void)
 {
+    __asm volatile(
+        "str      lr,[r10]                   \n" /* Clear RAM before jump */
+        "add      r10,#8                   \n" /* Clear RAM before jump */
+        "blx      r8                   \n" /* Clear RAM before jump */
+        "sub      r10,#8                   \n" /* Clear RAM before jump */
+        "ldr      pc,[r10]                      \n" /* Jump to Reset_handler */
+    );
+}
+
+__attribute__((section(".tram_section"))) __attribute__((naked)) void trampoline_blx(void)
+{
+    __asm volatile(
+        "str        lr,[r10]                      \n"
+        "add        r10,#32                       \n"
+        "str        r8,[r10,#-4]                  \n"
+        "str        r0,[r10,#-8]                  \n"
+        "subs       r0,lr,r8                      \n"
+        "cmp.w      r0,#20480                       \n"
+        "ble        #8                             \n"/*lr-r8<=0x5000 */
+        "b          #-2                             \n"/*lr-r8>0x5000 B to A */
+        /*设A为可执行，B不可执行*/
+        "ldr        r0,[r10,#-8]                  \n"
+        "blx        r8                            \n"
+        /*设B为可执行，A不可执行*/
+        "b          #24                             \n"/*跳到结尾*/
+        "subs       r0,r8,lr                      \n"
+        "cmp.w      r0,#20480                       \n"
+        "ble        #8                             \n"/*r8-lr<=0x5000 */
+        "b          #-2                             \n"/*r8-lr>0x5000 A to B */
+        /*设B为可执行，A不可执行*/
+        "ldr        r0,[r10,#-8]                  \n"/*恢复r0*/
+        "blx        r8                            \n"
+        /*设A为可执行，B不可执行*/
+        "b          #4                              \n"/*跳到结尾*/
+        /*以下说明不跨区域*/
+        "ldr        r0,[r10,#-8]                  \n"/*恢复r0*/
+        "blx        r8                            \n"
+        "sub        r10,#32                       \n" 
+        "ldr        pc,[r10]                      \n"
+    );
+}
+
+
+
+static void MX_GPIO_Init(void) {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     /* GPIO Ports Clock Enable */
@@ -66,20 +82,109 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     HAL_GPIO_Init(LED9_GPIO_Port, &GPIO_InitStruct);
 }
-void testThread()
-{
-    while (1)
-    {
-        // tfm_ns_interface_dispatch(HAL_GPIO_TogglePin, GPIOD, GPIO_PIN_3, 0, 0);
-        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
-        vTaskDelay(500);
+
+void spin_100000() {
+    for (int i = 0; i < 100000; i++) {
+        __ASM volatile("nop");
     }
 }
-int main()
-{
-    HAL_Init();
-    SystemClock_Config();
-    MX_GPIO_Init();
-    xTaskCreate(testThread, "testThread", 512, NULL, 1, NULL);
+
+void testThread2(void* pvParameters) {
+    int a = 0;
+    initialise_benchmark();
+    int result = benchmark();
+    verify_benchmark(result);
+    while (1) { 
+        a++;
+        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+        spin_100000();
+    }
+}
+
+void testThread1(void* pvParameters) {
+    // initialise_benchmark();
+    // int result = benchmark();
+    // assert(verify_benchmark(result));
+    //     while (1) {
+    //     HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+    //     vTaskDelay(500);
+    //   }
+    while (1) {
+        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
+        for (int i = 0; i < 100000; i++) {
+        __ASM volatile("nop");
+    }
+    }
+}
+
+// uint32_t  ctrl_before;
+// uint32_t  limit_cfg;
+// MPU_Type* mpu;
+// #define mpu_region_switch_from_to(region_id1, region_id2) \
+//     mpu = (MPU_Type*)MPU_BASE;                            \
+//     ctrl_before = mpu->CTRL;                              \
+//     mpu->CTRL = 0;                                        \
+//     mpu->RNR = region_id1 & 0xff;                         \
+//     limit_cfg = mpu->RLAR;                                \
+//     limit_cfg &= 0xFFFFFFFE;                              \
+//     mpu->RLAR = limit_cfg;                                \
+//     mpu->RNR = region_id2 & 0xff;                         \
+//     limit_cfg = mpu->RLAR;                                \
+//     limit_cfg |= MPU_RLAR_EN_Msk;                         \
+//     mpu->RLAR = limit_cfg;                                \
+//     mpu->CTRL = ctrl_before;                              \
+//     __DSB();                                              \
+//     __ISB();
+
+int jzxX(uint16_t a,uint16_t b){
+    if(a-b>0x5000){
+        trampoline_B_A();
+        return a+b+b;
+    }else if(b-a>0x5000){
+        trampoline_A_B();
+        return a+b;
+    }else{
+        __asm("movw r8,#25069");
+        __asm("movt r8,#8192");
+        return a;
+    }
+    //__asm("str      lr,[r10]");
+}
+
+int main() {
+    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    //HAL_Init();
+    typedef void (*FunctionPointer)(void);
+    FunctionPointer ptr = MX_GPIO_Init;
+
+    /* USER CODE BEGIN Init */
+
+    /* USER CODE END Init */
+    ptr();
+    //MX_GPIO_Init();
+
+     //testThread2();
+
+    BaseType_t xReturned;
+
+    xReturned = xTaskCreate(
+        testThread2,           /* Function that implements the task. */
+        "testThread1",         /* Text name for the task. */
+        ((uint16_t)300),       /* Stack size in words, not bytes. */
+        NULL,                  /* Parameter passed into the task. */
+        1 | portPRIVILEGE_BIT, /* Priority at which the task is created. */
+        NULL);                 /* Used to pass out the created task's handle. */
+
+    /* 启动调度器 */
     vTaskStartScheduler();
+
+
+
+    /* 如果系统正常工作，以下代码不会执行 */
+    for (;;){
+        trampoline_A_B();
+        trampoline_B_A();
+        jzxX(1,2);
+        trampoline_blx();
+    }
 }

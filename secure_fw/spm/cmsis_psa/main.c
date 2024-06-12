@@ -6,24 +6,27 @@
  */
 
 #include "build_config_check.h"
-#include "fih.h"
 #include "ffm/tfm_boot_data.h"
+#include "fih.h"
+#include "loader.h"
+#include "divide.h"
+#include "dwt.h"
 #include "memory_symbols.h"
 #include "spm.h"
+#include "tfm_api.h"
 #include "tfm_hal_isolation.h"
 #include "tfm_hal_platform.h"
-#include "tfm_api.h"
-#include "tfm_spm_log.h"
-#include "tfm_version.h"
 #include "tfm_plat_otp.h"
 #include "tfm_plat_provisioning.h"
+#include "tfm_spm_log.h"
+#include "tfm_version.h"
+#include "target_cfg.h"
 
 uintptr_t spm_boundary = (uintptr_t)NULL;
 
-static fih_int tfm_core_init(void)
-{
+static fih_int tfm_core_init(void) {
     enum tfm_plat_err_t plat_err = TFM_PLAT_ERR_SYSTEM_ERR;
-    fih_int fih_rc = FIH_FAILURE;
+    fih_int             fih_rc = FIH_FAILURE;
 
     /*
      * Access to any peripheral should be performed after programming
@@ -81,8 +84,7 @@ static fih_int tfm_core_init(void)
     FIH_RET(fih_int_encode(TFM_SUCCESS));
 }
 
-int main(void)
-{
+int main(void) {
     fih_int fih_rc = FIH_FAILURE;
 
     /* set Main Stack Pointer limit */
@@ -99,7 +101,7 @@ int main(void)
     FIH_LABEL_CRITICAL_POINT();
 
     /* Print the TF-M version */
-    SPMLOG_INFMSG("\033[1;34mBooting TF-M "VERSION_FULLSTR"\033[0m\r\n");
+    SPMLOG_INFMSG("\033[1;34mBooting TF-M " VERSION_FULLSTR "\033[0m\r\n");
 
     /*
      * Prioritise secure exceptions to avoid NS being able to pre-empt
@@ -111,10 +113,26 @@ int main(void)
     /* Check secure exception priority */
     FIH_CALL(tfm_arch_verify_secure_exception_priorities, fih_rc);
     if (fih_not_eq(fih_rc, FIH_SUCCESS)) {
-         tfm_core_panic();
+        tfm_core_panic();
     }
 #endif
 
+    int32_t  __text_address__ = 0x8055000;
+    int32_t  __tram_address__=0x08058fe2;
+    uint32_t address_a = 0x20005000;
+    uint32_t address_b = 0x20015000;
+    uint32_t address_c = 0x20018000;
+    uint32_t offset_a = address_a - __text_address__;
+    uint32_t offset_b = address_b - __text_address__;
+    uint32_t offset_c = address_c - __text_address__;
+
+    copy_text2ram(address_c, __text_address__, 0x5000);
+    copy_text2ram(address_a, __text_address__, 0x5000);
+    copy_text2ram(address_b, __text_address__, 0x5000);
+    
+    divide();
+    relocation(offset_a, offset_b,offset_c);
+    //DWT_enable(address_a + 0x200, address_a + 0x2e00, address_b + 0x200, address_b + 0x2e00);
     /* Move to handler mode for further SPM initialization. */
     tfm_core_handler_mode();
 

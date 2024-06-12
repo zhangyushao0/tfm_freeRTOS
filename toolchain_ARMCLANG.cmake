@@ -10,9 +10,9 @@ cmake_minimum_required(VERSION 3.15)
 
 SET(CMAKE_SYSTEM_NAME Generic)
 
-set(CMAKE_C_COMPILER armclang)
-set(CMAKE_CXX_COMPILER armclang)
-set(CMAKE_ASM_COMPILER armasm)
+set(CMAKE_C_COMPILER clang)
+set(CMAKE_CXX_COMPILER clang)
+set(CMAKE_ASM_COMPILER clang)
 
 set(LINKER_VENEER_OUTPUT_FLAG --import_cmse_lib_out=)
 set(COMPILER_CMSE_FLAG $<$<COMPILE_LANGUAGE:C>:-mcmse>)

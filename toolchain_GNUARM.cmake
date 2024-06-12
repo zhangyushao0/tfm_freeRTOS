@@ -1,27 +1,31 @@
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Copyright (c) 2020-2023, Arm Limited. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 
 set(CMAKE_SYSTEM_NAME Generic)
 
-find_program(CMAKE_C_COMPILER ${CROSS_COMPILE}-gcc)
-find_program(CMAKE_CXX_COMPILER ${CROSS_COMPILE}-g++)
+set(CMAKE_C_COMPILER "/usr/local/llvm-project/build/bin/clang")
+set(CMAKE_CXX_COMPILER "/usr/local/llvm-project/build/bin/clang++")
+set(CMAKE_ASM_COMPILER "/usr/local/llvm-project/build/bin/clang")
+set(TARGET_TRIPLE arm-none-eabi)
 
-if(CMAKE_C_COMPILER STREQUAL "CMAKE_C_COMPILER-NOTFOUND")
-    message(FATAL_ERROR "Could not find compiler: '${CROSS_COMPILE}-gcc'")
-endif()
-
-if(CMAKE_CXX_COMPILER STREQUAL "CMAKE_CXX_COMPILER-NOTFOUND")
-    message(FATAL_ERROR "Could not find compiler: '${CROSS_COMPILE}-g++'")
-endif()
+set(CMAKE_C_COMPILER_TARGET ${TARGET_TRIPLE})
+set(CMAKE_CXX_COMPILER_TARGET ${TARGET_TRIPLE})
 
 set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
 
 set(LINKER_VENEER_OUTPUT_FLAG -Wl,--cmse-implib,--out-implib=)
 set(COMPILER_CMSE_FLAG -mcmse)
+set(CMAKE_LINKER "/usr/local/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld")
+
+LINK_DIRECTORIES("/usr/local/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/lib/thumb/v8-m.main/nofp")
+LINK_DIRECTORIES("/usr/local/gcc-arm-none-eabi-10.3-2021.10/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main/nofp")
+
+# LINK_DIRECTORIES("/home/zys/repo/embedded/llvm-project/build/lib")
+set(CMAKE_OBJCOPY "arm-none-eabi-objcopy")
 
 # This variable name is a bit of a misnomer. The file it is set to is included
 # at a particular step in the compiler initialisation. It is used here to
@@ -68,7 +72,8 @@ macro(tfm_toolchain_reset_linker_flags)
     set_property(DIRECTORY PROPERTY LINK_OPTIONS "")
 
     add_link_options(
-        --entry=Reset_Handler
+
+        # --entry=Reset_Handler
         -specs=nano.specs
         LINKER:-check-sections
         LINKER:-fatal-warnings
@@ -79,7 +84,7 @@ macro(tfm_toolchain_reset_linker_flags)
 endmacro()
 
 macro(tfm_toolchain_set_processor_arch)
-    if (DEFINED TFM_SYSTEM_PROCESSOR)
+    if(DEFINED TFM_SYSTEM_PROCESSOR)
         if(TFM_SYSTEM_PROCESSOR MATCHES "cortex-m85")
             # GNUARM does not support the -mcpu=cortex-m85 flag yet
             # TODO: Remove this exception when the cortex-m85 support comes out.
@@ -87,99 +92,92 @@ macro(tfm_toolchain_set_processor_arch)
         else()
             set(CMAKE_SYSTEM_PROCESSOR ${TFM_SYSTEM_PROCESSOR})
 
-            if (DEFINED TFM_SYSTEM_DSP)
-                if (NOT TFM_SYSTEM_DSP)
+            if(DEFINED TFM_SYSTEM_DSP)
+                if(NOT TFM_SYSTEM_DSP)
                     string(APPEND CMAKE_SYSTEM_PROCESSOR "+nodsp")
                 endif()
             endif()
+
             # GCC specifies that '+nofp' is available on following M-profile cpus: 'cortex-m4',
             # 'cortex-m7', 'cortex-m33', 'cortex-m35p' and 'cortex-m55'.
             # Build fails if other M-profile cpu, such as 'cortex-m23', is added with '+nofp'.
             # Explicitly list those cpu to align with GCC description.
-            if(GCC_VERSION VERSION_GREATER_EQUAL "8.0.0")
-                if(NOT CONFIG_TFM_ENABLE_FP AND
-                   (TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m4"
-                    OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m7"
-                    OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m33"
-                    OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m35p"
-                    OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m55"))
-                        string(APPEND CMAKE_SYSTEM_PROCESSOR "+nofp")
-                endif()
+            if(NOT CONFIG_TFM_ENABLE_FP AND
+                (TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m4"
+                OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m7"
+                OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m33"
+                OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m35p"
+                OR TFM_SYSTEM_PROCESSOR STREQUAL "cortex-m55"))
+                string(APPEND CMAKE_SYSTEM_PROCESSOR "+nofp")
             endif()
 
             if(TFM_SYSTEM_ARCHITECTURE STREQUAL "armv8.1-m.main")
                 if(NOT CONFIG_TFM_ENABLE_MVE)
                     string(APPEND CMAKE_SYSTEM_PROCESSOR "+nomve")
                 endif()
+
                 if(NOT CONFIG_TFM_ENABLE_MVE_FP)
                     string(APPEND CMAKE_SYSTEM_PROCESSOR "+nomve.fp")
                 endif()
             endif()
         endif()
-
     endif()
 
     # CMAKE_SYSTEM_ARCH variable is not a built-in CMAKE variable. It is used to
     # set the compile and link flags when TFM_SYSTEM_PROCESSOR is not specified.
     # The variable name is choosen to align with the ARMCLANG toolchain file.
-    set(CMAKE_SYSTEM_ARCH         ${TFM_SYSTEM_ARCHITECTURE})
+    set(CMAKE_SYSTEM_ARCH ${TFM_SYSTEM_ARCHITECTURE})
 
     if(TFM_SYSTEM_ARCHITECTURE STREQUAL "armv8.1-m.main")
         if(CONFIG_TFM_ENABLE_MVE)
             string(APPEND CMAKE_SYSTEM_ARCH "+mve")
         endif()
+
         if(CONFIG_TFM_ENABLE_MVE_FP)
             string(APPEND CMAKE_SYSTEM_ARCH "+mve.fp")
         endif()
     endif()
 
-    if (DEFINED TFM_SYSTEM_DSP)
+    if(DEFINED TFM_SYSTEM_DSP)
         # +nodsp modifier is only supported from GCC version 8.
-        if(GCC_VERSION VERSION_GREATER_EQUAL "8.0.0")
-            # armv8.1-m.main arch does not have +nodsp option
-            if ((NOT TFM_SYSTEM_ARCHITECTURE STREQUAL "armv8.1-m.main") AND
-                NOT TFM_SYSTEM_DSP)
-                string(APPEND CMAKE_SYSTEM_ARCH "+nodsp")
-            endif()
+        # armv8.1-m.main arch does not have +nodsp option
+        if((NOT TFM_SYSTEM_ARCHITECTURE STREQUAL "armv8.1-m.main") AND
+            NOT TFM_SYSTEM_DSP)
+            string(APPEND CMAKE_SYSTEM_ARCH "+nodsp")
         endif()
     endif()
 
-    if(GCC_VERSION VERSION_GREATER_EQUAL "8.0.0")
-        if(CONFIG_TFM_ENABLE_FP)
-            string(APPEND CMAKE_SYSTEM_ARCH "+fp")
-        endif()
+    if(CONFIG_TFM_ENABLE_FP)
+        string(APPEND CMAKE_SYSTEM_ARCH "+fp")
     endif()
-
 endmacro()
 
 macro(tfm_toolchain_reload_compiler)
     # CMAKE_C_COMPILER_VERSION is not guaranteed to be defined.
-    EXECUTE_PROCESS( COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION )
-
+    # EXECUTE_PROCESS( COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION )
     tfm_toolchain_set_processor_arch()
     tfm_toolchain_reset_compiler_flags()
     tfm_toolchain_reset_linker_flags()
 
-    if (GCC_VERSION VERSION_LESS 7.3.1)
-        message(FATAL_ERROR "Please use newer GNU Arm compiler version starting from 7.3.1.")
-    endif()
+    # if (GCC_VERSION VERSION_LESS 7.3.1)
+    # message(FATAL_ERROR "Please use newer GNU Arm compiler version starting from 7.3.1.")
+    # endif()
 
-    if (GCC_VERSION VERSION_EQUAL 10.2.1)
-        message(FATAL_ERROR "GNU Arm compiler version 10-2020-q4-major has an issue in CMSE support."
-                            " Select other GNU Arm compiler versions instead."
-                            " See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99157 for the issue detail.")
-    endif()
+    # if (GCC_VERSION VERSION_EQUAL 10.2.1)
+    # message(FATAL_ERROR "GNU Arm compiler version 10-2020-q4-major has an issue in CMSE support."
+    # " Select other GNU Arm compiler versions instead."
+    # " See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99157 for the issue detail.")
+    # endif()
 
-    if (GCC_VERSION VERSION_GREATER_EQUAL 11.3.1)
-        message(FATAL_ERROR "GNU Arm compiler version greater and equal than *11.3.Rel1* has a linker issue in syscall."
-                            " Select other GNU Arm compiler versions instead.")
-    endif()
-
+    # if (GCC_VERSION VERSION_GREATER_EQUAL 11.3.1)
+    # message(FATAL_ERROR "GNU Arm compiler version greater and equal than *11.3.Rel1* has a linker issue in syscall."
+    # " Select other GNU Arm compiler versions instead.")
+    # endif()
     unset(CMAKE_C_FLAGS_INIT)
     unset(CMAKE_CXX_FLAGS_INIT)
     unset(CMAKE_ASM_FLAGS_INIT)
 
-    if (CMAKE_SYSTEM_PROCESSOR)
+    if(CMAKE_SYSTEM_PROCESSOR)
         set(CMAKE_C_FLAGS_INIT "-mcpu=${CMAKE_SYSTEM_PROCESSOR}")
         set(CMAKE_CXX_FLAGS_INIT "-mcpu=${CMAKE_SYSTEM_PROCESSOR}")
         set(CMAKE_ASM_FLAGS_INIT "-mcpu=${CMAKE_SYSTEM_PROCESSOR}")
@@ -196,13 +194,21 @@ macro(tfm_toolchain_reload_compiler)
     set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS_INIT})
     set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS_INIT})
     set(CMAKE_ASM_FLAGS ${CMAKE_ASM_FLAGS_INIT})
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I/usr/local/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include")
 
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostdlib")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include")
+
+    # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=/usr/bin/arm-none-eabi-ld")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=arm-none-eabi-ld")
+    set(CMAKE_EXE_LINKER_FLAGS "-fuse-ld=/usr/local/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-ld")
     set(BL2_COMPILER_CP_FLAG -mfloat-abi=soft)
 
-    if (CONFIG_TFM_FLOAT_ABI STREQUAL "hard")
+    if(CONFIG_TFM_FLOAT_ABI STREQUAL "hard")
         set(COMPILER_CP_FLAG -mfloat-abi=hard)
         set(LINKER_CP_OPTION -mfloat-abi=hard)
-        if (CONFIG_TFM_ENABLE_FP OR CONFIG_TFM_ENABLE_MVE_FP)
+
+        if(CONFIG_TFM_ENABLE_FP OR CONFIG_TFM_ENABLE_MVE_FP)
             set(COMPILER_CP_FLAG -mfloat-abi=hard -mfpu=${CONFIG_TFM_FP_ARCH})
             set(LINKER_CP_OPTION -mfloat-abi=hard -mfpu=${CONFIG_TFM_FP_ARCH})
         endif()
@@ -232,11 +238,13 @@ macro(target_add_scatter_file target)
     )
 
     add_library(${target}_scatter OBJECT)
+
     foreach(scatter_file ${ARGN})
         target_sources(${target}_scatter
             PRIVATE
-                ${scatter_file}
+            ${scatter_file}
         )
+
         # Cmake cannot use generator expressions in the
         # set_source_file_properties command, so instead we just parse the regex
         # for the filename and set the property on all files, regardless of if
@@ -263,9 +271,9 @@ macro(target_add_scatter_file target)
 
     target_compile_options(${target}_scatter
         PRIVATE
-            -E
-            -P
-            -xc
+        -E
+        -P
+        -xc
     )
 endmacro()
 
@@ -278,8 +286,8 @@ macro(add_convert_to_bin_target target)
     add_custom_command(OUTPUT ${bin_dir}/${target}.bin
         DEPENDS ${target}
         COMMAND ${CMAKE_OBJCOPY}
-            -O binary $<TARGET_FILE:${target}>
-            ${bin_dir}/${target}.bin
+        -O binary $<TARGET_FILE:${target}>
+        ${bin_dir}/${target}.bin
     )
 
     add_custom_target(${target}_elf
@@ -288,8 +296,8 @@ macro(add_convert_to_bin_target target)
     add_custom_command(OUTPUT ${bin_dir}/${target}.elf
         DEPENDS ${target}
         COMMAND ${CMAKE_OBJCOPY}
-            -O elf32-littlearm $<TARGET_FILE:${target}>
-            ${bin_dir}/${target}.elf
+        -O elf32-littlearm $<TARGET_FILE:${target}>
+        ${bin_dir}/${target}.elf
     )
 
     add_custom_target(${target}_hex
@@ -298,8 +306,8 @@ macro(add_convert_to_bin_target target)
     add_custom_command(OUTPUT ${bin_dir}/${target}.hex
         DEPENDS ${target}
         COMMAND ${CMAKE_OBJCOPY}
-            -O ihex $<TARGET_FILE:${target}>
-            ${bin_dir}/${target}.hex
+        -O ihex $<TARGET_FILE:${target}>
+        ${bin_dir}/${target}.hex
     )
 
     add_custom_target(${target}_binaries
@@ -312,7 +320,8 @@ endmacro()
 
 macro(target_share_symbols target symbol_name_file)
     get_target_property(TARGET_TYPE ${target} TYPE)
-    if (NOT TARGET_TYPE STREQUAL "EXECUTABLE")
+
+    if(NOT TARGET_TYPE STREQUAL "EXECUTABLE")
         message(FATAL_ERROR "${target} is not an executable. Symbols cannot be shared from libraries.")
     endif()
 
@@ -320,8 +329,8 @@ macro(target_share_symbols target symbol_name_file)
         LENGTH_MINIMUM 1
     )
 
+    list(TRANSFORM KEEP_SYMBOL_LIST PREPEND --keep-symbol=)
 
-    list(TRANSFORM KEEP_SYMBOL_LIST PREPEND  --keep-symbol=)
     # strip all the symbols except those proveded as arguments
     add_custom_command(
         TARGET ${target}
@@ -333,9 +342,10 @@ endmacro()
 
 macro(target_link_shared_code target)
     foreach(symbol_provider ${ARGN})
-        if (TARGET ${symbol_provider})
+        if(TARGET ${symbol_provider})
             get_target_property(SYMBOL_PROVIDER_TYPE ${symbol_provider} TYPE)
-            if (NOT SYMBOL_PROVIDER_TYPE STREQUAL "EXECUTABLE")
+
+            if(NOT SYMBOL_PROVIDER_TYPE STREQUAL "EXECUTABLE")
                 message(FATAL_ERROR "${symbol_provider} is not an executable. Symbols cannot be shared from libraries.")
             endif()
         endif()
@@ -347,7 +357,7 @@ endmacro()
 
 macro(target_strip_symbols target)
     set(SYMBOL_LIST "${ARGN}")
-    list(TRANSFORM SYMBOL_LIST PREPEND  --strip-symbol=)
+    list(TRANSFORM SYMBOL_LIST PREPEND --strip-symbol=)
 
     add_custom_command(
         TARGET ${target}
@@ -359,7 +369,7 @@ endmacro()
 
 macro(target_strip_symbols_from_dependency target dependency)
     set(SYMBOL_LIST "${ARGN}")
-    list(TRANSFORM SYMBOL_LIST PREPEND  --strip-symbol=)
+    list(TRANSFORM SYMBOL_LIST PREPEND --strip-symbol=)
 
     add_custom_command(
         TARGET ${target}
@@ -371,7 +381,7 @@ endmacro()
 
 macro(target_weaken_symbols target)
     set(SYMBOL_LIST "${ARGN}")
-    list(TRANSFORM SYMBOL_LIST PREPEND  --weaken-symbol=)
+    list(TRANSFORM SYMBOL_LIST PREPEND --weaken-symbol=)
 
     add_custom_command(
         TARGET ${target}
@@ -383,7 +393,7 @@ endmacro()
 
 macro(target_weaken_symbols_from_dependency target dependency)
     set(SYMBOL_LIST "${ARGN}")
-    list(TRANSFORM SYMBOL_LIST PREPEND  --weaken-symbol=)
+    list(TRANSFORM SYMBOL_LIST PREPEND --weaken-symbol=)
 
     add_custom_command(
         TARGET ${target}

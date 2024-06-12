@@ -1,46 +1,46 @@
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Copyright (c) 2020-2022, Arm Limited. All rights reserved.
 # Copyright (c) 2021 STMicroelectronics. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 
 cmake_policy(SET CMP0076 NEW)
 set(CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-#========================= Platform region defs ===============================#
-
+# ========================= Platform region defs ===============================#
 target_include_directories(platform_region_defs
     INTERFACE
-        include
-        ${CMAKE_CURRENT_SOURCE_DIR}/boards
+    include
+    ${CMAKE_CURRENT_SOURCE_DIR}/boards
 )
 
 target_compile_definitions(platform_region_defs
     INTERFACE
-        $<$<OR:$<BOOL:${TFM_NS_REG_TEST}>,$<BOOL:${TFM_S_REG_TEST}>>:FLASH_LAYOUT_FOR_TEST>
+    $<$<OR:$<BOOL:${TFM_NS_REG_TEST}>,$<BOOL:${TFM_S_REG_TEST}>>:FLASH_LAYOUT_FOR_TEST>
 )
 
-#========================= Platform common defs ===============================#
+# ========================= Platform common defs ===============================#
 target_add_scatter_file(tfm_s
     $<$<AND:$<VERSION_LESS:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:ARMClang>>:${CMAKE_SOURCE_DIR}/platform/ext/common/armclang/tfm_common_s.sct>
-    $<$<AND:$<VERSION_LESS:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:GNU>>:${CMAKE_SOURCE_DIR}/platform/ext/common/gcc/tfm_common_s.ld>
+    $<$<AND:$<VERSION_LESS:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:Clang>>:${CMAKE_SOURCE_DIR}/platform/ext/common/gcc/tfm_common_s.ld>
     $<$<AND:$<VERSION_LESS:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:IAR>>:${CMAKE_SOURCE_DIR}/platform/ext/common/iar/tfm_common_s.icf>
     $<$<AND:$<VERSION_EQUAL:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:ARMClang>>:${CMAKE_BINARY_DIR}/generated/platform/ext/common/armclang/tfm_isolation_l3.sct>
-    $<$<AND:$<VERSION_EQUAL:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:GNU>>:${CMAKE_BINARY_DIR}/generated/platform/ext/common/gcc/tfm_isolation_l3.ld>
+    $<$<AND:$<VERSION_EQUAL:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:Clang>>:${CMAKE_BINARY_DIR}/generated/platform/ext/common/gcc/tfm_isolation_l3.ld>
     $<$<AND:$<VERSION_EQUAL:${TFM_ISOLATION_LEVEL},3>,$<C_COMPILER_ID:IAR>>:${CMAKE_BINARY_DIR}/generated/platform/ext/common/iar/tfm_isolation_l3.icf>
 )
 
 if(NS_APP)
     target_add_scatter_file(ns_app
-        $<$<C_COMPILER_ID:GNU>:${STM_COMMON_DIR}/hal/template/gcc/appli_ns.ld>
+        $<$<C_COMPILER_ID:Clang>:${STM_COMMON_DIR}/hal/template/gcc/appli_ns.ld>
         $<$<C_COMPILER_ID:ARMClang>:${STM_COMMON_DIR}/hal/template/armclang/appli_ns.sct>
         $<$<C_COMPILER_ID:IAR>:${STM_COMMON_DIR}/hal/template/iar/appli_ns.icf>
     )
+
     # target_link_libraries(CMSIS_5_tfm_ns
-    #     INTERFACE
-    #         CMSIS_5_RTX_V8MMN
+    # INTERFACE
+    # CMSIS_5_RTX_V8MMN
     # )
 endif()
 
@@ -52,55 +52,54 @@ if(BL2)
     )
 endif()
 
-#========================= Platform Secure ====================================#
-
+# ========================= Platform Secure ====================================#
 target_include_directories(platform_s
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${STM_COMMON_DIR}/hal/Native_Driver
-        ${STM_COMMON_DIR}/hal/CMSIS_Driver
-        ${CMAKE_CURRENT_SOURCE_DIR}/Device/Include
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Inc
-        ${MBEDCRYPTO_PATH}/library
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${STM_COMMON_DIR}/hal/Native_Driver
+    ${STM_COMMON_DIR}/hal/CMSIS_Driver
+    ${CMAKE_CURRENT_SOURCE_DIR}/Device/Include
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Inc
+    ${MBEDCRYPTO_PATH}/library
 )
 
 target_sources(platform_s
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/secure/system_stm32l5xx.c
-        ${STM_COMMON_DIR}/hal/Native_Driver/tick.c
-        ${STM_COMMON_DIR}/hal/Native_Driver/mpu_armv8m_drv.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/secure/low_level_device.c
-        ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_flash.c
-        ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_com.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cortex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_dma.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gpio.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gtzc.c
-        $<$<BOOL:${TFM_PARTITION_PLATFORM}>:${CMAKE_CURRENT_SOURCE_DIR}/secure/tfm_platform_system>
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rng.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rng_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/secure/system_stm32l5xx.c
+    ${STM_COMMON_DIR}/hal/Native_Driver/tick.c
+    ${STM_COMMON_DIR}/hal/Native_Driver/mpu_armv8m_drv.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/secure/low_level_device.c
+    ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_flash.c
+    ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_com.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cortex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_dma.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gpio.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gtzc.c
+    $<$<BOOL:${TFM_PARTITION_PLATFORM}>:${CMAKE_CURRENT_SOURCE_DIR}/secure/tfm_platform_system>
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rng.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rng_ex.c
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_hash.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_hash_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pka.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp_ex.c
-        ${STM_COMMON_DIR}/hal/Native_Driver/low_level_rng.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_hash.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_hash_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pka.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp_ex.c
+    ${STM_COMMON_DIR}/hal/Native_Driver/low_level_rng.c
 )
 
 target_compile_options(platform_s
     PUBLIC
-        ${COMPILER_CMSE_FLAG}
+    ${COMPILER_CMSE_FLAG}
 )
 
 # GNU ld has some strange behaviour to do with weak functions, and does not deal
@@ -110,82 +109,84 @@ target_compile_options(platform_s
 # fix is compatible.
 target_sources(tfm_s
     PRIVATE
-        ${STM_COMMON_DIR}/hal/Native_Driver/tick.c
+    ${STM_COMMON_DIR}/hal/Native_Driver/tick.c
 )
 
-#========================= Platform Non-Secure ================================#
-
+# ========================= Platform Non-Secure ================================#
 target_include_directories(ns_app
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/Device/Include
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/Device/Include
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Inc
 )
 
 target_sources(ns_app
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Device/Source/Templates/system_stm32l5xx.c
-        ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_com.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_dma.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gpio.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart_ex.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cortex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Device/Source/Templates/system_stm32l5xx.c
+    ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_com.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_dma.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gpio.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cortex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_exti.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash.c
 )
 
-#========================= Platform BL2 =======================================#
-
+# ========================= Platform BL2 =======================================#
 if(BL2)
     target_include_directories(platform_bl2
         PUBLIC
-            ${CMAKE_CURRENT_SOURCE_DIR}
-            ${STM_COMMON_DIR}/hal/Native_Driver
-            ${STM_COMMON_DIR}/hal/CMSIS_Driver
-            ${CMAKE_CURRENT_SOURCE_DIR}/Device/Include
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Inc
-            ${MCUBOOT_PATH}/boot/bootutil/include
-            $<TARGET_PROPERTY:bl2,BINARY_DIR>/ext/mcuboot
-            ${CMAKE_SOURCE_DIR}/bl2/ext/mcuboot/include
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${STM_COMMON_DIR}/hal/Native_Driver
+        ${STM_COMMON_DIR}/hal/CMSIS_Driver
+        ${CMAKE_CURRENT_SOURCE_DIR}/Device/Include
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Inc
+        ${MCUBOOT_PATH}/boot/bootutil/include
+        $<TARGET_PROPERTY:bl2,BINARY_DIR>/ext/mcuboot
+        ${CMAKE_SOURCE_DIR}/bl2/ext/mcuboot/include
     )
 
     target_sources(platform_bl2
         PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/Device/Source/Templates/system_stm32l5xx.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/bl2/boot_hal_bl2.c
-            ${STM_COMMON_DIR}/hal/Native_Driver/mpu_armv8m_drv.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/bl2/tfm_low_level_security.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/bl2/low_level_device.c
-            ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_flash.c
-            ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_com.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash_ex.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr_ex.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_dma.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc_ex.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cortex.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gpio.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart_ex.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gtzc.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_hash.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_hash_ex.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pka.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp_ex.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rng.c
-            ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rng_ex.c
-            ${STM_COMMON_DIR}/hal/Native_Driver/low_level_rng.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/Device/Source/Templates/system_stm32l5xx.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/bl2/boot_hal_bl2.c
+        ${STM_COMMON_DIR}/hal/Native_Driver/mpu_armv8m_drv.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/bl2/tfm_low_level_security.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/bl2/low_level_device.c
+        ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_flash.c
+        ${STM_COMMON_DIR}/hal/CMSIS_Driver/low_level_com.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_flash_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_dma.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pwr.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rcc_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cortex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gpio.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_uart_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_gtzc.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_hash.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_hash_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_pka.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_cryp_ex.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rng.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/hal/Src/stm32l5xx_hal_rng_ex.c
+        ${STM_COMMON_DIR}/hal/Native_Driver/low_level_rng.c
     )
 
     target_compile_options(platform_bl2
         PUBLIC
-            ${COMPILER_CMSE_FLAG}
+        ${COMPILER_CMSE_FLAG}
     )
 
     # GNU ld has some strange behaviour to do with weak functions, and does not deal
@@ -195,53 +196,52 @@ if(BL2)
     # fix is compatible.
     target_sources(bl2
         PRIVATE
-            ${STM_COMMON_DIR}/hal/Native_Driver/tick.c
+        ${STM_COMMON_DIR}/hal/Native_Driver/tick.c
     )
 endif()
 
-#========================= tfm_spm ============================================#
-
+# ========================= tfm_spm ============================================#
 target_sources(tfm_spm
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/secure/target_cfg.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/secure/tfm_hal_isolation.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/secure/tfm_hal_platform.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/secure/target_cfg.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/secure/tfm_hal_isolation.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/secure/tfm_hal_platform.c
 )
 
 install(FILES
-        ${STM_COMMON_DIR}/scripts/stm_tool.py
-        ${STM_COMMON_DIR}/scripts/bin2hex.py
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../bl2/ext/mcuboot/scripts/macro_parser.py
-        DESTINATION ${CMAKE_BINARY_DIR}/scripts/ )
+    ${STM_COMMON_DIR}/scripts/stm_tool.py
+    ${STM_COMMON_DIR}/scripts/bin2hex.py
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../bl2/ext/mcuboot/scripts/macro_parser.py
+    DESTINATION ${CMAKE_BINARY_DIR}/scripts/)
 
-if (${CMAKE_C_COMPILER_ID} STREQUAL GNU)
+if(${CMAKE_C_COMPILER_ID} STREQUAL GNU)
     set(PREPROCESSOR_FILE ${STM_COMMON_DIR}/scripts/gcc/preprocess.sh)
-elseif (${CMAKE_C_COMPILER_ID} STREQUAL ARMClang)
+elseif(${CMAKE_C_COMPILER_ID} STREQUAL ARMClang)
     set(PREPROCESSOR_FILE ${STM_COMMON_DIR}/scripts/armclang/preprocess.sh)
 else()
     set(PREPROCESSOR_FILE ${STM_COMMON_DIR}/scripts/iar/preprocess.sh)
 endif()
 
 install(FILES ${STM_COMMON_DIR}/scripts/regression.sh
-         ${PREPROCESSOR_FILE}
-         ${STM_COMMON_DIR}/scripts/TFM_UPDATE.sh
-         ${STM_COMMON_DIR}/scripts/TFM_BIN2HEX.sh
-         ${STM_COMMON_DIR}/scripts/postbuild.sh
-         PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-         DESTINATION ${CMAKE_BINARY_DIR} )
+    ${PREPROCESSOR_FILE}
+    ${STM_COMMON_DIR}/scripts/TFM_UPDATE.sh
+    ${STM_COMMON_DIR}/scripts/TFM_BIN2HEX.sh
+    ${STM_COMMON_DIR}/scripts/postbuild.sh
+    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+    DESTINATION ${CMAKE_BINARY_DIR})
 
-if (TFM_S_REG_TEST OR TFM_NS_REG_TEST)
-    #the define FLASH_LAYOUT_FOR_TEST
-    #increase SECURE and NON SECURE IMAGE and modify the  content of  low_level_device.c from BL2 (low_level_flash.c)
+if(TFM_S_REG_TEST OR TFM_NS_REG_TEST)
+    # the define FLASH_LAYOUT_FOR_TEST
+    # increase SECURE and NON SECURE IMAGE and modify the  content of  low_level_device.c from BL2 (low_level_flash.c)
     set(FLAGS_FOR_BL2_PREPROCESSING
         "#define FLASH_LAYOUT_FOR_TEST\n"
         "#define BL2\n"
-         )
+    )
     add_definitions("-DFLASH_LAYOUT_FOR_TEST")
 else()
     set(FLAGS_FOR_BL2_PREPROCESSING
         "#define BL2\n"
-       )
+    )
 endif()
 
 set(CONTENT_FOR_BL2_PREPROCESSING
@@ -282,16 +282,17 @@ set(CONTENT_FOR_BL2_PREPROCESSING
     "\tRE_IMAGE_FLASH_NV_PS = (FLASH_BASE_ADDRESS+FLASH_PS_AREA_OFFSET),\n"
     "\tRE_IMAGE_FLASH_NV_ITS = (FLASH_BASE_ADDRESS+FLASH_ITS_AREA_OFFSET),\n"
 )
+
 if(MCUBOOT_ENC_IMAGES)
     set(CONTENT_ENCRYPTED
-    "\tRE_IMAGE_ENCRYPTED = 0x01\n}\;"
+        "\tRE_IMAGE_ENCRYPTED = 0x01\n}\;"
     )
 else()
     set(CONTENT_ENCRYPTED
-    "\tRE_IMAGE_ENCRYPTED = 0x0\n}\;"
+        "\tRE_IMAGE_ENCRYPTED = 0x0\n}\;"
     )
 endif()
 
 string(CONCAT BL2_PREPROCESSING ${FLAGS_FOR_BL2_PREPROCESSING}
-       ${CONTENT_FOR_BL2_PREPROCESSING}
-       ${CONTENT_ENCRYPTED})
+    ${CONTENT_FOR_BL2_PREPROCESSING}
+    ${CONTENT_ENCRYPTED})
