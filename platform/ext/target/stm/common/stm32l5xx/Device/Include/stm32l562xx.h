@@ -2903,7 +2903,7 @@ typedef struct
 #define VREFBUF VREFBUF_NS
 #define VREFBUF_BASE VREFBUF_BASE_NS
 
-#define COMP1 COMP1_NS
+// #define COMP1 COMP1_NS
 #define COMP1_BASE COMP1_BASE_NS
 
 #define COMP2 COMP2_NS

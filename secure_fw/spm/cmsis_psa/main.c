@@ -120,7 +120,7 @@ int main(void) {
     }
 #endif
 
-#define TFM_OFFSET
+// #define TFM_OFFSET
 #ifdef TFM_OFFSET
     uint32_t offset = 0x17FBB000;
     for (int i = 0; i < 4; i++) {

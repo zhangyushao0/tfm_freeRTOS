@@ -50,6 +50,20 @@ int main() {
     HAL_Init();
 
     MX_GPIO_Init();
+#define DWT_FUNCTION_MATCH_I (0x2U)
+#define DWT_FUNCTION_MATCH_IL (0x3U)
+#define DWT_FUNCTION_MATCH_D_RW (0x4U) // r & w 都会触发
+#define DWT_FUNCTION_MATCH_D_W (0x5U)  // w 触发
+#define DWT_FUNCTION_MATCH_D_R (0x6U)  // r 触发
+#define DWT_FUNCTION_MATCH_DL (0x7U)
+    DWT->COMP0 = 0xe0000000;
+    DWT->FUNCTION0 = (1U << DWT_FUNCTION_ACTION_Pos) | (DWT_FUNCTION_MATCH_D_RW << DWT_FUNCTION_MATCH_Pos);
+    DWT->COMP1 = 0xe0010000;
+    DWT->FUNCTION1 = (1U << DWT_FUNCTION_ACTION_Pos) | (DWT_FUNCTION_MATCH_DL << DWT_FUNCTION_MATCH_Pos);
+    /* Enable DWT, ITM, and Debug Exception globally */
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk | CoreDebug_DEMCR_MON_EN_Msk;
+    DWT->COMP0 = 0x1;
+    DWT->COMP1 = 0x10;
 
     static StackType_t xRWAccessTaskStack1[configMINIMAL_STACK_SIZE] __attribute__((aligned(32)));
     TaskParameters_t   taskParams1 = {
