@@ -1,35 +1,35 @@
-   150: 0c00b309     8 FUNC    LOCAL  DEFAULT    20 clear_caller_context
-   184: 0c004a91   650 FUNC    LOCAL  DEFAULT    14 prvHeapInit_aslr
-   185: 0c004d1b   308 FUNC    LOCAL  DEFAULT    14 prvInsertBlockIntoFreeList_aslr
-   212: 0c009f5d    16 FUNC    LOCAL  DEFAULT    14 __save_disable_irq
-   213: 0c009f6d    14 FUNC    LOCAL  DEFAULT    14 __restore_irq
-   232: 0c00a5d3    54 FUNC    LOCAL  DEFAULT    14 tfm_allocate_partition_assuredly
-   237: 0c00a74d    90 FUNC    LOCAL  DEFAULT    14 tfm_allocate_service_assuredly
-   243: 0c0050e9    28 FUNC    LOCAL  DEFAULT    14 Flash_GetVersion
-   245: 0c005105    12 FUNC    LOCAL  DEFAULT    14 Flash_GetCapabilities
-   247: 0c005111    22 FUNC    LOCAL  DEFAULT    14 Flash_Initialize
-   249: 0c005127     4 FUNC    LOCAL  DEFAULT    14 Flash_Uninitialize
-   251: 0c00512b    56 FUNC    LOCAL  DEFAULT    14 Flash_PowerControl
-   253: 0c005163   302 FUNC    LOCAL  DEFAULT    14 Flash_ReadData
-   258: 0c005647    34 FUNC    LOCAL  DEFAULT    14 is_range_valid
-   260: 0c005669   128 FUNC    LOCAL  DEFAULT    14 is_range_secure
-   261: 0c0056e9    50 FUNC    LOCAL  DEFAULT    14 memcpy_flash
-   262: 0c005291   412 FUNC    LOCAL  DEFAULT    14 Flash_ProgramData
-   264: 0c00571b    32 FUNC    LOCAL  DEFAULT    14 is_write_aligned
-   265: 0c00573b   112 FUNC    LOCAL  DEFAULT    14 is_write_allow
-   266: 0c00542d   236 FUNC    LOCAL  DEFAULT    14 Flash_EraseSector
-   268: 0c0057ab    32 FUNC    LOCAL  DEFAULT    14 is_erase_aligned
-   269: 0c0057cb   102 FUNC    LOCAL  DEFAULT    14 is_erase_allow
-   270: 0c005831    24 FUNC    LOCAL  DEFAULT    14 bank_number
-   271: 0c005849    64 FUNC    LOCAL  DEFAULT    14 page_number
-   272: 0c005519     6 FUNC    LOCAL  DEFAULT    14 Flash_EraseChip
-   274: 0c00551f    20 FUNC    LOCAL  DEFAULT    14 Flash_GetStatus
-   276: 0c005533    12 FUNC    LOCAL  DEFAULT    14 Flash_GetInfo
-   295: 0c005a45    94 FUNC    LOCAL  DEFAULT    14 FLASH_Program_DoubleWord
-   328: 0c00f001   144 FUNC    LOCAL  DEFAULT    21 init_fs_cfg
-   336: 0c00f1b5   100 FUNC    LOCAL  DEFAULT    21 get_file_info
-   337: 0c00f219    16 FUNC    LOCAL  DEFAULT    21 get_fs_ctx
-   340: 0c00f409    48 FUNC    LOCAL  DEFAULT    21 tfm_its_get_fid
+   150: 0c00b269     8 FUNC    LOCAL  DEFAULT    20 clear_caller_context
+   184: 0c0049fb   650 FUNC    LOCAL  DEFAULT    14 prvHeapInit_aslr
+   185: 0c004c85   308 FUNC    LOCAL  DEFAULT    14 prvInsertBlockIntoFreeList_aslr
+   212: 0c009ec9    16 FUNC    LOCAL  DEFAULT    14 __save_disable_irq
+   213: 0c009ed9    14 FUNC    LOCAL  DEFAULT    14 __restore_irq
+   232: 0c00a53f    54 FUNC    LOCAL  DEFAULT    14 tfm_allocate_partition_assuredly
+   237: 0c00a6b9    90 FUNC    LOCAL  DEFAULT    14 tfm_allocate_service_assuredly
+   243: 0c005053    28 FUNC    LOCAL  DEFAULT    14 Flash_GetVersion
+   245: 0c00506f    12 FUNC    LOCAL  DEFAULT    14 Flash_GetCapabilities
+   247: 0c00507b    22 FUNC    LOCAL  DEFAULT    14 Flash_Initialize
+   249: 0c005091     4 FUNC    LOCAL  DEFAULT    14 Flash_Uninitialize
+   251: 0c005095    56 FUNC    LOCAL  DEFAULT    14 Flash_PowerControl
+   253: 0c0050cd   302 FUNC    LOCAL  DEFAULT    14 Flash_ReadData
+   258: 0c0055b1    34 FUNC    LOCAL  DEFAULT    14 is_range_valid
+   260: 0c0055d3   128 FUNC    LOCAL  DEFAULT    14 is_range_secure
+   261: 0c005653    50 FUNC    LOCAL  DEFAULT    14 memcpy_flash
+   262: 0c0051fb   412 FUNC    LOCAL  DEFAULT    14 Flash_ProgramData
+   264: 0c005685    32 FUNC    LOCAL  DEFAULT    14 is_write_aligned
+   265: 0c0056a5   112 FUNC    LOCAL  DEFAULT    14 is_write_allow
+   266: 0c005397   236 FUNC    LOCAL  DEFAULT    14 Flash_EraseSector
+   268: 0c005715    32 FUNC    LOCAL  DEFAULT    14 is_erase_aligned
+   269: 0c005735   102 FUNC    LOCAL  DEFAULT    14 is_erase_allow
+   270: 0c00579b    24 FUNC    LOCAL  DEFAULT    14 bank_number
+   271: 0c0057b3    64 FUNC    LOCAL  DEFAULT    14 page_number
+   272: 0c005483     6 FUNC    LOCAL  DEFAULT    14 Flash_EraseChip
+   274: 0c005489    20 FUNC    LOCAL  DEFAULT    14 Flash_GetStatus
+   276: 0c00549d    12 FUNC    LOCAL  DEFAULT    14 Flash_GetInfo
+   295: 0c0059af    94 FUNC    LOCAL  DEFAULT    14 FLASH_Program_DoubleWord
+   328: 0c00ef61   144 FUNC    LOCAL  DEFAULT    21 init_fs_cfg
+   336: 0c00f115   100 FUNC    LOCAL  DEFAULT    21 get_file_info
+   337: 0c00f179    16 FUNC    LOCAL  DEFAULT    21 get_fs_ctx
+   340: 0c00f369    48 FUNC    LOCAL  DEFAULT    21 tfm_its_get_fid
    355: 0c000301    46 FUNC    LOCAL  DEFAULT    11 its_flash_nor_init
    357: 0c000331    76 FUNC    LOCAL  DEFAULT    11 its_flash_nor_read
    360: 0c000465    28 FUNC    LOCAL  DEFAULT    11 get_phys_address
@@ -63,446 +63,446 @@
    479: 0c001f4d    56 FUNC    LOCAL  DEFAULT    11 its_mblock_update_scratch_block_meta
    488: 0c002065   256 FUNC    LOCAL  DEFAULT    11 its_mblock_copy_remaining_block_meta
    493: 0c0022e9    76 FUNC    LOCAL  DEFAULT    11 its_mblock_validate_metadata_xor
-   522: 0c00b4f9    76 FUNC    LOCAL  DEFAULT    20 atomic_incr_u8
+   522: 0c00b459    76 FUNC    LOCAL  DEFAULT    20 atomic_incr_u8
    526: 0c002f91   596 FUNC    LOCAL  DEFAULT    14 RCCEx_PLLSAI1_Config
    527: 0c0031e5   442 FUNC    LOCAL  DEFAULT    14 RCCEx_PLLSAI2_Config
-   570: 0c008a23    18 FUNC    LOCAL  DEFAULT    14 tfm_arch_set_msplim
-   571: 0c008a35   182 FUNC    LOCAL  DEFAULT    14 tfm_core_init
-   577: 0c008c2b    16 FUNC    LOCAL  DEFAULT    14 __save_disable_irq
-   578: 0c008c3b    14 FUNC    LOCAL  DEFAULT    14 __restore_irq
-   583: 0c008fa5    16 FUNC    LOCAL  DEFAULT    14 __save_disable_irq
-   584: 0c008fb5    14 FUNC    LOCAL  DEFAULT    14 __restore_irq
-   597: 0c00932f   154 FUNC    LOCAL  DEFAULT    14 spm_thread_fn
-   602: 0c0094cf    16 FUNC    LOCAL  DEFAULT    14 is_return_secure_stack
-   603: 0c0094df    16 FUNC    LOCAL  DEFAULT    14 is_default_stacking_rules_apply
-   604: 0c0094ef    88 FUNC    LOCAL  DEFAULT    14 tfm_arch_check_msp_sealing
-   614: 0c00961f    66 FUNC    LOCAL  DEFAULT    14 __NVIC_SetPriority
-   639: 0c009bb9   114 FUNC    LOCAL  DEFAULT    14 tfm_core_check_boot_data_access_policy
-   644: 0c009c97   110 FUNC    LOCAL  DEFAULT    14 to_hex
-   650: 0c009d81    98 FUNC    LOCAL  DEFAULT    14 arch_seal_thread_stack
-   653: 0c009e11    18 FUNC    LOCAL  DEFAULT    14 tfm_arch_set_psplim
-   667: 0c00abb9    18 FUNC    LOCAL  DEFAULT    14 TZ_SAU_Disable
-   668: 0c00abcb    18 FUNC    LOCAL  DEFAULT    14 TZ_SAU_Enable
-   679: 0c00eea5    92 FUNC    LOCAL  DEFAULT    21 tfm_its_remove_req
-   680: 0c00ee19   140 FUNC    LOCAL  DEFAULT    21 tfm_its_get_info_req
-   681: 0c00ed61   184 FUNC    LOCAL  DEFAULT    21 tfm_its_get_req
-   682: 0c00ecb1   176 FUNC    LOCAL  DEFAULT    21 tfm_its_set_req
-   700: 0c005cd7   156 FUNC    LOCAL  DEFAULT    14 FLASH_MassErase
-   723: 0c006553   102 FUNC    LOCAL  DEFAULT    14 write_to_output
-   728: 0c0066d7   188 FUNC    LOCAL  DEFAULT    14 read_from_input
-   742: 0c006b77    28 FUNC    LOCAL  DEFAULT    14 USART_GetVersion
-   744: 0c006b93    12 FUNC    LOCAL  DEFAULT    14 USART_GetCapabilities
-   746: 0c006b9f   232 FUNC    LOCAL  DEFAULT    14 USART0_Initialize
-   749: 0c006c87     4 FUNC    LOCAL  DEFAULT    14 USART0_Uninitialize
-   751: 0c006c8b    12 FUNC    LOCAL  DEFAULT    14 USART0_PowerControl
-   753: 0c006c97    64 FUNC    LOCAL  DEFAULT    14 USART0_Send
-   755: 0c006cd7    60 FUNC    LOCAL  DEFAULT    14 USART0_Receive
-   757: 0c006d13    16 FUNC    LOCAL  DEFAULT    14 USART0_Transfer
-   759: 0c006d23     4 FUNC    LOCAL  DEFAULT    14 USART0_GetTxCount
-   761: 0c006d27     4 FUNC    LOCAL  DEFAULT    14 USART0_GetRxCount
-   763: 0c006d2b    12 FUNC    LOCAL  DEFAULT    14 USART0_Control
-   765: 0c006d37    16 FUNC    LOCAL  DEFAULT    14 USART0_GetStatus
-   767: 0c006d47    14 FUNC    LOCAL  DEFAULT    14 USART0_SetModemControl
-   769: 0c006d55    16 FUNC    LOCAL  DEFAULT    14 USART0_GetModemStatus
-   791: 0c007abd   536 FUNC    LOCAL  DEFAULT    14 UART_RxISR_16BIT_FIFOEN
-   792: 0c007cd5   532 FUNC    LOCAL  DEFAULT    14 UART_RxISR_8BIT_FIFOEN
-   793: 0c007ee9   198 FUNC    LOCAL  DEFAULT    14 UART_RxISR_16BIT
-   794: 0c007faf   194 FUNC    LOCAL  DEFAULT    14 UART_RxISR_8BIT
-   806: 0c00824d   416 FUNC    LOCAL  DEFAULT    14 create_or_restore_layout
-   807: 0c0083ed    66 FUNC    LOCAL  DEFAULT    14 make_backup
-   809: 0c008989    66 FUNC    LOCAL  DEFAULT    14 restore_backup
-   810: 0c008797   114 FUNC    LOCAL  DEFAULT    14 erase_flash_region
-   813: 0c008899   240 FUNC    LOCAL  DEFAULT    14 copy_flash_region
-   815: 0c00876b    20 FUNC    LOCAL  DEFAULT    14 round_down
-   816: 0c00877f    24 FUNC    LOCAL  DEFAULT    14 round_up
-   817: 0c008809   144 FUNC    LOCAL  DEFAULT    14 copy_data_into_block
-   834: 0c00ba4f   170 FUNC    LOCAL  DEFAULT    20 _tfm_dec_num_output
-   836: 0c00baf9   100 FUNC    LOCAL  DEFAULT    20 _tfm_hex_num_output
-   838: 0c00bb5d    52 FUNC    LOCAL  DEFAULT    20 _tfm_string_output
-   839: 0c00bb91    60 FUNC    LOCAL  DEFAULT    20 _tfm_flush_formatted_buffer
-   847: 0c00bc13     4 FUNC    LOCAL  DEFAULT    20 tfm_output_unpriv_string
-   876: 0c00c559   116 FUNC    LOCAL  DEFAULT    20 __sprint_r.part.0
-   881: 0c00d32d   128 FUNC    LOCAL  DEFAULT    20 __sbprintf
+   570: 0c00898f    18 FUNC    LOCAL  DEFAULT    14 tfm_arch_set_msplim
+   571: 0c0089a1   182 FUNC    LOCAL  DEFAULT    14 tfm_core_init
+   577: 0c008b97    16 FUNC    LOCAL  DEFAULT    14 __save_disable_irq
+   578: 0c008ba7    14 FUNC    LOCAL  DEFAULT    14 __restore_irq
+   583: 0c008f11    16 FUNC    LOCAL  DEFAULT    14 __save_disable_irq
+   584: 0c008f21    14 FUNC    LOCAL  DEFAULT    14 __restore_irq
+   597: 0c00929b   154 FUNC    LOCAL  DEFAULT    14 spm_thread_fn
+   602: 0c00943b    16 FUNC    LOCAL  DEFAULT    14 is_return_secure_stack
+   603: 0c00944b    16 FUNC    LOCAL  DEFAULT    14 is_default_stacking_rules_apply
+   604: 0c00945b    88 FUNC    LOCAL  DEFAULT    14 tfm_arch_check_msp_sealing
+   614: 0c00958b    66 FUNC    LOCAL  DEFAULT    14 __NVIC_SetPriority
+   639: 0c009b25   114 FUNC    LOCAL  DEFAULT    14 tfm_core_check_boot_data_access_policy
+   644: 0c009c03   110 FUNC    LOCAL  DEFAULT    14 to_hex
+   650: 0c009ced    98 FUNC    LOCAL  DEFAULT    14 arch_seal_thread_stack
+   653: 0c009d7d    18 FUNC    LOCAL  DEFAULT    14 tfm_arch_set_psplim
+   667: 0c00ab25    18 FUNC    LOCAL  DEFAULT    14 TZ_SAU_Disable
+   668: 0c00ab37    18 FUNC    LOCAL  DEFAULT    14 TZ_SAU_Enable
+   679: 0c00ee05    92 FUNC    LOCAL  DEFAULT    21 tfm_its_remove_req
+   680: 0c00ed79   140 FUNC    LOCAL  DEFAULT    21 tfm_its_get_info_req
+   681: 0c00ecc1   184 FUNC    LOCAL  DEFAULT    21 tfm_its_get_req
+   682: 0c00ec11   176 FUNC    LOCAL  DEFAULT    21 tfm_its_set_req
+   700: 0c005c41   156 FUNC    LOCAL  DEFAULT    14 FLASH_MassErase
+   723: 0c0064bf   102 FUNC    LOCAL  DEFAULT    14 write_to_output
+   728: 0c006643   188 FUNC    LOCAL  DEFAULT    14 read_from_input
+   742: 0c006ae3    28 FUNC    LOCAL  DEFAULT    14 USART_GetVersion
+   744: 0c006aff    12 FUNC    LOCAL  DEFAULT    14 USART_GetCapabilities
+   746: 0c006b0b   232 FUNC    LOCAL  DEFAULT    14 USART0_Initialize
+   749: 0c006bf3     4 FUNC    LOCAL  DEFAULT    14 USART0_Uninitialize
+   751: 0c006bf7    12 FUNC    LOCAL  DEFAULT    14 USART0_PowerControl
+   753: 0c006c03    64 FUNC    LOCAL  DEFAULT    14 USART0_Send
+   755: 0c006c43    60 FUNC    LOCAL  DEFAULT    14 USART0_Receive
+   757: 0c006c7f    16 FUNC    LOCAL  DEFAULT    14 USART0_Transfer
+   759: 0c006c8f     4 FUNC    LOCAL  DEFAULT    14 USART0_GetTxCount
+   761: 0c006c93     4 FUNC    LOCAL  DEFAULT    14 USART0_GetRxCount
+   763: 0c006c97    12 FUNC    LOCAL  DEFAULT    14 USART0_Control
+   765: 0c006ca3    16 FUNC    LOCAL  DEFAULT    14 USART0_GetStatus
+   767: 0c006cb3    14 FUNC    LOCAL  DEFAULT    14 USART0_SetModemControl
+   769: 0c006cc1    16 FUNC    LOCAL  DEFAULT    14 USART0_GetModemStatus
+   791: 0c007a29   536 FUNC    LOCAL  DEFAULT    14 UART_RxISR_16BIT_FIFOEN
+   792: 0c007c41   532 FUNC    LOCAL  DEFAULT    14 UART_RxISR_8BIT_FIFOEN
+   793: 0c007e55   198 FUNC    LOCAL  DEFAULT    14 UART_RxISR_16BIT
+   794: 0c007f1b   194 FUNC    LOCAL  DEFAULT    14 UART_RxISR_8BIT
+   806: 0c0081b9   416 FUNC    LOCAL  DEFAULT    14 create_or_restore_layout
+   807: 0c008359    66 FUNC    LOCAL  DEFAULT    14 make_backup
+   809: 0c0088f5    66 FUNC    LOCAL  DEFAULT    14 restore_backup
+   810: 0c008703   114 FUNC    LOCAL  DEFAULT    14 erase_flash_region
+   813: 0c008805   240 FUNC    LOCAL  DEFAULT    14 copy_flash_region
+   815: 0c0086d7    20 FUNC    LOCAL  DEFAULT    14 round_down
+   816: 0c0086eb    24 FUNC    LOCAL  DEFAULT    14 round_up
+   817: 0c008775   144 FUNC    LOCAL  DEFAULT    14 copy_data_into_block
+   834: 0c00b9af   170 FUNC    LOCAL  DEFAULT    20 _tfm_dec_num_output
+   836: 0c00ba59   100 FUNC    LOCAL  DEFAULT    20 _tfm_hex_num_output
+   838: 0c00babd    52 FUNC    LOCAL  DEFAULT    20 _tfm_string_output
+   839: 0c00baf1    60 FUNC    LOCAL  DEFAULT    20 _tfm_flush_formatted_buffer
+   847: 0c00bb73     4 FUNC    LOCAL  DEFAULT    20 tfm_output_unpriv_string
+   876: 0c00c4b9   116 FUNC    LOCAL  DEFAULT    20 __sprint_r.part.0
+   881: 0c00d28d   128 FUNC    LOCAL  DEFAULT    20 __sbprintf
   1084: 0c002529     4 FUNC    WEAK   DEFAULT    14 EXTI2_IRQHandler
   1085: 0c0025c9     4 FUNC    WEAK   DEFAULT    14 TIM8_TRG_COM_IRQHandler
-  1087: 0c00a1bd    52 FUNC    GLOBAL DEFAULT    14 tfm_spm_partition_get_running_partition_id
+  1087: 0c00a129    52 FUNC    GLOBAL DEFAULT    14 tfm_spm_partition_get_running_partition_id
   1088: 0c0025cd     4 FUNC    WEAK   DEFAULT    14 TIM8_CC_IRQHandler
-  1090: 0c009e57    48 FUNC    GLOBAL DEFAULT    14 handle_to_connection
-  1091: 0c00e8f9    36 FUNC    GLOBAL DEFAULT    20 _isatty_r
+  1090: 0c009dc3    48 FUNC    GLOBAL DEFAULT    14 handle_to_connection
+  1091: 0c00e859    36 FUNC    GLOBAL DEFAULT    20 _isatty_r
   1092: 0c002535     4 FUNC    WEAK   DEFAULT    14 EXTI5_IRQHandler
-  1093: 0c00e995    16 FUNC    GLOBAL DEFAULT    20 _getpid
+  1093: 0c00e8f5    16 FUNC    GLOBAL DEFAULT    20 _getpid
   1095: 0c0006ed   100 FUNC    GLOBAL DEFAULT    11 its_flash_fs_prepare
-  1097: 0c00b60d    56 FUNC    GLOBAL DEFAULT    20 psa_read
-  1098: 0c00e91d    44 FUNC    GLOBAL DEFAULT    20 _lseek_r
+  1097: 0c00b56d    56 FUNC    GLOBAL DEFAULT    20 psa_read
+  1098: 0c00e87d    44 FUNC    GLOBAL DEFAULT    20 _lseek_r
   1099: 0c0024e9     4 FUNC    WEAK   DEFAULT    14 DebugMon_Handler
-  1100: 0c00bbfd    22 FUNC    GLOBAL DEFAULT    20 tfm_hal_output_sp_log
-  1101: 0c00a1f1   208 FUNC    GLOBAL DEFAULT    14 spm_fill_message
-  1102: 0c00926d    26 FUNC    GLOBAL DEFAULT    14 backend_replying
-  1103: 0c00acf9   106 FUNC    GLOBAL DEFAULT    14 gtzc_init_cfg
-  1104: 0c00e529    44 FUNC    GLOBAL DEFAULT    20 _kill_r
-  1105: 0c00bbcd    48 FUNC    GLOBAL DEFAULT    20 printf
+  1100: 0c00bb5d    22 FUNC    GLOBAL DEFAULT    20 tfm_hal_output_sp_log
+  1101: 0c00a15d   208 FUNC    GLOBAL DEFAULT    14 spm_fill_message
+  1102: 0c0091d9    26 FUNC    GLOBAL DEFAULT    14 backend_replying
+  1103: 0c00ac65   106 FUNC    GLOBAL DEFAULT    14 gtzc_init_cfg
+  1104: 0c00e489    44 FUNC    GLOBAL DEFAULT    20 _kill_r
+  1105: 0c00bb2d    48 FUNC    GLOBAL DEFAULT    20 printf
   1106: 0c002555     4 FUNC    WEAK   DEFAULT    14 EXTI13_IRQHandler
-  1107: 0c00e759    60 FUNC    GLOBAL DEFAULT    20 _wcrtomb_r
-  1108: 0c004699    36 FUNC    GLOBAL DEFAULT    14 HAL_RCC_GetPCLK1Freq
+  1107: 0c00e6b9    60 FUNC    GLOBAL DEFAULT    20 _wcrtomb_r
+  1108: 0c004603    36 FUNC    GLOBAL DEFAULT    14 HAL_RCC_GetPCLK1Freq
   1109: 0c0025a5     4 FUNC    WEAK   DEFAULT    14 TIM1_CC_IRQHandler
-  1110: 0c0046bd    36 FUNC    GLOBAL DEFAULT    14 HAL_RCC_GetPCLK2Freq
-  1111: 0c005b49    90 FUNC    GLOBAL DEFAULT    14 HAL_FLASH_Lock
+  1110: 0c004627    36 FUNC    GLOBAL DEFAULT    14 HAL_RCC_GetPCLK2Freq
+  1111: 0c005ab3    90 FUNC    GLOBAL DEFAULT    14 HAL_FLASH_Lock
   1112: 0c00265d     4 FUNC    WEAK   DEFAULT    14 TSC_IRQHandler
   1113: 0c0034ff     8 FUNC    WEAK   DEFAULT    14 HAL_RNG_MspInit
-  1114: 0c00e5bd    36 FUNC    GLOBAL DEFAULT    20 __sseek
-  1115: 0c00d631   272 FUNC    GLOBAL DEFAULT    20 __sinit
-  1116: 0c00e6a9   176 FUNC    GLOBAL DEFAULT    20 __swbuf_r
-  1117: 0c003761   870 FUNC    GLOBAL DEFAULT    14 HardFault_Handler
-  1118: 0c00a3db   146 FUNC    GLOBAL DEFAULT    14 update_caller_outvec_len
-  1119: 0c009ef7   102 FUNC    GLOBAL DEFAULT    14 spm_free_connection
+  1114: 0c00e51d    36 FUNC    GLOBAL DEFAULT    20 __sseek
+  1115: 0c00d591   272 FUNC    GLOBAL DEFAULT    20 __sinit
+  1116: 0c00e609   176 FUNC    GLOBAL DEFAULT    20 __swbuf_r
+  1117: 0c003761   720 FUNC    GLOBAL DEFAULT    14 HardFault_Handler
+  1118: 0c00a347   146 FUNC    GLOBAL DEFAULT    14 update_caller_outvec_len
+  1119: 0c009e63   102 FUNC    GLOBAL DEFAULT    14 spm_free_connection
   1120: 0c002505     4 FUNC    WEAK   DEFAULT    14 TAMP_IRQHandler
-  1122: 0c00a2c1    44 FUNC    GLOBAL DEFAULT    14 tfm_spm_is_ns_caller
-  1123: 0c00ec21    16 FUNC    GLOBAL DEFAULT    21 tfm_its_entry
-  1124: 0c00c529    12 FUNC    GLOBAL DEFAULT    20 __malloc_unlock
-  1125: 0c00a85b    74 FUNC    GLOBAL DEFAULT    14 tfm_pool_alloc
-  1126: 0c005e19   478 FUNC    GLOBAL DEFAULT    14 HAL_GTZC_TZSC_ConfigPeriphAttributes
+  1122: 0c00a22d    44 FUNC    GLOBAL DEFAULT    14 tfm_spm_is_ns_caller
+  1123: 0c00eb81    16 FUNC    GLOBAL DEFAULT    21 tfm_its_entry
+  1124: 0c00c489    12 FUNC    GLOBAL DEFAULT    20 __malloc_unlock
+  1125: 0c00a7c7    74 FUNC    GLOBAL DEFAULT    14 tfm_pool_alloc
+  1126: 0c005d83   478 FUNC    GLOBAL DEFAULT    14 HAL_GTZC_TZSC_ConfigPeriphAttributes
   1127: 0c0025b9     4 FUNC    WEAK   DEFAULT    14 TIM6_IRQHandler
-  1128: 0c00a92d    36 FUNC    GLOBAL DEFAULT    14 tfm_nspm_ctx_init
+  1128: 0c00a899    36 FUNC    GLOBAL DEFAULT    14 tfm_nspm_ctx_init
   1129: 0c002551     4 FUNC    WEAK   DEFAULT    14 EXTI12_IRQHandler
   1130: 0c0024f1     4 FUNC    WEAK   DEFAULT    14 SysTick_Handler
-  1132: 0c00f091   292 FUNC    GLOBAL DEFAULT    21 tfm_its_set
-  1133: 0c00f229   300 FUNC    GLOBAL DEFAULT    21 tfm_its_get
-  1134: 0c00b43d   188 FUNC    GLOBAL DEFAULT    20 RNG_Init
-  1136: 0c00dfed   248 FUNC    GLOBAL DEFAULT    20 memmove
-  1138: 0c00790b   406 FUNC    GLOBAL DEFAULT    14 UART_Start_Receive_IT
-  1139: 0c0044ed    36 FUNC    GLOBAL DEFAULT    14 HAL_RCC_GetHCLKFreq
+  1132: 0c00eff1   292 FUNC    GLOBAL DEFAULT    21 tfm_its_set
+  1133: 0c00f189   300 FUNC    GLOBAL DEFAULT    21 tfm_its_get
+  1134: 0c00b39d   188 FUNC    GLOBAL DEFAULT    20 RNG_Init
+  1136: 0c00df4d   248 FUNC    GLOBAL DEFAULT    20 memmove
+  1138: 0c007877   406 FUNC    GLOBAL DEFAULT    14 UART_Start_Receive_IT
+  1139: 0c004457    36 FUNC    GLOBAL DEFAULT    14 HAL_RCC_GetHCLKFreq
   1140: 0c0024ed     4 FUNC    WEAK   DEFAULT    14 PendSV_Handler
   1141: 0c002649     4 FUNC    WEAK   DEFAULT    14 DMA2_Channel8_IRQHandler
-  1142: 0c00553f   264 FUNC    GLOBAL DEFAULT    14 NMI_Handler
+  1142: 0c0054a9   264 FUNC    GLOBAL DEFAULT    14 NMI_Handler
   1144: 0c00252d     4 FUNC    WEAK   DEFAULT    14 EXTI3_IRQHandler
-  1146: 0c004511   392 FUNC    GLOBAL DEFAULT    14 HAL_RCC_GetSysClockFreq
-  1147: 0c009547     4 FUNC    GLOBAL DEFAULT    14 tfm_core_handler_mode
-  1148: 0c0097c1   734 FUNC    GLOBAL DEFAULT    14 tfm_hal_memory_check
-  1150: 0c00b281     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_framework_version_veneer
-  1151: 0c006435   286 FUNC    GLOBAL DEFAULT    14 tfm_plat_otp_read
+  1146: 0c00447b   392 FUNC    GLOBAL DEFAULT    14 HAL_RCC_GetSysClockFreq
+  1147: 0c0094b3     4 FUNC    GLOBAL DEFAULT    14 tfm_core_handler_mode
+  1148: 0c00972d   734 FUNC    GLOBAL DEFAULT    14 tfm_hal_memory_check
+  1150: 0c00b1e1     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_framework_version_veneer
+  1151: 0c0063a1   286 FUNC    GLOBAL DEFAULT    14 tfm_plat_otp_read
   1152: 0c002541     4 FUNC    WEAK   DEFAULT    14 EXTI8_IRQHandler
   1153: 0c002605     4 FUNC    WEAK   DEFAULT    14 LPTIM2_IRQHandler
   1154: 0c002689     4 FUNC    WEAK   DEFAULT    14 DFSDM1_FLT1_IRQHandler
-  1155: 0c00e8cd    44 FUNC    GLOBAL DEFAULT    20 _fstat_r
-  1156: 0c00ec31   128 FUNC    GLOBAL DEFAULT    21 tfm_internal_trusted_storage_service_sfn
+  1155: 0c00e82d    44 FUNC    GLOBAL DEFAULT    20 _fstat_r
+  1156: 0c00eb91   128 FUNC    GLOBAL DEFAULT    21 tfm_internal_trusted_storage_service_sfn
   1158: 0c002619     4 FUNC    WEAK   DEFAULT    14 USB_FS_IRQHandler
   1159: 0c0013c9   108 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_get_file_idx_flag
   1161: 0c002651     4 FUNC    WEAK   DEFAULT    14 I2C3_ER_IRQHandler
   1162: 0c001a69    80 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_read_block_metadata_comp
   1164: 0c00268d     4 FUNC    WEAK   DEFAULT    14 DFSDM1_FLT2_IRQHandler
-  1168: 0c00a927     6 FUNC    GLOBAL DEFAULT    14 tfm_nspm_get_current_client_id
-  1169: 0c00417d   880 FUNC    GLOBAL DEFAULT    14 HAL_GPIO_Init
-  1170: 0c00a7af   172 FUNC    GLOBAL DEFAULT    14 tfm_pool_init
-  1172: 0c005ff7   288 FUNC    GLOBAL DEFAULT    14 HAL_GTZC_MPCBB_ConfigMem
+  1168: 0c00a893     6 FUNC    GLOBAL DEFAULT    14 tfm_nspm_get_current_client_id
+  1169: 0c0040e7   880 FUNC    GLOBAL DEFAULT    14 HAL_GPIO_Init
+  1170: 0c00a71b   172 FUNC    GLOBAL DEFAULT    14 tfm_pool_init
+  1172: 0c005f61   288 FUNC    GLOBAL DEFAULT    14 HAL_GTZC_MPCBB_ConfigMem
   1173: 0c002561     4 FUNC    WEAK   DEFAULT    14 DMAMUX1_IRQHandler
   1174: 0c002675     4 FUNC    WEAK   DEFAULT    14 LPTIM3_IRQHandler
   1175: 0c002515     4 FUNC    WEAK   DEFAULT    14 SERR_IRQHandler
-  1176: 0c003c05   122 FUNC    GLOBAL DEFAULT    14 rewrite_function_v2_aslr
-  1177: 0c00b6d5   168 FUNC    GLOBAL DEFAULT    20 memcpy
-  1180: 0c00b2f1     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_close_veneer
-  1181: 0c00d625    12 FUNC    GLOBAL DEFAULT    20 _cleanup_r
-  1182: 0c006845   118 FUNC    GLOBAL DEFAULT    14 tfm_plat_provisioning_check_for_dummy_keys
-  1183: 0c00408b    74 FUNC    GLOBAL DEFAULT    14 mpu_armv8m_enable_aslr
+  1176: 0c003b6f   122 FUNC    GLOBAL DEFAULT    14 rewrite_function_v2_aslr
+  1177: 0c00b635   168 FUNC    GLOBAL DEFAULT    20 memcpy
+  1180: 0c00b251     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_close_veneer
+  1181: 0c00d585    12 FUNC    GLOBAL DEFAULT    20 _cleanup_r
+  1182: 0c0067b1   118 FUNC    GLOBAL DEFAULT    14 tfm_plat_provisioning_check_for_dummy_keys
+  1183: 0c003ff5    74 FUNC    GLOBAL DEFAULT    14 mpu_armv8m_enable_aslr
   1184: 0c002521     4 FUNC    WEAK   DEFAULT    14 EXTI0_IRQHandler
   1186: 0c0025d9     4 FUNC    WEAK   DEFAULT    14 I2C2_EV_IRQHandler
-  1187: 0c003eff   108 FUNC    GLOBAL DEFAULT    14 clean_rewrite_info_aslr
-  1188: 0c00bc19     0 FUNC    GLOBAL HIDDEN     20 __aeabi_uldivmod
-  1189: 0c004fef    12 FUNC    GLOBAL DEFAULT    14 queue_sum_aslr
+  1187: 0c003e69   108 FUNC    GLOBAL DEFAULT    14 clean_rewrite_info_aslr
+  1188: 0c00bb79     0 FUNC    GLOBAL HIDDEN     20 __aeabi_uldivmod
+  1189: 0c004f59    12 FUNC    GLOBAL DEFAULT    14 queue_sum_aslr
   1190: 0c002669     4 FUNC    WEAK   DEFAULT    14 FPU_IRQHandler
   1192: 0c000201     8 FUNC    GLOBAL DEFAULT    22 tfm_psa_framework_version_veneer
   1193: 0c002595     4 FUNC    WEAK   DEFAULT    14 FDCAN1_IT1_IRQHandler
   1194: 0c00251d     4 FUNC    WEAK   DEFAULT    14 RCC_IRQHandler_S
-  1195: 0c006901    78 FUNC    GLOBAL DEFAULT    14 provision_assembly_and_test
+  1195: 0c00686d    78 FUNC    GLOBAL DEFAULT    14 provision_assembly_and_test
   1196: 0c002565     4 FUNC    WEAK   DEFAULT    14 DMAMUX1_IRQHandler_S
-  1198: 0c00e985    16 FUNC    GLOBAL DEFAULT    20 _fstat
-  1199: 0c00bf35    60 FUNC    GLOBAL DEFAULT    20 __assert_func
-  1200: 0c007861   170 FUNC    GLOBAL DEFAULT    14 HAL_UART_Receive_IT
-  1201: 0c00b435     6 FUNC    GLOBAL DEFAULT    20 UsageFault_Handler
-  1202: 0c00f439    60 FUNC    GLOBAL DEFAULT    21 its_utils_check_contained_in
+  1198: 0c00e8e5    16 FUNC    GLOBAL DEFAULT    20 _fstat
+  1199: 0c00be95    60 FUNC    GLOBAL DEFAULT    20 __assert_func
+  1200: 0c0077cd   170 FUNC    GLOBAL DEFAULT    14 HAL_UART_Receive_IT
+  1201: 0c00b395     6 FUNC    GLOBAL DEFAULT    20 UsageFault_Handler
+  1202: 0c00f399    60 FUNC    GLOBAL DEFAULT    21 its_utils_check_contained_in
   1203: 0c002589     4 FUNC    WEAK   DEFAULT    14 ADC1_2_IRQHandler
-  1205: 0c00a46d   358 FUNC    GLOBAL DEFAULT    14 load_a_partition_assuredly
-  1206: 0c00e555     4 FUNC    GLOBAL DEFAULT    20 _getpid_r
-  1207: 0c00f475    54 FUNC    GLOBAL DEFAULT    21 its_utils_validate_fid
-  1213: 0c00de4d     8 FUNC    GLOBAL DEFAULT    20 _localeconv_r
-  1215: 0c0046e1   944 FUNC    GLOBAL DEFAULT    14 pvPortMalloc_aslr
-  1216: 0c00db11   748 FUNC    GLOBAL DEFAULT    20 __sfvwrite_r
+  1205: 0c00a3d9   358 FUNC    GLOBAL DEFAULT    14 load_a_partition_assuredly
+  1206: 0c00e4b5     4 FUNC    GLOBAL DEFAULT    20 _getpid_r
+  1207: 0c00f3d5    54 FUNC    GLOBAL DEFAULT    21 its_utils_validate_fid
+  1213: 0c00ddad     8 FUNC    GLOBAL DEFAULT    20 _localeconv_r
+  1215: 0c00464b   944 FUNC    GLOBAL DEFAULT    14 pvPortMalloc_aslr
+  1216: 0c00da71   748 FUNC    GLOBAL DEFAULT    20 __sfvwrite_r
   1217: 0c0025e1     4 FUNC    WEAK   DEFAULT    14 SPI1_IRQHandler
-  1218: 0c005ba3   308 FUNC    GLOBAL DEFAULT    14 HAL_FLASHEx_Erase
+  1218: 0c005b0d   308 FUNC    GLOBAL DEFAULT    14 HAL_FLASHEx_Erase
   1219: 0c002625     4 FUNC    WEAK   DEFAULT    14 OCTOSPI1_IRQHandler
-  1220: 0c00bc49   744 FUNC    GLOBAL HIDDEN     20 __udivmoddi4
+  1220: 0c00bba9   744 FUNC    GLOBAL HIDDEN     20 __udivmoddi4
   1221: 0c003759     8 FUNC    WEAK   DEFAULT    14 HAL_RNG_ErrorCallback
-  1222: 0c00c535    36 FUNC    GLOBAL DEFAULT    20 _sbrk_r
-  1223: 0c007ab5     8 FUNC    WEAK   DEFAULT    14 HAL_UART_RxCpltCallback
-  1226: 0c00f3a5   100 FUNC    GLOBAL DEFAULT    21 tfm_its_remove
-  1227: 0c006e19  1520 FUNC    GLOBAL DEFAULT    14 UART_SetConfig
-  1228: 0c00e949    44 FUNC    GLOBAL DEFAULT    20 _read_r
-  1229: 0c00e801   204 FUNC    GLOBAL DEFAULT    20 _fclose_r
+  1222: 0c00c495    36 FUNC    GLOBAL DEFAULT    20 _sbrk_r
+  1223: 0c007a21     8 FUNC    WEAK   DEFAULT    14 HAL_UART_RxCpltCallback
+  1226: 0c00f305   100 FUNC    GLOBAL DEFAULT    21 tfm_its_remove
+  1227: 0c006d85  1520 FUNC    GLOBAL DEFAULT    14 UART_SetConfig
+  1228: 0c00e8a9    44 FUNC    GLOBAL DEFAULT    20 _read_r
+  1229: 0c00e761   204 FUNC    GLOBAL DEFAULT    20 _fclose_r
   1230: 0c0012e1   148 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_get_file_idx_meta
   1232: 0c000955    80 FUNC    GLOBAL DEFAULT    11 its_flash_fs_file_get_info
-  1233: 0c003c8f    30 FUNC    GLOBAL DEFAULT    14 address_malloc_aslr
+  1233: 0c003bf9    30 FUNC    GLOBAL DEFAULT    14 address_malloc_aslr
   1234: 0c0025c5     4 FUNC    WEAK   DEFAULT    14 TIM8_UP_IRQHandler
-  1235: 0c009665    42 FUNC    GLOBAL DEFAULT    14 ns_agent_tz_main
-  1236: 0c006205   162 FUNC    GLOBAL DEFAULT    14 HAL_GTZC_TZIC_EnableIT
-  1240: 0c00e9a5    16 FUNC    GLOBAL DEFAULT    20 _isatty
+  1235: 0c0095d1    42 FUNC    GLOBAL DEFAULT    14 ns_agent_tz_main
+  1236: 0c00616f   162 FUNC    GLOBAL DEFAULT    14 HAL_GTZC_TZIC_EnableIT
+  1240: 0c00e905    16 FUNC    GLOBAL DEFAULT    20 _isatty
   1241: 0c003507   310 FUNC    GLOBAL DEFAULT    14 HAL_RNG_GenerateRandomNumber
-  1243: 0c00e0e5  1000 FUNC    GLOBAL DEFAULT    20 _realloc_r
-  1244: 0c00aca9    80 FUNC    GLOBAL DEFAULT    14 lock_sram_config
+  1243: 0c00e045  1000 FUNC    GLOBAL DEFAULT    20 _realloc_r
+  1244: 0c00ac15    80 FUNC    GLOBAL DEFAULT    14 lock_sram_config
   1245: 0c002631     4 FUNC    WEAK   DEFAULT    14 DMA2_Channel2_IRQHandler
   1246: 0c002575     4 FUNC    WEAK   DEFAULT    14 DMA1_Channel4_IRQHandler
   1247: 0c002659     4 FUNC    WEAK   DEFAULT    14 SAI2_IRQHandler
-  1248: 0c00d7fd   102 FUNC    GLOBAL DEFAULT    20 _fputwc_r
-  1249: 0c00d481    14 FUNC    GLOBAL DEFAULT    20 abort
-  1251: 0c00e9e5    32 FUNC    GLOBAL DEFAULT    20 _sbrk
-  1252: 0c00642b    10 FUNC    GLOBAL DEFAULT    14 tfm_plat_otp_init
+  1248: 0c00d75d   102 FUNC    GLOBAL DEFAULT    20 _fputwc_r
+  1249: 0c00d3e1    14 FUNC    GLOBAL DEFAULT    20 abort
+  1251: 0c00e945    32 FUNC    GLOBAL DEFAULT    20 _sbrk
+  1252: 0c006395    10 FUNC    GLOBAL DEFAULT    14 tfm_plat_otp_init
   1254: 0c002691     4 FUNC    WEAK   DEFAULT    14 DFSDM1_FLT3_IRQHandler
   1255: 0c002671     4 FUNC    WEAK   DEFAULT    14 PKA_IRQHandler
-  1259: 0c00b425    16 FUNC    GLOBAL DEFAULT    20 C_UsageFault_Handler
-  1260: 0c00a98d   326 FUNC    GLOBAL DEFAULT    14 pinmux_init_cfg
+  1259: 0c00b385    16 FUNC    GLOBAL DEFAULT    20 C_UsageFault_Handler
+  1260: 0c00a8f9   326 FUNC    GLOBAL DEFAULT    14 pinmux_init_cfg
   1261: 0c00255d     4 FUNC    WEAK   DEFAULT    14 EXTI15_IRQHandler
   1262: 0c002611     4 FUNC    WEAK   DEFAULT    14 TIM17_IRQHandler
   1263: 0c0025f1     4 FUNC    WEAK   DEFAULT    14 USART3_IRQHandler
   1264: 0c001845    96 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_migrate_lb0_data_to_scratch
   1265: 0c0024fd     4 FUNC    WEAK   DEFAULT    14 RTC_IRQHandler
-  1266: 0c006ab9   190 FUNC    GLOBAL DEFAULT    14 tfm_plat_provisioning_perform
+  1266: 0c006a25   190 FUNC    GLOBAL DEFAULT    14 tfm_plat_provisioning_perform
   1267: 0c002545     4 FUNC    WEAK   DEFAULT    14 EXTI9_IRQHandler
   1268: 0c000209     8 FUNC    GLOBAL DEFAULT    22 tfm_psa_version_veneer
   1269: 0c002581     4 FUNC    WEAK   DEFAULT    14 DMA1_Channel7_IRQHandler
   1270: 0c0026a1   248 FUNC    GLOBAL DEFAULT    14 Reset_Handler
-  1271: 0c00ef51   176 FUNC    GLOBAL DEFAULT    21 tfm_its_init
+  1271: 0c00eeb1   176 FUNC    GLOBAL DEFAULT    21 tfm_its_init
   1272: 0c000211     8 FUNC    GLOBAL DEFAULT    22 tfm_psa_close_veneer
-  1273: 0c009e23    52 FUNC    GLOBAL DEFAULT    14 connection_to_handle
-  1275: 0c006355   192 FUNC    GLOBAL DEFAULT    14 stdio_init
-  1276: 0c007aa1     8 FUNC    WEAK   DEFAULT    14 HAL_UART_ErrorCallback
+  1273: 0c009d8f    52 FUNC    GLOBAL DEFAULT    14 connection_to_handle
+  1275: 0c0062bf   192 FUNC    GLOBAL DEFAULT    14 stdio_init
+  1276: 0c007a0d     8 FUNC    WEAK   DEFAULT    14 HAL_UART_ErrorCallback
   1277: 0c0025f9     4 FUNC    WEAK   DEFAULT    14 UART5_IRQHandler
-  1284: 0c0093cf   256 FUNC    GLOBAL DEFAULT    14 tfm_core_svc_handler
-  1285: 0c007753   270 FUNC    GLOBAL DEFAULT    14 UART_WaitOnFlagUntilTimeout
+  1284: 0c00933b   256 FUNC    GLOBAL DEFAULT    14 tfm_core_svc_handler
+  1285: 0c0076bf   270 FUNC    GLOBAL DEFAULT    14 UART_WaitOnFlagUntilTimeout
   1286: 0c001435   132 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_init
-  1287: 0c00aad3   230 FUNC    GLOBAL DEFAULT    14 sau_and_idau_cfg
+  1287: 0c00aa3f   230 FUNC    GLOBAL DEFAULT    14 sau_and_idau_cfg
   1288: 0c0025b1     4 FUNC    WEAK   DEFAULT    14 TIM4_IRQHandler
   1290: 0c00262d     4 FUNC    WEAK   DEFAULT    14 DMA2_Channel1_IRQHandler
-  1291: 0c007409   328 FUNC    GLOBAL DEFAULT    14 UART_AdvFeatureConfig
-  1294: 0c0089cb    10 FUNC    GLOBAL DEFAULT    14 tfm_core_panic
-  1295: 0c00b80d   578 FUNC    GLOBAL DEFAULT    20 vprintf
-  1296: 0c0095b5   106 FUNC    GLOBAL DEFAULT    14 tfm_arch_set_secure_exception_priorities
-  1297: 0c00842f   828 FUNC    GLOBAL DEFAULT    14 write_otp_nv_counters_flash
-  1299: 0c00b56d    44 FUNC    GLOBAL DEFAULT    20 psa_version
-  1301: 0c005889   210 FUNC    GLOBAL DEFAULT    14 HAL_FLASH_Program
+  1291: 0c007375   328 FUNC    GLOBAL DEFAULT    14 UART_AdvFeatureConfig
+  1294: 0c008937    10 FUNC    GLOBAL DEFAULT    14 tfm_core_panic
+  1295: 0c00b76d   578 FUNC    GLOBAL DEFAULT    20 vprintf
+  1296: 0c009521   106 FUNC    GLOBAL DEFAULT    14 tfm_arch_set_secure_exception_priorities
+  1297: 0c00839b   828 FUNC    GLOBAL DEFAULT    14 write_otp_nv_counters_flash
+  1299: 0c00b4cd    44 FUNC    GLOBAL DEFAULT    20 psa_version
+  1301: 0c0057f3   210 FUNC    GLOBAL DEFAULT    14 HAL_FLASH_Program
   1304: 0c0025d1     4 FUNC    WEAK   DEFAULT    14 I2C1_EV_IRQHandler
-  1305: 0c00a951    60 FUNC    GLOBAL DEFAULT    14 nvic_interrupt_target_state_cfg
-  1307: 0c00de61     2 FUNC    GLOBAL DEFAULT    20 __retarget_lock_release_recursive
-  1309: 0c004ffb    48 FUNC    GLOBAL DEFAULT    14 queue_is_empty_aslr
-  1311: 0c00a609   324 FUNC    GLOBAL DEFAULT    14 load_services_assuredly
-  1312: 0c0091cd   160 FUNC    GLOBAL DEFAULT    14 backend_messaging
+  1305: 0c00a8bd    60 FUNC    GLOBAL DEFAULT    14 nvic_interrupt_target_state_cfg
+  1307: 0c00ddc1     2 FUNC    GLOBAL DEFAULT    20 __retarget_lock_release_recursive
+  1309: 0c004f65    48 FUNC    GLOBAL DEFAULT    14 queue_is_empty_aslr
+  1311: 0c00a575   324 FUNC    GLOBAL DEFAULT    14 load_services_assuredly
+  1312: 0c009139   160 FUNC    GLOBAL DEFAULT    14 backend_messaging
   1314: 0c00257d     4 FUNC    WEAK   DEFAULT    14 DMA1_Channel6_IRQHandler
   1315: 0c00260d     4 FUNC    WEAK   DEFAULT    14 TIM16_IRQHandler
   1316: 0c00339f   352 FUNC    GLOBAL DEFAULT    14 HAL_RNG_Init
   1317: 0c0025f5     4 FUNC    WEAK   DEFAULT    14 UART4_IRQHandler
   1318: 0c002639     4 FUNC    WEAK   DEFAULT    14 DMA2_Channel4_IRQHandler
-  1319: 0c00b41d     6 FUNC    GLOBAL DEFAULT    20 SecureFault_Handler
-  1320: 0c00d741    12 FUNC    GLOBAL DEFAULT    20 __sfp_lock_acquire
-  1321: 0c00df71   122 FUNC    GLOBAL DEFAULT    20 memchr
-  1325: 0c00d905   524 FUNC    GLOBAL DEFAULT    20 _free_r
+  1319: 0c00b37d     6 FUNC    GLOBAL DEFAULT    20 SecureFault_Handler
+  1320: 0c00d6a1    12 FUNC    GLOBAL DEFAULT    20 __sfp_lock_acquire
+  1321: 0c00ded1   122 FUNC    GLOBAL DEFAULT    20 memchr
+  1325: 0c00d865   524 FUNC    GLOBAL DEFAULT    20 _free_r
   1326: 0c0025ad     4 FUNC    WEAK   DEFAULT    14 TIM3_IRQHandler
   1327: 0c002519     4 FUNC    WEAK   DEFAULT    14 RCC_IRQHandler
-  1328: 0c00de41    12 FUNC    GLOBAL DEFAULT    20 __locale_mb_cur_max
+  1328: 0c00dda1    12 FUNC    GLOBAL DEFAULT    20 __locale_mb_cur_max
   1329: 0c0025a1     4 FUNC    WEAK   DEFAULT    14 TIM1_TRG_COM_IRQHandler
-  1330: 0c00502b    72 FUNC    GLOBAL DEFAULT    14 queue_delete_aslr
-  1331: 0c008c49   860 FUNC    GLOBAL DEFAULT    14 tfm_spm_client_psa_call
+  1330: 0c004f95    72 FUNC    GLOBAL DEFAULT    14 queue_delete_aslr
+  1331: 0c008bb5   860 FUNC    GLOBAL DEFAULT    14 tfm_spm_client_psa_call
   1332: 0c002569     4 FUNC    WEAK   DEFAULT    14 DMA1_Channel1_IRQHandler
-  1333: 0c009de3    46 FUNC    GLOBAL DEFAULT    14 tfm_arch_refresh_hardware_context
-  1336: 0c005d73   166 FUNC    GLOBAL DEFAULT    14 FLASH_PageErase
+  1333: 0c009d4f    46 FUNC    GLOBAL DEFAULT    14 tfm_arch_refresh_hardware_context
+  1336: 0c005cdd   166 FUNC    GLOBAL DEFAULT    14 FLASH_PageErase
   1338: 0c002645     4 FUNC    WEAK   DEFAULT    14 DMA2_Channel7_IRQHandler
-  1340: 0c009695    54 FUNC    GLOBAL DEFAULT    14 tfm_hal_set_up_static_boundaries
-  1342: 0c00e9c5    16 FUNC    GLOBAL DEFAULT    20 _lseek
-  1343: 0c00595b   234 FUNC    GLOBAL DEFAULT    14 FLASH_WaitForLastOperation
-  1344: 0c007551   170 FUNC    GLOBAL DEFAULT    14 UART_CheckIdleState
-  1345: 0c0062e3    90 FUNC    GLOBAL DEFAULT    14 stdio_output_string
-  1346: 0c009e87    64 FUNC    GLOBAL DEFAULT    14 spm_allocate_connection
-  1348: 0c004e4f   368 FUNC    GLOBAL DEFAULT    14 vPortFree_aslr
-  1349: 0c00a173    74 FUNC    GLOBAL DEFAULT    14 spm_msg_handle_to_connection
-  1350: 0c00b645    56 FUNC    GLOBAL DEFAULT    20 psa_write
+  1340: 0c009601    54 FUNC    GLOBAL DEFAULT    14 tfm_hal_set_up_static_boundaries
+  1342: 0c00e925    16 FUNC    GLOBAL DEFAULT    20 _lseek
+  1343: 0c0058c5   234 FUNC    GLOBAL DEFAULT    14 FLASH_WaitForLastOperation
+  1344: 0c0074bd   170 FUNC    GLOBAL DEFAULT    14 UART_CheckIdleState
+  1345: 0c00624d    90 FUNC    GLOBAL DEFAULT    14 stdio_output_string
+  1346: 0c009df3    64 FUNC    GLOBAL DEFAULT    14 spm_allocate_connection
+  1348: 0c004db9   368 FUNC    GLOBAL DEFAULT    14 vPortFree_aslr
+  1349: 0c00a0df    74 FUNC    GLOBAL DEFAULT    14 spm_msg_handle_to_connection
+  1350: 0c00b5a5    56 FUNC    GLOBAL DEFAULT    20 psa_write
   1351: 0c001195    80 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_cp_file_meta
   1352: 0c00269d     4 FUNC    WEAK   DEFAULT    14 OTFDEC1_IRQHandler
-  1354: 0c00e645   100 FUNC    GLOBAL DEFAULT    20 strncpy
+  1354: 0c00e5a5   100 FUNC    GLOBAL DEFAULT    20 strncpy
   1356: 0c002585     4 FUNC    WEAK   DEFAULT    14 DMA1_Channel8_IRQHandler
   1357: 0c0018a5    84 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_read_block_metadata
   1358: 0c000df1   136 FUNC    GLOBAL DEFAULT    11 its_flash_fs_file_read
   1359: 0c002511     4 FUNC    WEAK   DEFAULT    14 FLASH_IRQHandler_S
   1360: 0c0025bd     4 FUNC    WEAK   DEFAULT    14 TIM7_IRQHandler
   1361: 0c002629     4 FUNC    WEAK   DEFAULT    14 SDMMC1_IRQHandler
-  1362: 0c00e7dd    36 FUNC    GLOBAL DEFAULT    20 _close_r
+  1362: 0c00e73d    36 FUNC    GLOBAL DEFAULT    20 _close_r
   1363: 0c00093d    24 FUNC    GLOBAL DEFAULT    11 its_flash_fs_wipe_all
   1364: 0c0025b5     4 FUNC    WEAK   DEFAULT    14 TIM5_IRQHandler
-  1365: 0c005073   118 FUNC    GLOBAL DEFAULT    14 queue_insert_aslr
+  1365: 0c004fdd   118 FUNC    GLOBAL DEFAULT    14 queue_insert_aslr
   1366: 0c002695     4 FUNC    WEAK   DEFAULT    14 UCPD1_IRQHandler
   1367: 0c001095   256 FUNC    GLOBAL DEFAULT    11 its_flash_fs_dblock_write_file
-  1368: 0c00b67d    88 FUNC    GLOBAL DEFAULT    20 memcmp
+  1368: 0c00b5dd    88 FUNC    GLOBAL DEFAULT    20 memcmp
   1370: 0c002609     4 FUNC    WEAK   DEFAULT    14 TIM15_IRQHandler
-  1371: 0c00de59     2 FUNC    GLOBAL DEFAULT    20 __retarget_lock_close_recursive
+  1371: 0c00ddb9     2 FUNC    GLOBAL DEFAULT    20 __retarget_lock_close_recursive
   1372: 0c00264d     4 FUNC    WEAK   DEFAULT    14 I2C3_EV_IRQHandler
-  1373: 0c00d3ad   212 FUNC    GLOBAL DEFAULT    20 __swsetup_r
-  1374: 0c00bf31     2 FUNC    WEAK   HIDDEN     20 __aeabi_ldiv0
+  1373: 0c00d30d   212 FUNC    GLOBAL DEFAULT    20 __swsetup_r
+  1374: 0c00be91     2 FUNC    WEAK   HIDDEN     20 __aeabi_ldiv0
   1375: 0c000ec1   316 FUNC    GLOBAL DEFAULT    11 its_flash_fs_dblock_compact_block
-  1376: 0c0075fb   344 FUNC    GLOBAL DEFAULT    14 HAL_UART_Transmit
+  1376: 0c007567   344 FUNC    GLOBAL DEFAULT    14 HAL_UART_Transmit
   1380: 0c0012bd    34 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_cur_data_scratch_id
-  1381: 0c006117   238 FUNC    GLOBAL DEFAULT    14 HAL_GTZC_MPCBB_GetConfigMem
-  1382: 0c00e559    34 FUNC    GLOBAL DEFAULT    20 __sread
-  1384: 0c003edd    34 FUNC    GLOBAL DEFAULT    14 address_free_aslr
-  1385: 0c00b311   202 FUNC    GLOBAL DEFAULT    20 HAL_GetTick
-  1386: 0c00c51d    12 FUNC    GLOBAL DEFAULT    20 __malloc_lock
+  1381: 0c006081   238 FUNC    GLOBAL DEFAULT    14 HAL_GTZC_MPCBB_GetConfigMem
+  1382: 0c00e4b9    34 FUNC    GLOBAL DEFAULT    20 __sread
+  1384: 0c003e47    34 FUNC    GLOBAL DEFAULT    14 address_free_aslr
+  1385: 0c00b271   202 FUNC    GLOBAL DEFAULT    20 HAL_GetTick
+  1386: 0c00c47d    12 FUNC    GLOBAL DEFAULT    20 __malloc_lock
   1387: 0c0024f9     4 FUNC    WEAK   DEFAULT    14 PVD_PVM_IRQHandler
-  1388: 0c0062a7    52 FUNC    WEAK   DEFAULT    14 tfm_hal_its_fs_info
-  1390: 0c0096cb   244 FUNC    GLOBAL DEFAULT    14 tfm_hal_bind_boundary
-  1391: 0c00d5c9    90 FUNC    GLOBAL DEFAULT    20 _fflush_r
+  1388: 0c006211    52 FUNC    WEAK   DEFAULT    14 tfm_hal_its_fs_info
+  1390: 0c009637   244 FUNC    GLOBAL DEFAULT    14 tfm_hal_bind_boundary
+  1391: 0c00d529    90 FUNC    GLOBAL DEFAULT    20 _fflush_r
   1392: 0c0025e5     4 FUNC    WEAK   DEFAULT    14 SPI2_IRQHandler
   1393: 0c000ffd   100 FUNC    GLOBAL DEFAULT    11 its_flash_fs_dblock_read_file
-  1395: 0c00de5d     2 FUNC    GLOBAL DEFAULT    20 __retarget_lock_acquire_recursive
-  1396: 0c00b77d   144 FUNC    GLOBAL DEFAULT    20 memset
-  1398: 0c00b40d    16 FUNC    GLOBAL DEFAULT    20 C_SecureFault_Handler
-  1399: 0c003fb5    22 FUNC    GLOBAL DEFAULT    14 ldr_get_imm_aslr
-  1400: 0c00b3ed     6 FUNC    GLOBAL DEFAULT    20 MemManage_Handler
-  1401: 0c0089d5    78 FUNC    GLOBAL DEFAULT    14 main
-  1402: 0c00a8c7    96 FUNC    GLOBAL DEFAULT    14 is_valid_chunk_data_in_pool
-  1403: 0c009af9    14 FUNC    GLOBAL DEFAULT    14 tfm_core_validate_boot_data
-  1405: 0c00de55     2 FUNC    GLOBAL DEFAULT    20 __retarget_lock_init_recursive
+  1395: 0c00ddbd     2 FUNC    GLOBAL DEFAULT    20 __retarget_lock_acquire_recursive
+  1396: 0c00b6dd   144 FUNC    GLOBAL DEFAULT    20 memset
+  1398: 0c00b36d    16 FUNC    GLOBAL DEFAULT    20 C_SecureFault_Handler
+  1399: 0c003f1f    22 FUNC    GLOBAL DEFAULT    14 ldr_get_imm_aslr
+  1400: 0c00b34d     6 FUNC    GLOBAL DEFAULT    20 MemManage_Handler
+  1401: 0c008941    78 FUNC    GLOBAL DEFAULT    14 main
+  1402: 0c00a833    96 FUNC    GLOBAL DEFAULT    14 is_valid_chunk_data_in_pool
+  1403: 0c009a65    14 FUNC    GLOBAL DEFAULT    14 tfm_core_validate_boot_data
+  1405: 0c00ddb5     2 FUNC    GLOBAL DEFAULT    20 __retarget_lock_init_recursive
   1406: 0c002559     4 FUNC    WEAK   DEFAULT    14 EXTI14_IRQHandler
   1407: 0c002015    80 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_update_scratch_block_meta
   1408: 0c00254d     4 FUNC    WEAK   DEFAULT    14 EXTI11_IRQHandler
-  1409: 0c00954d   100 FUNC    GLOBAL DEFAULT    14 SVC_Handler
-  1410: 0c00e5e1     8 FUNC    GLOBAL DEFAULT    20 __sclose
+  1409: 0c0094b9   100 FUNC    GLOBAL DEFAULT    14 SVC_Handler
+  1410: 0c00e541     8 FUNC    GLOBAL DEFAULT    20 __sclose
   1411: 0c00263d     4 FUNC    WEAK   DEFAULT    14 DMA2_Channel5_IRQHandler
   1413: 0c00261d     4 FUNC    WEAK   DEFAULT    14 CRS_IRQHandler
-  1415: 0c009d0d   116 FUNC    GLOBAL DEFAULT    14 tfm_arch_init_context
-  1417: 0c00bfa9  1396 FUNC    GLOBAL DEFAULT    20 _malloc_r
-  1418: 0c00e795    28 FUNC    GLOBAL DEFAULT    20 __ascii_wctomb
+  1415: 0c009c79   116 FUNC    GLOBAL DEFAULT    14 tfm_arch_init_context
+  1417: 0c00bf09  1396 FUNC    GLOBAL DEFAULT    20 _malloc_r
+  1418: 0c00e6f5    28 FUNC    GLOBAL DEFAULT    20 __ascii_wctomb
   1420: 0c002579     4 FUNC    WEAK   DEFAULT    14 DMA1_Channel5_IRQHandler
   1422: 0c002531     4 FUNC    WEAK   DEFAULT    14 EXTI4_IRQHandler
-  1423: 0c00d865   160 FUNC    GLOBAL DEFAULT    20 _malloc_trim_r
-  1425: 0c003ac7   184 FUNC    GLOBAL DEFAULT    14 get_type
+  1423: 0c00d7c5   160 FUNC    GLOBAL DEFAULT    20 _malloc_trim_r
+  1425: 0c003a31   184 FUNC    GLOBAL DEFAULT    14 get_type
   1426: 0c000dad    68 FUNC    GLOBAL DEFAULT    11 its_flash_fs_file_delete
   1429: 0c002799    20 FUNC    GLOBAL DEFAULT    14 SystemInit
   1431: 0c002665     4 FUNC    WEAK   DEFAULT    14 RNG_IRQHandler
   1432: 0c0009a5   876 FUNC    GLOBAL DEFAULT    11 its_flash_fs_file_write
-  1433: 0c00b3dd    16 FUNC    GLOBAL DEFAULT    20 C_MemManage_Handler
+  1433: 0c00b33d    16 FUNC    GLOBAL DEFAULT    20 C_MemManage_Handler
   1434: 0c000219     8 FUNC    GLOBAL DEFAULT    22 tfm_psa_connect_veneer
-  1437: 0c006e11     8 FUNC    WEAK   DEFAULT    14 HAL_UART_MspInit
-  1438: 0c0040d5   168 FUNC    GLOBAL DEFAULT    14 mpu_enable_aslr
-  1439: 0c009ec7    48 FUNC    GLOBAL DEFAULT    14 spm_validate_connection
-  1440: 0c003f7d    56 FUNC    GLOBAL DEFAULT    14 is_ldr_aslr
-  1442: 0c00a2ed    66 FUNC    GLOBAL DEFAULT    14 tfm_spm_get_client_id
-  1443: 0c0065b9   286 FUNC    GLOBAL DEFAULT    14 tfm_plat_otp_write
-  1444: 0c00e7b1    44 FUNC    GLOBAL DEFAULT    20 _write_r
+  1437: 0c006d7d     8 FUNC    WEAK   DEFAULT    14 HAL_UART_MspInit
+  1438: 0c00403f   168 FUNC    GLOBAL DEFAULT    14 mpu_enable_aslr
+  1439: 0c009e33    48 FUNC    GLOBAL DEFAULT    14 spm_validate_connection
+  1440: 0c003ee7    56 FUNC    GLOBAL DEFAULT    14 is_ldr_aslr
+  1442: 0c00a259    66 FUNC    GLOBAL DEFAULT    14 tfm_spm_get_client_id
+  1443: 0c006525   286 FUNC    GLOBAL DEFAULT    14 tfm_plat_otp_write
+  1444: 0c00e711    44 FUNC    GLOBAL DEFAULT    20 _write_r
   1446: 0c002571     4 FUNC    WEAK   DEFAULT    14 DMA1_Channel3_IRQHandler
   1448: 0c002615     4 FUNC    WEAK   DEFAULT    14 COMP_IRQHandler
-  1452: 0c008b17   276 FUNC    GLOBAL DEFAULT    14 tfm_spm_partition_psa_reply
-  1453: 0c009017   244 FUNC    GLOBAL DEFAULT    14 tfm_spm_partition_psa_read
+  1452: 0c008a83   276 FUNC    GLOBAL DEFAULT    14 tfm_spm_partition_psa_reply
+  1453: 0c008f83   244 FUNC    GLOBAL DEFAULT    14 tfm_spm_partition_psa_read
   1454: 0c00259d     4 FUNC    WEAK   DEFAULT    14 TIM1_UP_IRQHandler
-  1455: 0c00d491   312 FUNC    GLOBAL DEFAULT    20 __sflush_r
-  1456: 0c009feb   166 FUNC    GLOBAL DEFAULT    14 tfm_spm_check_client_version
-  1457: 0c009ad1    12 FUNC    GLOBAL DEFAULT    14 tfm_hal_get_ns_VTOR
-  1458: 0c004fbf    48 FUNC    GLOBAL DEFAULT    14 queue_is_full_aslr
+  1455: 0c00d3f1   312 FUNC    GLOBAL DEFAULT    20 __sflush_r
+  1456: 0c009f57   166 FUNC    GLOBAL DEFAULT    14 tfm_spm_check_client_version
+  1457: 0c009a3d    12 FUNC    GLOBAL DEFAULT    14 tfm_hal_get_ns_VTOR
+  1458: 0c004f29    48 FUNC    GLOBAL DEFAULT    14 queue_is_full_aslr
   1459: 0c001d1d   560 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_reset_metablock
   1461: 0c0024f5     4 FUNC    WEAK   DEFAULT    14 WWDG_IRQHandler
-  1462: 0c006795   176 FUNC    GLOBAL DEFAULT    14 tfm_plat_otp_get_size
-  1463: 0c00b545    40 FUNC    GLOBAL DEFAULT    20 psa_framework_version
-  1464: 0c00df45    42 FUNC    GLOBAL DEFAULT    20 __ascii_mbtowc
+  1462: 0c006701   176 FUNC    GLOBAL DEFAULT    14 tfm_plat_otp_get_size
+  1463: 0c00b4a5    40 FUNC    GLOBAL DEFAULT    20 psa_framework_version
+  1464: 0c00dea5    42 FUNC    GLOBAL DEFAULT    20 __ascii_mbtowc
   1465: 0c001fbd    60 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_update_scratch_file_meta
   1467: 0c002681     4 FUNC    WEAK   DEFAULT    14 I2C4_EV_IRQHandler
   1468: 0c0025fd     4 FUNC    WEAK   DEFAULT    14 LPUART1_IRQHandler
   1469: 0c002641     4 FUNC    WEAK   DEFAULT    14 DMA2_Channel6_IRQHandler
   1470: 0c002591     4 FUNC    WEAK   DEFAULT    14 FDCAN1_IT0_IRQHandler
   1471: 0c0025a9     4 FUNC    WEAK   DEFAULT    14 TIM2_IRQHandler
-  1472: 0c00910b   194 FUNC    GLOBAL DEFAULT    14 tfm_spm_partition_psa_write
-  1473: 0c003dfb   226 FUNC    GLOBAL DEFAULT    14 func_evict_one_aslr
-  1475: 0c00b2bd     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_call_veneer
+  1472: 0c009077   194 FUNC    GLOBAL DEFAULT    14 tfm_spm_partition_psa_write
+  1473: 0c003d65   226 FUNC    GLOBAL DEFAULT    14 func_evict_one_aslr
+  1475: 0c00b21d     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_call_veneer
   1476: 0c00253d     4 FUNC    WEAK   DEFAULT    14 EXTI7_IRQHandler
   1477: 0c002599     4 FUNC    WEAK   DEFAULT    14 TIM1_BRK_IRQHandler
   1478: 0c00258d     4 FUNC    WEAK   DEFAULT    14 DAC_IRQHandler
   1479: 0c002525     4 FUNC    WEAK   DEFAULT    14 EXTI1_IRQHandler
-  1480: 0c0093c9     6 FUNC    GLOBAL DEFAULT    14 backend_system_run
+  1480: 0c009335     6 FUNC    GLOBAL DEFAULT    14 backend_system_run
   1481: 0c002501     4 FUNC    WEAK   DEFAULT    14 RTC_IRQHandler_S
-  1482: 0c006415    22 FUNC    GLOBAL DEFAULT    14 tfm_hal_output_spm_log
+  1482: 0c00637f    22 FUNC    GLOBAL DEFAULT    14 tfm_hal_output_spm_log
   1483: 0c00120d   176 FUNC    GLOBAL DEFAULT    11 its_flash_fs_block_to_block_move
   1484: 0c0005f1   104 FUNC    GLOBAL DEFAULT    11 its_flash_fs_init_ctx
-  1485: 0c00633d    24 FUNC    GLOBAL DEFAULT    14 _write
-  1486: 0c003b7f   134 FUNC    GLOBAL DEFAULT    14 function_exist_aslr
-  1487: 0c009661     2 FUNC    GLOBAL DEFAULT    14 tfm_arch_config_extensions
-  1488: 0c009f7b   112 FUNC    GLOBAL DEFAULT    14 tfm_spm_get_service_by_sid
-  1489: 0c008071   250 FUNC    GLOBAL DEFAULT    14 read_otp_nv_counters_flash
+  1485: 0c0062a7    24 FUNC    GLOBAL DEFAULT    14 _write
+  1486: 0c003ae9   134 FUNC    GLOBAL DEFAULT    14 function_exist_aslr
+  1487: 0c0095cd     2 FUNC    GLOBAL DEFAULT    14 tfm_arch_config_extensions
+  1488: 0c009ee7   112 FUNC    GLOBAL DEFAULT    14 tfm_spm_get_service_by_sid
+  1489: 0c007fdd   250 FUNC    GLOBAL DEFAULT    14 read_otp_nv_counters_flash
   1490: 0c001ff9    26 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_set_data_scratch
   1491: 0c002661     4 FUNC    WEAK   DEFAULT    14 AES_IRQHandler
-  1493: 0c00d759   162 FUNC    GLOBAL DEFAULT    20 __fputwc
-  1494: 0c005aa3   166 FUNC    GLOBAL DEFAULT    14 HAL_FLASH_Unlock
-  1496: 0c00694f   362 FUNC    GLOBAL DEFAULT    14 provision_psa_rot
-  1497: 0c003cad    54 FUNC    GLOBAL DEFAULT    14 load_func_aslr
-  1498: 0c00a091   226 FUNC    GLOBAL DEFAULT    14 tfm_spm_check_authorization
-  1499: 0c00b599   116 FUNC    GLOBAL DEFAULT    20 tfm_psa_call_pack
+  1493: 0c00d6b9   162 FUNC    GLOBAL DEFAULT    20 __fputwc
+  1494: 0c005a0d   166 FUNC    GLOBAL DEFAULT    14 HAL_FLASH_Unlock
+  1496: 0c0068bb   362 FUNC    GLOBAL DEFAULT    14 provision_psa_rot
+  1497: 0c003c17    54 FUNC    GLOBAL DEFAULT    14 load_func_aslr
+  1498: 0c009ffd   226 FUNC    GLOBAL DEFAULT    14 tfm_spm_check_authorization
+  1499: 0c00b4f9   116 FUNC    GLOBAL DEFAULT    20 tfm_psa_call_pack
   1502: 0c00174d    88 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_meta_update_finalize
-  1503: 0c009add    14 FUNC    GLOBAL DEFAULT    14 tfm_hal_get_ns_MSP
+  1503: 0c009a49    14 FUNC    GLOBAL DEFAULT    14 tfm_hal_get_ns_MSP
   1504: 0c0025ed     4 FUNC    WEAK   DEFAULT    14 USART2_IRQHandler
-  1505: 0c00e57d    62 FUNC    GLOBAL DEFAULT    20 __swrite
-  1506: 0c00b2df     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_connect_veneer
+  1505: 0c00e4dd    62 FUNC    GLOBAL DEFAULT    20 __swrite
+  1506: 0c00b23f     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_connect_veneer
   1508: 0c002685     4 FUNC    WEAK   DEFAULT    14 DFSDM1_FLT0_IRQHandler
-  1510: 0c00bf71    40 FUNC    GLOBAL DEFAULT    20 fiprintf
-  1511: 0c00c5cd  3424 FUNC    GLOBAL DEFAULT    20 _vfiprintf_r
-  1512: 0c00ddfd    66 FUNC    GLOBAL DEFAULT    20 _fwalk_reent
-  1513: 0c0062db     8 FUNC    GLOBAL DEFAULT    14 tfm_hal_system_halt
+  1510: 0c00bed1    40 FUNC    GLOBAL DEFAULT    20 fiprintf
+  1511: 0c00c52d  3424 FUNC    GLOBAL DEFAULT    20 _vfiprintf_r
+  1512: 0c00dd5d    66 FUNC    GLOBAL DEFAULT    20 _fwalk_reent
+  1513: 0c006245     8 FUNC    GLOBAL DEFAULT    14 tfm_hal_system_halt
   1514: 0c0027ad  2020 FUNC    GLOBAL DEFAULT    14 HAL_RCCEx_PeriphCLKConfig
-  1515: 0c00816b   226 FUNC    GLOBAL DEFAULT    14 init_otp_nv_counters_flash
-  1516: 0c00e9b5    16 FUNC    GLOBAL DEFAULT    20 _kill
-  1517: 0c00ef01    40 FUNC    GLOBAL DEFAULT    21 its_req_mngr_read
+  1515: 0c0080d7   226 FUNC    GLOBAL DEFAULT    14 init_otp_nv_counters_flash
+  1516: 0c00e915    16 FUNC    GLOBAL DEFAULT    20 _kill
+  1517: 0c00ee61    40 FUNC    GLOBAL DEFAULT    21 its_req_mngr_read
   1518: 0c0025dd     4 FUNC    WEAK   DEFAULT    14 I2C2_ER_IRQHandler
   1519: 0c00256d     4 FUNC    WEAK   DEFAULT    14 DMA1_Channel2_IRQHandler
-  1520: 0c00d74d    12 FUNC    GLOBAL DEFAULT    20 __sfp_lock_release
+  1520: 0c00d6ad    12 FUNC    GLOBAL DEFAULT    20 __sfp_lock_release
   1521: 0c001b55   132 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_reserve_file
-  1523: 0c00b29f     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_version_veneer
-  1524: 0c00b3f5    16 FUNC    GLOBAL DEFAULT    20 C_BusFault_Handler
+  1523: 0c00b1ff     0 FUNC    GLOBAL DEFAULT    20 __acle_se_tfm_psa_version_veneer
+  1524: 0c00b355    16 FUNC    GLOBAL DEFAULT    20 C_BusFault_Handler
   1525: 0c0025c1     4 FUNC    WEAK   DEFAULT    14 TIM8_BRK_IRQHandler
-  1527: 0c00e9d5    16 FUNC    GLOBAL DEFAULT    20 _read
-  1528: 0c00bf31     2 FUNC    WEAK   HIDDEN     20 __aeabi_idiv0
-  1529: 0c003c7f    16 FUNC    GLOBAL DEFAULT    14 exception_reconstruct_aslr
+  1527: 0c00e935    16 FUNC    GLOBAL DEFAULT    20 _read
+  1528: 0c00be91     2 FUNC    WEAK   HIDDEN     20 __aeabi_idiv0
+  1529: 0c003be9    16 FUNC    GLOBAL DEFAULT    14 exception_reconstruct_aslr
   1530: 0c00250d     4 FUNC    WEAK   DEFAULT    14 FLASH_IRQHandler
-  1531: 0c00ea05     2 FUNC    GLOBAL DEFAULT    20 _exit
-  1533: 0c00b405     6 FUNC    GLOBAL DEFAULT    20 BusFault_Handler
+  1531: 0c00e965     2 FUNC    GLOBAL DEFAULT    20 _exit
+  1533: 0c00b365     6 FUNC    GLOBAL DEFAULT    20 BusFault_Handler
   1534: 0c0025e9     4 FUNC    WEAK   DEFAULT    14 USART1_IRQHandler
-  1535: 0c00de65   224 FUNC    GLOBAL DEFAULT    20 __smakebuf_r
-  1536: 0c00e5e9    92 FUNC    GLOBAL DEFAULT    20 strlen
+  1535: 0c00ddc5   224 FUNC    GLOBAL DEFAULT    20 __smakebuf_r
+  1536: 0c00e549    92 FUNC    GLOBAL DEFAULT    20 strlen
   1537: 0c002549     4 FUNC    WEAK   DEFAULT    14 EXTI10_IRQHandler
   1538: 0c000221     8 FUNC    GLOBAL DEFAULT    22 tfm_psa_call_veneer
   1539: 0c002679     4 FUNC    WEAK   DEFAULT    14 SPI3_IRQHandler
-  1540: 0c0068bb    70 FUNC    GLOBAL DEFAULT    14 tfm_plat_provisioning_is_required
-  1543: 0c003f6b    18 FUNC    GLOBAL DEFAULT    14 rd_recognize_aslr
-  1544: 0c00f355    80 FUNC    GLOBAL DEFAULT    21 tfm_its_get_info
-  1545: 0c003fcb   192 FUNC    GLOBAL DEFAULT    14 mpu_armv8m_region_enable_aslr
-  1546: 0c007aa9    12 FUNC    WEAK   DEFAULT    14 HAL_UARTEx_RxEventCallback
-  1547: 0c006d65   172 FUNC    GLOBAL DEFAULT    14 HAL_UART_Init
-  1548: 0c009a9f    50 FUNC    GLOBAL DEFAULT    14 tfm_hal_platform_init
+  1540: 0c006827    70 FUNC    GLOBAL DEFAULT    14 tfm_plat_provisioning_is_required
+  1543: 0c003ed5    18 FUNC    GLOBAL DEFAULT    14 rd_recognize_aslr
+  1544: 0c00f2b5    80 FUNC    GLOBAL DEFAULT    21 tfm_its_get_info
+  1545: 0c003f35   192 FUNC    GLOBAL DEFAULT    14 mpu_armv8m_region_enable_aslr
+  1546: 0c007a15    12 FUNC    WEAK   DEFAULT    14 HAL_UARTEx_RxEventCallback
+  1547: 0c006cd1   172 FUNC    GLOBAL DEFAULT    14 HAL_UART_Init
+  1548: 0c009a0b    50 FUNC    GLOBAL DEFAULT    14 tfm_hal_platform_init
   1549: 0c00363d   284 FUNC    GLOBAL DEFAULT    14 RNG_RecoverSeedError
   1550: 0c0025d5     4 FUNC    WEAK   DEFAULT    14 I2C1_ER_IRQHandler
-  1551: 0c00a32f   172 FUNC    GLOBAL DEFAULT    14 tfm_spm_init
+  1551: 0c00a29b   172 FUNC    GLOBAL DEFAULT    14 tfm_spm_init
   1552: 0c002621     4 FUNC    WEAK   DEFAULT    14 FMC_IRQHandler
-  1553: 0c00a7a7     8 FUNC    GLOBAL DEFAULT    14 load_irqs_assuredly
-  1554: 0c00ef29    40 FUNC    GLOBAL DEFAULT    21 its_req_mngr_write
-  1555: 0c008aeb    44 FUNC    GLOBAL DEFAULT    14 spm_handle_programmer_errors
-  1556: 0c009c2b   108 FUNC    GLOBAL DEFAULT    14 spm_log_msgval
+  1553: 0c00a713     8 FUNC    GLOBAL DEFAULT    14 load_irqs_assuredly
+  1554: 0c00ee89    40 FUNC    GLOBAL DEFAULT    21 its_req_mngr_write
+  1555: 0c008a57    44 FUNC    GLOBAL DEFAULT    14 spm_handle_programmer_errors
+  1556: 0c009b97   108 FUNC    GLOBAL DEFAULT    14 spm_log_msgval
   1557: 0c002539     4 FUNC    WEAK   DEFAULT    14 EXTI6_IRQHandler
   1558: 0c002601     4 FUNC    WEAK   DEFAULT    14 LPTIM1_IRQHandler
   1559: 0c00267d     4 FUNC    WEAK   DEFAULT    14 I2C4_ER_IRQHandler
   1560: 0c001375    84 FUNC    GLOBAL DEFAULT    11 its_flash_fs_mblock_read_file_meta
-  1561: 0c009b07   178 FUNC    GLOBAL DEFAULT    14 tfm_core_get_boot_data_handler
-  1562: 0c00abdd   204 FUNC    GLOBAL DEFAULT    14 unsecure_sram1
-  1564: 0c003ce3   280 FUNC    GLOBAL DEFAULT    14 funcs_flush_aslr
-  1565: 0c00a8a5    34 FUNC    GLOBAL DEFAULT    14 tfm_pool_free
-  1566: 0c008fc3     6 FUNC    GLOBAL DEFAULT    14 tfm_spm_client_psa_framework_version
+  1561: 0c009a73   178 FUNC    GLOBAL DEFAULT    14 tfm_core_get_boot_data_handler
+  1562: 0c00ab49   204 FUNC    GLOBAL DEFAULT    14 unsecure_sram1
+  1564: 0c003c4d   280 FUNC    GLOBAL DEFAULT    14 funcs_flush_aslr
+  1565: 0c00a811    34 FUNC    GLOBAL DEFAULT    14 tfm_pool_free
+  1566: 0c008f2f     6 FUNC    GLOBAL DEFAULT    14 tfm_spm_client_psa_framework_version
   1568: 0c002699     4 FUNC    WEAK   DEFAULT    14 ICACHE_IRQHandler
   1569: 0c002509     4 FUNC    WEAK   DEFAULT    14 TAMP_IRQHandler_S
-  1572: 0c009287   168 FUNC    GLOBAL DEFAULT    14 backend_init_comp_assuredly
+  1572: 0c0091f3   168 FUNC    GLOBAL DEFAULT    14 backend_init_comp_assuredly
   1574: 0c002655     4 FUNC    WEAK   DEFAULT    14 SAI1_IRQHandler
-  1575: 0c009aeb    14 FUNC    GLOBAL DEFAULT    14 tfm_hal_get_ns_entry_point
-  1577: 0c00e975    16 FUNC    GLOBAL DEFAULT    20 _close
-  1578: 0c00e4cd    92 FUNC    GLOBAL DEFAULT    20 raise
+  1575: 0c009a57    14 FUNC    GLOBAL DEFAULT    14 tfm_hal_get_ns_entry_point
+  1577: 0c00e8d5    16 FUNC    GLOBAL DEFAULT    20 _close
+  1578: 0c00e42d    92 FUNC    GLOBAL DEFAULT    20 raise
   1579: 0c00266d     4 FUNC    WEAK   DEFAULT    14 HASH_IRQHandler
-  1580: 0c00bf99    16 FUNC    GLOBAL DEFAULT    20 free
-  1581: 0c008fc9    78 FUNC    GLOBAL DEFAULT    14 tfm_spm_client_psa_version
+  1580: 0c00bef9    16 FUNC    GLOBAL DEFAULT    20 free
+  1581: 0c008f35    78 FUNC    GLOBAL DEFAULT    14 tfm_spm_client_psa_version
   1582: 0c002635     4 FUNC    WEAK   DEFAULT    14 DMA2_Channel3_IRQHandler
-  1583: 0c009d05     8 FUNC    GLOBAL DEFAULT    14 tfm_arch_free_msp_and_exc_ret
+  1583: 0c009c71     8 FUNC    GLOBAL DEFAULT    14 tfm_arch_free_msp_and_exc_ret

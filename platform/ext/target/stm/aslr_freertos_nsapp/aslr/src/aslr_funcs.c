@@ -1,6 +1,6 @@
 #include "aslr_funcs.h"
-   uint32_t funcs_num=430;
-   FUNCS_INFO funcs[430]={
+   uint32_t funcs_num=432;
+   FUNCS_INFO funcs[432]={
 
   {
       .start_address=0x805e564,
@@ -63,7 +63,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805f874,
+      .start_address=0x805ec1c,
       .size=160,
       .call_frame_size=0
   },
@@ -253,7 +253,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805e9e0,
+      .start_address=0x805e9d4,
       .size=104,
       .call_frame_size=0
   },
@@ -433,6 +433,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805eb90,
+      .size=50,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805a1f8,
       .size=352,
       .call_frame_size=0
@@ -578,6 +583,11 @@
       .call_frame_size=0
   },
   {
+      .start_address=0x805ea54,
+      .size=24,
+      .call_frame_size=0
+  },
+  {
       .start_address=0x805a46c,
       .size=424,
       .call_frame_size=0
@@ -628,7 +638,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805f940,
+      .start_address=0x805ece0,
       .size=236,
       .call_frame_size=0
   },
@@ -665,11 +675,6 @@
   {
       .start_address=0x8059f28,
       .size=248,
-      .call_frame_size=0
-  },
-  {
-      .start_address=0x805ea48,
-      .size=2208,
       .call_frame_size=0
   },
   {
@@ -835,6 +840,11 @@
   {
       .start_address=0x8059544,
       .size=28,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ebc2,
+      .size=14,
       .call_frame_size=0
   },
   {
@@ -1223,8 +1233,8 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805f850,
-      .size=36,
+      .start_address=0x805ebf0,
+      .size=42,
       .call_frame_size=0
   },
   {
@@ -1353,18 +1363,13 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805f2e8,
-      .size=1126,
-      .call_frame_size=0
-  },
-  {
       .start_address=0x80556e6,
       .size=24,
       .call_frame_size=0
   },
   {
-      .start_address=0x805f81c,
-      .size=52,
+      .start_address=0x805ea3c,
+      .size=24,
       .call_frame_size=0
   },
   {
@@ -1413,7 +1418,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805fa2c,
+      .start_address=0x805edcc,
       .size=164,
       .call_frame_size=0
   },
@@ -1429,7 +1434,7 @@
   },
   {
       .start_address=0x805e958,
-      .size=136,
+      .size=124,
       .call_frame_size=0
   },
   {
@@ -1553,8 +1558,8 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805f818,
-      .size=2,
+      .start_address=0x805ebd0,
+      .size=32,
       .call_frame_size=0
   },
   {
@@ -1618,7 +1623,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805f920,
+      .start_address=0x805ecc0,
       .size=16,
       .call_frame_size=0
   },
@@ -1665,6 +1670,11 @@
   {
       .start_address=0x805e6e4,
       .size=4,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805ea6c,
+      .size=204,
       .call_frame_size=0
   },
   {
@@ -1783,7 +1793,7 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805f930,
+      .start_address=0x805ecd0,
       .size=14,
       .call_frame_size=0
   },
@@ -1828,11 +1838,6 @@
       .call_frame_size=0
   },
   {
-      .start_address=0x805f74e,
-      .size=202,
-      .call_frame_size=0
-  },
-  {
       .start_address=0x805be1e,
       .size=12,
       .call_frame_size=0
@@ -1845,6 +1850,11 @@
   {
       .start_address=0x805d0b4,
       .size=76,
+      .call_frame_size=0
+  },
+  {
+      .start_address=0x805eb38,
+      .size=88,
       .call_frame_size=0
   },
   {
@@ -2058,97 +2068,97 @@
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f000,
+      .start_address=0xc00ef60,
       .size=144,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f1b4,
+      .start_address=0xc00f114,
       .size=100,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f218,
+      .start_address=0xc00f178,
       .size=16,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f408,
+      .start_address=0xc00f368,
       .size=48,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00eea4,
+      .start_address=0xc00ee04,
       .size=92,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ee18,
+      .start_address=0xc00ed78,
       .size=140,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ed60,
+      .start_address=0xc00ecc0,
       .size=184,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ecb0,
+      .start_address=0xc00ec10,
       .size=176,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ec20,
+      .start_address=0xc00eb80,
       .size=16,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f090,
+      .start_address=0xc00eff0,
       .size=292,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f228,
+      .start_address=0xc00f188,
       .size=300,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ec30,
+      .start_address=0xc00eb90,
       .size=128,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f438,
+      .start_address=0xc00f398,
       .size=60,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f474,
+      .start_address=0xc00f3d4,
       .size=54,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f3a4,
+      .start_address=0xc00f304,
       .size=100,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ef50,
+      .start_address=0xc00eeb0,
       .size=176,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ef00,
+      .start_address=0xc00ee60,
       .size=40,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00f354,
+      .start_address=0xc00f2b4,
       .size=80,
       .call_frame_size=0
   },
   {
-      .start_address=0xc00ef28,
+      .start_address=0xc00ee88,
       .size=40,
       .call_frame_size=0
   },
