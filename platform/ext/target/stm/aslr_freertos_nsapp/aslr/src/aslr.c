@@ -1,6 +1,5 @@
 #include "aslr.h"
 #include "aslr_address_config.h"
-#include "sys/_stdint.h"
 
 #define secureportREAD_MSP_S_aslr(msp) __asm volatile("mrs %0, msp" : "=r"(msp))
 #define secureportREAD_PSP_S_aslr(psp) __asm volatile("mrs %0, psp" : "=r"(psp))
@@ -10,33 +9,33 @@
 #define secureportREAD_PSP_NS_aslr(psp) \
     __asm volatile("mrs %0, psp_ns" : "=r"(psp))
 
-#define PRINTF_ADDRESS_ASLR 0x8e9a  // the function entry address of printf
+#define PRINTF_ADDRESS_ASLR 0x8e9a // the function entry address of printf
 #define REWRITE_ADJUST_ASLR 1
 extern FUNCS_INFO funcs[];
-extern int funcs_num;
+extern int        funcs_num;
 extern stack_info stack_funcs;
-extern QueueInfo funcs_queue;
+extern QueueInfo  funcs_queue;
 
-int load_func_aslr(uint8_t* load_address, uint8_t* func_address, uint32_t size);
-int funcs_flush_aslr();
-int func_evict_one_aslr();
-void clean_rewrite_info_aslr();
-uint8_t* address_malloc_aslr(size_t size, aslr_region_type_t type);
-int address_free_aslr(uint8_t* free_address);
-void exception_reconstruct_aslr(uint32_t* msp, uint32_t new_address);
-void exception_reconstruct_aslr(uint32_t* msp, uint32_t new_address);
-int rewrite_function_v2_aslr(uint32_t new_address, uint32_t lr);
-int rewrite_function_aslr(uint32_t new_address, uint32_t lr);
-func_node_t* function_exist_aslr(uint32_t func_address);
+int                load_func_aslr(uint8_t* load_address, uint8_t* func_address, uint32_t size);
+int                funcs_flush_aslr();
+int                func_evict_one_aslr();
+void               clean_rewrite_info_aslr();
+uint8_t*           address_malloc_aslr(size_t size, aslr_region_type_t type);
+int                address_free_aslr(uint8_t* free_address);
+void               exception_reconstruct_aslr(uint32_t* msp, uint32_t new_address);
+void               exception_reconstruct_aslr(uint32_t* msp, uint32_t new_address);
+int                rewrite_function_v2_aslr(uint32_t new_address, uint32_t lr);
+int                rewrite_function_aslr(uint32_t new_address, uint32_t lr);
+func_node_t*       function_exist_aslr(uint32_t func_address);
 aslr_region_type_t get_type(uint32_t address);
 // Debug variables;
 uint32_t* msp;
-uint32_t interrupt_ret;
-uint32_t lr;
-uint32_t top;
+uint32_t  interrupt_ret;
+uint32_t  lr;
+uint32_t  top;
 uint32_t* initial_msp_s;
 
-uint32_t initial_msp_ns;
+uint32_t       initial_msp_ns;
 rewrite_info_t ri_start = {.next = NULL};
 
 // evaluation varibales
@@ -46,17 +45,17 @@ uint32_t n_evict;
 uint32_t n_load;
 // uint32_t n_excp;
 uint32_t ulControlValue;
-uint8_t flag_a40c, flag_901c, flag_9b7a;
+uint8_t  flag_a40c, flag_901c, flag_9b7a;
 
 void HardFault_Handler(void) {
     static uint32_t n_excp;
-    uint32_t interrupt_ret;
+    uint32_t        interrupt_ret;
     n_excp++;
     uint32_t ulLRValue;
     uint32_t ulControlValue;
     __asm volatile("mov %0, lr" : "=r"(ulLRValue));
     __asm volatile("MRS %0, control_ns" : "=r"(ulControlValue));
-    if (((ulLRValue >> 6) & 1) == 1) {  // secure
+    if (((ulLRValue >> 6) & 1) == 1) { // secure
         if (((ulLRValue >> 3) & 1) == 0 || ((ulLRValue >> 2) & 1) == 0) {
             initial_msp_s = (uint32_t*)__get_MSP();
             secureportREAD_MSP_S_aslr(msp);
@@ -65,7 +64,7 @@ void HardFault_Handler(void) {
             secureportREAD_PSP_S_aslr(msp);
         }
     } else {
-        if (ulControlValue & 0x02) {  // 使用 psp
+        if (ulControlValue & 0x02) { // 使用 psp
             initial_msp_s = (uint32_t*)__get_PSP();
             secureportREAD_PSP_NS_aslr(msp);
         } else {
@@ -74,21 +73,8 @@ void HardFault_Handler(void) {
         }
     }
 
-    interrupt_ret = (uint32_t) * (msp + 6);  // return address value
-    lr = (uint32_t) * (msp + 5);
-    if (interrupt_ret != 0x08057068 && interrupt_ret != 0x0805ce0a &&
-        interrupt_ret != 0x0805cdf4) {
-        n_excp += 1;
-        n_excp -= 1;
-    }
-    if (n_excp == 4914) {
-        n_excp += 1;
-        n_excp -= 1;
-    }
-    if (interrupt_ret == 0x0805e8b4) {  // readelf - 1
-        n_excp += 1;
-        n_excp -= 1;
-    }
+    interrupt_ret = (uint32_t)*(msp + 6); // return address value
+    lr = (uint32_t)*(msp + 5);
 
     aslr_region_type_t type = get_type(interrupt_ret);
 
@@ -104,10 +90,7 @@ void HardFault_Handler(void) {
         exception_reconstruct_aslr(msp, new_address->load_address);
         return;
     }
-    if ((interrupt_ret >= NS_MPU_START_ASLR &&
-         interrupt_ret <= NS_MPU_END_ASLR) ||
-        (interrupt_ret >= ASLR_FLASH_SECURE_SERVICE1_REGION_START &&
-         interrupt_ret <= ASLR_FLASH_SECURE_SERVICE1_REGION_END)) {
+    if ((interrupt_ret >= NS_MPU_START_ASLR && interrupt_ret <= NS_MPU_END_ASLR) || (interrupt_ret >= ASLR_FLASH_SECURE_SERVICE1_REGION_START && interrupt_ret <= ASLR_FLASH_SECURE_SERVICE1_REGION_END)) {
         int idx = -1;
         for (int i = 0; i < funcs_num; i++) {
             if (interrupt_ret == funcs[i].start_address) {
@@ -116,7 +99,7 @@ void HardFault_Handler(void) {
             }
         }
         if (idx != -1) {
-            uint32_t size = funcs[idx].size;
+            uint32_t    size = funcs[idx].size;
             func_node_t func_node = {
                 .load_address = (uint32_t)address_malloc_aslr(size, type),
                 .size = size,
@@ -128,10 +111,8 @@ void HardFault_Handler(void) {
                 func_node.load_address =
                     (uint32_t)address_malloc_aslr(size, type);
             }
-            while (func_node.load_address == NULL)
-                ;
-            while (queue_insert_aslr(&funcs_queue, func_node))
-                ;
+            while (func_node.load_address == NULL);
+            while (queue_insert_aslr(&funcs_queue, func_node));
             load_func_aslr((uint8_t*)func_node.load_address,
                            (uint8_t*)funcs[idx].start_address, size);
             exception_reconstruct_aslr(msp, func_node.load_address);
@@ -160,7 +141,7 @@ int funcs_flush_aslr() {
     uint32_t index_msp = (uint32_t)msp + 0x20;
 
     while (index_msp != initial_msp_ns) {
-        int queue_size = queue_sum_aslr();
+        int      queue_size = queue_sum_aslr();
         uint32_t index_queue = funcs_queue.front;
 
         if (interrupt_ret == 0x9c02) {
@@ -177,13 +158,12 @@ int funcs_flush_aslr() {
                 index_msp +=
                     funcs_queue.queue_array[index_queue].call_frame_size;
 
-                if (funcs_queue.queue_array[index_queue].func_address ==
-                    PRINTF_ADDRESS_ASLR) {
+                if (funcs_queue.queue_array[index_queue].func_address == PRINTF_ADDRESS_ASLR) {
                     return_address = *((uint32_t*)(index_msp - 20));
                     break;
                 }
                 return_address = *((uint32_t*)(index_msp - 4));
-                break;  // indicate that the funcs will be cleaned.
+                break; // indicate that the funcs will be cleaned.
             }
             index_queue = (index_queue + 1) % MAX_SIZE_QUEUE_ASLR;
             while (queue_size == 0) {
@@ -198,19 +178,16 @@ int func_evict_one_aslr() {
     funcs_flush_aslr();
     int queue_size = queue_sum_aslr();
     while (queue_size--) {
-        int index = funcs_queue.front;
+        int      index = funcs_queue.front;
         uint32_t ref = funcs_queue.queue_array[index].ref;
 
         if (ref == 1) {
             func_node_t f = funcs_queue.queue_array[index];
             f.ref = 0;
-            while (queue_insert_aslr(&funcs_queue, f) != 0)
-                ;
-            while (queue_delete_aslr(&funcs_queue) != 0)
-                ;
+            while (queue_insert_aslr(&funcs_queue, f) != 0);
+            while (queue_delete_aslr(&funcs_queue) != 0);
         } else {
-            while (queue_delete_aslr(&funcs_queue) != 0)
-                ;
+            while (queue_delete_aslr(&funcs_queue) != 0);
             uint8_t* free_address =
                 (uint8_t*)funcs_queue.queue_array[index].load_address;
             address_free_aslr(free_address);
@@ -251,9 +228,9 @@ void exception_reconstruct_aslr(uint32_t* msp, uint32_t new_address) {
 int rewrite_function_v2_aslr(uint32_t new_address, uint32_t lr) {
     // 获取 ldr 指令的地址
     uint16_t* index_addr = (uint8_t*)((lr & 0xfffffffe) - 2);
-    uint32_t rd = rd_recognize_aslr(*(uint16_t*)index_addr);
+    uint32_t  rd = rd_recognize_aslr(*(uint16_t*)index_addr);
     index_addr -= 1;
-    int res = is_ldr_aslr(rd, *index_addr);
+    int      res = is_ldr_aslr(rd, *index_addr);
     uint32_t imm = -1;
     if (res == 0) {
         imm = ldr_get_imm_aslr(*index_addr);
@@ -268,10 +245,10 @@ int rewrite_function_v2_aslr(uint32_t new_address, uint32_t lr) {
 int rewrite_function_aslr(uint32_t new_address, uint32_t lr) {
     uint16_t new_low_imm, new_high_imm, pre_low_imm, pre_high_imm;
     new_address =
-        new_address | 0x1;  // we must ensure that the address value is odd
+        new_address | 0x1; // we must ensure that the address value is odd
     new_low_imm = new_address & 0x0000ffff;
     new_high_imm = new_address >> 16;
-    uint32_t new_movt, new_movw, pre_movt, pre_movw, rd;
+    uint32_t  new_movt, new_movw, pre_movt, pre_movw, rd;
     uint16_t* index_addr = (uint8_t*)((lr & 0xfffffffe) - 2);
     rd = rd_recognize_aslr(*(uint16_t*)index_addr);
 
@@ -279,7 +256,7 @@ int rewrite_function_aslr(uint32_t new_address, uint32_t lr) {
 
     uint32_t pre_address = interrupt_ret;
     pre_address =
-        pre_address | 0x1;  // we must ensure that the address value is odd
+        pre_address | 0x1; // we must ensure that the address value is odd
     pre_low_imm = pre_address & 0x0000ffff;
     pre_high_imm = pre_address >> 16;
     pre_movt = movt_transfer_aslr(pre_high_imm, rd);
@@ -292,10 +269,7 @@ int rewrite_function_aslr(uint32_t new_address, uint32_t lr) {
         uint16_t movt_high_value = *(index_addr - 2);
         uint16_t movw_low_value = *(index_addr - 3);
         uint16_t movw_high_value = *(index_addr - 4);
-        if ((pre_movt & 0x0000ffff) == movt_low_value &&
-            (pre_movt >> 16) == movt_high_value &&
-            (pre_movw & 0x0000ffff) == movw_low_value &&
-            (pre_movw >> 16) == movw_high_value) {
+        if ((pre_movt & 0x0000ffff) == movt_low_value && (pre_movt >> 16) == movt_high_value && (pre_movw & 0x0000ffff) == movw_low_value && (pre_movw >> 16) == movw_high_value) {
             rewrite_info_t* ri_index = &ri_start;
             while ((ri_index->next) != NULL) {
                 ri_index = ri_index->next;
@@ -340,17 +314,13 @@ func_node_t* function_exist_aslr(uint32_t func_address) {
 
 aslr_region_type_t get_type(uint32_t address) {
     aslr_region_type_t type = ASLR_REGION_ERROR_TYPE;
-    if (address >= ASLR_FLASH_SECURE_SERVICE1_REGION_START &&
-        address <= ASLR_FLASH_SECURE_SERVICE1_REGION_END) {
+    if (address >= ASLR_FLASH_SECURE_SERVICE1_REGION_START && address <= ASLR_FLASH_SECURE_SERVICE1_REGION_END) {
         type = ASLR_REGION_SECURE_TYPE;
-    } else if (address >= ASLR_FLASH_PRIV_REGION_START &&
-               address <= ASLR_FLASH_PRIV_REGION_END) {
+    } else if (address >= ASLR_FLASH_PRIV_REGION_START && address <= ASLR_FLASH_PRIV_REGION_END) {
         type = ASLR_REGION_PRIV_TYPE;
-    } else if (address >= ASLR_FLASH_SYSCALL_REGION_START &&
-               address <= ASLR_FLASH_SYSCALL_REGION_END) {
+    } else if (address >= ASLR_FLASH_SYSCALL_REGION_START && address <= ASLR_FLASH_SYSCALL_REGION_END) {
         type = ASLR_REGION_SYSCALL_TYPE;
-    } else if (address >= ASLR_FLASH_UNPRIV_REGION_START &&
-               address <= ASLR_FLASH_UNPRIV_REGION_END) {
+    } else if (address >= ASLR_FLASH_UNPRIV_REGION_START && address <= ASLR_FLASH_UNPRIV_REGION_END) {
         type = ASLR_REGION_UNPRIV_TYPE;
     }
     return type;

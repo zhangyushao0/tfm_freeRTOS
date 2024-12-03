@@ -28,9 +28,7 @@
 cmake -S . -B build -DTFM_PLATFORM=stm/aslr_freertos_nsapp -DBL2=OFF -DNS=OFF -DNS_APP=ON -DCMAKE_BUILD_TYPE=Debug -DFREERTOS_PORT=GCC_ARM_CM33_NTZ_NONSECURE -DFREERTOS_HEAP=4 -DTFM_TOOLCHAIN_FILE=toolchain_GNUARM.cmake -DTFM_PARTITION_INTERNAL_TRUSTED_STORAGE=ON -DTEST_TARGET=beebs_cnt -DENABLE_ASLR=ON
 ```
 
-## step 3 开启编译脚本
-
-编译，启动脚本，编译，烧录
+## step 2 开启编译脚本
 
 ```bash
 chmod +x comedown.sh

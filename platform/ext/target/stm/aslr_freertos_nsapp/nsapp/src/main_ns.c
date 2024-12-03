@@ -1,11 +1,9 @@
 #include "main_ns.h"
-#include <stdio.h>
 #include "FreeRTOS.h"
 #include "stm32l562xx.h"
 #include "stm32l5xx_hal.h"
 #include "stm32l5xx_hal_rcc.h"
 #include "support.h"
-#include "assert.h"
 #include "task.h"
 
 static void MX_GPIO_Init(void) {
@@ -31,23 +29,19 @@ uint32_t time_res(uint32_t s, uint32_t e) {
 }
 
 void testThread1(void* pvParameters) {
-    uint32_t b = xTaskGetTickCount();
-    int      i = 0;
-    while (i < 1000) {
+    uint32_t b = MPU_xTaskGetTickCount();
+    for (int i = 0; i < 1000; ++i) {
         initialise_benchmark();
         int result = benchmark();
-        // assert(verify_benchmark(result));
         verify_benchmark(result);
-        ++i;
     }
-    uint32_t e = xTaskGetTickCount();
+    uint32_t e = MPU_xTaskGetTickCount();
     int      res = time_res(b, e);
-    while (1) {}
+    while (1);
 }
 
 void testThread2(void* pvParameters) {
     while (1) {
-        // HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
         HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_3);
         MPU_vTaskDelay(500);
     }
@@ -56,31 +50,31 @@ void testThread2(void* pvParameters) {
 int main() {
     HAL_Init();
     MX_GPIO_Init();
-    static StackType_t xRWAccessTaskStack1[configMINIMAL_STACK_SIZE] __attribute__((aligned(32)));
-    TaskParameters_t   taskParams1 = {
-          .pvTaskCode = testThread1,
-          .pcName = "testThread1",
-          .usStackDepth = configMINIMAL_STACK_SIZE,
-          .pvParameters = NULL,
-          .uxPriority = 1 | portPRIVILEGE_BIT,
-          .puxStackBuffer = xRWAccessTaskStack1,
-          .xRegions = {
+    static StackType_t xRWAccessTaskStack1[configMINIMAL_STACK_SIZE]
+        __attribute__((aligned(32)));
+    TaskParameters_t taskParams1 = {
+        .pvTaskCode = testThread1,
+        .pcName = "testThread1",
+        .usStackDepth = configMINIMAL_STACK_SIZE,
+        .pvParameters = NULL,
+        .uxPriority = 1 | portPRIVILEGE_BIT,
+        .puxStackBuffer = xRWAccessTaskStack1,
+        .xRegions = {
             /* Base address Length Parameters */
             {0, 0, 0},
             {0, 0, 0},
         }};
 
-    xTaskCreateRestricted(&taskParams1, NULL);
-
-    static StackType_t xRWAccessTaskStack2[configMINIMAL_STACK_SIZE] __attribute__((aligned(32)));
-    TaskParameters_t   taskParams2 = {
-          .pvTaskCode = testThread2,
-          .pcName = "testThread2",
-          .usStackDepth = configMINIMAL_STACK_SIZE,
-          .pvParameters = NULL,
-          .uxPriority = 1 | portPRIVILEGE_BIT,
-          .puxStackBuffer = xRWAccessTaskStack2,
-          .xRegions = {
+    static StackType_t xRWAccessTaskStack2[configMINIMAL_STACK_SIZE]
+        __attribute__((aligned(32)));
+    TaskParameters_t taskParams2 = {
+        .pvTaskCode = testThread2,
+        .pcName = "testThread2",
+        .usStackDepth = configMINIMAL_STACK_SIZE,
+        .pvParameters = NULL,
+        .uxPriority = 1,
+        .puxStackBuffer = xRWAccessTaskStack2,
+        .xRegions = {
             /* Base address Length Parameters */
             {(void*)(AHB2PERIPH_BASE_NS), 0x2000UL, portMPU_REGION_READ_WRITE},
             {0, 0, 0},

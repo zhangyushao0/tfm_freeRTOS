@@ -1,7 +1,6 @@
 // Add by xinhui
 #include "rand.h"
 /* Standard includes. */
-#include <stdint.h>
 
 /* Secure context heap includes. */
 #include "aslr_heap.h"
@@ -13,16 +12,14 @@
 
 // Total heap size.
 
-#define secureconfigTOTAL_HEAP_SIZE_s_service1_aslr  \
-    (((size_t)(ASLR_RAM_SECURE_SERVICE1_REGION_END - \
-               ASLR_RAM_SECURE_SERVICE1_REGION_START + 1)))
+#define secureconfigTOTAL_HEAP_SIZE_s_service1_aslr \
+    (((size_t)(ASLR_RAM_SECURE_SERVICE1_REGION_END - ASLR_RAM_SECURE_SERVICE1_REGION_START + 1)))
 
 #define secureconfigTOTAL_HEAP_SIZE_priv_aslr \
     (((size_t)(ASLR_RAM_PRIV_REGION_END - ASLR_RAM_PRIV_REGION_START + 1)))
 
-#define secureconfigTOTAL_HEAP_SIZE_syscall_aslr                             \
-    (((size_t)(ASLR_RAM_SYSCALL_REGION_END - ASLR_RAM_SYSCALL_REGION_START + \
-               1)))
+#define secureconfigTOTAL_HEAP_SIZE_syscall_aslr \
+    (((size_t)(ASLR_RAM_SYSCALL_REGION_END - ASLR_RAM_SYSCALL_REGION_START + 1)))
 
 #define secureconfigTOTAL_HEAP_SIZE_npriv_aslr \
     (((size_t)(ASLR_RAM_UNPRIV_REGION_END - ASLR_RAM_UNPRIV_REGION_START + 1)))
@@ -51,8 +48,8 @@ static uint8_t* ucHeap_npriv_aslr = (uint8_t*)ASLR_RAM_UNPRIV_REGION_START;
  */
 typedef struct A_BLOCK_LINK_aslr {
     struct A_BLOCK_LINK_aslr*
-        pxNextFreeBlock; /**< The next free block in the list. */
-    size_t xBlockSize;   /**< The size of the free block. */
+           pxNextFreeBlock; /**< The next free block in the list. */
+    size_t xBlockSize;      /**< The size of the free block. */
 } BlockLink_t_aslr;
 /*-----------------------------------------------------------*/
 
@@ -72,7 +69,7 @@ static void prvHeapInit_aslr(int type);
  * @param[in] pxBlockToInsert The block being freed.
  */
 static void prvInsertBlockIntoFreeList_aslr(BlockLink_t_aslr* pxBlockToInsert,
-                                            int type);
+                                            int               type);
 /*-----------------------------------------------------------*/
 
 /**
@@ -80,8 +77,7 @@ static void prvInsertBlockIntoFreeList_aslr(BlockLink_t_aslr* pxBlockToInsert,
  * memory block must by correctly byte aligned.
  */
 static const size_t xHeapStructSize_aslr =
-    (sizeof(BlockLink_t_aslr) + ((size_t)(secureportBYTE_ALIGNMENT_aslr - 1))) &
-    ~((size_t)secureportBYTE_ALIGNMENT_MASK_aslr);
+    (sizeof(BlockLink_t_aslr) + ((size_t)(secureportBYTE_ALIGNMENT_aslr - 1))) & ~((size_t)secureportBYTE_ALIGNMENT_MASK_aslr);
 
 /**
  * @brief Create a couple of list links to mark the start and end of the list.
@@ -123,11 +119,11 @@ static size_t xBlockAllocatedBit_npriv_aslr = 0;
 
 static void prvHeapInit_aslr(int type) {
     BlockLink_t_aslr *xStart_aslr = NULL, **pxEnd_aslr = NULL;
-    size_t xTotalHeapSize = 0;
+    size_t            xTotalHeapSize = 0;
 
     BlockLink_t_aslr* pxFirstFreeBlock;
-    uint8_t* pucAlignedHeap;
-    size_t uxAddress;
+    uint8_t*          pucAlignedHeap;
+    size_t            uxAddress;
     if (type == ASLR_REGION_SECURE_TYPE) {
         xStart_aslr = &xStart_s_service1_aslr;
         pxEnd_aslr = &pxEnd_s_service1_aslr;
@@ -194,28 +190,24 @@ static void prvHeapInit_aslr(int type) {
             pxFirstFreeBlock->xBlockSize;
         xFreeBytesRemaining_s_service1_aslr = pxFirstFreeBlock->xBlockSize;
         xBlockAllocatedBit_s_service1_aslr =
-            ((size_t)1) << ((sizeof(size_t) * secureheapBITS_PER_BYTE_aslr) -
-                            1);
+            ((size_t)1) << ((sizeof(size_t) * secureheapBITS_PER_BYTE_aslr) - 1);
     } else if (type == ASLR_REGION_PRIV_TYPE) {
         xMinimumEverFreeBytesRemaining_priv_aslr = pxFirstFreeBlock->xBlockSize;
         xFreeBytesRemaining_priv_aslr = pxFirstFreeBlock->xBlockSize;
         xBlockAllocatedBit_priv_aslr =
-            ((size_t)1) << ((sizeof(size_t) * secureheapBITS_PER_BYTE_aslr) -
-                            1);
+            ((size_t)1) << ((sizeof(size_t) * secureheapBITS_PER_BYTE_aslr) - 1);
     } else if (type == ASLR_REGION_SYSCALL_TYPE) {
         xMinimumEverFreeBytesRemaining_syscall_aslr =
             pxFirstFreeBlock->xBlockSize;
         xFreeBytesRemaining_syscall_aslr = pxFirstFreeBlock->xBlockSize;
         xBlockAllocatedBit_syscall_aslr =
-            ((size_t)1) << ((sizeof(size_t) * secureheapBITS_PER_BYTE_aslr) -
-                            1);
+            ((size_t)1) << ((sizeof(size_t) * secureheapBITS_PER_BYTE_aslr) - 1);
     } else if (type == ASLR_REGION_UNPRIV_TYPE) {
         xMinimumEverFreeBytesRemaining_npriv_aslr =
             pxFirstFreeBlock->xBlockSize;
         xFreeBytesRemaining_npriv_aslr = pxFirstFreeBlock->xBlockSize;
         xBlockAllocatedBit_npriv_aslr =
-            ((size_t)1) << ((sizeof(size_t) * secureheapBITS_PER_BYTE_aslr) -
-                            1);
+            ((size_t)1) << ((sizeof(size_t) * secureheapBITS_PER_BYTE_aslr) - 1);
     }
 
     /* Work out the position of the top bit in a size_t variable. */
@@ -223,9 +215,9 @@ static void prvHeapInit_aslr(int type) {
 /*-----------------------------------------------------------*/
 
 static void prvInsertBlockIntoFreeList_aslr(BlockLink_t_aslr* pxBlockToInsert,
-                                            int type) {
+                                            int               type) {
     BlockLink_t_aslr* pxIterator;
-    uint8_t* puc;
+    uint8_t*          puc;
 
     BlockLink_t_aslr *xStart_aslr = NULL, **pxEnd_aslr = NULL;
     if (type == ASLR_REGION_SECURE_TYPE) {
@@ -262,8 +254,7 @@ static void prvInsertBlockIntoFreeList_aslr(BlockLink_t_aslr* pxBlockToInsert,
     /* Do the block being inserted, and the block it is being inserted before
      * make a contiguous block of memory? */
     puc = (uint8_t*)pxBlockToInsert;
-    if ((puc + pxBlockToInsert->xBlockSize) ==
-        (uint8_t*)pxIterator->pxNextFreeBlock) {
+    if ((puc + pxBlockToInsert->xBlockSize) == (uint8_t*)pxIterator->pxNextFreeBlock) {
         if (pxIterator->pxNextFreeBlock != (*pxEnd_aslr)) {
             /* Form one big block from the two blocks. */
             pxBlockToInsert->xBlockSize +=
@@ -294,8 +285,8 @@ void* pvPortMalloc_aslr(size_t xWantedSize, int type) {
     void *pvReturn = NULL, *pvRamReturn = NULL;
 
     BlockLink_t_aslr *xStart_aslr = NULL, **pxEnd_aslr = NULL;
-    size_t* xBlockAllocatedBit_aslr = NULL;
-    size_t* xFreeBytesRemaining_aslr = NULL;
+    size_t*           xBlockAllocatedBit_aslr = NULL;
+    size_t*           xFreeBytesRemaining_aslr = NULL;
     if (type == ASLR_REGION_SECURE_TYPE) {
         xStart_aslr = &xStart_s_service1_aslr;
         pxEnd_aslr = &pxEnd_s_service1_aslr;
@@ -341,8 +332,7 @@ void* pvPortMalloc_aslr(size_t xWantedSize, int type) {
             if ((xWantedSize & secureportBYTE_ALIGNMENT_MASK_aslr) != 0x00) {
                 /* Byte alignment required. */
                 xWantedSize +=
-                    (secureportBYTE_ALIGNMENT_aslr -
-                     (xWantedSize & secureportBYTE_ALIGNMENT_MASK_aslr));
+                    (secureportBYTE_ALIGNMENT_aslr - (xWantedSize & secureportBYTE_ALIGNMENT_MASK_aslr));
                 secureportASSERT_aslr(
                     (xWantedSize & secureportBYTE_ALIGNMENT_MASK_aslr) == 0);
             }
@@ -357,8 +347,7 @@ void* pvPortMalloc_aslr(size_t xWantedSize, int type) {
             /*****************************************************/
             pxPreviousBlock = xStart_aslr;
             pxBlock = xStart_aslr->pxNextFreeBlock;
-            while ((pxBlock->xBlockSize < xWantedSize) &&
-                   (pxBlock->pxNextFreeBlock != NULL)) {
+            while ((pxBlock->xBlockSize < xWantedSize) && (pxBlock->pxNextFreeBlock != NULL)) {
                 pxPreviousBlock = pxBlock;
                 pxBlock = pxBlock->pxNextFreeBlock;
             }
@@ -370,8 +359,7 @@ void* pvPortMalloc_aslr(size_t xWantedSize, int type) {
                  * BlockLink_t structure at its start. */
 
                 pvReturn =
-                    (void*)(((uint8_t*)pxPreviousBlock->pxNextFreeBlock) +
-                            xHeapStructSize_aslr);
+                    (void*)(((uint8_t*)pxPreviousBlock->pxNextFreeBlock) + xHeapStructSize_aslr);
                 pvRamReturn = pvReturn;
                 /* This block is being returned for use so must be taken out
                  * of the list of free blocks. */
@@ -380,8 +368,7 @@ void* pvPortMalloc_aslr(size_t xWantedSize, int type) {
                 /* If the block is larger than required it can be split into
                  * two. */
                 /**************** Modified by sxh ********************/
-                if ((pxBlock->xBlockSize - xWantedSize) >
-                    RAM_HEAP_PADDING_SIZE_aslr) {
+                if ((pxBlock->xBlockSize - xWantedSize) > RAM_HEAP_PADDING_SIZE_aslr) {
                     /* This block is to be split into two.  Create a new
                      * block following the number of bytes requested. The void
                      * cast is used to prevent byte alignment warnings from the
@@ -392,33 +379,26 @@ void* pvPortMalloc_aslr(size_t xWantedSize, int type) {
                     // uint32_t ram_num  = (rand_generate() % (pxBlock->xBlockSize - xWantedSize - RAM_HEAP_PADDING_SIZE_aslr)) & 0xfffffffc;   // The lowest bit must be 0
                     int32_t ram_num = 0;
                     pvRamReturn =
-                        (void*)((uint8_t*)pvReturn +
-                                secureheapMINIMUM_BLOCK_SIZE_aslr + ram_num);
+                        (void*)((uint8_t*)pvReturn + secureheapMINIMUM_BLOCK_SIZE_aslr + ram_num);
                     pxNewBlockLink1 = (void*)(uint8_t*)pxBlock;
                     pxFuncBlockLink =
-                        (void*)(((size_t)pvRamReturn & 0xfffffff8) -
-                                xHeapStructSize_aslr);
+                        (void*)(((size_t)pvRamReturn & 0xfffffff8) - xHeapStructSize_aslr);
                     pxNewBlockLink2 =
                         (void*)((uint8_t*)pxFuncBlockLink + xWantedSize);
                     // pxNewBlockLink = ( void * ) ( ( ( uint8_t * ) pxBlock ) +
                     // xWantedSize );
                     secureportASSERT_aslr(
-                        (((size_t)pxNewBlockLink1) &
-                         secureportBYTE_ALIGNMENT_MASK_aslr) == 0);
+                        (((size_t)pxNewBlockLink1) & secureportBYTE_ALIGNMENT_MASK_aslr) == 0);
                     secureportASSERT_aslr(
-                        (((size_t)pxNewBlockLink2) &
-                         secureportBYTE_ALIGNMENT_MASK_aslr) == 0);
+                        (((size_t)pxNewBlockLink2) & secureportBYTE_ALIGNMENT_MASK_aslr) == 0);
                     secureportASSERT_aslr(
-                        (((size_t)pxFuncBlockLink) &
-                         secureportBYTE_ALIGNMENT_MASK_aslr) == 0);
+                        (((size_t)pxFuncBlockLink) & secureportBYTE_ALIGNMENT_MASK_aslr) == 0);
                     /* Calculate the sizes of two blocks split from the single
                      * block. */
                     pxNewBlockLink1->xBlockSize =
                         (uint8_t*)pxFuncBlockLink - (uint8_t*)pxNewBlockLink1;
                     pxFuncBlockLink->xBlockSize = xWantedSize;
-                    pxNewBlockLink2->xBlockSize = sum_size -
-                                                  pxNewBlockLink1->xBlockSize -
-                                                  pxFuncBlockLink->xBlockSize;
+                    pxNewBlockLink2->xBlockSize = sum_size - pxNewBlockLink1->xBlockSize - pxFuncBlockLink->xBlockSize;
                     // pxBlock->xBlockSize = xWantedSize;
 
                     /* Insert the new block into the list of free blocks. */
@@ -428,32 +408,28 @@ void* pvPortMalloc_aslr(size_t xWantedSize, int type) {
                 if (type == ASLR_REGION_SECURE_TYPE) {
                     xFreeBytesRemaining_s_service1_aslr -=
                         pxFuncBlockLink->xBlockSize;
-                    if ((*xFreeBytesRemaining_aslr) <
-                        xMinimumEverFreeBytesRemaining_s_service1_aslr) {
+                    if ((*xFreeBytesRemaining_aslr) < xMinimumEverFreeBytesRemaining_s_service1_aslr) {
                         xMinimumEverFreeBytesRemaining_s_service1_aslr =
                             (*xFreeBytesRemaining_aslr);
                     }
                 } else if (type == ASLR_REGION_PRIV_TYPE) {
                     xFreeBytesRemaining_priv_aslr -=
                         pxFuncBlockLink->xBlockSize;
-                    if ((*xFreeBytesRemaining_aslr) <
-                        xMinimumEverFreeBytesRemaining_priv_aslr) {
+                    if ((*xFreeBytesRemaining_aslr) < xMinimumEverFreeBytesRemaining_priv_aslr) {
                         xMinimumEverFreeBytesRemaining_priv_aslr =
                             (*xFreeBytesRemaining_aslr);
                     }
                 } else if (type == ASLR_REGION_SYSCALL_TYPE) {
                     xFreeBytesRemaining_syscall_aslr -=
                         pxFuncBlockLink->xBlockSize;
-                    if ((*xFreeBytesRemaining_aslr) <
-                        xMinimumEverFreeBytesRemaining_syscall_aslr) {
+                    if ((*xFreeBytesRemaining_aslr) < xMinimumEverFreeBytesRemaining_syscall_aslr) {
                         xMinimumEverFreeBytesRemaining_syscall_aslr =
                             (*xFreeBytesRemaining_aslr);
                     }
                 } else if (type == ASLR_REGION_UNPRIV_TYPE) {
                     xFreeBytesRemaining_npriv_aslr -=
                         pxFuncBlockLink->xBlockSize;
-                    if ((*xFreeBytesRemaining_aslr) <
-                        xMinimumEverFreeBytesRemaining_npriv_aslr) {
+                    if ((*xFreeBytesRemaining_aslr) < xMinimumEverFreeBytesRemaining_npriv_aslr) {
                         xMinimumEverFreeBytesRemaining_npriv_aslr =
                             (*xFreeBytesRemaining_aslr);
                     }
@@ -474,7 +450,7 @@ void* pvPortMalloc_aslr(size_t xWantedSize, int type) {
 /*-----------------------------------------------------------*/
 
 void vPortFree_aslr(void* pv, int type) {
-    uint8_t* puc = (uint8_t*)pv;
+    uint8_t*          puc = (uint8_t*)pv;
     BlockLink_t_aslr* pxLink;
 
     if (pv != NULL) {
@@ -496,8 +472,7 @@ void vPortFree_aslr(void* pv, int type) {
             xBlockAllocatedBit_aslr = xBlockAllocatedBit_npriv_aslr;
         }
         /* Check the block is actually allocated. */
-        secureportASSERT_aslr((pxLink->xBlockSize & xBlockAllocatedBit_aslr) !=
-                              0);
+        secureportASSERT_aslr((pxLink->xBlockSize & xBlockAllocatedBit_aslr) != 0);
         secureportASSERT_aslr(pxLink->pxNextFreeBlock == NULL);
 
         if ((pxLink->xBlockSize & xBlockAllocatedBit_aslr) != 0) {
