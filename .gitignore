@@ -17,5 +17,4 @@
 *.pyc
 /.cache
 
-ld.lld
-clang-17
+ld/ld.lld

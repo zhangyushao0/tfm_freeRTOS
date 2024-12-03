@@ -1,8 +1,8 @@
 #include "func.h"
 
-uint32_t func_info_size = 143;
+uint32_t func_info_size = 147;
 
-func_info_t func_info[143] = {
+func_info_t func_info[147] = {
     {0x80551f5, 78, -1, 0},  //HAL_Init
     {0x80557bb, 28, -1, 0},  //HAL_NVIC_SetPriorityGrouping
     {0x80552b5, 368, -1, 0},  //SystemCoreClockUpdate
@@ -18,7 +18,7 @@ func_info_t func_info[143] = {
     {0x805586d, 98, -1, 0},  //NVIC_EncodePriority
     {0x80558cf, 66, -1, 0},  //__NVIC_SetPriority
     {0x805592b, 92, -1, 0},  //SysTick_Config
-    {0x8055c35, 264, -1, 0},  //main
+    {0x8055c35, 262, -1, 0},  //main
     {0x8055a65, 4, -1, 0},  //NMI_Handler
     {0x8055a69, 4, -1, 0},  //HardFault_Handler
     {0x8055a6d, 4, -1, 0},  //MemManage_Handler
@@ -28,7 +28,7 @@ func_info_t func_info[143] = {
     {0x8055a7d, 4, -1, 0},  //SVC_Handler
     {0x8055a81, 4, -1, 0},  //DebugMon_Handler
     {0x8055a85, 4, -1, 0},  //PendSV_Handler
-    {0x80592b9, 16, -1, 0},  //SysTick_Handler
+    {0x8055f95, 16, -1, 0},  //SysTick_Handler
     {0x8055a89, 4, -1, 0},  //WWDG_IRQHandler
     {0x8055a8d, 4, -1, 0},  //PVD_PVM_IRQHandler
     {0x8055a91, 4, -1, 0},  //RTC_IRQHandler
@@ -136,14 +136,18 @@ func_info_t func_info[143] = {
     {0x8055c29, 4, -1, 0},  //UCPD1_IRQHandler
     {0x8055c2d, 4, -1, 0},  //ICACHE_IRQHandler
     {0x8055c31, 4, -1, 0},  //OTFDEC1_IRQHandler
-    {0x8055d3d, 92, -1, 0},  //MX_GPIO_Init
-    {0x8055db1, 2, -1, 0},  //initialise_benchmark
-    {0x8055db3, 18, -1, 0},  //benchmark
-    {0x8055d99, 12, -1, 0},  //geta_b
-    {0x8055da5, 12, -1, 0},  //getb_a
-    {0x80592c9, 136, -1, 0},  //trampoline_A_B
-    {0x8059351, 136, -1, 0},  //trampoline_B_A
-    {0x80593d9, 214, -1, 0},  //trampoline_blx
-    {0x8055dc5, 13474, -1, 0},  //benchmark_body
+    {0x8055d3b, 92, -1, 0},  //MX_GPIO_Init
+    {0x8055f27, 30, -1, 0},  //initialise_benchmark
+    {0x8055daf, 18, -1, 0},  //benchmark
+    {0x8055d97, 12, -1, 0},  //geta_b
+    {0x8055da3, 12, -1, 0},  //getb_a
+    {0x8055fa5, 136, -1, 0},  //trampoline_A_B
+    {0x805602d, 136, -1, 0},  //trampoline_B_A
+    {0x80560b5, 214, -1, 0},  //trampoline_blx
+    {0x8055dc1, 34, -1, 0},  //Test
+    {0x8055de3, 168, -1, 0},  //Sum
+    {0x8055e8b, 98, -1, 0},  //Initialize
+    {0x8055eed, 44, -1, 0},  //RandomInteger
+    {0x8055f19, 14, -1, 0},  //InitSeed
     {0x8055987, 222, -1, 0},  //Reset_Handler
 };
